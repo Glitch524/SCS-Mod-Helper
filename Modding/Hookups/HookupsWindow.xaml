@@ -6,7 +6,7 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:local="clr-namespace:SCS_Mod_Helper.Modding.Hookups"
 	xmlns:utils="clr-namespace:SCS_Mod_Helper.Utils"
-	xmlns:base="clr-namespace:SCS_Mod_Helper.Base"
+	xmlns:base="clr-namespace:SCS_Mod_Helper.Class.Base"
 	xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
 	d:DataContext="{d:DesignInstance Type=local:HookupBinding}"
 	ExtendsContentIntoTitleBar="True"
@@ -63,7 +63,7 @@
 				TextWrapping="Wrap"
 				Text="{DynamicResource TextHookupName}"
 				VerticalAlignment="Top" />
-			<TextBox
+			<ui:TextBox
 				x:Name="TextName"
 				TextWrapping="Wrap"
 				Text="{Binding HookupName, UpdateSourceTrigger=PropertyChanged}"
@@ -81,7 +81,7 @@
 					<ColumnDefinition
 						Width="Auto" />
 				</Grid.ColumnDefinitions>
-				<TextBox
+				<ui:TextBox
 					x:Name="TextModel"
 					Grid.Column="0"
 					TextWrapping="Wrap"
@@ -118,7 +118,7 @@
 					TextWrapping="Wrap"
 					Text="{DynamicResource TextAnimPath}"
 					VerticalAlignment="Top" />
-				<TextBox
+				<ui:TextBox
 					x:Name="TextAnimation"
 					Grid.Column="0"
 					Grid.Row="1"

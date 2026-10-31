@@ -1,5 +1,5 @@
 ﻿using Microsoft.Win32;
-using SCS_Mod_Helper.Base;
+using SCS_Mod_Helper.Class.Base;
 using SCS_Mod_Helper.Utils;
 using System.IO;
 using System.Windows;
@@ -10,28 +10,30 @@ namespace SCS_Mod_Helper.Modding.Hookups;
 /// CreateHookup.xaml 的交互逻辑
 /// </summary>
 public partial class HookupsWindow: BaseWindow {
-	private readonly HookupBinding HookupInfo = new();
+	private readonly HookupBinding Binding;
 
 	public string ProjectLocation {
-		get => HookupInfo.ProjectLocation; set => HookupInfo.ProjectLocation = value;
+		get => Binding.ProjectLocation; set => Binding.ProjectLocation = value;
 	}
 	private bool IsAnimHookup {
-		get => HookupInfo.IsAnimHookup; set => HookupInfo.IsAnimHookup = value;
+		get => Binding.IsAnimHookup; set => Binding.IsAnimHookup = value;
 	}
 	public string HookupName {
-		get => HookupInfo.HookupName; set => HookupInfo.HookupName = value;
+		get => Binding.HookupName; set => Binding.HookupName = value;
 	}
 	public string ModelLocation {
-		get => HookupInfo.ModelLocation; set => HookupInfo.ModelLocation = value;
+		get => Binding.ModelLocation; set => Binding.ModelLocation = value;
 	}
 	public string AnimationLocation {
-		get => HookupInfo.AnimationLocation; set => HookupInfo.AnimationLocation = value;
+		get => Binding.AnimationLocation; set => Binding.AnimationLocation = value;
 	}
 
 	public HookupsWindow() {
 		InitializeComponent();
+
+		Binding = new(() => this);
 		ProjectLocation = Instances.ProjectLocation;
-		PanelMain.DataContext = HookupInfo;
+		PanelMain.DataContext = Binding;
 	}
 
 	private void ButtonChooseFile(object sender, RoutedEventArgs e) {

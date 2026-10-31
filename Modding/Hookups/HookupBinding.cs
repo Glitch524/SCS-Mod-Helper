@@ -1,14 +1,11 @@
-﻿using SCS_Mod_Helper.Base;
+﻿using SCS_Mod_Helper.Class.Base;
 using SCS_Mod_Helper.Utils;
 using System.Windows;
 using System.Windows.Media;
 
 namespace SCS_Mod_Helper.Modding.Hookups;
 
-public class HookupBinding: BaseBinding {
-
-	public HookupBinding() {
-	}
+public class HookupBinding(Func<IBaseVisual> visualFunc): WindowBinding(visualFunc) {
 
 	public string MProjectLocation = "";
 	public string ProjectLocation {

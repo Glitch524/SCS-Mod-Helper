@@ -27,156 +27,13 @@
 		BasedOn="{StaticResource {x:Type ui:SplitButton}}">
 		<Setter
 			Property="Background"
-			Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
-	</Style>
-	<Style
-		TargetType="CheckBox"
-		BasedOn="{StaticResource {x:Type CheckBox}}">
-		<Setter
-			Property="Padding"
-			Value="0,0,0,0" />
-		<Setter
-			Property="MinWidth"
-			Value="20" />
-		<Setter
-			Property="MinHeight"
-			Value="20" />
-	</Style>
-	<Style
-		TargetType="TextBox"
-		BasedOn="{StaticResource {x:Type TextBox}}">
-		<Setter
-			Property="Padding"
-			Value="5,3,5,3" />
-	</Style>
-	<Style
-		TargetType="ComboBox"
-		BasedOn="{StaticResource {x:Type ComboBox}}">
-		<Setter
-			Property="Padding"
-			Value="5,3,5,3" />
-	</Style>
-	<Style
-		TargetType="TextBlock"
-		BasedOn="{StaticResource {x:Type TextBlock}}">
-		<Setter
-			Property="FontSize"
-			Value="12" />
-		<Setter
-			Property="Foreground"
-			Value="{DynamicResource TextControlForeground}" />
-	</Style>
-	<Style
-		TargetType="RadioButton"
-		BasedOn="{StaticResource {x:Type RadioButton}}">
-		<Setter
-			Property="Padding"
-			Value="3,0,0,0" />
-		<Setter
-			Property="VerticalContentAlignment"
-			Value="Center" />
-	</Style>
-	<Style
-		TargetType="ListBoxItem"
-		BasedOn="{StaticResource {x:Type ListBoxItem}}">
-		<Setter
-			Property="Padding"
-			Value="5,2" />
-	</Style>
-	<Style
-		TargetType="ListViewItem">
-		<Setter
-			Property="Padding"
-			Value="0,0" />
-		<Setter
-			Property="HorizontalContentAlignment"
-			Value="Stretch" />
-	</Style>
-
-	<Style
-		x:Key="MultiControlBorder"
-		TargetType="Border">
-		<Setter
-			Property="CornerRadius"
-			Value="3.3,3.3,3.8,3.8" />
-		<Setter
-			Property="BorderThickness"
-			Value="1" />
-		<Setter
-			Property="BorderBrush"
-			Value="{DynamicResource TextControlElevationBorderBrush}" />
-	</Style>
-	<Style
-		x:Key="PopupBorder"
-		TargetType="Border">
-		<Setter
-			Property="Background"
-			Value="{DynamicResource WindowBackground}" />
-		<Setter
-			Property="CornerRadius"
-			Value="5" />
-		<Setter
-			Property="BorderThickness"
-			Value="1" />
-		<Setter
-			Property="BorderBrush"
-			Value="{DynamicResource TextControlElevationBorderBrush}" />
-	</Style>
-	<Style
-		x:Key="SpliterBorder"
-		TargetType="Border">
-		<Setter
-			Property="Background"
-			Value="{DynamicResource TextControlElevationBorderBrush}" />
-		<Setter
-			Property="Height"
-			Value="1" />
-	</Style>
-
-	<Style
-		x:Key="DataGridHeader"
-		TargetType="DataGridColumnHeader"
-		BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
-		<Setter
-			Property="Background"
-			Value="Transparent" />
-		<Setter
-			Property="Padding"
-			Value="2,5,2,5" />
-		<Setter
-			Property="FontWeight"
-			Value="SemiBold" />
-		<Setter
-			Property="FontSize"
-			Value="10" />
-		<Setter
-			Property="BorderThickness"
-			Value="1" />
-	</Style>
-	<Style
-		x:Key="CompatCellStyle"
-		TargetType="DataGridCell">
-		<Setter
-			Property="Padding"
-			Value="0" />
+			Value="{DynamicResource ButtonBackground}" />
 	</Style>
 
 	<Style
 		x:Key="TableTextBoxStyle"
 		TargetType="TextBox"
-		BasedOn="{StaticResource {x:Type TextBox}}">
-		<Setter
-			Property="BorderThickness"
-			Value="0" />
-		<Setter
-			Property="Padding"
-			Value="0" />
-		<Setter
-			Property="FontSize"
-			Value="12" />
-		<Setter
-			Property="VerticalContentAlignment"
-			Value="Center" />
+		BasedOn="{StaticResource TableTextBoxBaseStyle}">
 		<Style.Triggers>
 			<Trigger
 				Property="IsFocused"
@@ -204,39 +61,6 @@
 				</MultiDataTrigger.Setters>
 			</MultiDataTrigger>
 		</Style.Triggers>
-	</Style>
-	<Style
-		x:Key="DataGridElementStyle"
-		TargetType="TextBlock">
-		<Setter
-			Property="VerticalAlignment"
-			Value="Center" />
-	</Style>
-	<Style
-		x:Key="DataGridCellToolTip"
-		TargetType="DataGridCell"
-		BasedOn="{StaticResource {x:Type DataGridCell}}">
-		<Setter
-			Property="ToolTip"
-			Value="{Binding RelativeSource={RelativeSource Self}, Path=Content.Text}" />
-	</Style>
-
-	<Style
-		x:Key="GridButton"
-		TargetType="Button"
-		BasedOn="{StaticResource {x:Type Button}}">
-		<Setter
-			Property="Padding"
-			Value="2" />
-		<Setter
-			Property="Width"
-			Value="20" />
-		<Setter
-			Property="Height"
-			Value="20" />
-		<Setter
-			Property="VerticalAlignment"
-			Value="Stretch" />
 	</Style>
 
 	<Style

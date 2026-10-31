@@ -1,4 +1,4 @@
-﻿using SCS_Mod_Helper.Base;
+﻿using SCS_Mod_Helper.Class.Base;
 using System.Windows.Media;
 using Wpf.Ui.Extensions;
 
