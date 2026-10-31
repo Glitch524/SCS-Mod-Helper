@@ -1,8 +1,7 @@
-﻿using SCS_Mod_Helper.Base;
+﻿using SCS_Mod_Helper.Class.Base;
 using SCS_Mod_Helper.Modding.PaintJob;
-using SCS_Mod_Helper.Utils;
-using System.Text;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace SCS_Mod_Helper.Vehicles;
 
@@ -107,8 +106,29 @@ public class Vehicle(
 		}
 	}
 
-	public List<Cabin> Cabins = [];
-	public List<Accessory> Accessories = [];
+	private List<Cabin>? mCabins = null;
+	public List<Cabin> Cabins {
+		get {
+			mCabins ??= VehiclesIO.LoadCabin(IsETS2, VehicleID);
+			return mCabins;
+		}
+		set {
+			mCabins = value;
+			InvokeChange();
+		}
+	}
+
+	public List<Accessory>? mAccessories = null;
+	public List<Accessory> Accessories {
+		get {
+			mAccessories ??= VehiclesIO.LoadAccessories(IsETS2, vehicleID);
+			return mAccessories;
+		}
+		set {
+			mAccessories = value;
+			InvokeChange();
+		}
+	}
 
 	private string? mCabinNames = null;
 	public string CabinIDs {
@@ -162,6 +182,34 @@ public class Cabin(string vehicleID, string cabinID, string cabinName, bool defa
 			InvokeChange();
 		}
 	}
+
+	private BitmapImage? mCabinUV = null;
+	public BitmapImage? CabinUV {
+		get {
+			if (mCabinUV == null)
+				GetCabinUV();
+			return mCabinUV;
+		}
+	}
+
+	bool UVLoaded = false;
+	private void GetCabinUV() {
+		if (UVLoaded) 
+			return;
+		try {
+			var uri = new Uri($"pack://application:,,,/Vehicles/UV/{CabinID}.png", UriKind.RelativeOrAbsolute);
+			var bitmap = new BitmapImage();
+			bitmap.BeginInit();
+			bitmap.CacheOption = BitmapCacheOption.OnLoad;
+			bitmap.UriSource = uri;
+			bitmap.EndInit();
+			bitmap.Freeze();
+			mCabinUV = bitmap;
+		} catch {
+			mCabinUV = null;
+		}
+		UVLoaded = true;
+	}
 }
 
 public class Accessory(string vehicleID, string accID, string accName, string accType, int unlockLevel, bool defaultAcc): BaseBinding {
@@ -205,6 +253,9 @@ public class Accessory(string vehicleID, string accID, string accName, string ac
 			InvokeChange();
 		}
 	}
+
+
+
 
 	private string mVehicleID = vehicleID;
 	public string VehicleID {

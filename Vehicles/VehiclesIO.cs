@@ -11,7 +11,7 @@ using System.Windows;
 
 namespace SCS_Mod_Helper.Vehicles;
 
-public static class VehiclesIO {
+public static partial class VehiclesIO {
 	//数据库有版本号，例如1061260920，前四位是版本号对应游戏版本1.61，0是为了避免游戏子版本破百，后六位是日期
 	private const string defaultDB = "SCS_Mod_Helper.Vehicles.DefaultVehicles.db";
 	//private const int dbVersion = 1061261017;
@@ -70,6 +70,9 @@ public static class VehiclesIO {
 	}
 
 
+
+
+
 	private static ResourceDictionary? mVehicleDictionary = null;
 	public static ResourceDictionary VehicleDictionary {
 		get {
@@ -77,8 +80,8 @@ public static class VehiclesIO {
 				mVehicleDictionary = [];
 				var lang = Instances.CurrentLanguage;
 				Uri source;
-				if (lang.StartsWith(DictionaryUtil.ExtLangPreffix)) {
-					lang = lang[DictionaryUtil.ExtLangPreffix.Length..];
+				if (lang.StartsWith(ResourceUtil.ExtLangPreffix)) {
+					lang = lang[ResourceUtil.ExtLangPreffix.Length..];
 					var path = Path.Combine(Paths.VehiclesLanguageDir(), $"{lang}.xaml");
 					if (File.Exists(path))
 						source = new Uri(path);
@@ -100,6 +103,63 @@ public static class VehiclesIO {
 
 	public static string GetCabinName(string cabinID) => (string)(VehicleDictionary[cabinID] ?? cabinID);
 	public static string GetAccessoryName(string vehicleID, string accID) => (string)(VehicleDictionary[$"{vehicleID}.{accID}"] ?? accID);
+
+	/// <summary>
+	/// 从项目中的数据库资源导出到临时文件夹内，判断导出时生成的hash来判断导出的文件是否相同
+	/// </summary>
+	/// <exception cref="FileNotFoundException"></exception>
+	private static void ExportDB() {
+		var tempDB = Paths.EmbDBFile();
+		string hashFile = Paths.EmbHashFile();
+		var embResDBHash = GetEmbResDBHash();
+		if (File.Exists(tempDB)) {
+			string? tempDBHash;
+			if (File.Exists(hashFile))
+				tempDBHash = File.ReadAllText(hashFile);//获取文件内的hash
+			else
+				tempDBHash = null;
+			//检查hash，如果hash不一样或者文件不存在，就覆盖。如果hash一样就直接返回不需要更新
+			if (embResDBHash == tempDBHash)
+				return;
+			File.Delete(tempDB);
+		}
+		if (File.Exists(hashFile))
+			File.Delete(hashFile);
+
+		var assembly = Assembly.GetExecutingAssembly();
+		using Stream? stream = assembly.GetManifestResourceStream(defaultDB) ?? throw new FileNotFoundException("Default not found");
+		DirectoryInfo di = new(tempDB);
+		di.Parent!.Create();
+		using FileStream fs = new(tempDB, FileMode.Create);
+		stream.CopyTo(fs);
+
+		File.WriteAllText(hashFile, embResDBHash);
+	}
+
+	private static string GetEmbResDBHash() {
+		using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(defaultDB) ?? throw new FileNotFoundException("Default not found");
+		using var md5 = MD5.Create();
+		var hash = md5.ComputeHash(stream);
+		return Convert.ToBase64String(hash);
+	}
+
+	/// <summary>
+	/// 在使用数据库前，先判断数据库是否存在，如果不存在就把默认数据库结构复制到数据库位置
+	/// </summary>
+	private static void DBCheckBeforeUse() {
+		string dbPath = Paths.VehiclesDBPath();
+		if (File.Exists(dbPath))
+			return;
+		if (File.Exists(Paths.CustomDBPath())) {
+			File.Copy(Paths.CustomDBPath(), dbPath);
+			return;
+		}
+		ExportDB();
+		File.Copy(Paths.EmbDBFile(), dbPath);
+	}
+
+
+
 
 	public static void AddVehicle(Vehicle vehicle) {
 		bool isETS2 = vehicle.IsETS2;
@@ -205,9 +265,6 @@ public static class VehiclesIO {
 		conn.Open();
 		var cmd = conn.CreateCommand();
 
-		var cabinDict = LoadCabins(cmd, isETS2);
-		var accDict = LoadAccessories(cmd, isETS2);
-
 		cmd.CommandText = $"Select *  from {table} order by {COLUMN_MANIFATURER}, {COLUMN_PROD_YEAR}, {COLUMN_VEHICLE_ID}";
 		using var reader = cmd.ExecuteReader();
 		List<Vehicle> loadedvehicle = [];
@@ -220,79 +277,61 @@ public static class VehiclesIO {
 			string? desc = reader.TryGetString(COLUMN_DESCRIPTION, GetVehicleDesc(vehicleID));
 			Vehicle vehicle = new(vehicleID, prodYear, vehicleName, desc, vehicleType, manifaturer, isETS2);
 			loadedvehicle.Add(vehicle);
-			if (cabinDict.TryGetValue(vehicleID, out var cabins)) 
-				vehicle.Cabins = cabins;
-			if (accDict.TryGetValue(vehicleID, out var accessories)) 
-				vehicle.Accessories = accessories;
 		}
 		foreach (var v in loadedvehicle) {
 			vehicles.Add(v);
 		}
 	}
 
-	public static Dictionary<string, List<Cabin>> LoadCabins(SqliteCommand cmd, bool isETS2, bool customVehicle = false) {
+	public static List<Cabin> LoadCabin(bool isETS2, string vehicleID) {
 		DBCheckBeforeUse();
+		using var conn = new SqliteConnection(VehicleDBSource);
+		conn.Open();
+		var cmd = conn.CreateCommand();
+
 		string table = TableNameCabin(isETS2);
 		StringBuilder command = new();
 		command.Append($"Select * from {table}");
-		if (customVehicle)
-			command.Append($" where {COLUMN_DEFAULT_CABIN} = 0");
-		command.Append($" order by {COLUMN_VEHICLE_ID}");
+		command.Append($" where {COLUMN_VEHICLE_ID} = $vId");
 		cmd.CommandText = command.ToString();
+		cmd.Parameters.AddWithValue("$vID", vehicleID);
 		using var reader = cmd.ExecuteReader();
-		Dictionary<string, List<Cabin>> dict = [];
-		while(reader.Read()) {
-			string vehicleID = reader.GetString(COLUMN_VEHICLE_ID);
+		List<Cabin> cabins = [];
+		while (reader.Read()) {
 			string cabinID = reader.GetString(COLUMN_CABIN_ID);
 			string cabinName = reader.TryGetString(COLUMN_CABIN_NAME, GetCabinName(cabinID));
 			bool defaultCabin = reader.GetBool(COLUMN_DEFAULT_CABIN);
-			List<Cabin>? cabins;
-			if (dict.TryGetValue(vehicleID, out List<Cabin>? value)) {
-				cabins = value;
-			} else {
-				cabins = [];
-				dict[vehicleID] = cabins;
-			}
+
 			cabins.Add(new(vehicleID, cabinID, cabinName, defaultCabin));
 		}
-		return dict;
+		return cabins;
 	}
-	public static Dictionary<string, List<Accessory>> LoadAccessories(SqliteCommand cmd, bool isETS2, bool customVehicles = false) {
+	public static List<Accessory> LoadAccessories(bool isETS2, string vehicleID) {
 		DBCheckBeforeUse();
+		using var conn = new SqliteConnection(VehicleDBSource);
+		conn.Open();
+		var cmd = conn.CreateCommand();
+
 		string table = TableNameAcc(isETS2);
 		StringBuilder command = new();
 		command.Append($"Select * from {table}");
-		if (customVehicles)
-			command.Append($" where {COLUMN_DEFAULT_ACC} = 0");
-		command.Append($" order by {COLUMN_VEHICLE_ID}");
+		command.Append($" where {COLUMN_VEHICLE_ID} = $vId");
 		cmd.CommandText = command.ToString();
+		cmd.Parameters.AddWithValue("$vID", vehicleID);
 		using var reader = cmd.ExecuteReader();
-		Dictionary<string, List<Accessory>> dict = [];
+		List<Accessory> accessories = [];
 		while (reader.Read()) {
-			string vehicleID = reader.GetString(COLUMN_VEHICLE_ID);
 			string accID = reader.GetString(COLUMN_ACC_ID);
 			string accName = reader.TryGetString(COLUMN_ACC_NAME, GetAccessoryName(vehicleID, accID));
 			string accType = reader.GetString(COLUMN_ACC_TYPE);
 			int unlockLevel = reader.GetInt(COLUMN_UNLOCK_LEVEL);
 			bool defaultAcc = reader.GetBool(COLUMN_DEFAULT_ACC);
-			List<Accessory>? accessories;
-			if (dict.TryGetValue(vehicleID, out List<Accessory>? value)) {
-				accessories = value;
-			} else {
-				accessories = [];
-				dict[vehicleID] = accessories;
-			}
-
 			accessories.Add(new(vehicleID, accID, accName, accType, unlockLevel, defaultAcc));
 		}
-		return dict;
+		return accessories;
 	}
 
-	public static void ClearVehicleList() {
-		var dbPath = Paths.VehiclesDBPath();
-		SqliteConnection.ClearAllPools();
-		File.Delete(dbPath);
-	}
+
 
 	public static void AddCabin(bool isETS2, Cabin cabin) {
 		string table = TableNameCabin(isETS2);
@@ -330,6 +369,15 @@ public static class VehiclesIO {
 		cmd.Parameters.AddWithValue("$default", 0);
 		cmd.Parameters.AddWithValue("$vID", cabin.VehicleID);
 		cmd.Parameters.AddWithValue("$cID", cabin.CabinID);
+		cmd.ExecuteNonQuery();
+
+		cmd = conn.CreateCommand();
+		table = TableNameVehicle(isETS2);
+		cmd.CommandText = @$"update {table} 
+							set {COLUMN_DEFAULT_VEHICLE} = $default 
+							where {COLUMN_VEHICLE_ID} = $vID";
+		cmd.Parameters.AddWithValue("$default", 0);
+		cmd.Parameters.AddWithValue("$vID", cabin.VehicleID);
 		cmd.ExecuteNonQuery();
 	}
 
@@ -399,6 +447,15 @@ public static class VehiclesIO {
 		cmd.Parameters.AddWithValue("$vID", accessory.VehicleID);
 		cmd.Parameters.AddWithValue("$aID", accessory.AccID);
 		cmd.ExecuteNonQuery();
+
+		cmd = conn.CreateCommand();
+		table = TableNameVehicle(isETS2);
+		cmd.CommandText = @$"update {table} 
+							set {COLUMN_DEFAULT_VEHICLE} = $default 
+							where {COLUMN_VEHICLE_ID} = $vID";
+		cmd.Parameters.AddWithValue("$default", 0);
+		cmd.Parameters.AddWithValue("$vID", accessory.VehicleID);
+		cmd.ExecuteNonQuery();
 	}
 
 	public static void LoadAccessories(bool isETS2, string vehicleID, Collection<Accessory> accessories) {
@@ -418,243 +475,6 @@ public static class VehiclesIO {
 			bool defaultAcc = reader.GetBool(COLUMN_DEFAULT_ACC);
 			Accessory accessory = new(vehicleID, accID, accName, accType, unlockLevel, defaultAcc);
 			accessories.Add(accessory);
-		}
-	}
-
-
-	private static void DBCheckBeforeUse() {
-		string dbPath = Paths.VehiclesDBPath();
-		if (File.Exists(dbPath))
-			return;
-		if (File.Exists(Paths.CustomDBPath())) {
-			File.Copy(Paths.CustomDBPath(), dbPath);
-			return;
-		}
-		var assembly = Assembly.GetExecutingAssembly();
-		using Stream? stream = assembly.GetManifestResourceStream(defaultDB) ?? throw new FileNotFoundException("Default not found");
-		using FileStream fs = new(dbPath, FileMode.Create);
-		stream.CopyTo(fs);
-	}
-
-	//For DB Update
-	public static void CheckDBMigration(Window window) {
-		ExportDB();
-		string currentDBPath = Paths.VehiclesDBPath();
-		if (!File.Exists(currentDBPath))
-			return;
-		string customDBPath = Paths.CustomDBPath();
-		bool useCustomDB = File.Exists(customDBPath);
-		string source = useCustomDB ? CustomDBSource : EmbDBSource;
-		int dbVersion = GetDBVersion(source);
-		int currentVersion = GetDBVersion(VehicleDBSource);
-		if (dbVersion > currentVersion) {
-			bool veEdited = false, vaEdited = false;
-			try {
-				using var conn = new SqliteConnection(VehicleDBSource);
-				conn.Open();
-				var cmd = conn.CreateCommand();
-				cmd.CommandText = $"Select * from {TABLE_EDITED}";
-				using var reader = cmd.ExecuteReader();
-				if (reader.Read()) {
-					veEdited = reader.GetBool(COLUMN_VEHICLES_ETS2);
-					vaEdited = reader.GetBool(COLUMN_VEHICLES_ATS);
-				}
-				cmd.Dispose();
-			} catch {
-			}
-			Dictionary<string, Vehicle>? keepVehiclesETS2 = null, keepVehiclesATS = null;
-			if (veEdited || vaEdited) {
-				var result = MessageBox.Show(window, Util.GetString("MessageDBMigration"), Util.GetString("TitleVehicleMigration"), MessageBoxButton.YesNo);
-				if (result == MessageBoxResult.Yes) {
-					DBMigrationWindow updateWindow = new(currentVersion, dbVersion, veEdited, vaEdited) {
-						Owner = window
-					};
-					if (updateWindow.ShowDialog() == true) {
-						keepVehiclesETS2 = updateWindow.KeepVehiclesETS2;
-						keepVehiclesATS = updateWindow.KeepVehiclesATS;
-					}
-				}
-			}
-			SqliteConnection.ClearAllPools();
-			if (File.Exists(currentDBPath))
-				File.Delete(currentDBPath);
-			File.Copy(Paths.EmbDBFile(), currentDBPath);
-			if (veEdited || vaEdited) {
-				string message;
-				try {
-					if (keepVehiclesETS2 != null)
-						InsertKeepVehicles(true, keepVehiclesETS2);
-					if (keepVehiclesATS != null)
-						InsertKeepVehicles(false, keepVehiclesATS);
-					message = Util.GetString("MessageDBMigrationResultSuccess");
-				} catch {
-					message = Util.GetString("MessageDBMigrationResultFailed");//建议重命名旧的数据库文件，如果途中出错，就复原，成功就删除。
-				}
-				MessageBox.Show(window, message, Util.GetString("MessageTitleNotice"));
-			}
-		}
-	}
-
-	private static int GetDBVersion(string source) {
-		int version;
-		using (var conn = new SqliteConnection(source)) {
-			conn.Open();
-			var cmd = conn.CreateCommand();
-			cmd.CommandText = "PRAGMA user_version";
-			version = Convert.ToInt32(cmd.ExecuteScalar() ?? 0);
-			SqliteConnection.ClearAllPools();
-			cmd.Dispose();
-		}
-		return version;
-	}
-
-	private static void ExportDB() {
-		var tempDB = Paths.EmbDBFile();
-		string hashFile = Paths.EmbHashFile();
-		var embResDBHash = GetEmbResDBHash();
-		if (File.Exists(tempDB)) {
-			string? tempDBHash;
-			if (File.Exists(hashFile))
-				tempDBHash = File.ReadAllText(hashFile);//获取文件内的hash
-			else
-				tempDBHash = null;
-			//检查hash，如果hash不一样或者文件不存在，就覆盖。如果hash一样就直接返回不需要更新
-			if (embResDBHash == tempDBHash)
-				return;
-			File.Delete(tempDB);
-		}
-		if (File.Exists(hashFile))
-			File.Delete(hashFile);
-
-		var assembly = Assembly.GetExecutingAssembly();
-		using Stream? stream = assembly.GetManifestResourceStream(defaultDB) ?? throw new FileNotFoundException("Default not found");
-		DirectoryInfo di = new(tempDB);
-		di.Parent!.Create();
-		using FileStream fs = new(tempDB, FileMode.Create);
-		stream.CopyTo(fs);
-
-		File.WriteAllText(hashFile, embResDBHash);
-	}
-
-	private static string GetEmbResDBHash() {
-		using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(defaultDB) ?? throw new FileNotFoundException("Default not found");
-		using var md5 = MD5.Create();
-		var hash = md5.ComputeHash(stream);
-		return Convert.ToBase64String(hash);
-	}
-
-
-	private static void InsertKeepVehicles(bool isETS2, Dictionary<string, Vehicle> keepVehicles) {
-		string table = TableNameVehicle(isETS2);
-		using var conn = new SqliteConnection(VehicleDBSource);
-		conn.Open();
-		SqliteCommand cmd;
-		using var transaction = conn.BeginTransaction();
-		cmd = conn.CreateCommand();
-		cmd.CommandText = @$"Insert or replace into {table} ({COLUMN_VEHICLE_ID}, {COLUMN_MANIFATURER}, {COLUMN_PROD_YEAR}, {COLUMN_VEHICLE_NAME}, {COLUMN_DESCRIPTION}, {COLUMN_DEFAULT_VEHICLE})
-							values(@id, @mani, @prodYear, @tname, @desc, @default)";
-		cmd.Parameters.Add(new SqliteParameter("@id", null));
-		cmd.Parameters.Add(new SqliteParameter("@mani", null));
-		cmd.Parameters.Add(new SqliteParameter("@prodYear", null));
-		cmd.Parameters.Add(new SqliteParameter("@tname", null));
-		cmd.Parameters.Add(new SqliteParameter("@desc", null));
-		cmd.Parameters.Add(new SqliteParameter("@default", null));
-		foreach (var vehicle in keepVehicles.Values) {
-			cmd.Parameters["@id"].Value = vehicle.VehicleID;
-			cmd.Parameters["@mani"].Value = vehicle.Manifaturer;
-			cmd.Parameters["@prodYear"].Value = vehicle.ProductionYear;
-			cmd.Parameters["@tname"].Value = vehicle.VehicleName;
-			cmd.Parameters["@desc"].Value = vehicle.Description;
-			cmd.Parameters["@default"].Value = 0;
-			cmd.ExecuteNonQuery();
-		}
-		cmd.Dispose();
-
-		//Cabin
-		table = TableNameCabin(isETS2);
-		cmd = conn.CreateCommand();
-		cmd.CommandText = @$"Insert into {table} ({COLUMN_VEHICLE_ID}, {COLUMN_CABIN_ID}, {COLUMN_CABIN_NAME}, {COLUMN_DEFAULT_CABIN})
-							values(@vID, @cID, @cName, @default)";
-		cmd.Parameters.Add(new SqliteParameter("@vID", null));
-		cmd.Parameters.Add(new SqliteParameter("@cID", null));
-		cmd.Parameters.Add(new SqliteParameter("@cName", null));
-		cmd.Parameters.Add(new SqliteParameter("@default", null));
-		foreach (var vehicle in keepVehicles.Values) {
-			foreach (var cabin in vehicle.Cabins) {
-				if (cabin.DefaultCabin)
-					continue;
-				cmd.Parameters["@vID"].Value = cabin.VehicleID;
-				cmd.Parameters["@cID"].Value = cabin.CabinID;
-				cmd.Parameters["@cName"].Value = cabin.CabinName;
-				cmd.Parameters["@default"].Value = 0;
-				cmd.ExecuteNonQuery();
-			}
-		}
-		cmd.Dispose();
-
-		//Accessory
-		table = TableNameAcc(isETS2);
-		cmd = conn.CreateCommand();
-		cmd.CommandText = @$"Insert into {table} ({COLUMN_VEHICLE_ID}, {COLUMN_ACC_ID}, {COLUMN_ACC_NAME}, {COLUMN_ACC_TYPE}, {COLUMN_UNLOCK_LEVEL}, {COLUMN_DEFAULT_ACC})
-							values(@vID, @aID, @aName, @aType, @level, @default)";
-		cmd.Parameters.Add(new SqliteParameter("@vID", null));
-		cmd.Parameters.Add(new SqliteParameter("@aID", null));
-		cmd.Parameters.Add(new SqliteParameter("@aName", null));
-		cmd.Parameters.Add(new SqliteParameter("@aType", null));
-		cmd.Parameters.Add(new SqliteParameter("@level", null));
-		cmd.Parameters.Add(new SqliteParameter("@default", null));
-		foreach (var vehicle in keepVehicles.Values) {
-			foreach (var acc in vehicle.Accessories) {
-				if (acc.DefaultAcc)
-					continue;
-				cmd.Parameters["@vID"].Value = acc.VehicleID;
-				cmd.Parameters["@aID"].Value = acc.AccID;
-				cmd.Parameters["@aName"].Value = acc.AccName;
-				cmd.Parameters["@aType"].Value = acc.AccType;
-				cmd.Parameters["@level"].Value = acc.UnlockLevel;
-				cmd.Parameters["@default"].Value = 0;
-				cmd.ExecuteNonQuery();
-			}
-		}
-		cmd.Dispose();
-		transaction.Commit();
-	}
-
-	public static void LoadVehiclesUpdate(bool isETS2, ObservableCollection<Vehicle> vehicles, bool defaultDB, bool customVehicle) {
-		DBCheckBeforeUse();
-		string table = TableNameVehicle(isETS2);
-		string customDBPath = Paths.CustomDBPath();
-		bool useCustomDB = File.Exists(customDBPath);
-		string source = defaultDB ? (useCustomDB ? CustomDBSource : EmbDBSource) : VehicleDBSource;
-		using var conn = new SqliteConnection(source);
-		conn.Open();
-		using var cmd = conn.CreateCommand();
-
-		var cabinDict = LoadCabins(cmd, isETS2, customVehicle);
-		var accDict = LoadAccessories(cmd, isETS2, customVehicle);
-
-		StringBuilder command = new();
-		command.Append($"Select * from {table}");
-		if (customVehicle)
-			command.Append($" where {COLUMN_DEFAULT_VEHICLE} = 0");
-		command.Append($" order by {COLUMN_VEHICLE_TYPE}, {COLUMN_MANIFATURER}, {COLUMN_PROD_YEAR}, {COLUMN_VEHICLE_ID}");
-		cmd.CommandText = command.ToString();
-		using var reader = cmd.ExecuteReader();
-		while (reader.Read()) {
-			string vehicleID = reader.GetString(COLUMN_VEHICLE_ID);
-			string vehicleType = reader.GetString(COLUMN_VEHICLE_TYPE);
-			string manifaturer = reader.GetString(COLUMN_MANIFATURER);
-			int prodYear = reader.GetInt(COLUMN_PROD_YEAR);
-			string vehicleName = reader.TryGetString(COLUMN_VEHICLE_NAME, GetVehicleName(vehicleID));
-			string desc = reader.TryGetString(COLUMN_DESCRIPTION, GetVehicleDesc(vehicleID));
-			Vehicle vehicle = new(vehicleID, prodYear, vehicleName, desc, vehicleType, manifaturer, isETS2);
-			vehicles.Add(vehicle);
-			if (cabinDict.TryGetValue(vehicleID, out var cabins)) {
-				vehicle.Cabins = cabins;
-			}
-			if (accDict.TryGetValue(vehicleID, out var accessories)) {
-				vehicle.Accessories = accessories;
-			}
 		}
 	}
 }
