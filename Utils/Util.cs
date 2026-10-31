@@ -55,13 +55,25 @@ namespace SCS_Mod_Helper.Utils {
 			}
 			return res;
 		}
-		public static int GetInt(string key) {
-			return (int)Application.Current.FindResource(key);//"Object reference not set to an instance of an object." 如果字典的值为空就会出现这个报错
-		}
+
+		public static int GetInt(string key) => (int)Application.Current.FindResource(key);//"Object reference not set to an instance of an object." 如果字典的值为空就会出现这个报错
 
 		public static string GetFilter(string key) {
 			var specificFilter = GetString(key);
 			var allFilter = GetString("FilterAllFiles");
+			return $"{specificFilter}|{allFilter}";
+		}
+
+		public static string GetString(this Window window, string key, params object[] args) {
+			string res = window.FindResource(key).ToString()!;
+			if (args.Length > 0) {
+				res = string.Format(res, args);
+			}
+			return res;
+		}
+		public static string GetFilter(this Window window, string key) {
+			var specificFilter = window.GetString(key);
+			var allFilter = window.GetString("FilterAllFiles");
 			return $"{specificFilter}|{allFilter}";
 		}
 

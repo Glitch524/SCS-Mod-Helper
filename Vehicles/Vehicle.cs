@@ -57,7 +57,7 @@ public class Vehicle(
 		}
 	}
 
-	public int mProductionYear = productionYear;
+	private int mProductionYear = productionYear;
 	public int ProductionYear {
 		get => mProductionYear;
 		set {
@@ -121,7 +121,7 @@ public class Vehicle(
 	public List<Accessory>? mAccessories = null;
 	public List<Accessory> Accessories {
 		get {
-			mAccessories ??= VehiclesIO.LoadAccessories(IsETS2, vehicleID);
+			mAccessories ??= VehiclesIO.LoadAccessories(IsETS2, mVehicleID);
 			return mAccessories;
 		}
 		set {
@@ -265,6 +265,7 @@ public class Accessory(string vehicleID, string accID, string accName, string ac
 			InvokeChange();
 		}
 	}
+
 	private string mAccID = accID;
 	public string AccID {
 		get => mAccID;

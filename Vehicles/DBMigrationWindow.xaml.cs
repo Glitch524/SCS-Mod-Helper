@@ -145,8 +145,7 @@ public partial class VehiclesIO {
 	/// <summary>
 	/// 重置数据库，只要删除当前db，然后走一遍migration也是一样
 	/// </summary>
-	/// <param name="window"></param>
-	public static void ClearVehicleList(Window window) {
+	public static void ClearVehicleList() {
 		var dbPath = Paths.VehiclesDBPath();
 		SqliteConnection.ClearAllPools();
 		File.Delete(dbPath);

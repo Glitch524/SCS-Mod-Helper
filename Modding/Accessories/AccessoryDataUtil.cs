@@ -1,10 +1,11 @@
 ﻿using Microsoft.Win32;
-using SCS_Mod_Helper.Base;
+using SCS_Mod_Helper.Class.Base;
 using SCS_Mod_Helper.Modding.Accessories.AccAddon;
 using SCS_Mod_Helper.Utils;
 using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using System.Xml.Linq;
 
 namespace SCS_Mod_Helper.Modding.Accessories;
 public static class AccessoryDataUtil {
@@ -106,7 +107,7 @@ public static class AccessoryDataUtil {
 		else if (accExist)
 			siiIconLocation = pathAcc + '\\' + matName;
 		else {
-			var accessoryLocation = Paths.AccessoryIconDir(projectLocation);
+			var accessoryLocation = Paths.AccessoryIconDir();
 			var notInAcc = !iconFile.FullName.StartsWith(accessoryLocation);
 			if (pathAcc.EndsWith('\\'))
 				pathAcc = pathAcc[..^1];
@@ -123,15 +124,15 @@ public static class AccessoryDataUtil {
 			} else
 				return null;
 			{
-				string iconLocation = iconFile.FullName.Replace(projectLocation, "");
+				string iconLocation;
+				if (notInAcc)
+					iconLocation = iconFile.FullName.Replace(projectLocation, "");
+				else
+					iconLocation = iconFile.Name;
 				iconLocation = iconLocation.Replace('\\', '/');
 				using StreamWriter sw = new(genLocation + '\\' + tobjName);
-				sw.WriteLine("map 2d");
-				sw.WriteLine($"    {iconLocation}");
-				sw.WriteLine("addr");
-				sw.WriteLine("    clamp_to_edge");
-				sw.WriteLine("    clamp_to_edge");
-				sw.WriteLine("nocompress");
+				sw.WriteLine($"map\t2d\t{iconLocation}");
+				sw.WriteLine("addr\tclamp_to_edge\tclamp_to_edge");
 			}
 			siiIconLocation = genLocation + '\\' + matName;
 			{
@@ -145,6 +146,18 @@ public static class AccessoryDataUtil {
 		}
 		return siiIconLocation;
 	}
+
+	public static void CreateTobjFile(string imagePath) {
+		DirectoryInfo imageFile = new(imagePath);
+		var name = imageFile.Name;
+		imagePath = imagePath.Replace(imageFile.Extension, ".tobj");
+
+		using StreamWriter sw = new(imagePath);
+		sw.WriteLine($"map\t2d\t{name}");
+		sw.WriteLine("addr\tclamp_to_edge\tclamp_to_edge");
+	}
+
+
 
 	public static BitmapSource? LoadModelIconByIconName(string iconName) {
 		if (iconName.Length == 0)

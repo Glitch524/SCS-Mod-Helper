@@ -5,7 +5,7 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:local="clr-namespace:SCS_Mod_Helper.ConverterPix"
 	xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-	xmlns:base="clr-namespace:SCS_Mod_Helper.Base"
+	xmlns:base="clr-namespace:SCS_Mod_Helper.Class.Base"
 	d:DataContext="{d:DesignInstance Type=local:ConverterPixBinding}"
 	x:Class="SCS_Mod_Helper.ConverterPix.ConverterPixWindow"
 	ExtendsContentIntoTitleBar="True"
@@ -54,9 +54,10 @@
 					TextWrapping="Wrap"
 					Text="{DynamicResource TitleModPath}"
 					VerticalAlignment="Center" />
-				<TextBox
+				<ui:TextBox
 					x:Name="BoxFile"
 					Grid.Column="1"
+					ClearButtonEnabled="False"
 					Text="{Binding PackPath}" />
 				<Button
 					x:Name="ButtonChooseFile"
@@ -83,14 +84,14 @@
 					Content="{DynamicResource TitleCustomExportPath}"
 					IsChecked="{Binding CustomDestPath}"
 					FontSize="12" />
-				<TextBox
+				<ui:TextBox
 					Grid.Column="1"
 					Text="{Binding DestPath}"
-					Cursor="">
-					<TextBox.Style>
+					ClearButtonEnabled="False">
+					<ui:TextBox.Style>
 						<Style
-							TargetType="TextBox"
-							BasedOn="{StaticResource {x:Type TextBox}}">
+							TargetType="ui:TextBox"
+							BasedOn="{StaticResource {x:Type ui:TextBox}}">
 							<Style.Triggers>
 								<DataTrigger
 									Binding="{Binding IsChecked, ElementName=CheckBoxCustomExportPath}"
@@ -101,8 +102,8 @@
 								</DataTrigger>
 							</Style.Triggers>
 						</Style>
-					</TextBox.Style>
-				</TextBox>
+					</ui:TextBox.Style>
+				</ui:TextBox>
 				<Button
 					x:Name="ButtonChooseDest"
 					Content="{DynamicResource ButtonBrowse}"
