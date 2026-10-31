@@ -1,4 +1,4 @@
-﻿using SCS_Mod_Helper.Base;
+﻿using SCS_Mod_Helper.Class.Base;
 using SCS_Mod_Helper.Modding.Accessories.Physics;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -124,7 +124,7 @@ namespace SCS_Mod_Helper.Modding.Accessories {
 					WriteLine(sw, NamePTRestPositionOffset, toyData.RestPositionOffset);
 					WriteLine(sw, NamePTRestRotationOffset, toyData.RestRotationOffset);
 					foreach (var offset in toyData.InstanceOffsetList) {
-						WriteLine(sw, NamePTInstanceOffset, offset.Offset);
+						WriteLine(sw, NamePTInstanceOffset, offset);
 					}
 					WriteEmptyLine(sw);
 					WriteLine(sw, NamePTAngularStiffness, toyData.AngularStiffness);
@@ -148,7 +148,7 @@ namespace SCS_Mod_Helper.Modding.Accessories {
 					WriteLine(sw, NamePPMaterial, patchData.Material);
 
 					WriteLine(sw, NamePPAreaDensity, patchData.AreaDensity);
-					if (patchData.AeroModelType != PhysicsPatchData.ATTwoSideLiftDrag)
+					if (patchData.AeroModelType != "AT_two_side_lift_drag")
 						WriteLine(sw, NamePPAeroModelType, patchData.AeroModelType);
 
 					WriteLine(sw, NamePPLinearStiffness, patchData.LinearStiffness);
@@ -209,7 +209,7 @@ namespace SCS_Mod_Helper.Modding.Accessories {
 						data.Mass = float.Parse(value);
 						break;
 					case NamePTCogOffset:
-						FloatParse(value, (i, v) => data.CogOffset[i] = v);
+						FloatParse(value, data.CogOffset);
 						break;
 					case NamePTLinearStiffness:
 						data.LinearStiffness = float.Parse(value);
@@ -218,30 +218,30 @@ namespace SCS_Mod_Helper.Modding.Accessories {
 						data.LinearDamping = float.Parse(value);
 						break;
 					case NamePTAngularStiffness:
-						FloatParse(value, (i, v) => data.AngularStiffness[i] = v);
+						FloatParse(value, data.AngularStiffness);
 						break;
 					case NamePTAngularDamping:
-						FloatParse(value, (i, v) => data.AngularDamping[i] = v);
+						FloatParse(value, data.AngularDamping);
 						break;
 					case NamePTAngularAmplitude:
-						FloatParse(value, (i, v) => data.AngularAmplitude[i] = v);
+						FloatParse(value, data.AngularAmplitude);
 						break;
 					case NamePTNodeDamping:
 						data.NodeDamping = float.Parse(value);
 						break;
 					case NamePTLocatorHookOffset:
-						FloatParse(value, (i, v) => data.LocatorHookOffset[i] = v);
+						FloatParse(value, data.LocatorHookOffset);
 						break;
 					case NamePTRestPositionOffset:
-						FloatParse(value, (i, v) => data.RestPositionOffset[i] = v);
+						FloatParse(value, data.RestPositionOffset);
 						break;
 					case NamePTRestRotationOffset:
-						FloatParse(value, (i, v) => data.RestRotationOffset[i] = v);
+						FloatParse(value, data.RestRotationOffset);
 						break;
 					case NamePTInstanceOffset:
-						float[] nf = new float[3];
-						FloatParse(value, (i, v) => nf[i] = v);
-						data.InstanceOffsetList.Add(new(nf));
+						InstanceOffset inf = new();
+						FloatParse(value, inf);
+						data.InstanceOffsetList.Add(inf);
 						break;
 					case NamePTRopeWidth:
 						data.RopeWidth = float.Parse(value);
@@ -301,16 +301,16 @@ namespace SCS_Mod_Helper.Modding.Accessories {
 						data.LiftCoefficient = float.Parse(value);
 						break;
 					case NamePPTCMinFirst:
-						FloatParse(value, (i, v) => data.TCMinFirst[i] = v);
+						FloatParse(value, data.TCMinFirst);
 						break;
 					case NamePPTCMaxFirst:
-						FloatParse(value, (i, v) => data.TCMaxFirst[i] = v);
+						FloatParse(value, data.TCMaxFirst);
 						break;
 					case NamePPTCMinSecond:
-						FloatParse(value, (i, v) => data.TCMinSecond[i] = v);
+						FloatParse(value, data.TCMinSecond);
 						break;
 					case NamePPTCMaxSecond:
-						FloatParse(value, (i, v) => data.TCMaxSecond[i] = v);
+						FloatParse(value, data.TCMaxSecond);
 						break;
 					case NamePPXRes:
 						data.XRes = uint.Parse(value);
