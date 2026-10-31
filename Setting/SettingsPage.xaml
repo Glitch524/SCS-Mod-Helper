@@ -5,11 +5,10 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:local="clr-namespace:SCS_Mod_Helper.Setting"
-	xmlns:base="clr-namespace:SCS_Mod_Helper.Base"
+	xmlns:base="clr-namespace:SCS_Mod_Helper.Class.Base"
 	xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
 	d:DataContext="{d:DesignInstance Type=local:SettingsBinding}"
 	mc:Ignorable="d"
-	d:DesignHeight="450"
 	d:DesignWidth="800"
 	d:Background="White">
 	<base:BasePage.Resources>
@@ -60,7 +59,6 @@
 				IsOpen="True"
 				IsClosable="False"
 				FontSize="12"
-				Padding="0,0,180,0"
 				VerticalAlignment="Center" />
 			<Button
 				x:Name="ButtonDirLanguage"
@@ -69,8 +67,7 @@
 				Padding="0,5,0,5"
 				Click="ButtonClick"
 				Margin="15,0,15,0"
-				Content="{DynamicResource ButtonLanguageDir}">
-			</Button>
+				Content="{DynamicResource ButtonLanguageDir}" />
 		</Grid>
 		<ui:CardControl>
 			<ui:CardControl.Header>
@@ -91,11 +88,116 @@
 			<ComboBox
 				Width="150"
 				SelectedValue="{Binding CurrentTheme}"
-				SelectedValuePath="ThemeValue"
-				DisplayMemberPath="ThemeName"
-				ItemsSource="{Binding ThemeList}"
-				Padding="5" />
+				SelectedValuePath="Tag"
+				Padding="5">
+				<ComboBoxItem
+					Content="{DynamicResource ThemeFollowSystem}"
+					Tag="FollowSystem" />
+				<ComboBoxItem
+					Content="{DynamicResource ThemeLight}"
+					Tag="Light" />
+				<ComboBoxItem
+					Content="{DynamicResource ThemeDark}"
+					Tag="Dark" />
+			</ComboBox>
 		</ui:CardControl>
+		<ui:CardControl>
+			<ui:CardControl.Header>
+				<StackPanel
+					Orientation="Horizontal"
+					Height="40">
+					<Viewbox>
+						<Image
+							Source="/Images/Icon_ETS2.png" />
+					</Viewbox>
+					<ui:TextBlock
+						FontTypography="BodyStrong"
+						VerticalAlignment="Center"
+						Margin="10,0,0,0">
+						<Run
+							Text="{DynamicResource ETS2}" />
+						<Run
+							Text="{DynamicResource ExternalToolsPath}" />
+						<Run
+							Text=" " />
+						<Hyperlink
+							Click="FilePathClick"
+							Tag="{Binding ETS2GamePath}">
+							<Run
+								Text="{Binding ETS2GamePath}"
+								FontWeight="Bold"
+								d:Text="ETS2 Path" />
+						</Hyperlink>
+					</ui:TextBlock>
+				</StackPanel>
+			</ui:CardControl.Header>
+			<Button
+				x:Name="ButtonBrowsePathETS2"
+				Width="150"
+				Content="{DynamicResource ButtonBrowse}"
+				Padding="0,5,0,5"
+				Click="ButtonClick" />
+		</ui:CardControl>
+		<ui:CardControl>
+			<ui:CardControl.Header>
+				<StackPanel
+					Orientation="Horizontal"
+					Height="40">
+					<Viewbox>
+						<Image
+							Source="/Images/Icon_ATS.png" />
+					</Viewbox>
+					<ui:TextBlock
+						FontTypography="BodyStrong"
+						VerticalAlignment="Center"
+						Margin="10,0,0,0">
+						<Run
+							Text="{DynamicResource ATS}" />
+						<Run
+							Text="{DynamicResource ExternalToolsPath}" />
+						<Run
+							Text=" " />
+						<Hyperlink
+							Click="FilePathClick"
+							Tag="{Binding ATSGamePath}">
+							<Run
+								Text="{Binding ATSGamePath}"
+								FontWeight="Bold"
+								d:Text="ATS Path" />
+						</Hyperlink>
+					</ui:TextBlock>
+				</StackPanel>
+			</ui:CardControl.Header>
+			<Button
+				x:Name="ButtonBrowsePathATS"
+				Width="150"
+				Content="{DynamicResource ButtonBrowse}"
+				Padding="0,5,0,5"
+				Click="ButtonClick"
+				Margin="0,5,0,0" />
+		</ui:CardControl>
+		<Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition
+					Width="*" />
+				<ColumnDefinition
+					Width="Auto" />
+			</Grid.ColumnDefinitions>
+			<ui:InfoBar
+				Message="{DynamicResource TipsAutoDetect}"
+				IsOpen="True"
+				FontSize="12"
+				IsClosable="False"
+				VerticalAlignment="Center" />
+			<Button
+				x:Name="ButtonCheckPath"
+				Grid.Column="1"
+				Width="150"
+				Padding="0,5,0,5"
+				Click="ButtonClick"
+				Margin="15,0,15,0"
+				Content="{DynamicResource ButtonAutoDetect}" />
+		</Grid>
 		<ui:CardControl>
 			<ui:CardControl.Header>
 				<StackPanel
@@ -114,15 +216,11 @@
 							RequestNavigate="HyperlinkClick">Converter PIX</Hyperlink>
 						<Run
 							Text="{DynamicResource ExternalToolsPath}" />
-					</ui:TextBlock>
-					<Label
-						VerticalContentAlignment="Center"
-						Margin="10,0,0,0"
-						FontWeight="Bold">
 						<Run
 							Text="{Binding ConverterPixPath}"
-							d:Text="Test Path" />
-					</Label>
+							Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+							d:Text="Converter Pix Path" />
+					</ui:TextBlock>
 				</StackPanel>
 			</ui:CardControl.Header>
 			<Button
@@ -150,15 +248,11 @@
 							RequestNavigate="HyperlinkClick">Conversion Tools</Hyperlink>
 						<Run
 							Text="{DynamicResource ExternalToolsPath}" />
-					</ui:TextBlock>
-					<Label
-						VerticalContentAlignment="Center"
-						Margin="10,0,0,0"
-						FontWeight="Bold">
 						<Run
 							Text="{Binding ConversionToolsPath}"
-							d:Text="Test Path" />
-					</Label>
+							Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+							d:Text="Conversion Tools Path" />
+					</ui:TextBlock>
 				</StackPanel>
 			</ui:CardControl.Header>
 			<Button

@@ -1,5 +1,5 @@
-﻿using SCS_Mod_Helper.Base;
-using SCS_Mod_Helper.Localization;
+﻿using SCS_Mod_Helper.Locale.StringRes;
+using SCS_Mod_Helper.Locale.Localization;
 using SCS_Mod_Helper.Setting;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -7,8 +7,8 @@ using System.Windows;
 using Wpf.Ui.Appearance;
 
 namespace SCS_Mod_Helper.Utils;
-public static class Instances {
-	public static string GameVersion = "1.61";
+public static partial class Instances {
+	public static string GameVersion = "1.62";
 
 	public static string CurrentLanguage {
 		get {
@@ -63,6 +63,36 @@ public static class Instances {
 		}
 	}
 
+	private static string mETS2GamePath = Settings.Default.ETS2GamePath;
+	public static string ETS2GamePath {
+		get {
+			if (mETS2GamePath.Length == 0)
+				return Util.GetString("StatusEmpty");
+			return mETS2GamePath;
+		}
+
+		set {
+			mETS2GamePath = value;
+			Settings.Default.ETS2GamePath = value;
+			Settings.Default.Save();
+		}
+	}
+
+	private static string mATSGamePath = Settings.Default.ATSGamePath;
+	public static string ATSGamePath {
+		get {
+			if (mATSGamePath.Length == 0)
+				return Util.GetString("StatusEmpty");
+			return mATSGamePath;
+		}
+
+		set {
+			mATSGamePath = value;
+			Settings.Default.ATSGamePath = value;
+			Settings.Default.Save();
+		}
+	}
+
 
 	private static string mProjectLocation = Settings.Default.ProjectLocation;
 	public static string ProjectLocation {
@@ -74,142 +104,5 @@ public static class Instances {
 			StringResUtil.CleanStringResList();
 			localeModules = null;
 		}
-	}
-
-
-	private static string projectLocationOfDict = "";
-	private static ObservableCollection<LocaleModule>? localeModules = null;
-	public static ObservableCollection<LocaleModule> LocaleModules {
-		get {
-			if (localeModules == null || ProjectLocation != projectLocationOfDict) {
-				if (localeModules == null)
-					localeModules = [];
-				else
-					localeModules.Clear();
-				projectLocationOfDict = ProjectLocation;
-				LocaleIO.ReadLocaleDict(localeModules);
-			}
-			return localeModules;
-		}
-	}
-	public static void CleanLocaleModules() {
-		localeModules = null;
-		mLocaleDict = null;
-	}
-
-
-
-	private static Dictionary<string, List<string>>? mLocaleDict = null;
-	public static Dictionary<string, List<string>> LocaleDict {
-		get {
-			if (mLocaleDict == null || ProjectLocation != projectLocationOfDict) {
-				var projectLocation = ProjectLocation;
-				if (mLocaleDict == null)
-					mLocaleDict = [];
-				else
-					mLocaleDict.Clear();
-				projectLocationOfDict = projectLocation;
-				StringResUtil.CheckLocaleDict(mLocaleDict);
-			}
-			return mLocaleDict;
-		}
-	}
-
-	public static void LocaleDictAdd(string key, string value) {
-		if (LocaleDict.TryGetValue(key, out List<string>? list)) {
-			list.Add(value);
-		} else {
-			list = [value];
-			LocaleDict.Add(key, list);
-		}
-	}
-}
-
-class DictionaryUtil {
-	public static readonly Dictionary<string, Double<string, ResourceDictionary>> langs = [];
-	public static readonly Dictionary<string, ResourceDictionary> themes = [];
-
-	public static string ExtLangPreffix = "ext_";
-	private static void CollectDictionaries() {
-		var md = Application.Current.Resources.MergedDictionaries;
-		foreach (var dict in md) {
-			var name = dict.Source.OriginalString;
-			var start = name.LastIndexOf('/');
-			var end = name.LastIndexOf('.');
-			if (name.StartsWith("/Language")) {
-				name = name[(start + 1)..end];
-				var s = name.Split('_');
-				langs.Add(s[0], new(s[1], dict));
-			} else if (name.StartsWith("/Theme")) {
-				name = name[(start + 1)..end];
-				themes.Add(name, dict);
-			}
-		}
-	}
-
-	public static void SetupDictionary() {
-		if (langs.Count == 0 && themes.Count == 0) {
-			CollectDictionaries();
-			var langDir = new DirectoryInfo(Paths.LanguageDir());
-			if (langDir.Exists) {
-				foreach (var file in langDir.GetFiles()) {
-					if (file.Extension.Equals(".xaml")) {
-						var locale = file.Name;
-						var end = locale.LastIndexOf('.');
-						locale = locale[0..end];
-						var s = locale.Split('_');
-						var dict = new ResourceDictionary {
-							Source = new Uri(file.FullName)
-						};
-						langs.Add(ExtLangPreffix + s[0], new("Ext:" + s[1], dict));
-					}
-				}
-			}
-		}
-	}
-
-	public delegate void ChangeLanguageDelegate();
-	public static event ChangeLanguageDelegate? ChangeLanguage;
-	public static void SetLanguage(string? locale = null) {
-		SetupDictionary();
-		var selected = langs[locale ?? Instances.CurrentLanguage];
-		if (selected == null) {
-			selected = langs["en-US"];
-			Instances.CurrentLanguage = "en-US";
-		}
-		var md = Application.Current.Resources.MergedDictionaries;
-		md.Remove(selected.Second);
-		md.Add(selected.Second);
-		ChangeLanguage?.Invoke();
-	}
-
-	public static void SetTheme(string? theme = null) {
-		theme ??= Instances.CurrentTheme;
-		if (theme == "FollowSystem")
-			theme = GetSystemTheme();
-		switch (theme) {
-			case "Light":
-				ApplicationThemeManager.Apply(ApplicationTheme.Light);
-				UpdateThemeDict(theme);
-				break;
-			case "Dark":
-				ApplicationThemeManager.Apply(ApplicationTheme.Dark);
-				UpdateThemeDict(theme);
-				break;
-		}
-	}
-
-	public static void UpdateThemeDict(string theme) {
-		SetupDictionary();
-		if (themes.TryGetValue(theme ?? Instances.CurrentTheme, out var selected)) {
-			var md = Application.Current.Resources.MergedDictionaries;
-			md.Remove(selected);
-			md.Add(selected);
-		}
-	}
-
-	public static string GetSystemTheme() {
-		SystemThemeManager.UpdateSystemThemeCache();
-		return SystemThemeManager.GetCachedSystemTheme().ToString();
 	}
 }

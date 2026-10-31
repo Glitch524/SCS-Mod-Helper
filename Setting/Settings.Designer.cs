@@ -94,5 +94,29 @@ namespace SCS_Mod_Helper.Setting {
                 this["ConversionToolsPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ETS2GamePath {
+            get {
+                return ((string)(this["ETS2GamePath"]));
+            }
+            set {
+                this["ETS2GamePath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ATSGamePath {
+            get {
+                return ((string)(this["ATSGamePath"]));
+            }
+            set {
+                this["ATSGamePath"] = value;
+            }
+        }
     }
 }
