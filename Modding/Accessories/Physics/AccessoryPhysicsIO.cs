@@ -1,4 +1,5 @@
-﻿using SCS_Mod_Helper.Base;
+﻿using SCS_Mod_Helper.Class;
+using SCS_Mod_Helper.Class.Base;
 using SCS_Mod_Helper.Utils;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -108,7 +109,7 @@ namespace SCS_Mod_Helper.Modding.Accessories.Physics {
 				if (toyData.InstanceOffsetList.Count > 0) {
 					WriteElement(ATTR_INSTANCE_OFFSET_LIST, () => {
 						foreach (var offset in toyData.InstanceOffsetList) {
-							WriteValueElement(ATTR_INSTANCE_OFFSET, offset.Offset);
+							WriteValueElement(ATTR_INSTANCE_OFFSET, offset);
 						}
 					});
 				}
@@ -196,7 +197,7 @@ namespace SCS_Mod_Helper.Modding.Accessories.Physics {
 							toyData.Mass = float.Parse(child.InnerText);
 							break;
 						case ATTR_TOY_COG_OFFSET:
-							ToNFloat(toyData.CogOffset, child.InnerText);
+							ToFloats(toyData.CogOffset, child.InnerText);
 							break;
 						case ATTR_LINEAR_STIFFNESS:
 							toyData.LinearStiffness = float.Parse(child.InnerText);
@@ -205,23 +206,23 @@ namespace SCS_Mod_Helper.Modding.Accessories.Physics {
 							toyData.LinearDamping = float.Parse(child.InnerText);
 							break;
 						case ATTR_LOCATOR_HOOK_OFFSET:
-							ToNFloat(toyData.LocatorHookOffset, child.InnerText);
+							ToFloats(toyData.LocatorHookOffset, child.InnerText);
 							break;
 						case ATTR_REST_POSITION_OFFSET:
-							ToNFloat(toyData.RestPositionOffset, child.InnerText);
+							ToFloats(toyData.RestPositionOffset, child.InnerText);
 							break;
 						case ATTR_REST_ROTATION_OFFSET:
-							ToNFloat(toyData.RestRotationOffset, child.InnerText);
+							ToFloats(toyData.RestRotationOffset, child.InnerText);
 							break;
 						case ATTR_INSTANCE_OFFSET_LIST:
 							foreach (XmlNode childNode in child.ChildNodes) {
 								if (childNode.Name == ATTR_INSTANCE_OFFSET) {
 									var s = childNode.InnerText.Split(",");
-									float[] offset = new float[3];
+									InstanceOffset offset = new();
 									for (int i = 0; i < 3; i++) {
 										offset[i] = float.Parse(s[i]);
 									}
-									toyData.InstanceOffsetList.Add(new(offset));
+									toyData.InstanceOffsetList.Add(offset);
 								}
 							}
 							break;
@@ -229,13 +230,13 @@ namespace SCS_Mod_Helper.Modding.Accessories.Physics {
 							toyData.RopeMaterial = child.InnerText;
 							break;
 						case ATTR_ANGULAR_STIFFNESS:
-							ToNFloat(toyData.AngularStiffness, child.InnerText);
+							ToFloats(toyData.AngularStiffness, child.InnerText);
 							break;
 						case ATTR_ANGULAR_DAMPING:
-							ToNFloat(toyData.AngularDamping, child.InnerText);
+							ToFloats(toyData.AngularDamping, child.InnerText);
 							break;
 						case ATTR_ANGULAR_AMPLITUDE:
-							ToNFloat(toyData.AngularAmplitude, child.InnerText);
+							ToFloats(toyData.AngularAmplitude, child.InnerText);
 							break;
 						case ATTR_ROPE_WIDTH:
 							toyData.RopeWidth = float.Parse(child.InnerText);
@@ -285,16 +286,16 @@ namespace SCS_Mod_Helper.Modding.Accessories.Physics {
 							patchData.AeroModelType = child.InnerText;
 							break;
 						case TITLE_TC_MIN_FIRST:
-							ToNFloat(patchData.TCMinFirst, child.InnerText);
+							ToFloats(patchData.TCMinFirst, child.InnerText);
 							break;
 						case TITLE_TC_MAX_FIRST:
-							ToNFloat(patchData.TCMaxFirst, child.InnerText);
+							ToFloats(patchData.TCMaxFirst, child.InnerText);
 							break;
 						case TITLE_TC_MIN_SECOND:
-							ToNFloat(patchData.TCMinSecond, child.InnerText);
+							ToFloats(patchData.TCMinSecond, child.InnerText);
 							break;
 						case TITLE_TC_MAX_SECOND:
-							ToNFloat(patchData.TCMaxSecond, child.InnerText);
+							ToFloats(patchData.TCMaxSecond, child.InnerText);
 							break;
 						case TITLE_X_RES:
 							patchData.XRes = uint.Parse(child.InnerText);
@@ -325,12 +326,12 @@ namespace SCS_Mod_Helper.Modding.Accessories.Physics {
 			PhysicsItems.Add(patchData);
 		}
 
-		private static void ToNFloat(float?[] floats, string text) {
+		private static void ToFloats(Floats floats, string text) {
 			if (text == ",," || text == ",")
 				return;
 			var s = text.Split(",");
-			for(int i = 0; i < floats.Length; i++) {
-				if (s[i].Length == 0)
+			for (int i = 0; i < floats.Length; i++) {
+				if (s[i].Length == 0 || s[i] == "null")
 					continue;
 				floats[i] = float.Parse(s[i]);
 			}

@@ -1,6 +1,8 @@
-﻿namespace SCS_Mod_Helper.Modding.Accessories.Physics {
-	public class PhysicsPatchData(string physicsName = ""): PhysicsData(physicsName) {
+﻿using SCS_Mod_Helper.Class;
 
+namespace SCS_Mod_Helper.Modding.Accessories.Physics {
+	public class PhysicsPatchData(string physicsName = ""): PhysicsData(physicsName) {
+		//https://dariowouters.gitlab.io/scs-updates/unit/physics_patch_data/
 		private string mMaterial = "";
 		public string Material {
 			get => mMaterial;
@@ -19,15 +21,7 @@
 			}
 		}
 
-		public const string ATFaceOneSide = "AT_face_one_side";
-		public const string ATFaceTwoSide = "AT_face_two_side";
-		public const string ATFaceTwoSideLiftDrag = "AT_face_two_side_lift_drag";
-		public const string ATOneSide = "AT_one_side";
-		public const string ATPoint = "AT_point";
-		public const string ATTwoSide = "AT_two_side";
-		public const string ATTwoSideLiftDrag = "AT_two_side_lift_drag";
-
-		private string mAeroModelType = ATTwoSideLiftDrag;
+		private string mAeroModelType = "AT_two_side_lift_drag";
 
 		public string AeroModelType {
 			get => mAeroModelType;
@@ -64,114 +58,38 @@
 			}
 		}
 
-		private float?[] mTCMinFirst = [null, null];
-		public float?[] TCMinFirst {
+		private Float2 mTCMinFirst = new(0f, 0f);
+		public Float2 TCMinFirst {
 			get => mTCMinFirst;
 			set {
 				mTCMinFirst = value;
 				InvokeChange();
-
-				InvokeChange(nameof(TCMinFirst0));
-				InvokeChange(nameof(TCMinFirst1));
 			}
 		}
 
-		public float? TCMinFirst0 {
-			get => TCMinFirst[0];
-			set {
-				TCMinFirst[0] = value;
-				InvokeChange();
-			}
-		}
-
-		public float? TCMinFirst1 {
-			get => TCMinFirst[1];
-			set {
-				TCMinFirst[1] = value;
-				InvokeChange();
-			}
-		}
-
-		private float?[] mTCMaxFirst = [null, null];
-		public float?[] TCMaxFirst {
+		private Float2 mTCMaxFirst = new(1f, 1f);
+		public Float2 TCMaxFirst {
 			get => mTCMaxFirst;
 			set {
 				mTCMaxFirst = value;
 				InvokeChange();
-
-				InvokeChange(nameof(TCMaxFirst0));
-				InvokeChange(nameof(TCMaxFirst1));
 			}
 		}
 
-		public float? TCMaxFirst0 {
-			get => TCMaxFirst[0];
-			set {
-				TCMaxFirst[0] = value;
-				InvokeChange();
-			}
-		}
-
-		public float? TCMaxFirst1 {
-			get => TCMaxFirst[1];
-			set {
-				TCMaxFirst[1] = value;
-				InvokeChange();
-			}
-		}
-
-		private float?[] mTCMinSecond = [null, null];
-		public float?[] TCMinSecond {
+		private Float2 mTCMinSecond = new(0f, 0f);
+		public Float2 TCMinSecond {
 			get => mTCMinSecond;
 			set {
 				mTCMinSecond = value;
 				InvokeChange();
-
-				InvokeChange(nameof(TCMinSecond0));
-				InvokeChange(nameof(TCMinSecond1));
 			}
 		}
 
-		public float? TCMinSecond0 {
-			get => TCMinSecond[0];
-			set {
-				TCMinSecond[0] = value;
-				InvokeChange();
-			}
-		}
-
-		public float? TCMinSecond1 {
-			get => TCMinSecond[1];
-			set {
-				TCMinSecond[1] = value;
-				InvokeChange();
-			}
-		}
-
-		private float?[] mTCMaxSecond = [null, null];
-		public float?[] TCMaxSecond {
+		private Float2 mTCMaxSecond = new(1f, 1f);
+		public Float2 TCMaxSecond {
 			get => mTCMaxSecond;
 			set {
 				mTCMaxSecond = value;
-				InvokeChange();
-
-				InvokeChange(nameof(TCMaxSecond0));
-				InvokeChange(nameof(TCMaxSecond1));
-			}
-		}
-
-		public float? TCMaxSecond0 {
-			get => TCMaxSecond[0];
-			set {
-				TCMaxSecond[0] = value;
-				InvokeChange();
-			}
-		}
-
-		public float? TCMaxSecond1 {
-			get => TCMaxSecond[1];
-			set {
-				TCMaxSecond[1] = value;
 				InvokeChange();
 			}
 		}

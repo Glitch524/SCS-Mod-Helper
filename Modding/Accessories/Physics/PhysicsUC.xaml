@@ -1,10 +1,12 @@
-﻿<UserControl
+﻿<base:BaseUserControl
 	x:Class="SCS_Mod_Helper.Modding.Accessories.Physics.PhysicsUC"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:local="clr-namespace:SCS_Mod_Helper.Modding.Accessories.Physics"
+	xmlns:base="clr-namespace:SCS_Mod_Helper.Class.Base"
+	xmlns:cls="clr-namespace:SCS_Mod_Helper.Class"
 	xmlns:utils="clr-namespace:SCS_Mod_Helper.Utils"
 	xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
 	d:DataContext="{d:DesignInstance Type=local:PhysicsBinding}"
@@ -12,7 +14,7 @@
 	d:Background="White"
 	ScrollViewer.CanContentScroll="True"
 	ScrollViewer.VerticalScrollBarVisibility="Auto">
-	<UserControl.Resources>
+	<base:BaseUserControl.Resources>
 		<utils:FloatConverter
 			x:Key="FloatConverter" />
 		<ContextMenu
@@ -30,127 +32,21 @@
 		</ContextMenu>
 
 		<Style
-			x:Key="FloatCommaToy"
-			TargetType="Label"
-			BasedOn="{StaticResource {x:Type Label}}">
+			x:Key="Float2BoxStyle"
+			TargetType="cls:Float3Box"
+			BasedOn="{StaticResource {x:Type cls:Float3Box}}">
 			<Setter
-				Property="BorderThickness"
-				Value="0" />
-			<Setter
-				Property="BorderBrush"
-				Value="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" />
-			<Setter
-				Property="Padding"
-				Value="0" />
-			<Setter
-				Property="VerticalContentAlignment"
-				Value="Bottom" />
-			<Setter
-				Property="Content"
-				Value="," />
-			<Setter
-				Property="Background"
-				Value="{DynamicResource TextControlBackground}" />
-			<Setter
-				Property="Foreground"
-				Value="#E4000000" />
-		</Style>
-		<Style
-			x:Key="FloatBase"
-			TargetType="TextBox"
-			BasedOn="{StaticResource {x:Type TextBox}}">
-			<Setter
-				Property="VerticalContentAlignment"
-				Value="Center" />
-			<Setter
-				Property="Padding"
-				Value="0" />
-			<Setter
-				Property="BorderThickness"
-				Value="0" />
-		</Style>
-		<Style
-			x:Key="Float0"
-			TargetType="TextBox"
-			BasedOn="{StaticResource FloatBase}">
-			<Setter
-				Property="HorizontalContentAlignment"
-				Value="Right" />
-		</Style>
-		<Style
-			x:Key="Float1"
-			TargetType="TextBox"
-			BasedOn="{StaticResource FloatBase}">
-			<Setter
-				Property="HorizontalContentAlignment"
-				Value="Center" />
-		</Style>
-		<Style
-			x:Key="Float2"
-			TargetType="TextBox"
-			BasedOn="{StaticResource FloatBase}">
-		</Style>
-		<Style
-			x:Key="Float0_11"
-			TargetType="TextBox"
-			BasedOn="{StaticResource Float0}">
+				Property="Length"
+				Value="2" />
 			<Setter
 				Property="FontSize"
-				Value="11" />
-		</Style>
-		<Style
-			x:Key="Float1_11"
-			TargetType="TextBox"
-			BasedOn="{StaticResource Float1}">
-			<Setter
-				Property="FontSize"
-				Value="11" />
-		</Style>
-		<Style
-			x:Key="Float2_11"
-			TargetType="TextBox"
-			BasedOn="{StaticResource Float2}">
-			<Setter
-				Property="FontSize"
-				Value="11" />
-		</Style>
-		<Style
-			x:Key="FloatCommaPatch"
-			TargetType="Label"
-			BasedOn="{StaticResource FloatCommaToy}">
-			<Setter
-				Property="Padding"
-				Value="0,3,0,3" />
-		</Style>
-		<Style
-			x:Key="Float0_Patch"
-			TargetType="TextBox"
-			BasedOn="{StaticResource Float0}">
-			<Setter
-				Property="Padding"
-				Value="3,3,0,3" />
-		</Style>
-		<Style
-			x:Key="Float1_Patch"
-			TargetType="TextBox"
-			BasedOn="{StaticResource Float1}">
-			<Setter
-				Property="Padding"
-				Value="0,3,0,3" />
-		</Style>
-		<Style
-			x:Key="Float2_Patch"
-			TargetType="TextBox"
-			BasedOn="{StaticResource Float2}">
-			<Setter
-				Property="Padding"
-				Value="0,3,3,3" />
+				Value="14" />
 		</Style>
 
 		<Style
 			x:Key="TextBoxBorderless"
-			TargetType="TextBox"
-			BasedOn="{StaticResource {x:Type TextBox}}">
+			TargetType="ui:TextBox"
+			BasedOn="{StaticResource {x:Type ui:TextBox}}">
 			<Setter
 				Property="VerticalAlignment"
 				Value="Stretch" />
@@ -181,7 +77,7 @@
 				Property="Height"
 				Value="{Binding ActualHeight, ElementName=TextPhysicsName}" />
 		</Style>
-	</UserControl.Resources>
+	</base:BaseUserControl.Resources>
 	<Grid
 		x:Name="GridMain">
 		<Grid.RowDefinitions>
@@ -343,14 +239,14 @@
 				Grid.ColumnSpan="5"
 				BorderThickness="1"
 				BorderBrush="{DynamicResource TextControlElevationBorderBrush}"
-				CornerRadius="5" />
+				CornerRadius="4" />
 			<TextBlock
 				Text="{DynamicResource HeaderPhysicsName}"
 				HorizontalAlignment="Left"
 				VerticalAlignment="Bottom"
 				Grid.Row="1"
 				Grid.ColumnSpan="5"
-				Padding="0,5,0,5"
+				Padding="0,5"
 				FontWeight="Bold"
 				Margin="10,0,0,0" />
 			<ListBox
@@ -473,32 +369,25 @@
 					</Button.Style>
 				</Button>
 			</StackPanel>
-			<Grid
+			<DockPanel
 				Grid.Row="1"
-				Margin="0,5,0,5">
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition
-						Width="Auto" />
-					<ColumnDefinition
-						Width="*" />
-				</Grid.ColumnDefinitions>
+				Margin="0,5">
 				<TextBlock
 					VerticalAlignment="Center"
-					Padding="0,0,0,0">
-					<Run
-						Text="{DynamicResource TitlePhysicsType}" />
-				</TextBlock>
+					Padding="0"
+					Text="{DynamicResource TitlePhysicsType}" />
 				<TextBlock
 					x:Name="ComboPhysicsType"
 					Grid.Column="1"
 					Margin="5,0,0,0"
 					Text="{Binding PhysicsType}"
 					VerticalAlignment="Center" />
-			</Grid>
+			</DockPanel>
 
 			<Grid
 				x:Name="PanelPTD"
 				Grid.Row="2"
+				d:Visibility="Visible"
 				Visibility="{Binding ToyVisibility}">
 				<Grid.RowDefinitions>
 					<RowDefinition
@@ -550,17 +439,17 @@
 							MinWidth="200" />
 					</Grid.ColumnDefinitions>
 					<StackPanel>
-						<TextBlock><Run
-								Text="{DynamicResource TitlePhysicsName}" />
-						</TextBlock>
-						<TextBox
+						<TextBlock
+							Text="{DynamicResource TitlePhysicsName}" />
+						<ui:TextBox
 							x:Name="TextPhysicsName"
 							Padding="3"
+							ClearButtonEnabled="False"
 							Text="{Binding CurrentToyData.PhysicsName, UpdateSourceTrigger=PropertyChanged}">
-							<TextBox.Style>
+							<ui:TextBox.Style>
 								<Style
-									TargetType="TextBox"
-									BasedOn="{StaticResource {x:Type TextBox}}">
+									TargetType="ui:TextBox"
+									BasedOn="{StaticResource {x:Type ui:TextBox}}">
 									<Style.Triggers>
 										<Trigger
 											Property="Text"
@@ -571,15 +460,13 @@
 										</Trigger>
 									</Style.Triggers>
 								</Style>
-							</TextBox.Style>
-						</TextBox>
+							</ui:TextBox.Style>
+						</ui:TextBox>
 					</StackPanel>
 					<StackPanel
 						Grid.Column="2">
-						<TextBlock>
-						<Run
-								Text="{DynamicResource TitleToyType}" />
-						</TextBlock>
+						<TextBlock
+							Text="{DynamicResource TitleToyType}" />
 						<ComboBox
 							x:Name="TextToyType"
 							IsEditable="True"
@@ -611,29 +498,26 @@
 								Width="*" />
 							<ColumnDefinition
 								Width="Auto" />
-							<ColumnDefinition
-								Width="Auto" />
 						</Grid.ColumnDefinitions>
 						<TextBlock
-							Grid.ColumnSpan="3"
+							Grid.ColumnSpan="2"
 							TextWrapping="Wrap"
 							VerticalAlignment="Top"
 							Text="{DynamicResource ModelFilePath}" />
 						<Border
 							Grid.Row="1"
-							Grid.ColumnSpan="3"
+							Grid.ColumnSpan="2"
 							Style="{DynamicResource MultiControlBorder}" />
-						<TextBox
+						<ui:TextBox
 							x:Name="TextPhysicsModelPath"
 							Grid.Row="1"
 							Padding="3"
-							Grid.Column="0"
 							Text="{Binding CurrentToyData.ModelPath, UpdateSourceTrigger=PropertyChanged}"
 							TextWrapping="Wrap"
 							MaxLines="2">
-							<TextBox.Style>
+							<ui:TextBox.Style>
 								<Style
-									TargetType="TextBox"
+									TargetType="ui:TextBox"
 									BasedOn="{StaticResource TextBoxBorderless}">
 									<Style.Triggers>
 										<Trigger
@@ -645,37 +529,12 @@
 										</Trigger>
 									</Style.Triggers>
 								</Style>
-							</TextBox.Style>
-						</TextBox>
-						<Button
-							x:Name="ButtonPhysicsModelPathClear"
-							Grid.Row="1"
-							Grid.Column="1"
-							Click="ButtonClearClick">
-							<Button.Style>
-								<Style
-									TargetType="Button"
-									BasedOn="{StaticResource ButtonBorderless}">
-									<Style.Triggers>
-										<DataTrigger
-											Binding="{Binding CurrentToyData.ModelPath}"
-											Value="">
-											<Setter
-												Property="Visibility"
-												Value="Collapsed" />
-										</DataTrigger>
-									</Style.Triggers>
-								</Style>
-							</Button.Style>
-							<Viewbox>
-								<ui:SymbolIcon
-									Symbol="Dismiss16" />
-							</Viewbox>
-						</Button>
+							</ui:TextBox.Style>
+						</ui:TextBox>
 						<Button
 							x:Name="ButtonChoosePhysicsModel"
 							Grid.Row="1"
-							Grid.Column="2"
+							Grid.Column="1"
 							Click="ButtonChooseModelClick"
 							Style="{StaticResource ButtonBorderless}">
 							<Viewbox>
@@ -689,14 +548,11 @@
 						Grid.Row="2"
 						Grid.Column="0">
 						<TextBlock
-							Grid.Row="0"
-							Grid.ColumnSpan="2"
 							TextWrapping="Wrap"
 							VerticalAlignment="Top"
 							Text="{DynamicResource ModelLook}" />
 						<ComboBox
 							x:Name="TextPhysicsLook"
-							Grid.Row="1"
 							Text="{Binding CurrentToyData.Look}"
 							ItemsSource="{Binding CurrentToyData.LookList}"
 							IsEditable="True"
@@ -706,21 +562,17 @@
 						Grid.Row="2"
 						Grid.Column="2">
 						<TextBlock
-							Grid.Row="0"
-							Grid.ColumnSpan="2"
 							TextWrapping="Wrap"
 							VerticalAlignment="Top"
 							Text="{DynamicResource ModelVariant}" />
 						<ComboBox
 							x:Name="TextPhysicsVariant"
-							Grid.Row="1"
 							Text="{Binding CurrentToyData.Variant}"
 							ItemsSource="{Binding CurrentToyData.VariantList}"
 							IsEditable="True"
 							IsTextSearchEnabled="True" />
 					</StackPanel>
 					<Grid
-						Margin="0,0,0,0"
 						Grid.Row="2"
 						Grid.Column="4"
 						Grid.ColumnSpan="3">
@@ -735,58 +587,28 @@
 								Width="*" />
 							<ColumnDefinition
 								Width="Auto" />
-							<ColumnDefinition
-								Width="Auto" />
 						</Grid.ColumnDefinitions>
 						<Border
 							Grid.Row="1"
-							Grid.ColumnSpan="3"
+							Grid.ColumnSpan="2"
 							Style="{DynamicResource MultiControlBorder}" />
 						<TextBlock
 							x:Name="CheckUsePhysicsCollPath"
-							Grid.Row="0"
-							Grid.Column="0"
-							Grid.ColumnSpan="3"
+							Grid.ColumnSpan="2"
 							VerticalAlignment="Top"
 							Text="{DynamicResource ModelCollPath}" />
-						<TextBox
+						<ui:TextBox
 							x:Name="TextPhysicsCollPath"
 							Grid.Row="1"
-							Grid.Column="0"
-							Padding="3,3,3,3"
+							Padding="3"
 							Text="{Binding CurrentToyData.CollPath, UpdateSourceTrigger=PropertyChanged}"
 							TextWrapping="Wrap"
 							MaxLines="2"
 							Style="{StaticResource TextBoxBorderless}" />
 						<Button
-							x:Name="ButtonPhysicsCollPathClear"
-							Grid.Row="1"
-							Grid.Column="1"
-							Click="ButtonClearClick">
-							<Button.Style>
-								<Style
-									TargetType="Button"
-									BasedOn="{StaticResource ButtonBorderless}">
-									<Style.Triggers>
-										<DataTrigger
-											Binding="{Binding CurrentToyData.CollPath}"
-											Value="">
-											<Setter
-												Property="Visibility"
-												Value="Collapsed" />
-										</DataTrigger>
-									</Style.Triggers>
-								</Style>
-							</Button.Style>
-							<Viewbox>
-								<ui:SymbolIcon
-									Symbol="Dismiss16" />
-							</Viewbox>
-						</Button>
-						<Button
 							x:Name="ButtonChoosePhysicsColl"
 							Grid.Row="1"
-							Grid.Column="2"
+							Grid.Column="1"
 							Click="ButtonChooseModelClick"
 							Style="{StaticResource ButtonBorderless}">
 							<Viewbox>
@@ -798,317 +620,94 @@
 
 					<StackPanel
 						Grid.Row="4">
-						<TextBlock>
-						<Run
-								Text="{DynamicResource TitleToyMass}" />
-						</TextBlock>
-						<TextBox
+						<TextBlock
+							Text="{DynamicResource TitleToyMass}" />
+						<ui:TextBox
 							x:Name="TextToyMass"
+							ClearButtonEnabled="False"
+							PlaceholderText="0.1"
 							Text="{Binding CurrentToyData.Mass, Converter={x:Static utils:FloatConverter.Instance}}"
 							PreviewTextInput="FloatOnly" />
 					</StackPanel>
-					<Grid
+					<StackPanel
 						Grid.Row="4"
 						Grid.Column="2">
-						<Grid.RowDefinitions>
-							<RowDefinition
-								Height="Auto" />
-							<RowDefinition
-								Height="*" />
-						</Grid.RowDefinitions>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition
-								Width="*" />
-							<ColumnDefinition
-								Width="Auto" />
-							<ColumnDefinition
-								Width="*" />
-							<ColumnDefinition
-								Width="Auto" />
-							<ColumnDefinition
-								Width="*" />
-						</Grid.ColumnDefinitions>
 						<TextBlock
-							Grid.ColumnSpan="7">
-							<Run
-								Text="{DynamicResource TitleCogOffset}" />
-						</TextBlock>
-						<Border
-							Grid.Row="1"
-							Grid.ColumnSpan="5"
-							Style="{DynamicResource MultiControlBorder}" />
-						<TextBox
-							x:Name="TextCogOffset0"
-							Grid.Row="1"
-							Text="{Binding CurrentToyData.CogOffset0, Converter={StaticResource FloatConverter}}"
-							d:Text="0.000000"
-							PreviewTextInput="FloatOnly"
-							Style="{StaticResource Float0_11}" />
-						<Label
-							Grid.Row="1"
-							Grid.Column="1"
-							Style="{StaticResource FloatCommaToy}" />
-
-						<TextBox
-							x:Name="TextCogOffset1"
-							Grid.Row="1"
-							Grid.Column="2"
-							Text="{Binding CurrentToyData.CogOffset1, Converter={StaticResource FloatConverter}}"
-							d:Text="0.000000"
-							PreviewTextInput="FloatOnly"
-							Style="{StaticResource Float1_11}" />
-						<Label
-							Grid.Row="1"
-							Grid.Column="3"
-							Style="{StaticResource FloatCommaToy}" />
-						<TextBox
-							x:Name="TextCogOffset2"
-							Grid.Row="1"
-							Grid.Column="4"
-							Text="{Binding CurrentToyData.CogOffset2, Converter={StaticResource FloatConverter}}"
-							d:Text="0.000000"
-							PreviewTextInput="FloatOnly"
-							Style="{StaticResource Float2_11}" />
-					</Grid>
+							Text="{DynamicResource TitleCogOffset}" />
+						<cls:Float3Box
+							Floats="{Binding CurrentToyData.CogOffset}"
+							DefaultValue0="0"
+							DefaultValue1="0"
+							DefaultValue2="0"/>
+					</StackPanel>
 					<StackPanel
 						Grid.Row="4"
 						Grid.Column="4">
 						<TextBlock
-							ToolTip="{DynamicResource TipLinearStiffness}">
-							<Run
-								Text="{DynamicResource TitleLinearStiffness}" />
-						</TextBlock>
-						<TextBox
+							ToolTip="{DynamicResource TipLinearStiffness}"
+							Text="{DynamicResource TitleLinearStiffness}" />
+						<ui:TextBox
 							x:Name="TextLinearStiffness"
+							ClearButtonEnabled="False"
 							Text="{Binding CurrentToyData.LinearStiffness, Converter={x:Static utils:FloatConverter.Instance}}"
+							PlaceholderText="1.0"
 							PreviewTextInput="FloatOnly" />
 					</StackPanel>
 					<StackPanel
 						Grid.Row="4"
 						Grid.Column="6">
 						<TextBlock
-							ToolTip="{DynamicResource TitleLinearDamping}">
-						<Run
-								Text="{DynamicResource TitleLinearDamping}" />
-						</TextBlock>
-						<TextBox
+							ToolTip="{DynamicResource TitleLinearDamping}"
+							Text="{DynamicResource TitleLinearDamping}" />
+						<ui:TextBox
 							x:Name="TextLinearDamping"
+							ClearButtonEnabled="False"
 							Text="{Binding CurrentToyData.LinearDamping, Converter={x:Static utils:FloatConverter.Instance}}"
+							PlaceholderText="0.5"
 							PreviewTextInput="FloatOnly" />
 					</StackPanel>
 
-					<Grid
+					<StackPanel
 						Grid.Row="6"
 						Grid.Column="0">
-						<Grid.RowDefinitions>
-							<RowDefinition
-								Height="Auto" />
-							<RowDefinition
-								Height="*" />
-						</Grid.RowDefinitions>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition
-								Width="*" />
-							<ColumnDefinition
-								Width="Auto" />
-							<ColumnDefinition
-								Width="*" />
-							<ColumnDefinition
-								Width="Auto" />
-							<ColumnDefinition
-								Width="*" />
-						</Grid.ColumnDefinitions>
 						<TextBlock
-							Grid.ColumnSpan="7"
-							ToolTip="{DynamicResource TipLocatorHookOffset}">
-						<Run
-								Text="{DynamicResource TitleLocatorHookOffset}" />
-						</TextBlock>
-						<Border
-							Grid.Row="1"
-							Grid.ColumnSpan="5"
-							Style="{DynamicResource MultiControlBorder}" />
-						<TextBox
-							x:Name="TextLocatorHookOffset0"
-							Grid.Row="1"
-							Text="{Binding CurrentToyData.LocatorHookOffset0, Converter={StaticResource FloatConverter}}"
-							d:Text="0.000000"
-							PreviewTextInput="FloatOnly"
-							Style="{StaticResource Float0_11}" />
-						<Label
-							Grid.Row="1"
-							Grid.Column="1"
-							Style="{StaticResource FloatCommaToy}" />
-						<TextBox
-							x:Name="TextLocatorHookOffset1"
-							Grid.Row="1"
-							Grid.Column="2"
-							Text="{Binding CurrentToyData.LocatorHookOffset1, Converter={StaticResource FloatConverter}}"
-							d:Text="0.000000"
-							PreviewTextInput="FloatOnly"
-							Style="{StaticResource Float1_11}" />
-						<Label
-							Grid.Row="1"
-							Grid.Column="3"
-							Style="{StaticResource FloatCommaToy}" />
-						<TextBox
-							x:Name="TextLocatorHookOffset2"
-							Grid.Row="1"
-							Grid.Column="4"
-							Text="{Binding CurrentToyData.LocatorHookOffset2, Converter={StaticResource FloatConverter}}"
-							d:Text="0.000000"
-							PreviewTextInput="FloatOnly"
-							Style="{StaticResource Float2_11}" />
-					</Grid>
-					<Grid
+							ToolTip="{DynamicResource TipLocatorHookOffset}"
+							Text="{DynamicResource TitleLocatorHookOffset}" />
+						<cls:Float3Box
+							Floats="{Binding CurrentToyData.LocatorHookOffset}"
+							DefaultValue0="0"
+							DefaultValue1="0"
+							DefaultValue2="0"/>
+					</StackPanel>
+					<StackPanel
 						Grid.Row="6"
 						Grid.Column="2">
-						<Grid.RowDefinitions>
-							<RowDefinition
-								Height="Auto" />
-							<RowDefinition
-								Height="*" />
-						</Grid.RowDefinitions>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition
-								Width="*" />
-							<ColumnDefinition
-								Width="Auto" />
-							<ColumnDefinition
-								Width="*" />
-							<ColumnDefinition
-								Width="Auto" />
-							<ColumnDefinition
-								Width="*" />
-						</Grid.ColumnDefinitions>
 						<TextBlock
-							Grid.ColumnSpan="7">
-						<Run
-								Text="{DynamicResource TitleRestPositionOffset}" />
-						</TextBlock>
-						<Border
-							Grid.Row="1"
-							Grid.ColumnSpan="5"
-							Style="{DynamicResource MultiControlBorder}" />
-						<TextBox
-							x:Name="TextRestPositionOffset0"
-							Grid.Row="1"
-							Text="{Binding CurrentToyData.RestPositionOffset0, Converter={StaticResource FloatConverter}}"
-							d:Text="0.000000"
-							PreviewTextInput="FloatOnly"
-							Style="{StaticResource Float0_11}" />
-						<Label
-							Grid.Row="1"
-							Grid.Column="1"
-							Style="{StaticResource FloatCommaToy}" />
-						<TextBox
-							x:Name="TextRestPositionOffset1"
-							Grid.Row="1"
-							Grid.Column="2"
-							Text="{Binding CurrentToyData.RestPositionOffset1, Converter={StaticResource FloatConverter}}"
-							d:Text="0.000000"
-							PreviewTextInput="FloatOnly"
-							Style="{StaticResource Float1_11}" />
-						<Label
-							Grid.Row="1"
-							Grid.Column="3"
-							Style="{StaticResource FloatCommaToy}" />
-						<TextBox
-							x:Name="TextRestPositionOffset2"
-							Grid.Row="1"
-							Grid.Column="4"
-							Text="{Binding CurrentToyData.RestPositionOffset2, Converter={StaticResource FloatConverter}}"
-							d:Text="0.000000"
-							PreviewTextInput="FloatOnly"
-							Style="{StaticResource Float2_11}" />
-					</Grid>
-					<Grid
+							Text="{DynamicResource TitleRestPositionOffset}" />
+						<cls:Float3Box
+							Floats="{Binding CurrentToyData.RestPositionOffset}"
+							DefaultValue0="0"
+							DefaultValue1="0"
+							DefaultValue2="0" />
+					</StackPanel>
+					<StackPanel
 						Grid.Row="6"
 						Grid.Column="4">
-						<Grid.RowDefinitions>
-							<RowDefinition
-								Height="Auto" />
-							<RowDefinition
-								Height="*" />
-						</Grid.RowDefinitions>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition
-								Width="*" />
-							<ColumnDefinition
-								Width="Auto" />
-							<ColumnDefinition
-								Width="*" />
-							<ColumnDefinition
-								Width="Auto" />
-							<ColumnDefinition
-								Width="*" />
-						</Grid.ColumnDefinitions>
 						<TextBlock
-							Grid.ColumnSpan="7">
-						<Run
-								Text="{DynamicResource TitleRestRotationOffset}" />
-						</TextBlock>
-						<Border
-							Grid.Row="1"
-							Grid.ColumnSpan="5"
-							Style="{DynamicResource MultiControlBorder}" />
-						<TextBox
-							x:Name="TextRestRotationOffset0"
-							Grid.Row="1"
-							Text="{Binding CurrentToyData.RestRotationOffset0, Converter={StaticResource FloatConverter}}"
-							d:Text="0.000000"
-							PreviewTextInput="FloatOnly"
-							Style="{StaticResource Float0_11}" />
-						<Label
-							Grid.Row="1"
-							Grid.Column="1"
-							Style="{StaticResource FloatCommaToy}" />
-						<TextBox
-							x:Name="TextRestRotationOffset1"
-							Grid.Row="1"
-							Grid.Column="2"
-							Text="{Binding CurrentToyData.RestRotationOffset1, Converter={StaticResource FloatConverter}}"
-							d:Text="0.000000"
-							PreviewTextInput="FloatOnly"
-							Style="{StaticResource Float1_11}" />
-						<Label
-							Grid.Row="1"
-							Grid.Column="3"
-							Style="{StaticResource FloatCommaToy}" />
-						<TextBox
-							x:Name="TextRestRotationOffset2"
-							Grid.Row="1"
-							Grid.Column="4"
-							Text="{Binding CurrentToyData.RestRotationOffset2, Converter={StaticResource FloatConverter}}"
-							d:Text="0.000000"
-							PreviewTextInput="FloatOnly"
-							Style="{StaticResource Float2_11}" />
-					</Grid>
-					<Grid
+							Text="{DynamicResource TitleRestRotationOffset}" />
+						<cls:Float3Box
+							Floats="{Binding CurrentToyData.RestRotationOffset}"
+							DefaultValue0="0"
+							DefaultValue1="0"
+							DefaultValue2="0" />
+					</StackPanel>
+					<StackPanel
 						Grid.Row="6"
 						Grid.Column="6">
-						<Grid.RowDefinitions>
-							<RowDefinition
-								Height="Auto" />
-							<RowDefinition
-								Height="Auto" />
-						</Grid.RowDefinitions>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition
-								Width="*" />
-							<ColumnDefinition
-								Width="Auto" />
-							<ColumnDefinition
-								Width="Auto" />
-							<ColumnDefinition
-								Width="Auto" />
-						</Grid.ColumnDefinitions>
 						<TextBlock
 							x:Name="TitleInstanceOffset"
-							VerticalAlignment="Bottom">
-						<Run
-								Text="{DynamicResource TitleInstanceOffset}" />
-						</TextBlock>
+							VerticalAlignment="Bottom"
+							Text="{DynamicResource TitleInstanceOffset}" />
 						<Grid
 							Grid.Row="1"
 							Grid.ColumnSpan="4">
@@ -1117,96 +716,32 @@
 									Width="*" />
 								<ColumnDefinition
 									Width="Auto" />
-								<ColumnDefinition
-									Width="*" />
-								<ColumnDefinition
-									Width="Auto" />
-								<ColumnDefinition
-									Width="*" />
-								<ColumnDefinition
-									Width="Auto" />
 							</Grid.ColumnDefinitions>
-							<Border
-								Grid.ColumnSpan="5"
-								Style="{DynamicResource MultiControlBorder}" />
-							<TextBox
-								x:Name="TextInstanceOffset0"
-								Text="{Binding CurrentToyData.CurrentInstanceOffset.Offset0, Converter={StaticResource FloatConverter}}"
-								d:Text="0.000000"
-								PreviewTextInput="FloatOnly">
-								<TextBox.Style>
+							<cls:Float3Box
+								Floats="{Binding CurrentToyData.CurrentInstanceOffset}">
+								<cls:Float3Box.Style>
 									<Style
-										TargetType="TextBox"
-										BasedOn="{StaticResource Float0_11}">
+										TargetType="cls:Float3Box"
+										BasedOn="{StaticResource {x:Type cls:Float3Box}}">
 										<Style.Triggers>
 											<DataTrigger
-												Binding="{Binding CurrentToyData.CurrentInstanceOffset}"
-												Value="{x:Null}">
+												Binding="{Binding CurrentToyData.InstanceOffsetList.Count}"
+												Value="0">
 												<Setter
 													Property="IsEnabled"
 													Value="False" />
 											</DataTrigger>
 										</Style.Triggers>
 									</Style>
-								</TextBox.Style>
-							</TextBox>
-							<Label
-								Grid.Column="1"
-								Style="{StaticResource FloatCommaToy}" />
-							<TextBox
-								x:Name="TextInstanceOffset1"
-								Grid.Column="2"
-								Text="{Binding CurrentToyData.CurrentInstanceOffset.Offset1, Converter={StaticResource FloatConverter}}"
-								d:Text="0.000000"
-								PreviewTextInput="FloatOnly">
-								<TextBox.Style>
-									<Style
-										TargetType="TextBox"
-										BasedOn="{StaticResource Float1_11}">
-										<Style.Triggers>
-											<DataTrigger
-												Binding="{Binding CurrentToyData.CurrentInstanceOffset}"
-												Value="{x:Null}">
-												<Setter
-													Property="IsEnabled"
-													Value="False" />
-											</DataTrigger>
-										</Style.Triggers>
-									</Style>
-								</TextBox.Style>
-							</TextBox>
-							<Label
-								Grid.Column="3"
-								Style="{StaticResource FloatCommaToy}" />
-							<TextBox
-								x:Name="TextInstanceOffset2"
-								Grid.Column="4"
-								Text="{Binding CurrentToyData.CurrentInstanceOffset.Offset2, Converter={StaticResource FloatConverter}}"
-								d:Text="0.000000"
-								PreviewTextInput="FloatOnly">
-								<TextBox.Style>
-									<Style
-										TargetType="TextBox"
-										BasedOn="{StaticResource Float2_11}">
-										<Style.Triggers>
-											<DataTrigger
-												Binding="{Binding CurrentToyData.CurrentInstanceOffset}"
-												Value="{x:Null}">
-												<Setter
-													Property="IsEnabled"
-													Value="False" />
-											</DataTrigger>
-										</Style.Triggers>
-									</Style>
-								</TextBox.Style>
-							</TextBox>
+								</cls:Float3Box.Style>
+							</cls:Float3Box>
 							<Button
 								x:Name="ButtonInstanceOffsetList"
-								Grid.Column="5"
-                                Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}"
+								Grid.Column="1"
+								Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}"
 								Click="ButtonInstanceOffsetClicked"
-                                VerticalAlignment="Stretch"
-                                HorizontalAlignment="Left">
+								VerticalAlignment="Stretch"
+								HorizontalAlignment="Left">
 								<ui:SymbolIcon
 									Symbol="AppsList20" />
 							</Button>
@@ -1222,7 +757,7 @@
 									<Border
 										Grid.RowSpan="2"
 										Style="{DynamicResource PopupBorder}" />
-									<Grid
+										<Grid
 										Margin="5">
 										<Grid.RowDefinitions>
 											<RowDefinition
@@ -1350,8 +885,8 @@
 								</Grid>
 							</Popup>
 						</Grid>
-					</Grid>
-
+					</StackPanel>
+					
 					<Grid
 						Grid.Row="8"
 						Grid.Column="0"
@@ -1367,55 +902,25 @@
 								Width="*" />
 							<ColumnDefinition
 								Width="Auto" />
-							<ColumnDefinition
-								Width="Auto" />
 						</Grid.ColumnDefinitions>
 						<TextBlock
-							Grid.ColumnSpan="3">
-						<Run
-								Text="{DynamicResource TitleRopeMaterial}" />
-						</TextBlock>
+							Grid.ColumnSpan="2"
+							Text="{DynamicResource TitleRopeMaterial}" />
 						<Border
 							Grid.Row="1"
-							Grid.ColumnSpan="5"
+							Grid.ColumnSpan="2"
 							Style="{DynamicResource MultiControlBorder}" />
-						<TextBox
+						<ui:TextBox
 							x:Name="TextRopeMaterial"
 							Grid.Row="1"
-							Grid.Column="0"
 							Text="{Binding CurrentToyData.RopeMaterial, UpdateSourceTrigger=PropertyChanged}"
 							TextWrapping="Wrap"
 							MaxLines="2"
 							Style="{StaticResource TextBoxBorderless}" />
 						<Button
-							x:Name="ButtonRopeMaterialClear"
-							Grid.Row="1"
-							Grid.Column="1"
-							Click="ButtonClearClick">
-							<Button.Style>
-								<Style
-									TargetType="Button"
-									BasedOn="{StaticResource ButtonBorderless}">
-									<Style.Triggers>
-										<DataTrigger
-											Binding="{Binding CurrentToyData.RopeMaterial}"
-											Value="">
-											<Setter
-												Property="Visibility"
-												Value="Collapsed" />
-										</DataTrigger>
-									</Style.Triggers>
-								</Style>
-							</Button.Style>
-							<Viewbox>
-								<ui:SymbolIcon
-									Symbol="Dismiss16" />
-							</Viewbox>
-						</Button>
-						<Button
 							x:Name="ButtonChooseRopeMaterial"
 							Grid.Row="1"
-							Grid.Column="2"
+							Grid.Column="1"
 							Click="ButtonChooseMaterialClick"
 							Style="{StaticResource ButtonBorderless}">
 							<Viewbox>
@@ -1431,14 +936,6 @@
 					Margin="0,5,0,0"
 					Grid.Row="1"
 					Visibility="{Binding CurrentToyData.AngularVisibility}">
-					<Grid.Style>
-						<Style
-							TargetType="Grid">
-							<Style.Triggers>
-
-							</Style.Triggers>
-						</Style>
-					</Grid.Style>
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition
 							Width="*" />
@@ -1466,175 +963,52 @@
 					<Border
 						Height="1"
 						Grid.ColumnSpan="7"
-						Padding="0,2,0,2"
-						Margin="0,5,0,5"
+						Padding="0,2"
+						Margin="0,5"
 						VerticalAlignment="Center"
 						Background="#FF4C4B4B"
 						HorizontalAlignment="Stretch" />
 					<TextBlock
 						Margin="0,0,0,10"
 						Grid.Row="1"
-						Grid.ColumnSpan="7">
-					<Run
-							Text="{DynamicResource DescAngular}" />
-					</TextBlock>
-					<Grid
+						Grid.ColumnSpan="7"
+						Text="{DynamicResource DescAngular}" />
+					<StackPanel
 						Grid.Row="2"
 						Grid.Column="0">
-						<Grid.RowDefinitions>
-							<RowDefinition
-								Height="Auto" />
-							<RowDefinition
-								Height="Auto" />
-						</Grid.RowDefinitions>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition
-								Width="*" />
-							<ColumnDefinition
-								Width="Auto" />
-							<ColumnDefinition
-								Width="*" />
-						</Grid.ColumnDefinitions>
 						<TextBlock
-							Grid.ColumnSpan="7"
-							ToolTip="{DynamicResource TipAngularStiffness}">
-						<Run
-								Text="{DynamicResource TitleAngularStiffness}" />
-						</TextBlock>
-						<Border
-							Grid.Row="1"
-							Grid.ColumnSpan="3"
-							Style="{DynamicResource MultiControlBorder}" />
-						<TextBox
-							x:Name="TextAngularStiffness0"
-							Grid.Row="1"
-							Text="{Binding CurrentToyData.AngularStiffness0}"
-							d:Text="0.000000"
-							PreviewTextInput="FloatOnly"
-							Style="{StaticResource Float0}" />
-						<Label
-							Grid.Row="1"
-							Grid.Column="1"
-							Style="{StaticResource FloatCommaToy}" />
-						<TextBox
-							x:Name="TextAngularStiffness1"
-							Grid.Row="1"
-							Grid.Column="2"
-							Text="{Binding CurrentToyData.AngularStiffness1}"
-							d:Text="0.000000"
-							PreviewTextInput="FloatOnly"
-							Style="{StaticResource Float2}" />
-					</Grid>
-					<Grid
+							ToolTip="{DynamicResource TipAngularStiffness}"
+							Text="{DynamicResource TitleAngularStiffness}" />
+						<cls:Float3Box
+							Style="{StaticResource Float2BoxStyle}"
+							Floats="{Binding CurrentToyData.AngularStiffness}"
+							DefaultValue0="0.2"
+							DefaultValue1="0.2"/>
+					</StackPanel>
+					<StackPanel
 						Grid.Row="2"
 						Grid.Column="2">
-						<Grid.RowDefinitions>
-							<RowDefinition
-								Height="Auto" />
-							<RowDefinition
-								Height="Auto" />
-						</Grid.RowDefinitions>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition
-								Width="*" />
-							<ColumnDefinition
-								Width="Auto" />
-							<ColumnDefinition
-								Width="*" />
-						</Grid.ColumnDefinitions>
 						<TextBlock
-							Grid.ColumnSpan="7"
-							ToolTip="{DynamicResource TipAngularDamping}">
-						<Run
-								Text="{DynamicResource TitleAngularDamping}" />
-						</TextBlock>
-						<Border
-							Grid.Row="1"
-							Grid.ColumnSpan="3"
-							Style="{DynamicResource MultiControlBorder}" />
-						<TextBox
-							x:Name="TextAngularDamping0"
-							Grid.Row="1"
-							Text="{Binding CurrentToyData.AngularDamping0}"
-							d:Text="0.000000"
-							PreviewTextInput="FloatOnly"
-							Style="{StaticResource Float0}" />
-						<Label
-							Grid.Row="1"
-							Grid.Column="1"
-							Style="{StaticResource FloatCommaToy}" />
-						<TextBox
-							x:Name="TextAngularDamping1"
-							Grid.Row="1"
-							Grid.Column="2"
-							Text="{Binding CurrentToyData.AngularDamping1}"
-							d:Text="0.000000"
-							PreviewTextInput="FloatOnly"
-							Style="{StaticResource Float2}" />
-					</Grid>
-					<Grid
+							ToolTip="{DynamicResource TipAngularDamping}"
+							Text="{DynamicResource TitleAngularDamping}" />
+						<cls:Float3Box
+							Style="{StaticResource Float2BoxStyle}"
+							Floats="{Binding CurrentToyData.AngularDamping}"
+							DefaultValue0="0.2"
+							DefaultValue1="0.2"/>
+					</StackPanel>
+					<StackPanel
 						Grid.Row="2"
 						Grid.Column="4">
-						<Grid.RowDefinitions>
-							<RowDefinition
-								Height="Auto" />
-							<RowDefinition
-								Height="Auto" />
-						</Grid.RowDefinitions>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition
-								Width="*" />
-							<ColumnDefinition
-								Width="Auto" />
-							<ColumnDefinition
-								Width="*" />
-							<ColumnDefinition
-								Width="Auto" />
-							<ColumnDefinition
-								Width="*" />
-						</Grid.ColumnDefinitions>
 						<TextBlock
-							Grid.ColumnSpan="7"
-							ToolTip="{DynamicResource TipAngularAmplitude}">
-						<Run
-								Text="{DynamicResource TitleAngularAmplitude}" />
-						</TextBlock>
-						<Border
-							Grid.Row="1"
-							Grid.ColumnSpan="5"
-							Style="{DynamicResource MultiControlBorder}" />
-						<TextBox
-							x:Name="TextAngularAmplitude0"
-							Grid.Row="1"
-							Text="{Binding CurrentToyData.AngularAmplitude0}"
-							d:Text="0.000000"
-							PreviewTextInput="FloatOnly"
-							Style="{StaticResource Float0_11}" />
-						<Label
-							Grid.Row="1"
-							Grid.Column="1"
-							Style="{StaticResource FloatCommaToy}" />
-						<TextBox
-							x:Name="TextAngularAmplitude1"
-							Grid.Row="1"
-							Grid.Column="2"
-							Text="{Binding CurrentToyData.AngularAmplitude1}"
-							d:Text="0.000000"
-							PreviewTextInput="FloatOnly"
-							Style="{StaticResource Float1_11}" />
-						<Label
-							Grid.Row="1"
-							Grid.Column="3"
-							Style="{StaticResource FloatCommaToy}" />
-						<TextBox
-							x:Name="TextAngularAmplitude2"
-							Grid.Row="1"
-							Grid.Column="4"
-							Text="{Binding CurrentToyData.AngularAmplitude2}"
-							d:Text="0.000000"
-							PreviewTextInput="FloatOnly"
-							Style="{StaticResource Float2_11}" />
-					</Grid>
+							ToolTip="{DynamicResource TipAngularAmplitude}"
+							Text="{DynamicResource TitleAngularAmplitude}" />
+						<cls:Float3Box
+							Floats="{Binding CurrentToyData.AngularAmplitude}"
+							DefaultValue0="0"
+							DefaultValue1="0"
+							DefaultValue2="0"/>
+					</StackPanel>
 				</Grid>
 				<Grid
 					x:Name="GridRope"
@@ -1673,8 +1047,8 @@
 					<Border
 						Height="1"
 						Grid.ColumnSpan="7"
-						Padding="0,2,0,2"
-						Margin="0,5,0,5"
+						Padding="0,2"
+						Margin="0,5"
 						VerticalAlignment="Center"
 						Background="#FF4C4B4B"
 						HorizontalAlignment="Stretch" />
@@ -1682,109 +1056,107 @@
 					<TextBlock
 						Margin="0,0,0,10"
 						Grid.Row="1"
-						Grid.ColumnSpan="7">
-					<Run
-							Text="{DynamicResource DescRope}" />
-					</TextBlock>
+						Grid.ColumnSpan="7"
+						Text="{DynamicResource DescRope}" />
 					<StackPanel
 						Grid.Row="2">
-						<TextBlock>
-						<Run
-								Text="{DynamicResource TitleRopeWidth}" />
-						</TextBlock>
-						<TextBox
+						<TextBlock
+							Text="{DynamicResource TitleRopeWidth}" />
+						<ui:TextBox
 							x:Name="TextRopeWidth"
+							ClearButtonEnabled="False"
 							Text="{Binding CurrentToyData.RopeWidth, Converter={x:Static utils:FloatConverter.Instance}}"
+							PlaceholderText="0.5"
 							PreviewTextInput="FloatOnly" />
 					</StackPanel>
 					<StackPanel
 						Grid.Row="2"
 						Grid.Column="2">
-						<TextBlock>
-						<Run
-								Text="{DynamicResource TitleRopeLength}" />
-						</TextBlock>
-						<TextBox
+						<TextBlock
+							Text="{DynamicResource TitleRopeLength}" />
+						<ui:TextBox
 							x:Name="TextRopeLength"
+							ClearButtonEnabled="False"
 							Text="{Binding CurrentToyData.RopeLength, Converter={x:Static utils:FloatConverter.Instance}}"
+							PlaceholderText="0.0"
 							PreviewTextInput="FloatOnly" />
 					</StackPanel>
 					<StackPanel
 						Grid.Row="2"
 						Grid.Column="4">
 						<TextBlock
-							ToolTip="{DynamicResource TipRopeHookOffset}">
-						<Run
-								Text="{DynamicResource TitleRopeHookOffset}" />
-						</TextBlock>
-						<TextBox
+							ToolTip="{DynamicResource TipRopeHookOffset}"
+							Text="{DynamicResource TitleRopeHookOffset}" />
+						<ui:TextBox
 							x:Name="TextRopeHookOffset"
+							ClearButtonEnabled="False"
 							Text="{Binding CurrentToyData.RopeHookOffset, Converter={x:Static utils:FloatConverter.Instance}}"
+							PlaceholderText="0.0"
 							PreviewTextInput="FloatOnly" />
 					</StackPanel>
 					<StackPanel
 						Grid.Row="2"
 						Grid.Column="6">
 						<TextBlock
-							ToolTip="{DynamicResource TipRopeToyOffset}">
-						<Run
-								Text="{DynamicResource TitleRopeToyOffset}" />
-						</TextBlock>
-						<TextBox
+							ToolTip="{DynamicResource TipRopeToyOffset}"
+							Text="{DynamicResource TitleRopeToyOffset}" />
+						<ui:TextBox
 							x:Name="TextRopeToyOffset"
+							ClearButtonEnabled="False"
 							Text="{Binding CurrentToyData.RopeToyOffset, Converter={x:Static utils:FloatConverter.Instance}}"
+							PlaceholderText="0.0"
 							PreviewTextInput="FloatOnly" />
 					</StackPanel>
 					<StackPanel
 						Grid.Row="4"
 						Grid.Column="0">
 						<TextBlock
-							ToolTip="{DynamicResource TipRopeResolution}">
-						<Run
-								Text="{DynamicResource TitleRopeResolution}" />
-						</TextBlock>
-						<TextBox
+							ToolTip="{DynamicResource TipRopeResolution}"
+							Text="{DynamicResource TitleRopeResolution}" />
+						<ui:TextBox
 							x:Name="TextRopeResolution"
+							ClearButtonEnabled="False"
 							Text="{Binding CurrentToyData.RopeResolution}"
+							PlaceholderText="8"
 							PreviewTextInput="NumberOnly" />
 					</StackPanel>
 					<StackPanel
 						Grid.Row="4"
 						Grid.Column="2">
 						<TextBlock
-							ToolTip="{DynamicResource TipPositionIterations}">
-						<Run
-								Text="{DynamicResource TitlePositionIterations}" />
-						</TextBlock>
-						<TextBox
+							ToolTip="{DynamicResource TipPositionIterations}"
+							Text="{DynamicResource TitlePositionIterations}" />
+						<ui:TextBox
 							x:Name="TextPositionIterations"
+							ClearButtonEnabled="False"
 							Text="{Binding CurrentToyData.PositionIterations}"
+							PlaceholderText="10"
 							PreviewTextInput="NumberOnly" />
 					</StackPanel>
 					<StackPanel
 						Grid.Row="4"
 						Grid.Column="4">
 						<TextBlock
-							ToolTip="{DynamicResource TipRopeLinearDensity}">
-						<Run
-								Text="{DynamicResource TitleRopeLinearDensity}" />
-						</TextBlock>
-						<TextBox
+							ToolTip="{DynamicResource TipRopeLinearDensity}"
+							Text="{DynamicResource TitleRopeLinearDensity}" />
+						<ui:TextBox
 							x:Name="TextRopeLinearDensity"
+							ClearButtonEnabled="False"
 							Text="{Binding CurrentToyData.RopeLinearDensity, Converter={x:Static utils:FloatConverter.Instance}}"
+							PlaceholderText="1.0"
 							PreviewTextInput="FloatOnly" />
 					</StackPanel>
 					<StackPanel
 						Grid.Row="4"
 						Grid.Column="6">
 						<TextBlock
-							ToolTip="{DynamicResource TipNodeDamping}">
-						<Run
-								Text="{DynamicResource TitleNodeDamping}" />
-						</TextBlock>
-						<TextBox
+							ToolTip="{DynamicResource TipNodeDamping}"
+							Text="{DynamicResource TitleNodeDamping}" />
+						<ui:TextBox
 							x:Name="TextNodeDamping"
+							ClearButtonEnabled="False"
 							Text="{Binding CurrentToyData.NodeDamping, Converter={x:Static utils:FloatConverter.Instance}}"
+							PlaceholderText="0.0"
 							PreviewTextInput="FloatOnly" />
 					</StackPanel>
 				</Grid>
@@ -1831,20 +1203,20 @@
 						<ColumnDefinition
 							Width="*" />
 					</Grid.ColumnDefinitions>
-
 					<StackPanel>
 						<TextBlock>
 							<Run
 								Text="{DynamicResource TitlePhysicsName}" />
 						</TextBlock>
-						<TextBox
+						<ui:TextBox
 							x:Name="TextPhysicsPatchName"
 							Padding="3,3,3,3"
+							ClearButtonEnabled="False"
 							Text="{Binding CurrentPatchData.PhysicsName, UpdateSourceTrigger=PropertyChanged}">
-							<TextBox.Style>
+							<ui:TextBox.Style>
 								<Style
-									TargetType="TextBox"
-									BasedOn="{StaticResource {x:Type TextBox}}">
+									TargetType="ui:TextBox"
+									BasedOn="{StaticResource {x:Type ui:TextBox}}">
 									<Style.Triggers>
 										<Trigger
 											Property="Text"
@@ -1855,8 +1227,8 @@
 										</Trigger>
 									</Style.Triggers>
 								</Style>
-							</TextBox.Style>
-						</TextBox>
+							</ui:TextBox.Style>
+						</ui:TextBox>
 					</StackPanel>
 					<Grid
 						Grid.Row="0"
@@ -1885,16 +1257,16 @@
 							Grid.Row="1"
 							Grid.ColumnSpan="3"
 							Style="{DynamicResource MultiControlBorder}" />
-						<TextBox
+						<ui:TextBox
 							x:Name="TextPatchMaterial"
 							Grid.Row="1"
 							Grid.Column="0"
 							Text="{Binding CurrentPatchData.Material}"
 							TextWrapping="Wrap"
 							MaxLines="2">
-							<TextBox.Style>
+							<ui:TextBox.Style>
 								<Style
-									TargetType="TextBox"
+									TargetType="ui:TextBox"
 									BasedOn="{StaticResource TextBoxBorderless}">
 									<Style.Triggers>
 										<Trigger
@@ -1906,33 +1278,8 @@
 										</Trigger>
 									</Style.Triggers>
 								</Style>
-							</TextBox.Style>
-						</TextBox>
-						<Button
-							x:Name="ButtonPatchMaterialClear"
-							Grid.Row="1"
-							Grid.Column="1"
-							Click="ButtonClearClick">
-							<Button.Style>
-								<Style
-									TargetType="Button"
-									BasedOn="{StaticResource ButtonBorderless}">
-									<Style.Triggers>
-										<DataTrigger
-											Binding="{Binding CurrentPatchData.Material}"
-											Value="">
-											<Setter
-												Property="Visibility"
-												Value="Collapsed" />
-										</DataTrigger>
-									</Style.Triggers>
-								</Style>
-							</Button.Style>
-							<Viewbox>
-								<ui:SymbolIcon
-									Symbol="Dismiss16" />
-							</Viewbox>
-						</Button>
+							</ui:TextBox.Style>
+						</ui:TextBox>
 						<Button
 							x:Name="ButtonChoosePatchMaterial"
 							Grid.Row="1"
@@ -1948,241 +1295,137 @@
 
 					<StackPanel
 						Grid.Row="2">
-						<TextBlock><Run
-								Text="{DynamicResource TitleAreaDensity}" />
-						</TextBlock>
-						<TextBox
+						<TextBlock
+							Text="{DynamicResource TitleAreaDensity}" />
+						<ui:TextBox
 							x:Name="TextAreaDensity"
-							Padding="3,3,3,3"
-							Text="{Binding CurrentPatchData.AreaDensity, Converter={x:Static utils:FloatConverter.Instance}}">
-						</TextBox>
+							Padding="3"
+							ClearButtonEnabled="False"
+							PreviewTextInput="FloatOnly"
+							Text="{Binding CurrentPatchData.AreaDensity, Converter={x:Static utils:FloatConverter.Instance}}"
+							PlaceholderText="2.0"/>
 					</StackPanel>
 					<StackPanel
 						Grid.Row="2"
 						Grid.Column="2">
-						<TextBlock><Run
-								Text="{DynamicResource TitleAeroModelType}" />
-						</TextBlock>
+						<TextBlock
+							Text="{DynamicResource TitleAeroModelType}" />
 						<ComboBox
 							x:Name="TextAeroModelType"
 							IsEditable="True"
 							IsReadOnly="True"
-							Padding="3,3,3,3"
-							Text="{Binding CurrentPatchData.AeroModelType}"
-							ItemsSource="{Binding AeroModelTypes}">
+							Padding="3"
+							SelectedValuePath="Tag"
+							SelectedValue="{Binding CurrentPatchData.AeroModelType}">
+							<ComboBoxItem
+								Content="AT_face_one_side"
+								Tag="AT_face_one_side" />
+							<ComboBoxItem
+								Content="AT_face_two_side"
+								Tag="AT_face_two_side" />
+							<ComboBoxItem
+								Content="AT_face_two_side_lift_drag"
+								Tag="AT_face_two_side_lift_drag" />
+							<ComboBoxItem
+								Content="AT_one_side"
+								Tag="AT_one_side" />
+							<ComboBoxItem
+								Content="AT_point"
+								Tag="AT_point" />
+							<ComboBoxItem
+								Content="AT_two_side"
+								Tag="AT_two_side" />
+							<ComboBoxItem
+								Content="AT_two_side_lift_drag"
+								Tag="AT_two_side_lift_drag" />
 						</ComboBox>
 					</StackPanel>
 
 					<StackPanel
 						Grid.Row="4"
 						Grid.Column="0">
-						<TextBlock><Run
-								Text="{DynamicResource TitleLinearStiffness}" />
-						</TextBlock>
-						<TextBox
+						<TextBlock
+							Text="{DynamicResource TitleLinearStiffness}" />
+						<ui:TextBox
 							x:Name="TextPLinearStiffness"
-							Padding="3,3,3,3"
-							Text="{Binding CurrentPatchData.LinearStiffness, Converter={x:Static utils:FloatConverter.Instance}}">
-						</TextBox>
+							Padding="3"
+							ClearButtonEnabled="False"
+							PreviewTextInput="FloatOnly"
+							Text="{Binding CurrentPatchData.LinearStiffness, Converter={x:Static utils:FloatConverter.Instance}}"
+							PlaceholderText="0.4"/>
 					</StackPanel>
 					<StackPanel
 						Grid.Row="4"
 						Grid.Column="2">
-						<TextBlock><Run
-								Text="{DynamicResource TitleDragCoefficient}" />
-						</TextBlock>
-						<TextBox
+						<TextBlock
+							Text="{DynamicResource TitleDragCoefficient}" />
+						<ui:TextBox
 							x:Name="TextDragCoefficient"
-							Padding="3,3,3,3"
-							Text="{Binding CurrentPatchData.DragCoefficient, Converter={x:Static utils:FloatConverter.Instance}}">
-						</TextBox>
+							Padding="3"
+							ClearButtonEnabled="False"
+							PreviewTextInput="FloatOnly"
+							Text="{Binding CurrentPatchData.DragCoefficient, Converter={x:Static utils:FloatConverter.Instance}}"
+							PlaceholderText="0.1">
+						</ui:TextBox>
 					</StackPanel>
 					<StackPanel
 						Grid.Row="4"
 						Grid.Column="4">
-						<TextBlock><Run
-								Text="{DynamicResource TitleLiftCoefficient}" />
-						</TextBlock>
-						<TextBox
+						<TextBlock
+							Text="{DynamicResource TitleLiftCoefficient}" />
+						<ui:TextBox
 							x:Name="TextLiftCoefficient"
-							Padding="3,3,3,3"
-							Text="{Binding CurrentPatchData.LiftCoefficient, Converter={x:Static utils:FloatConverter.Instance}}">
-						</TextBox>
+							Padding="3"
+							ClearButtonEnabled="False"
+							PreviewTextInput="FloatOnly"
+							Text="{Binding CurrentPatchData.LiftCoefficient, Converter={x:Static utils:FloatConverter.Instance}}"
+							PlaceholderText="0.3"/>
 					</StackPanel>
 
-					<Grid
+					<StackPanel
 						Grid.Row="6"
 						Grid.Column="0">
-						<Grid.RowDefinitions>
-							<RowDefinition
-								Height="Auto" />
-							<RowDefinition
-								Height="Auto" />
-						</Grid.RowDefinitions>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition
-								Width="*" />
-							<ColumnDefinition
-								Width="Auto" />
-							<ColumnDefinition
-								Width="*" />
-						</Grid.ColumnDefinitions>
 						<TextBlock
-							Grid.ColumnSpan="3"><Run
-								Text="{DynamicResource TitleTCMinFirst}" />
-						</TextBlock>
-						<Border
-							Grid.Row="1"
-							Grid.ColumnSpan="3"
-							Style="{DynamicResource MultiControlBorder}" />
-						<TextBox
-							x:Name="TextTCMinFirst0"
-							Grid.Row="1"
-							Style="{StaticResource Float0_Patch}"
-							Text="{Binding CurrentPatchData.TCMinFirst0, Converter={x:Static utils:FloatConverter.Instance}}">
-						</TextBox>
-						<Label
-							Grid.Row="1"
-							Grid.Column="1"
-							Style="{StaticResource FloatCommaPatch}" />
-						<TextBox
-							x:Name="TextTCMinFirst1"
-							Grid.Row="1"
-							Grid.Column="2"
-							Style="{StaticResource Float2_Patch}"
-							Text="{Binding CurrentPatchData.TCMinFirst1, Converter={x:Static utils:FloatConverter.Instance}}">
-						</TextBox>
-					</Grid>
-					<Grid
+							Text="{DynamicResource TitleTCMinFirst}" />
+						<cls:Float3Box
+							Style="{StaticResource Float2BoxStyle}"
+							Floats="{Binding CurrentPatchData.TCMinFirst}"
+							DefaultValue0="0"
+							DefaultValue1="0"/>
+					</StackPanel>
+					<StackPanel
 						Grid.Row="6"
 						Grid.Column="2">
-						<Grid.RowDefinitions>
-							<RowDefinition
-								Height="Auto" />
-							<RowDefinition
-								Height="Auto" />
-						</Grid.RowDefinitions>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition
-								Width="*" />
-							<ColumnDefinition
-								Width="Auto" />
-							<ColumnDefinition
-								Width="*" />
-						</Grid.ColumnDefinitions>
 						<TextBlock
-							Grid.ColumnSpan="3"><Run
-								Text="{DynamicResource TitleTCMaxFirst}" />
-						</TextBlock>
-						<Border
-							Grid.Row="1"
-							Grid.ColumnSpan="3"
-							Style="{DynamicResource MultiControlBorder}" />
-						<TextBox
-							x:Name="TextTCMaxFirst0"
-							Grid.Row="1"
-							Style="{StaticResource Float0_Patch}"
-							Text="{Binding CurrentPatchData.TCMaxFirst0, Converter={x:Static utils:FloatConverter.Instance}}">
-						</TextBox>
-						<Label
-							Grid.Row="1"
-							Grid.Column="1"
-							Style="{StaticResource FloatCommaPatch}" />
-
-						<TextBox
-							x:Name="TextTCMaxFirst1"
-							Grid.Row="1"
-							Grid.Column="2"
-							Style="{StaticResource Float2_Patch}"
-							Text="{Binding CurrentPatchData.TCMaxFirst1, Converter={x:Static utils:FloatConverter.Instance}}">
-						</TextBox>
-					</Grid>
-					<Grid
+							Text="{DynamicResource TitleTCMaxFirst}" />
+						<cls:Float3Box
+							Style="{StaticResource Float2BoxStyle}"
+							Floats="{Binding CurrentPatchData.TCMaxFirst}"
+							DefaultValue0="1"
+							DefaultValue1="1"/>
+					</StackPanel>
+					<StackPanel
 						Grid.Row="6"
 						Grid.Column="4">
-						<Grid.RowDefinitions>
-							<RowDefinition
-								Height="Auto" />
-							<RowDefinition
-								Height="Auto" />
-						</Grid.RowDefinitions>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition
-								Width="*" />
-							<ColumnDefinition
-								Width="Auto" />
-							<ColumnDefinition
-								Width="*" />
-						</Grid.ColumnDefinitions>
 						<TextBlock
-							Grid.ColumnSpan="3"><Run
-								Text="{DynamicResource TitleTCMinSecond}" />
-						</TextBlock>
-						<Border
-							Grid.Row="1"
-							Grid.ColumnSpan="3"
-							Style="{DynamicResource MultiControlBorder}" />
-						<TextBox
-							x:Name="TextTCMinSecond0"
-							Grid.Row="1"
-							Style="{StaticResource Float0_Patch}"
-							Text="{Binding CurrentPatchData.TCMinSecond0, Converter={x:Static utils:FloatConverter.Instance}}">
-						</TextBox>
-						<Label
-							Grid.Row="1"
-							Grid.Column="1"
-							Style="{StaticResource FloatCommaPatch}" />
-						<TextBox
-							x:Name="TextTCMinSecond1"
-							Grid.Row="1"
-							Grid.Column="2"
-							Style="{StaticResource Float2_Patch}"
-							Text="{Binding CurrentPatchData.TCMinSecond1, Converter={x:Static utils:FloatConverter.Instance}}">
-						</TextBox>
-					</Grid>
-					<Grid
+							Text="{DynamicResource TitleTCMinSecond}" />
+						<cls:Float3Box
+							Style="{StaticResource Float2BoxStyle}"
+							Floats="{Binding CurrentPatchData.TCMinSecond}"
+							DefaultValue0="0"
+							DefaultValue1="0"/>
+					</StackPanel>
+					<StackPanel
 						Grid.Row="6"
 						Grid.Column="6">
-						<Grid.RowDefinitions>
-							<RowDefinition
-								Height="Auto" />
-							<RowDefinition
-								Height="Auto" />
-						</Grid.RowDefinitions>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition
-								Width="*" />
-							<ColumnDefinition
-								Width="Auto" />
-							<ColumnDefinition
-								Width="*" />
-						</Grid.ColumnDefinitions>
 						<TextBlock
-							Grid.ColumnSpan="3"><Run
-								Text="{DynamicResource TitleTCMaxSecond}" />
-						</TextBlock>
-						<Border
-							Grid.Row="1"
-							Grid.ColumnSpan="3"
-							Style="{DynamicResource MultiControlBorder}" />
-						<TextBox
-							x:Name="TextTCMaxSecond0"
-							Grid.Row="1"
-							Style="{StaticResource Float0_Patch}"
-							Text="{Binding CurrentPatchData.TCMaxSecond0, Converter={x:Static utils:FloatConverter.Instance}}">
-						</TextBox>
-						<Label
-							Grid.Row="1"
-							Grid.Column="1"
-							Style="{StaticResource FloatCommaPatch}" />
-						<TextBox
-							x:Name="TextTCMaxSecond1"
-							Grid.Row="1"
-							Grid.Column="2"
-							Style="{StaticResource Float2_Patch}"
-							Text="{Binding CurrentPatchData.TCMaxSecond1, Converter={x:Static utils:FloatConverter.Instance}}">
-						</TextBox>
-					</Grid>
+							Text="{DynamicResource TitleTCMaxSecond}" />
+						<cls:Float3Box
+							Style="{StaticResource Float2BoxStyle}"
+							Floats="{Binding CurrentPatchData.TCMaxSecond}"
+							DefaultValue0="1"
+							DefaultValue1="1" />
+					</StackPanel>
 
 					<StackPanel
 						Grid.Row="8"
@@ -2190,50 +1433,59 @@
 						<TextBlock><Run
 								Text="{DynamicResource TitleXRes}" />
 						</TextBlock>
-						<TextBox
+						<ui:TextBox
 							x:Name="TextXRes"
-							Padding="3,3,3,3"
-							Text="{Binding CurrentPatchData.XRes, Converter={x:Static utils:UIntConverter.Instance}}">
-						</TextBox>
+							Padding="3"
+							ClearButtonEnabled="False"
+							PreviewTextInput="NumberOnly"
+							Text="{Binding CurrentPatchData.XRes, Converter={x:Static utils:UIntConverter.Instance}}"
+							PlaceholderText="3">
+						</ui:TextBox>
 					</StackPanel>
 					<StackPanel
 						Grid.Row="8"
 						Grid.Column="2">
-						<TextBlock><Run
-								Text="{DynamicResource TitleYRes}" />
-						</TextBlock>
-						<TextBox
+						<TextBlock
+							Text="{DynamicResource TitleYRes}" />
+						<ui:TextBox
 							x:Name="TextYRes"
-							Padding="3,3,3,3"
-							Text="{Binding CurrentPatchData.YRes, Converter={x:Static utils:UIntConverter.Instance}}">
-						</TextBox>
+							Padding="3"
+							ClearButtonEnabled="False"
+							PreviewTextInput="NumberOnly"
+							Text="{Binding CurrentPatchData.YRes, Converter={x:Static utils:UIntConverter.Instance}}"
+							PlaceholderText="3">
+						</ui:TextBox>
 					</StackPanel>
 					<StackPanel
 						Grid.Row="8"
 						Grid.Column="4">
-						<TextBlock><Run
-								Text="{DynamicResource TitleXSize}" />
-						</TextBlock>
-						<TextBox
+						<TextBlock
+							Text="{DynamicResource TitleXSize}" />
+						<ui:TextBox
 							x:Name="TextXSize"
-							Padding="3,3,3,3"
-							Text="{Binding CurrentPatchData.XSize, Converter={x:Static utils:FloatConverter.Instance}}">
-						</TextBox>
+							Padding="3"
+							ClearButtonEnabled="False"
+							PreviewTextInput="FloatOnly"
+							Text="{Binding CurrentPatchData.XSize, Converter={x:Static utils:FloatConverter.Instance}}"
+							PlaceholderText="1.0">
+						</ui:TextBox>
 					</StackPanel>
 					<StackPanel
 						Grid.Row="8"
 						Grid.Column="6">
-						<TextBlock><Run
-								Text="{DynamicResource TitleYSize}" />
-						</TextBlock>
-						<TextBox
+						<TextBlock
+							Text="{DynamicResource TitleYSize}" />
+						<ui:TextBox
 							x:Name="TextYSize"
-							Padding="3,3,3,3"
-							Text="{Binding CurrentPatchData.YSize, Converter={x:Static utils:FloatConverter.Instance}}">
-						</TextBox>
+							Padding="3"
+							ClearButtonEnabled="False"
+							PreviewTextInput="FloatOnly"
+							Text="{Binding CurrentPatchData.YSize, Converter={x:Static utils:FloatConverter.Instance}}"
+							PlaceholderText="1.0">
+						</ui:TextBox>
 					</StackPanel>
 				</Grid>
 			</StackPanel>
 		</Grid>
 	</Grid>
-</UserControl>
+</base:BaseUserControl>

@@ -1,16 +1,14 @@
-﻿using SCS_Mod_Helper.Base;
+﻿using SCS_Mod_Helper.Class;
 using SCS_Mod_Helper.Utils;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 using Wpf.Ui.Input;
 
 namespace SCS_Mod_Helper.Modding.Accessories.Physics; 
 public class PhysicsToyData(string physicsName = ""): PhysicsData(physicsName) {
-
+	//https://dariowouters.gitlab.io/scs-updates/unit/physics_toy_data/
 	private string mModelPath = "";
 	public string ModelPath {
 		get => mModelPath;
@@ -113,7 +111,7 @@ public class PhysicsToyData(string physicsName = ""): PhysicsData(physicsName) {
 	public Visibility RopeDataVisibility =>
 		ToyType == "TT_rope" || ToyType == "TT_double_rope" ? Visibility.Visible : Visibility.Hidden;
 
-	private float? mMass = 0.1f;
+	private float? mMass = null;
 	public float? Mass {
 		get => mMass;
 		set {
@@ -122,37 +120,16 @@ public class PhysicsToyData(string physicsName = ""): PhysicsData(physicsName) {
 		}
 	}
 
-	private float?[] mCogOffset = [0f, 0f, 0f];
-	public float?[] CogOffset {
+	private Float3 mCogOffset = new();
+	public Float3 CogOffset {
 		get => mCogOffset;
 		set {
 			mCogOffset = value;
 			InvokeChange(nameof(CogOffset));
 		}
 	}
-	public float? CogOffset0 {
-		get => CogOffset[0];
-		set {
-			CogOffset[0] = value;
-			InvokeChange(nameof(CogOffset0));
-		}
-	}
-	public float? CogOffset1 {
-		get => CogOffset[1];
-		set {
-			CogOffset[1] = value;
-			InvokeChange(nameof(CogOffset1));
-		}
-	}
-	public float? CogOffset2 {
-		get => CogOffset[2];
-		set {
-			CogOffset[2] = value;
-			InvokeChange(nameof(CogOffset2));
-		}
-	}
 
-	private float? mLinearStiffness = 1f;
+	private float? mLinearStiffness = null;
 	public float? LinearStiffness {
 		get => mLinearStiffness;
 		set {
@@ -161,7 +138,7 @@ public class PhysicsToyData(string physicsName = ""): PhysicsData(physicsName) {
 		}
 	}
 
-	private float? mLinearDamping = 0.5f;
+	private float? mLinearDamping = null;
 	public float? LinearDamping {
 		get => mLinearDamping;
 		set {
@@ -170,93 +147,30 @@ public class PhysicsToyData(string physicsName = ""): PhysicsData(physicsName) {
 		}
 	}
 
-	private float?[] mLocatorHookOffset = [0f, 0f, 0f];
-	public float?[] LocatorHookOffset {
+	private Float3 mLocatorHookOffset = new();
+	public Float3 LocatorHookOffset {
 		get => mLocatorHookOffset;
 		set {
 			mLocatorHookOffset = value;
 			InvokeChange(nameof(LocatorHookOffset));
 		}
 	}
-	public float? LocatorHookOffset0 {
-		get => LocatorHookOffset[0];
-		set {
-			LocatorHookOffset[0] = value;
-			InvokeChange(nameof(LocatorHookOffset0));
-		}
-	}
-	public float? LocatorHookOffset1 {
-		get => LocatorHookOffset[1];
-		set {
-			LocatorHookOffset[1] = value;
-			InvokeChange(nameof(LocatorHookOffset1));
-		}
-	}
-	public float? LocatorHookOffset2 {
-		get => LocatorHookOffset[2];
-		set {
-			LocatorHookOffset[2] = value;
-			InvokeChange(nameof(LocatorHookOffset2));
-		}
-	}
 
-	private float?[] mRestPositionOffset = [0f, 0f, 0f];
-	public float?[] RestPositionOffset {
+	private Float3 mRestPositionOffset = new();
+	public Float3 RestPositionOffset {
 		get => mRestPositionOffset;
 		set {
 			mRestPositionOffset = value;
 			InvokeChange(nameof(RestPositionOffset));
 		}
 	}
-	public float? RestPositionOffset0 {
-		get => RestPositionOffset[0];
-		set {
-			RestPositionOffset[0] = value;
-			InvokeChange(nameof(RestPositionOffset0));
-		}
-	}
-	public float? RestPositionOffset1 {
-		get => RestPositionOffset[1];
-		set {
-			RestPositionOffset[1] = value;
-			InvokeChange(nameof(RestPositionOffset1));
-		}
-	}
-	public float? RestPositionOffset2 {
-		get => RestPositionOffset[2];
-		set {
-			RestPositionOffset[2] = value;
-			InvokeChange(nameof(RestPositionOffset2));
-		}
-	}
 
-	private float?[] mRestRotationOffset = [0f, 0f, 0f];
-	public float?[] RestRotationOffset {
+	private Float3 mRestRotationOffset = new();
+	public Float3 RestRotationOffset {
 		get => mRestRotationOffset;
 		set {
 			mRestRotationOffset = value;
 			InvokeChange(nameof(RestRotationOffset));
-		}
-	}
-	public float? RestRotationOffset0 {
-		get => RestRotationOffset[0];
-		set {
-			RestRotationOffset[0] = value;
-			InvokeChange(nameof(RestRotationOffset0));
-		}
-	}
-	public float? RestRotationOffset1 {
-		get => RestRotationOffset[1];
-		set {
-			RestRotationOffset[1] = value;
-			InvokeChange(nameof(RestRotationOffset1));
-		}
-	}
-	public float? RestRotationOffset2 {
-		get => RestRotationOffset[2];
-		set {
-			RestRotationOffset[2] = value;
-			InvokeChange(nameof(RestRotationOffset2));
 		}
 	}
 
@@ -302,83 +216,34 @@ public class PhysicsToyData(string physicsName = ""): PhysicsData(physicsName) {
 		}
 	}
 
-	private float?[] mAngularStiffness = [0.2f, 0.2f];
-	public float?[] AngularStiffness {
+	private Float2 mAngularStiffness = new();
+	public Float2 AngularStiffness {
 		get => mAngularStiffness;
 		set {
 			mAngularStiffness = value;
 			InvokeChange(nameof(AngularStiffness));
 		}
 	}
-	public float? AngularStiffness0 {
-		get => AngularStiffness[0];
-		set {
-			AngularStiffness[0] = value;
-			InvokeChange(nameof(AngularStiffness0));
-		}
-	}
-	public float? AngularStiffness1 {
-		get => AngularStiffness[1];
-		set {
-			AngularStiffness[1] = value;
-			InvokeChange(nameof(AngularStiffness1));
-		}
-	}
 
-	private float?[] mAngularDamping = [0.2f, 0.2f];
-	public float?[] AngularDamping {
+	private Float2 mAngularDamping = new();
+	public Float2 AngularDamping {
 		get => mAngularDamping;
 		set {
 			mAngularDamping = value;
 			InvokeChange(nameof(AngularDamping));
 		}
 	}
-	public float? AngularDamping0 {
-		get => AngularDamping[0];
-		set {
-			AngularDamping[0] = value;
-			InvokeChange(nameof(AngularDamping0));
-		}
-	}
-	public float? AngularDamping1 {
-		get => AngularDamping[1];
-		set {
-			AngularDamping[1] = value;
-			InvokeChange(nameof(AngularDamping1));
-		}
-	}
 
-	private float?[] mAngularAmplitude = [0f, 0f, 0f];
-	public float?[] AngularAmplitude {
+	private Float3 mAngularAmplitude = new();
+	public Float3 AngularAmplitude {
 		get => mAngularAmplitude;
 		set {
 			mAngularAmplitude = value;
 			InvokeChange(nameof(AngularAmplitude));
 		}
 	}
-	public float? AngularAmplitude0 {
-		get => AngularAmplitude[0];
-		set {
-			AngularAmplitude[0] = value;
-			InvokeChange(nameof(AngularAmplitude0));
-		}
-	}
-	public float? AngularAmplitude1 {
-		get => AngularAmplitude[1];
-		set {
-			AngularAmplitude[1] = value;
-			InvokeChange(nameof(AngularAmplitude1));
-		}
-	}
-	public float? AngularAmplitude2 {
-		get => AngularAmplitude[2];
-		set {
-			AngularAmplitude[2] = value;
-			InvokeChange(nameof(AngularAmplitude2));
-		}
-	}
 
-	private float? mRopeWidth = 0.5f;
+	private float? mRopeWidth = null;
 	public float? RopeWidth {
 		get => mRopeWidth;
 		set {
@@ -386,7 +251,7 @@ public class PhysicsToyData(string physicsName = ""): PhysicsData(physicsName) {
 			InvokeChange(nameof(RopeWidth));
 		}
 	}
-	private float? mRopeLenght = 0f;
+	private float? mRopeLenght = null;
 	public float? RopeLength {
 		get => mRopeLenght;
 		set {
@@ -394,7 +259,7 @@ public class PhysicsToyData(string physicsName = ""): PhysicsData(physicsName) {
 			InvokeChange(nameof(RopeLength));
 		}
 	}
-	private float? mRopeHookOffset = 0f;
+	private float? mRopeHookOffset = null;
 	public float? RopeHookOffset {
 		get => mRopeHookOffset;
 		set {
@@ -402,7 +267,7 @@ public class PhysicsToyData(string physicsName = ""): PhysicsData(physicsName) {
 			InvokeChange(nameof(RopeHookOffset));
 		}
 	}
-	private float? mRopeToyOffset = 0f;
+	private float? mRopeToyOffset = null;
 	public float? RopeToyOffset {
 		get => mRopeToyOffset;
 		set {
@@ -410,7 +275,7 @@ public class PhysicsToyData(string physicsName = ""): PhysicsData(physicsName) {
 			InvokeChange(nameof(RopeToyOffset));
 		}
 	}
-	private uint? mRopeResolution = 8;
+	private uint? mRopeResolution = null;
 	public uint? RopeResolution {
 		get => mRopeResolution;
 		set {
@@ -418,7 +283,7 @@ public class PhysicsToyData(string physicsName = ""): PhysicsData(physicsName) {
 			InvokeChange(nameof(RopeResolution));
 		}
 	}
-	private uint? mPositionIterations = 10;
+	private uint? mPositionIterations = null;
 	public uint? PositionIterations {
 		get => mPositionIterations;
 		set {
@@ -426,7 +291,7 @@ public class PhysicsToyData(string physicsName = ""): PhysicsData(physicsName) {
 			InvokeChange(nameof(PositionIterations));
 		}
 	}
-	private float? mRopeLinearDensity = 1f;
+	private float? mRopeLinearDensity = null;
 	public float? RopeLinearDensity {
 		get => mRopeLinearDensity;
 		set {
@@ -435,7 +300,7 @@ public class PhysicsToyData(string physicsName = ""): PhysicsData(physicsName) {
 		}
 	}
 
-	private float? mNodeDamping = 0f;
+	private float? mNodeDamping = null;
 	public float? NodeDamping {
 		get => mNodeDamping;
 		set {
@@ -445,49 +310,34 @@ public class PhysicsToyData(string physicsName = ""): PhysicsData(physicsName) {
 	}
 }
 
-public class InstanceOffset : BaseBinding {
+public class InstanceOffset(float? f0, float? f1, float? f2) : Float3(f0, f1, f2) {
 
-	public InstanceOffset() {
+	public InstanceOffset(): this(0f, 0f, 0f) {
+
 	}
 
-	public InstanceOffset(float[] offsets) {
-		Offset = offsets;
-	}
-	
-	public float[] Offset {
-		get => [offset0 ?? 0f, offset1 ?? 0f, offset2 ?? 0f];
-		set {
-			Offset0 = value[0];
-			Offset1 = value[1];
-			Offset2 = value[2];
-		}
-	}
-
-	private float? offset0 = 0f;
 	public float? Offset0 {
-		get => offset0;
+		get => F0;
 		set {
-			offset0 = value;
+			F0 = value;
 			InvokeChange();
 		}
 	}
-	private float? offset1 = 0f;
 	public float? Offset1 {
-		get => offset1;
+		get => F1;
 		set {
-			offset1 = value;
+			F1 = value;
 			InvokeChange();
 
 		}
 	}
-	private float? offset2 = 0f;
 	public float? Offset2 {
-		get => offset2;
+		get => F2;
 		set {
-			offset2 = value;
+			F2 = value;
 			InvokeChange();
 		}
 	}
 
-	public override string ToString() => $"InstanceOffset=({string.Join(',', Offset)})";
+	public override string ToString() => $"InstanceOffset=({F0},{F1},{F2})";
 }
