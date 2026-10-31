@@ -8,12 +8,12 @@ public class AccessoryVehicle(
 	string vehicleName,
 	string description,
 	string vehicleType,
-	string manifaturer,
+	string manufacturer,
 	bool ets2 = false,
 	bool check = false,
 	string modelType = "",
 	string look = "",
-	string variant = ""): Vehicle(vehicleID, productionYear, vehicleName, description, vehicleType, manifaturer, ets2) {
+	string variant = ""): Vehicle(vehicleID, productionYear, vehicleName, description, vehicleType, manufacturer, ets2) {
 
 	private bool mCheck = check;
 	public bool Check {

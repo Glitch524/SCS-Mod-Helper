@@ -57,7 +57,7 @@
 						BorderBrush="{DynamicResource TextControlElevationBorderBrush}"
 						Style="{DynamicResource MultiControlBorder}" />
 					<ui:TextBox
-						x:Name="TextNewManifaturer"
+						x:Name="TextNewManufacturer"
 						Grid.Row="1"
 						Grid.Column="0"
 						Padding="3"
@@ -68,7 +68,7 @@
 						Grid.Row="1"
 						Grid.Column="1"
 						Margin="0,1"
-						Background="{Binding ElementName=TextNewManifaturer, Path=Background}" />
+						Background="{Binding ElementName=TextNewManufacturer, Path=Background}" />
 					<TextBlock
 						Grid.Row="1"
 						Grid.Column="1"
@@ -218,7 +218,7 @@
 										Value="False" />
 								</DataTrigger>
 								<DataTrigger
-									Binding="{Binding Text, ElementName=TextNewManifaturer}"
+									Binding="{Binding Text, ElementName=TextNewManufacturer}"
 									Value="">
 									<Setter
 										Property="IsEnabled"

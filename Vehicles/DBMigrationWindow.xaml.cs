@@ -233,7 +233,7 @@ public partial class VehiclesIO {
 		SqliteCommand cmd;
 		using var transaction = conn.BeginTransaction();
 		cmd = conn.CreateCommand();
-		cmd.CommandText = @$"Insert or replace into {table} ({COLUMN_VEHICLE_ID}, {COLUMN_MANIFATURER}, {COLUMN_PROD_YEAR}, {COLUMN_VEHICLE_NAME}, {COLUMN_DESCRIPTION}, {COLUMN_DEFAULT_VEHICLE})
+		cmd.CommandText = @$"Insert or replace into {table} ({COLUMN_VEHICLE_ID}, {COLUMN_MANUFACTURER}, {COLUMN_PROD_YEAR}, {COLUMN_VEHICLE_NAME}, {COLUMN_DESCRIPTION}, {COLUMN_DEFAULT_VEHICLE})
 							values(@id, @mani, @prodYear, @tname, @desc, @default)";
 		cmd.Parameters.Add(new SqliteParameter("@id", null));
 		cmd.Parameters.Add(new SqliteParameter("@mani", null));
@@ -243,7 +243,7 @@ public partial class VehiclesIO {
 		cmd.Parameters.Add(new SqliteParameter("@default", null));
 		foreach (var vehicle in keepVehicles.Values) {
 			cmd.Parameters["@id"].Value = vehicle.VehicleID;
-			cmd.Parameters["@mani"].Value = vehicle.Manifaturer;
+			cmd.Parameters["@mani"].Value = vehicle.Manufacturer;
 			cmd.Parameters["@prodYear"].Value = vehicle.ProductionYear;
 			cmd.Parameters["@tname"].Value = vehicle.VehicleName;
 			cmd.Parameters["@desc"].Value = vehicle.Description;
@@ -327,17 +327,17 @@ public partial class VehiclesIO {
 		command.Append($"Select * from {table}");
 		if (customVehicle)
 			command.Append($" where {COLUMN_DEFAULT_VEHICLE} = 0");
-		command.Append($" order by {COLUMN_VEHICLE_TYPE}, {COLUMN_MANIFATURER}, {COLUMN_PROD_YEAR}, {COLUMN_VEHICLE_ID}");
+		command.Append($" order by {COLUMN_VEHICLE_TYPE}, {COLUMN_MANUFACTURER}, {COLUMN_PROD_YEAR}, {COLUMN_VEHICLE_ID}");
 		cmd.CommandText = command.ToString();
 		using var reader = cmd.ExecuteReader();
 		while (reader.Read()) {
 			string vehicleID = reader.GetString(COLUMN_VEHICLE_ID);
 			string vehicleType = reader.GetString(COLUMN_VEHICLE_TYPE);
-			string manifaturer = reader.GetString(COLUMN_MANIFATURER);
+			string manufacturer = reader.GetString(COLUMN_MANUFACTURER);
 			int prodYear = reader.GetInt(COLUMN_PROD_YEAR);
 			string vehicleName = reader.TryGetString(COLUMN_VEHICLE_NAME, GetVehicleName(vehicleID));
 			string desc = reader.TryGetString(COLUMN_DESCRIPTION, GetVehicleDesc(vehicleID));
-			Vehicle vehicle = new(vehicleID, prodYear, vehicleName, desc, vehicleType, manifaturer, isETS2);
+			Vehicle vehicle = new(vehicleID, prodYear, vehicleName, desc, vehicleType, manufacturer, isETS2);
 			vehicles.Add(vehicle);
 			if (cabinDict.TryGetValue(vehicleID, out var cabins)) {
 				vehicle.Cabins = cabins;

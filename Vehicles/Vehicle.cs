@@ -11,7 +11,7 @@ public class Vehicle(
 	string vehicleName,
 	string description,
 	string vehicleType,
-	string manifaturer,
+	string manufacturer,
 	bool ets2 = false): BaseBinding, IComparable {
 
 	private string mVehicleID = vehicleID;
@@ -43,14 +43,14 @@ public class Vehicle(
 	};
 
 
-	private string mManifaturer = manifaturer;
-	public string Manifaturer => mManifaturer;
+	private string mManufacturer = manufacturer;
+	public string Manufacturer => mManufacturer;
 	private string? mVehicleIDName = null;
 	private string VehicleIDName {
 		get {
 			if (mVehicleIDName == null) {
 				var vehicleIDDot = VehicleID.IndexOf('.');
-				mManifaturer = vehicleIDDot == -1 ? "" : VehicleID[..vehicleIDDot];
+				mManufacturer = vehicleIDDot == -1 ? "" : VehicleID[..vehicleIDDot];
 				mVehicleIDName = vehicleIDDot == -1 ? VehicleID : VehicleID[(vehicleIDDot + 1)..];
 			}
 			return mVehicleIDName;
@@ -94,7 +94,7 @@ public class Vehicle(
 
 	public int CompareTo(object? obj) {
 		if (obj is Vehicle other) {
-			var c = Manifaturer.CompareTo(other.Manifaturer);
+			var c = Manufacturer.CompareTo(other.Manufacturer);
 			if (c == 0) {
 				c = ProductionYear.CompareTo(other.ProductionYear);
 				if (c == 0)

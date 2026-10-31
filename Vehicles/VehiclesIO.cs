@@ -24,7 +24,7 @@ public static partial class VehiclesIO {
 	private const string TABLE_VEHICLES_ATS = "VehiclesATS";
 	private const string COLUMN_VEHICLE_ID = "VehicleID";
 	private const string COLUMN_VEHICLE_TYPE = "VehicleType";
-	private const string COLUMN_MANIFATURER = "Manifaturer";
+	private const string COLUMN_MANUFACTURER = "Manufacturer";
 	private const string COLUMN_PROD_YEAR = "ProductionYear";
 	private const string COLUMN_VEHICLE_NAME = "VehicleName";
 	private const string COLUMN_DESCRIPTION = "Description";
@@ -167,11 +167,11 @@ public static partial class VehiclesIO {
 		using var conn = new SqliteConnection(VehicleDBSource);
 		conn.Open();
 		var cmd = conn.CreateCommand();
-		cmd.CommandText = @$"Insert into {table} ({COLUMN_VEHICLE_ID}, {COLUMN_VEHICLE_TYPE}, {COLUMN_MANIFATURER}, {COLUMN_PROD_YEAR}, {COLUMN_VEHICLE_NAME}, {COLUMN_DESCRIPTION})
+		cmd.CommandText = @$"Insert into {table} ({COLUMN_VEHICLE_ID}, {COLUMN_VEHICLE_TYPE}, {COLUMN_MANUFACTURER}, {COLUMN_PROD_YEAR}, {COLUMN_VEHICLE_NAME}, {COLUMN_DESCRIPTION})
 							values($id, $type, $mani, $prodYear, $vname, $desc)";
 		cmd.Parameters.AddWithValue("$id", vehicle.VehicleID);
 		cmd.Parameters.AddWithValue("$type", vehicle.VehicleType);
-		cmd.Parameters.AddWithValue("$mani", vehicle.Manifaturer);
+		cmd.Parameters.AddWithValue("$mani", vehicle.Manufacturer);
 		cmd.Parameters.AddWithValue("$prodYear", vehicle.ProductionYear);
 		cmd.Parameters.AddWithValue("$vname", vehicle.VehicleName);
 		cmd.Parameters.AddWithValue("$desc", vehicle.Description);
@@ -215,11 +215,11 @@ public static partial class VehiclesIO {
 		conn.Open();
 		var cmd = conn.CreateCommand();
 		cmd.CommandText = @$"update {table} 
-							set {COLUMN_VEHICLE_TYPE} = $type, {COLUMN_MANIFATURER} = $mani, {COLUMN_PROD_YEAR} = $prodYear, {COLUMN_VEHICLE_NAME} = $vname, {COLUMN_DESCRIPTION} = $desc, {COLUMN_DEFAULT_VEHICLE} = $default 
+							set {COLUMN_VEHICLE_TYPE} = $type, {COLUMN_MANUFACTURER} = $mani, {COLUMN_PROD_YEAR} = $prodYear, {COLUMN_VEHICLE_NAME} = $vname, {COLUMN_DESCRIPTION} = $desc, {COLUMN_DEFAULT_VEHICLE} = $default 
 							where {COLUMN_VEHICLE_ID} = $id";
 		cmd.Parameters.AddWithValue("$id", vehicle.VehicleID);
 		cmd.Parameters.AddWithValue("$type", vehicle.VehicleType);
-		cmd.Parameters.AddWithValue("$mani", vehicle.Manifaturer);
+		cmd.Parameters.AddWithValue("$mani", vehicle.Manufacturer);
 		cmd.Parameters.AddWithValue("$prodYear", vehicle.ProductionYear);
 		cmd.Parameters.AddWithValue("$vname", vehicle.VehicleName);
 		cmd.Parameters.AddWithValue("$desc", vehicle.Description);
@@ -233,17 +233,17 @@ public static partial class VehiclesIO {
 		using var conn = new SqliteConnection(VehicleDBSource);
 		conn.Open();
 		var cmd = conn.CreateCommand();
-		cmd.CommandText = $"Select *  from {table} order by {COLUMN_VEHICLE_TYPE}, {COLUMN_MANIFATURER}, {COLUMN_PROD_YEAR}, {COLUMN_VEHICLE_ID}";
+		cmd.CommandText = $"Select *  from {table} order by {COLUMN_VEHICLE_TYPE}, {COLUMN_MANUFACTURER}, {COLUMN_PROD_YEAR}, {COLUMN_VEHICLE_ID}";
 		using var reader = cmd.ExecuteReader();
 		List<AccessoryVehicle> loadedVehicles = [];
 		while (reader.Read()) {
 			string vehicleID = reader.GetString(COLUMN_VEHICLE_ID);
 			string vehicleType = reader.GetString(COLUMN_VEHICLE_TYPE);
-			string manifaturer = reader.GetString(COLUMN_MANIFATURER);
+			string manufacturer = reader.GetString(COLUMN_MANUFACTURER);
 			int prodYear = reader.GetInt(COLUMN_PROD_YEAR);
 			string vehicleName = reader.TryGetString(COLUMN_VEHICLE_NAME, GetVehicleName(vehicleID));
 			string desc = reader.TryGetString(COLUMN_DESCRIPTION, GetVehicleDesc(vehicleID));
-			AccessoryVehicle vehicle = new(vehicleID, prodYear, vehicleName, desc, vehicleType, manifaturer, isETS2);
+			AccessoryVehicle vehicle = new(vehicleID, prodYear, vehicleName, desc, vehicleType, manufacturer, isETS2);
 			loadedVehicles.Add(vehicle);
 		}
 		await Application.Current.Dispatcher.InvokeAsync(() => {
@@ -265,17 +265,17 @@ public static partial class VehiclesIO {
 		conn.Open();
 		var cmd = conn.CreateCommand();
 
-		cmd.CommandText = $"Select *  from {table} order by {COLUMN_MANIFATURER}, {COLUMN_PROD_YEAR}, {COLUMN_VEHICLE_ID}";
+		cmd.CommandText = $"Select *  from {table} order by {COLUMN_MANUFACTURER}, {COLUMN_PROD_YEAR}, {COLUMN_VEHICLE_ID}";
 		using var reader = cmd.ExecuteReader();
 		List<Vehicle> loadedvehicle = [];
 		while (reader.Read()) {
 			string vehicleID = reader.GetString(COLUMN_VEHICLE_ID);
 			string vehicleType = reader.GetString(COLUMN_VEHICLE_TYPE);
-			string manifaturer = reader.GetString(COLUMN_MANIFATURER);
+			string manufacturer = reader.GetString(COLUMN_MANUFACTURER);
 			int prodYear = reader.GetInt(COLUMN_PROD_YEAR);
 			string? vehicleName = reader.TryGetString(COLUMN_VEHICLE_NAME, GetVehicleName(vehicleID));
 			string? desc = reader.TryGetString(COLUMN_DESCRIPTION, GetVehicleDesc(vehicleID));
-			Vehicle vehicle = new(vehicleID, prodYear, vehicleName, desc, vehicleType, manifaturer, isETS2);
+			Vehicle vehicle = new(vehicleID, prodYear, vehicleName, desc, vehicleType, manufacturer, isETS2);
 			loadedvehicle.Add(vehicle);
 		}
 		foreach (var v in loadedvehicle) {

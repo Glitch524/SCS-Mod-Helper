@@ -32,7 +32,7 @@ public partial class AddVehicleUC: BaseUserControl {
 		TextNewVehicleID.Text = string.Empty;
 		TextNewVehicleType.SelectedValue = "Truck";
 		TextNewDisplayName.Text = string.Empty;
-		TextNewManifaturer.Text = string.Empty;
+		TextNewManufacturer.Text = string.Empty;
 		TextNewVehicleProdYear.Text = null;
 		TextNewDescription.Text = string.Empty;
 	}
@@ -53,7 +53,7 @@ public partial class AddVehicleUC: BaseUserControl {
 				  TextNewDisplayName.Text,
 				  TextNewDescription.Text,
 				  (string)TextNewVehicleType.SelectedValue,
-				  TextNewManifaturer.Text,
+				  TextNewManufacturer.Text,
 				  Binding.AddVehicleETS2 == true,
 				  false);
 			Clean();
