@@ -34,6 +34,9 @@
   <ItemGroup>
     <None Remove="App.config" />
     <None Remove="Images\AppIcon.png" />
+    <None Remove="Images\Icon_ATS.png" />
+    <None Remove="Images\Icon_ETS2.png" />
+    <None Remove="Main\About\head.jpg" />
     <None Remove="Modding\PaintJob\ChannelColorizeEffect.ps" />
   </ItemGroup>
 
@@ -66,6 +69,9 @@
 
   <ItemGroup>
     <Resource Include="Images\AppIcon.png" />
+    <Resource Include="Images\Icon_ATS.png" />
+    <Resource Include="Images\Icon_ETS2.png" />
+    <Resource Include="Main\About\head.jpg" />
     <Resource Include="Modding\PaintJob\ColorMask\ChannelColorizeEffect.ps" />
     <Resource Include="Vehicles\en-US.xaml" />
     <Resource Include="Vehicles\UV\xg_plus.daf.2021.cabin.png" />
@@ -100,6 +106,10 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include=".github\" />
   </ItemGroup>
 
 </Project>

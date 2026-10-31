@@ -14,15 +14,24 @@
 	<s:String x:Key="ETS2Short">ETS2</s:String>
 	<s:String x:Key="ATSShort">ATS</s:String>
 	
+	<s:String x:Key="ThemeFollowSystem">Follow System</s:String>
+	<s:String x:Key="ThemeLight">Light</s:String>
+	<s:String x:Key="ThemeDark">Dark</s:String>
+	<s:String x:Key="MessagePixNotSet">ConverterPix.exe not found, please set the path in settings.</s:String>
+	
 	<s:String x:Key="VehicleTypeTruck">Truck</s:String>
 	<s:String x:Key="VehicleTypeTrailer">Trailer</s:String>
 	<s:String x:Key="VehicleTypeCar">Car</s:String>
 	<s:String x:Key="VehicleTypeCoach">Coach</s:String>
 	
-	<s:String x:Key="ThemeFollowSystem">Follow System</s:String>
-	<s:String x:Key="ThemeLight">Light</s:String>
-	<s:String x:Key="ThemeDark">Dark</s:String>
-	<s:String x:Key="MessagePixNotSet">ConverterPix.exe not found, please set the path in settings.</s:String>
+	<s:String x:Key="VehicleID">Vehicle ID</s:String>
+	<s:String x:Key="VehicleProdYear">Production Year</s:String>
+	<s:String x:Key="VehicleType">Vehicle Type</s:String>
+	<s:String x:Key="VehicleName">Vehicle Name</s:String>
+	<s:String x:Key="VehicleManufacturer">Manufacturer</s:String>
+	<s:String x:Key="VehicleDescription">Vehicle Description</s:String>
+	<s:String x:Key="VehicleCabin">Cabins</s:String>
+	<s:String x:Key="VehicleAccessory">Accessories</s:String>
 	
 	<s:String x:Key="SubtitleFolder">Folder</s:String>
 	<s:String x:Key="SubtitleFile">{0} File</s:String>
@@ -128,12 +137,7 @@
 	<s:String x:Key="ButtonInitializeVehicles">Initialize Vehicles</s:String>
 	<s:String x:Key="ExpanderETS2">Euro Truck Simulator 2(Expand to apply/export to ETS2)</s:String>
 	<s:String x:Key="ExpanderATS">American Truck Simulator(Expand to apply/export to ATS)</s:String>
-	<s:String x:Key="VehicleID">Vehicle ID</s:String>
-	<s:String x:Key="VehicleProdYear">Production Year</s:String>
-	<s:String x:Key="VehicleType">Vehicle Type</s:String>
-	<s:String x:Key="VehicleName">Vehicle Name</s:String>
-	<s:String x:Key="VehicleManufacturer">Manufacturer</s:String>
-	<s:String x:Key="VehicleDescription">Vehicle Description</s:String>
+	<s:String x:Key="VehicleCodeName">Vehicle Codename</s:String>
 		<!--Side Button-->
 	<s:String x:Key="ButtonDeleteVehicle">Delete Vehicle</s:String>
 	<s:String x:Key="CheckBoxDeleteUnchecked">Delete Existing Unchecked Sii</s:String>
@@ -475,15 +479,7 @@
 	<s:String x:Key="TitleVehicleMigration">Vehicle Migration</s:String>
 	<s:String x:Key="TextOldVersion">Old Version</s:String>
 	<s:String x:Key="TextNewVersion">New Version</s:String>
-	<s:String x:Key="HeaderVehicleID">Vehicle ID</s:String>
-	<s:String x:Key="HeaderVehicleType">Vehicle Type</s:String>
-	<s:String x:Key="HeaderVehicleName">Vehicle Name</s:String>
-	<s:String x:Key="HeaderProdYear">Production Year</s:String>
-	<s:String x:Key="HeaderDescription">Description</s:String>
-	<s:String x:Key="HeaderCabins">Cabins</s:String>
-	<s:String x:Key="HeaderAccessories">Accessories</s:String>
 	<s:String x:Key="TitleUpdateMigrationCount">Update migration count</s:String>
-	<s:String x:Key="ButtonFinish">Finish</s:String>
 	<s:String x:Key="MessageDBMigration">New Vehicle Data found, migrate old vehicles?</s:String>
 	<s:String x:Key="MessageDBMigrationResultSuccess">Migration Success!</s:String>
 	<s:String x:Key="MessageDBMigrationResultFailed">Migration Failed!</s:String>
@@ -515,6 +511,8 @@
 	<s:String x:Key="MessageTitleErr">Error</s:String>
 	<s:String x:Key="MessageTitleResult">Result</s:String>
 	<s:String x:Key="StatusEmpty">Empty</s:String>
+	
+	<s:String x:Key="ButtonFinish">Finish</s:String>
 	<s:String x:Key="ButtonOK">OK</s:String>
 	<s:String x:Key="ButtonCancel">Cancel</s:String>
 	<s:String x:Key="ButtonYes">Yes</s:String>

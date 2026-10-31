@@ -11,7 +11,7 @@
 	<Application.Resources>
 		<ResourceDictionary>
 			<s:String
-				x:Key="Version">V1.0</s:String>
+				x:Key="Version">V2.0</s:String>
 
 			<ResourceDictionary.MergedDictionaries>
 				<ui:ThemesDictionary
@@ -23,6 +23,8 @@
 					Source="/Language/zh-CN_简体中文.xaml" />
 				<ResourceDictionary
 					Source="pack://application:,,,/ColorPicker;component/Styles/DefaultColorPickerStyle.xaml" />
+				<ResourceDictionary
+					Source="/Theme/Generic.xaml" />
 				<ResourceDictionary
 					Source="/Theme/Dark.xaml" />
 				<ResourceDictionary

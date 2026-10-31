@@ -1,7 +1,7 @@
 ﻿using Microsoft.Win32;
-using SCS_Mod_Helper.Modding.Accessories;
 using SCS_Mod_Helper.Modding.Accessories.Physics;
 using SCS_Mod_Helper.Utils;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 
@@ -16,14 +16,14 @@ public partial class App: Application {
 	}
 
 	private void App_Startup(object sender, StartupEventArgs e) {
-		DictionaryUtil.SetLanguage();
+		ResourceUtil.SetLanguage();
 		SystemEvents.UserPreferenceChanged += OnUserPreferenceChanged;
-		DictionaryUtil.SetTheme();
+		ResourceUtil.SetTheme();
 	}
 
 	private void OnUserPreferenceChanged(object sender, UserPreferenceChangedEventArgs e) {
 		if (Instances.FollowSystem) {
-			DictionaryUtil.UpdateThemeDict(DictionaryUtil.GetSystemTheme());
+			ResourceUtil.UpdateThemeDict(ResourceUtil.GetSystemTheme());
 		}
 	}
 
@@ -36,7 +36,5 @@ public partial class App: Application {
 
 	private void OnExit(object sender, ExitEventArgs e) {
 		new AccessoryPhysicsIO().SavePhysics();
-		//AccAppIO.SavePhysicsList();
 	}
 }
-

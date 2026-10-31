@@ -13,16 +13,25 @@
 	<s:String x:Key="ATS">美洲卡车模拟</s:String>
 	<s:String x:Key="ETS2Short">欧卡2</s:String>
 	<s:String x:Key="ATSShort">美卡</s:String>
-	
-	<s:String x:Key="VehicleTypeTruck">卡车</s:String>
-	<s:String x:Key="VehicleTypeTrailer">挂车</s:String>
-	<s:String x:Key="VehicleTypeCar">乘用车</s:String>
-	<s:String x:Key="VehicleTypeCoach">客车</s:String>
 
 	<s:String x:Key="ThemeFollowSystem">跟随系统</s:String>
 	<s:String x:Key="ThemeLight">浅色</s:String>
 	<s:String x:Key="ThemeDark">深色</s:String>
 	<s:String x:Key="MessagePixNotSet">找不到ConverterPix程序，请先在设置内设定</s:String>
+	
+	<s:String x:Key="VehicleTypeTruck">卡车</s:String>
+	<s:String x:Key="VehicleTypeTrailer">挂车</s:String>
+	<s:String x:Key="VehicleTypeCar">乘用车</s:String>
+	<s:String x:Key="VehicleTypeCoach">客车</s:String>
+	
+	<s:String x:Key="VehicleID">车辆ID</s:String>
+	<s:String x:Key="VehicleProdYear">生产年份</s:String>
+	<s:String x:Key="VehicleType">车辆类型</s:String>
+	<s:String x:Key="VehicleName">车辆名称</s:String>
+	<s:String x:Key="VehicleManufacturer">制造商</s:String>
+	<s:String x:Key="VehicleDescription">车辆备注</s:String>
+	<s:String x:Key="VehicleCabin">驾驶室</s:String>
+	<s:String x:Key="VehicleAccessory">配件</s:String>
 	
 	<s:String x:Key="SubtitleFolder">文件夹</s:String>
 	<s:String x:Key="SubtitleFile">{0}文件</s:String>
@@ -128,12 +137,7 @@
 	<s:String x:Key="ButtonInitializeVehicles">初始化车型数据</s:String>
 	<s:String x:Key="ExpanderETS2">欧洲卡车模拟2 （展开以输出/应用至欧卡2）</s:String>
 	<s:String x:Key="ExpanderATS">美洲卡车模拟（展开以输出/应用至美卡）</s:String>
-	<s:String x:Key="VehicleID">车辆ID</s:String>
-	<s:String x:Key="VehicleProdYear">生产年份</s:String>
-	<s:String x:Key="VehicleType">车辆类型</s:String>
-	<s:String x:Key="VehicleName">车辆名称</s:String>
-	<s:String x:Key="VehicleManufacturer">制造商</s:String>
-	<s:String x:Key="VehicleDescription">车辆备注</s:String>
+	<s:String x:Key="VehicleCodeName">车辆型号</s:String>
 		<!--侧边按钮-->
 	<s:String x:Key="ButtonDeleteVehicle">删除车辆</s:String>
 	<s:String x:Key="CheckBoxDeleteUnchecked">删除已存在但未勾选的sii文件</s:String>
@@ -475,15 +479,7 @@
 	<s:String x:Key="TitleVehicleMigration">车辆迁移</s:String>
 	<s:String x:Key="TextOldVersion">旧版本</s:String>
 	<s:String x:Key="TextNewVersion">新版本</s:String>
-	<s:String x:Key="HeaderVehicleID">车辆ID</s:String>
-	<s:String x:Key="HeaderVehicleType">车辆类型</s:String>
-	<s:String x:Key="HeaderVehicleName">车辆名称</s:String>
-	<s:String x:Key="HeaderProdYear">生产年份</s:String>
-	<s:String x:Key="HeaderDescription">描述</s:String>
-	<s:String x:Key="HeaderCabins">驾驶室</s:String>
-	<s:String x:Key="HeaderAccessories">配件</s:String>
 	<s:String x:Key="TitleUpdateMigrationCount">迁移数量</s:String>
-	<s:String x:Key="ButtonFinish">完成</s:String>
 	<s:String x:Key="MessageDBMigration">发现新的车辆数据，是否迁移旧车辆？</s:String>
 	<s:String x:Key="MessageDBMigrationResultSuccess">迁移成功！</s:String>
 	<s:String x:Key="MessageDBMigrationResultFailed">迁移失败！</s:String>
@@ -515,6 +511,8 @@
 	<s:String x:Key="MessageTitleErr">错误</s:String>
 	<s:String x:Key="MessageTitleResult">结果</s:String>
 	<s:String x:Key="StatusEmpty">空</s:String>
+	
+	<s:String x:Key="ButtonFinish">完成</s:String>
 	<s:String x:Key="ButtonYes">是</s:String>
 	<s:String x:Key="ButtonNo">否</s:String>
 	<s:String x:Key="ButtonOK">确定</s:String>

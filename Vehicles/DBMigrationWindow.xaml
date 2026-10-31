@@ -88,36 +88,36 @@
 				<DataGrid.Columns>
 					<DataGridTextColumn
 						Width="2*"
-						Header="{DynamicResource HeaderVehicleID}"
+						Header="{DynamicResource VehicleID}"
 						Binding="{Binding VehicleID}"
 						CellStyle="{DynamicResource DataGridCellToolTip}" />
 					<DataGridTextColumn
 						Width="*"
-						Header="{DynamicResource HeaderVehicleType}"
+						Header="{DynamicResource VehicleType}"
 						Binding="{Binding VehicleTypeName}"
 						CellStyle="{DynamicResource DataGridCellToolTip}" />
 					<DataGridTextColumn
 						Width="3*"
-						Header="{DynamicResource HeaderVehicleName}"
+						Header="{DynamicResource VehicleName}"
 						Binding="{Binding VehicleName}"
 						CellStyle="{DynamicResource DataGridCellToolTip}" />
 					<DataGridTextColumn
-						Header="{DynamicResource HeaderProdYear}"
+						Header="{DynamicResource VehicleProdYear}"
 						Binding="{Binding ProductionYear}"
 						CellStyle="{DynamicResource DataGridCellToolTip}" />
 					<DataGridTextColumn
 						Width="3*"
-						Header="{DynamicResource HeaderDescription}"
+						Header="{DynamicResource VehicleDescription}"
 						Binding="{Binding Description}"
 						CellStyle="{DynamicResource DataGridCellToolTip}" />
 					<DataGridTextColumn
 						Width="4*"
-						Header="{DynamicResource HeaderCabins}"
+						Header="{DynamicResource VehicleCabin}"
 						Binding="{Binding CabinIDs}"
 						CellStyle="{DynamicResource DataGridCellToolTip}" />
 					<DataGridTextColumn
 						Width="4*"
-						Header="{DynamicResource HeaderAccessories}"
+						Header="{DynamicResource VehicleAccessory}"
 						Binding="{Binding AccessoryIDs}"
 						CellStyle="{DynamicResource DataGridCellToolTip}" />
 				</DataGrid.Columns>
@@ -222,36 +222,36 @@
 				<DataGrid.Columns>
 					<DataGridTextColumn
 						Width="2*"
-						Header="{DynamicResource HeaderVehicleID}"
+						Header="{DynamicResource VehicleID}"
 						Binding="{Binding VehicleID}"
 						CellStyle="{DynamicResource DataGridCellToolTip}" />
 					<DataGridTextColumn
 						Width="*"
-						Header="{DynamicResource HeaderVehicleType}"
+						Header="{DynamicResource VehicleType}"
 						Binding="{Binding VehicleTypeName}"
 						CellStyle="{DynamicResource DataGridCellToolTip}" />
 					<DataGridTextColumn
 						Width="3*"
-						Header="{DynamicResource HeaderVehicleName}"
+						Header="{DynamicResource VehicleName}"
 						Binding="{Binding VehicleName}"
 						CellStyle="{DynamicResource DataGridCellToolTip}" />
 					<DataGridTextColumn
-						Header="{DynamicResource HeaderProdYear}"
+						Header="{DynamicResource VehicleProdYear}"
 						Binding="{Binding ProductionYear}"
 						CellStyle="{DynamicResource DataGridCellToolTip}" />
 					<DataGridTextColumn
 						Width="3*"
-						Header="{DynamicResource HeaderDescription}"
+						Header="{DynamicResource VehicleDescription}"
 						Binding="{Binding Description}"
 						CellStyle="{DynamicResource DataGridCellToolTip}" />
 					<DataGridTextColumn
 						Width="4*"
-						Header="{DynamicResource HeaderCabins}"
+						Header="{DynamicResource VehicleCabin}"
 						Binding="{Binding CabinIDs}"
 						CellStyle="{DynamicResource DataGridCellToolTip}" />
 					<DataGridTextColumn
 						Width="4*"
-						Header="{DynamicResource HeaderAccessories}"
+						Header="{DynamicResource VehicleAccessory}"
 						Binding="{Binding AccessoryIDs}"
 						CellStyle="{DynamicResource DataGridCellToolTip}" />
 				</DataGrid.Columns>
