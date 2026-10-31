@@ -1,12 +1,13 @@
-﻿using SCS_Mod_Helper.Base;
+﻿using SCS_Mod_Helper.Class.Base;
 using System.Collections.ObjectModel;
 
 namespace SCS_Mod_Helper.Vehicles; 
 public class DBMigrationBinding(
+	Func<IBaseVisual> baseVisual,
 	int oldVersion,
 	int newVersion,
 	bool veEdited,
-	bool vaEdited): BaseBinding {
+	bool vaEdited): WindowBinding(baseVisual) {
 	private readonly int mOldVersion = oldVersion;
 	private string? OldVersionString = null;
 	public string OldVersion {
