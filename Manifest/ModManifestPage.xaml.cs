@@ -1,12 +1,16 @@
 ﻿using Microsoft.Win32;
-using SCS_Mod_Helper.Base;
-using SCS_Mod_Helper.Localization;
+using SCS_Mod_Helper.Class.Base;
+using SCS_Mod_Helper.Main;
 using SCS_Mod_Helper.Utils;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using Wpf.Ui;
+using Wpf.Ui.Extensions;
 
 namespace SCS_Mod_Helper.Manifest;
 /// <summary>
@@ -34,7 +38,7 @@ public partial class ModManifestPage: BasePage {
 	public ModManifestPage() {
 		InitializeComponent();
 
-		binding = ManifestBinding.Instance;
+		binding = ManifestBinding.GetInstance(this);
 
 		GridMain.DataContext = binding;
 
@@ -42,8 +46,20 @@ public partial class ModManifestPage: BasePage {
 	}
 
 	private void OnLoaded(object sender, RoutedEventArgs e) {
+		NaviMainWindow mainWindow = (NaviMainWindow)Window.GetWindow(this);
+		var navigation = mainWindow.Navigation;
+		GridMeasureSize.SetBinding(HeightProperty, new Binding(nameof(ActualHeight)) {//page在navigationview里会获得无限高度，所以任何可以滚动的控件都会无限拉长，因此将page高度绑定到navigationview的高度（并-1，nv的上面有一条border）即可限定高度
+			Source = navigation,
+			Mode = BindingMode.OneWay,
+			Converter = new NavigationHeightConverter()
+		});
 	}
 
+	/// <summary>
+	/// 选择切换project文件夹
+	/// </summary>
+	/// <param name="sender"></param>
+	/// <param name="e"></param>
 	private void ChooseProjectLocation(object sender, RoutedEventArgs e) {
 		var folderDialog = new OpenFolderDialog {
 			Multiselect = false
@@ -59,19 +75,24 @@ public partial class ModManifestPage: BasePage {
 			} while (history.Length > 0);
 		}
 		if (folderDialog.ShowDialog() == true) {
-			if (Directory.Exists(folderDialog.FolderName)) {
-				void ExecuteLoad() {
-					binding.ProjectLocation = folderDialog.FolderName;
-					binding.LoadFiles();
-				}
-				if (File.Exists(Paths.ManifestFile(folderDialog.FolderName))) {
-					ExecuteLoad();
-					return;
-				}
-				var result = MessageBox.Show(Window.GetWindow(this), GetString("MessageNoManifest"), GetString("MessageTitleNotice"), MessageBoxButton.YesNo);
-				if (result == MessageBoxResult.Yes) {
-					ExecuteLoad();
-				}
+			_ = CheckProjectLocation(folderDialog.FolderName);
+		}
+	}
+
+	public async Task CheckProjectLocation(string folderName) {
+		if (Directory.Exists(folderName)) {
+			void ExecuteLoad() {
+				binding.ProjectLocation = folderName;
+				binding.LoadFiles();
+			}
+			if (File.Exists(Paths.ManifestFile(folderName))) {
+				ExecuteLoad();
+				return;
+			}
+
+			var result = MessageBox.Show(Window.GetWindow(this), GetString("MessageNoManifest"), GetString("MessageTitleNotice"), MessageBoxButton.YesNo);
+			if (result == MessageBoxResult.Yes) {
+				ExecuteLoad();
 			}
 		}
 	}
@@ -124,7 +145,7 @@ public partial class ModManifestPage: BasePage {
 	private void DeleteLocaleClick(object sender, RoutedEventArgs e) {
 		if (sender is Button button) {
 			DescLocale locale = (DescLocale)button.DataContext;
-			if (locale.LocaleValue.Equals(Locale.LocaleValueUni)) {
+			if (locale.LocaleValue.Equals(Locale.Localization.Locale.LocaleValueUni)) {
 				MessageBox.Show(Window.GetWindow(this), GetString("MessageDeleteLocaleErrUni"));
 				return;
 			} else {
@@ -138,14 +159,14 @@ public partial class ModManifestPage: BasePage {
 
 	private void CopyFromUniversalClick(object sender, RoutedEventArgs e) {
 		if (sender == ButtonCopyFromUniversal) {
-			if (CurrentLocale.LocaleValue.Equals(Locale.LocaleValueUni))
+			if (CurrentLocale.LocaleValue.Equals(Locale.Localization.Locale.LocaleValueUni))
 				return;
 			if (DescContent.Length > 0) {
 				var result = MessageBox.Show(Window.GetWindow(this), GetString("MessageCopyDescNotEmpty"), GetString("MessageTitleNotice"), MessageBoxButton.YesNo);
 				if (result == MessageBoxResult.No)
 					return;
 			}
-			DescContent = LocaleDict[Locale.LocaleValueUni].DescContent;
+			DescContent = LocaleDict[Locale.Localization.Locale.LocaleValueUni].DescContent;
 		}
 	}
 
@@ -170,5 +191,18 @@ public partial class ModManifestPage: BasePage {
 			DescriptionName += ".txt";
 			TextDescriptionName.SelectionStart = ss;
 		}
+	}
+}
+
+public class NavigationHeightConverter: IValueConverter {
+	public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+		if (value is double d) {
+			return d - 1;
+		}
+		return 0;
+	}
+
+	public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
+		return 0;
 	}
 }

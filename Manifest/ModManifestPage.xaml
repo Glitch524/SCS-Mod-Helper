@@ -4,14 +4,16 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:main="clr-namespace:SCS_Mod_Helper.Main"
 	xmlns:local="clr-namespace:SCS_Mod_Helper.Manifest"
 	xmlns:utils="clr-namespace:SCS_Mod_Helper.Utils"
 	xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-	xmlns:base="clr-namespace:SCS_Mod_Helper.Base"
+	xmlns:base="clr-namespace:SCS_Mod_Helper.Class.Base"
 	d:DataContext="{d:DesignInstance Type=local:ManifestBinding}"
 	Loaded="OnLoaded"
 	KeepAlive="True"
 	mc:Ignorable="d"
+	VerticalAlignment="Stretch"
 	d:DesignWidth="1000"
 	d:Background="White">
 	<base:BasePage.Resources>
@@ -29,29 +31,14 @@
 	</base:BasePage.Resources>
 
 	<Grid
-		x:Name="GridMain"
-		Grid.Row="1"
-		Margin="10">
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition
-				Width="*" />
-			<ColumnDefinition
-				Width="15" />
-			<ColumnDefinition
-				Width="*" />
-		</Grid.ColumnDefinitions>
-		<Grid.RowDefinitions>
-			<RowDefinition
-				Height="*" />
-			<RowDefinition
-				Height="Auto" />
-		</Grid.RowDefinitions>
-
+		x:Name="GridMeasureSize">
 		<Grid
-			x:Name="grid">
+			x:Name="GridMain"
+			Margin="10"
+			VerticalAlignment="Stretch">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition
-					Width="2*" />
+					Width="*" />
 				<ColumnDefinition
 					Width="15" />
 				<ColumnDefinition
@@ -59,93 +46,19 @@
 			</Grid.ColumnDefinitions>
 			<Grid.RowDefinitions>
 				<RowDefinition
-					Height="Auto" />
-				<RowDefinition
 					Height="*" />
+				<RowDefinition
+					Height="Auto" />
 			</Grid.RowDefinitions>
 
 			<Grid
-				Grid.ColumnSpan="3"
-				Margin="0,0,0,10">
-				<Grid.RowDefinitions>
-					<RowDefinition
-						Height="Auto" />
-					<RowDefinition
-						Height="Auto" />
-				</Grid.RowDefinitions>
+				x:Name="grid"
+				VerticalAlignment="Stretch">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition
-						Width="*" />
+						Width="2*" />
 					<ColumnDefinition
-						Width="Auto" />
-				</Grid.ColumnDefinitions>
-				<TextBlock
-					x:Name="TitleProjectLocation"
-					Grid.ColumnSpan="2"
-					Text="{DynamicResource SCSProjectLocation}"
-					VerticalAlignment="Center" />
-
-				<Border
-					Grid.Row="1"
-					Grid.ColumnSpan="2"
-					Style="{DynamicResource MultiControlBorder}"/>
-				<TextBox
-					x:Name="TextProjectLocation"
-					Grid.Row="1"
-					MaxLines="1"
-					Grid.Column="0"
-					Padding="3,3,3,3"
-					IsReadOnly="True"
-					TextWrapping="Wrap"
-					VerticalAlignment="Top"
-					Text="{Binding ProjectLocation}"
-					Cursor="IBeam">
-					<TextBox.Style>
-						<Style
-							TargetType="TextBox"
-							BasedOn="{StaticResource {x:Type TextBox}}">
-							<Style.Triggers>
-								<DataTrigger
-									Binding="{Binding ProjectExist}"
-									Value="false">
-									<Setter
-										Property="Foreground"
-										Value="Red" />
-									<Setter
-										Property="ToolTip"
-										Value="{DynamicResource SCSProjectLocationTipNotExist}" />
-								</DataTrigger>
-								<Trigger
-									Property="Text"
-									Value="">
-									<Setter
-										Property="Background"
-										Value="Yellow" />
-								</Trigger>
-							</Style.Triggers>
-						</Style>
-					</TextBox.Style>
-				</TextBox>
-				<Button
-					x:Name="ButtonChooseProject"
-					Grid.Row="1"
-					Grid.Column="1"
-					HorizontalAlignment="Left"
-					Click="ChooseProjectLocation"
-					Width="{Binding ActualHeight, ElementName=TextProjectLocation, Mode=OneWay}"
-					Height="{Binding ActualHeight, ElementName=TextProjectLocation, Mode=OneWay}">
-					<Viewbox>
-						<ui:SymbolIcon
-							Symbol="Folder16" />
-					</Viewbox>
-				</Button>
-			</Grid>
-			<Grid
-				x:Name="GridManifest"
-				Grid.Row="1">
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition
-						Width="Auto" />
+						Width="15" />
 					<ColumnDefinition
 						Width="*" />
 				</Grid.ColumnDefinitions>
@@ -153,183 +66,440 @@
 					<RowDefinition
 						Height="Auto" />
 					<RowDefinition
-						Height="Auto" />
-					<RowDefinition
-						Height="Auto" />
-					<RowDefinition
-						Height="Auto" />
-					<RowDefinition
-						Height="Auto" />
-					<RowDefinition
-						Height="15" />
-					<RowDefinition
-						Height="Auto" />
-					<RowDefinition
-						Height="Auto" />
-					<RowDefinition
-						Height="Auto" />
-					<RowDefinition
-						Height="Auto" />
+						Height="*" />
 				</Grid.RowDefinitions>
-				<TextBlock
-					Grid.Row="0"
-					Grid.Column="0"
-					Grid.ColumnSpan="2"
-					VerticalAlignment="Top"
-					HorizontalAlignment="Center"
-					FontSize="14">
-					<Run
-						Text="{DynamicResource BasicInfo}" />
-				</TextBlock>
-				<TextBlock
-					Grid.Row="1"
-					Grid.Column="0"
-					Margin="0,10,0,0"
-					TextWrapping="Wrap"
-					VerticalAlignment="Center"
-					HorizontalAlignment="Right"
-					Text="{DynamicResource ModVersion}" />
-				<TextBox
-					x:Name="TextVersion"
-					Grid.Row="1"
-					Grid.Column="1"
-					MaxLines="1"
-					Margin="0,10,0,0"
-					TextWrapping="Wrap"
-					Text="{Binding Version}"
-					VerticalAlignment="Top"
-					Cursor="IBeam" />
-				<TextBlock
-					Grid.Row="2"
-					Grid.Column="0"
-					Margin="0,10,0,0"
-					TextWrapping="Wrap"
-					VerticalAlignment="Center"
-					HorizontalAlignment="Right"
-					Text="{DynamicResource ProjectDisplayName}"
-					ToolTip="{DynamicResource ProjectDisplayNameTip}" />
-				<TextBox
-					x:Name="TextModDisplayName"
-					Grid.Row="2"
-					Grid.Column="1"
-					MaxLines="1"
-					Margin="0,10,0,0"
-					TextWrapping="Wrap"
-					Text="{Binding ModDisplayName}" />
-				<TextBlock
-					Grid.Row="3"
-					Grid.Column="0"
-					Margin="0,10,0,0"
-					TextWrapping="Wrap"
-					VerticalAlignment="Center"
-					HorizontalAlignment="Right"
-					Text="{DynamicResource Author}" />
-				<TextBox
-					x:Name="TextAuthor"
-					Grid.Row="3"
-					Grid.Column="1"
-					MaxLines="1"
-					Margin="0,10,0,0"
-					TextWrapping="Wrap"
-					Text="{Binding Author}"
-					VerticalAlignment="Top" />
-				<ui:ToggleSwitch
-					x:Name="CheckBoxMP"
-					Content="{DynamicResource CheckBoxMP}"
-					Grid.Row="4"
-					Grid.Column="0"
-					Grid.ColumnSpan="2"
-					Margin="0,10,0,0"
-					VerticalAlignment="Top"
-					ToolTip="{DynamicResource CheckBoxMPTip}"
-					IsChecked="{Binding MPOptional}"
-					Padding="11,0,11,0"
-					VerticalContentAlignment="Center" />
 
-				<GridSplitter
-					Grid.Row="5"
-					Grid.Column="0"
-					Grid.ColumnSpan="2"
-					Height="1"
-					Margin="0,7,0,7"
-					Background="#FF4C4B4B"
-					HorizontalContentAlignment="Center"
-					HorizontalAlignment="Stretch"
-					VerticalAlignment="Bottom" />
-				<StackPanel
-					Grid.Row="6"
-					Grid.ColumnSpan="2">
+				<Grid
+					Grid.ColumnSpan="3"
+					Margin="0,0,0,10">
+					<Grid.RowDefinitions>
+						<RowDefinition
+							Height="Auto" />
+						<RowDefinition
+							Height="Auto" />
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition
+							Width="*" />
+						<ColumnDefinition
+							Width="Auto" />
+					</Grid.ColumnDefinitions>
 					<TextBlock
-						HorizontalAlignment="Center"
-						Grid.Row="6"
+						x:Name="TitleProjectLocation"
 						Grid.ColumnSpan="2"
+						Text="{DynamicResource SCSProjectLocation}"
+						VerticalAlignment="Center" />
+
+					<Border
+						Grid.Row="1"
+						Grid.ColumnSpan="2"
+						Style="{DynamicResource MultiControlBorder}" />
+					<ui:TextBox
+						x:Name="TextProjectLocation"
+						Grid.Row="1"
+						MaxLines="1"
+						Grid.Column="0"
+						Padding="3,3,3,3"
+						IsReadOnly="True"
 						TextWrapping="Wrap"
 						VerticalAlignment="Top"
-						Text="{DynamicResource TitleModIcon}"
-						FontSize="16" />
-					<Grid
-						Grid.Row="7"
-						Grid.Column="0"
-						Grid.ColumnSpan="2"
-						Margin="0,5,0,0">
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition
-								Width="Auto" />
-							<ColumnDefinition
-								Width="*" />
-							<ColumnDefinition
-								Width="Auto" />
-						</Grid.ColumnDefinitions>
-						<TextBlock
-							Grid.Column="0"
-							TextWrapping="Wrap"
-							VerticalAlignment="Center"
-							Text="{DynamicResource IconName}"
-							HorizontalAlignment="Right" />
-						<TextBox
-							x:Name="TextIconName"
-							MaxLines="1"
-							Grid.Column="1"
-							TextWrapping="Wrap"
-							Text="{Binding IconName, UpdateSourceTrigger=PropertyChanged}"
-							TextChanged="TextFilenameChanged"
-							Cursor="IBeam" />
-
-						<Button
-							x:Name="ButtonChooseIcon"
-							Grid.Column="2"
-							Click="ImageButtonClick"
-							VerticalAlignment="Stretch"
-							Height="{Binding ActualHeight, ElementName=TextIconName, Mode=OneWay}">
-							<Viewbox>
-								<ui:SymbolIcon
-									Symbol="Folder16" />
-							</Viewbox>
-						</Button>
-					</Grid>
-					<Border
-						Grid.Row="8"
-						Grid.Column="0"
-						Grid.ColumnSpan="2"
-						Margin="0,5,0,0"
-						BorderThickness="1"
-						BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
+						Text="{Binding ProjectLocation}"
+						Cursor="IBeam">
+						<ui:TextBox.Style>
+							<Style
+								TargetType="ui:TextBox"
+								BasedOn="{StaticResource {x:Type ui:TextBox}}">
+								<Style.Triggers>
+									<DataTrigger
+										Binding="{Binding ProjectExist}"
+										Value="false">
+										<Setter
+											Property="Foreground"
+											Value="Red" />
+										<Setter
+											Property="ToolTip"
+											Value="{DynamicResource SCSProjectLocationTipNotExist}" />
+									</DataTrigger>
+									<Trigger
+										Property="Text"
+										Value="">
+										<Setter
+											Property="Background"
+											Value="Yellow" />
+									</Trigger>
+								</Style.Triggers>
+							</Style>
+						</ui:TextBox.Style>
+					</ui:TextBox>
+					<Button
+						x:Name="ButtonChooseProject"
+						Grid.Row="1"
+						Grid.Column="1"
+						HorizontalAlignment="Left"
+						Click="ChooseProjectLocation"
+						Width="{Binding ActualHeight, ElementName=TextProjectLocation, Mode=OneWay}"
+						Height="{Binding ActualHeight, ElementName=TextProjectLocation, Mode=OneWay}">
 						<Viewbox>
-							<Image
-								x:Name="ImageModIcon"
-								VerticalAlignment="Top"
-								Stretch="Uniform"
-								Source="{Binding ModIcon}"
-								Width="276"
-								Height="162" />
+							<ui:SymbolIcon
+								Symbol="Folder16" />
 						</Viewbox>
-					</Border>
-				</StackPanel>
+					</Button>
+				</Grid>
+				<Grid
+					x:Name="GridManifest"
+					Grid.Row="1">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition
+							Width="Auto" />
+						<ColumnDefinition
+							Width="*" />
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition
+							Height="Auto" />
+						<RowDefinition
+							Height="Auto" />
+						<RowDefinition
+							Height="Auto" />
+						<RowDefinition
+							Height="Auto" />
+						<RowDefinition
+							Height="Auto" />
+						<RowDefinition
+							Height="15" />
+						<RowDefinition
+							Height="Auto" />
+						<RowDefinition
+							Height="Auto" />
+						<RowDefinition
+							Height="Auto" />
+						<RowDefinition
+							Height="Auto" />
+					</Grid.RowDefinitions>
+					<TextBlock
+						Grid.Row="0"
+						Grid.Column="0"
+						Grid.ColumnSpan="2"
+						VerticalAlignment="Top"
+						HorizontalAlignment="Center"
+						FontSize="14">
+					<Run
+							Text="{DynamicResource BasicInfo}" />
+					</TextBlock>
+					<TextBlock
+						Grid.Row="1"
+						Grid.Column="0"
+						Margin="0,10,0,0"
+						TextWrapping="Wrap"
+						VerticalAlignment="Center"
+						HorizontalAlignment="Right"
+						Text="{DynamicResource ModVersion}" />
+					<ui:TextBox
+						x:Name="TextVersion"
+						Grid.Row="1"
+						Grid.Column="1"
+						MaxLines="1"
+						Margin="0,10,0,0"
+						TextWrapping="Wrap"
+						Text="{Binding Version}"
+						VerticalAlignment="Top"
+						Cursor="IBeam" />
+					<TextBlock
+						Grid.Row="2"
+						Grid.Column="0"
+						Margin="0,10,0,0"
+						TextWrapping="Wrap"
+						VerticalAlignment="Center"
+						HorizontalAlignment="Right"
+						Text="{DynamicResource ProjectDisplayName}"
+						ToolTip="{DynamicResource ProjectDisplayNameTip}" />
+					<ui:TextBox
+						x:Name="TextModDisplayName"
+						Grid.Row="2"
+						Grid.Column="1"
+						MaxLines="1"
+						Margin="0,10,0,0"
+						TextWrapping="Wrap"
+						Text="{Binding ModDisplayName}" />
+					<TextBlock
+						Grid.Row="3"
+						Grid.Column="0"
+						Margin="0,10,0,0"
+						TextWrapping="Wrap"
+						VerticalAlignment="Center"
+						HorizontalAlignment="Right"
+						Text="{DynamicResource Author}" />
+					<ui:TextBox
+						x:Name="TextAuthor"
+						Grid.Row="3"
+						Grid.Column="1"
+						MaxLines="1"
+						Margin="0,10,0,0"
+						TextWrapping="Wrap"
+						Text="{Binding Author}"
+						VerticalAlignment="Top" />
+					<ui:ToggleSwitch
+						x:Name="CheckBoxMP"
+						Content="{DynamicResource CheckBoxMP}"
+						Grid.Row="4"
+						Grid.Column="0"
+						Grid.ColumnSpan="2"
+						Margin="0,10,0,0"
+						VerticalAlignment="Top"
+						ToolTip="{DynamicResource CheckBoxMPTip}"
+						IsChecked="{Binding MPOptional}"
+						Padding="11,0,11,0"
+						VerticalContentAlignment="Center" />
 
+					<GridSplitter
+						Grid.Row="5"
+						Grid.Column="0"
+						Grid.ColumnSpan="2"
+						Height="1"
+						Margin="0,7,0,7"
+						Background="#FF4C4B4B"
+						HorizontalContentAlignment="Center"
+						HorizontalAlignment="Stretch"
+						VerticalAlignment="Bottom" />
+					<StackPanel
+						Grid.Row="6"
+						Grid.ColumnSpan="2">
+						<TextBlock
+							HorizontalAlignment="Center"
+							Grid.Row="6"
+							Grid.ColumnSpan="2"
+							TextWrapping="Wrap"
+							VerticalAlignment="Top"
+							Text="{DynamicResource TitleModIcon}"
+							FontSize="16" />
+						<Grid
+							Grid.Row="7"
+							Grid.Column="0"
+							Grid.ColumnSpan="2"
+							Margin="0,5,0,0">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition
+									Width="Auto" />
+								<ColumnDefinition
+									Width="*" />
+								<ColumnDefinition
+									Width="Auto" />
+							</Grid.ColumnDefinitions>
+							<TextBlock
+								Grid.Column="0"
+								TextWrapping="Wrap"
+								VerticalAlignment="Center"
+								Text="{DynamicResource IconName}"
+								HorizontalAlignment="Right" />
+							<ui:TextBox
+								x:Name="TextIconName"
+								MaxLines="1"
+								Grid.Column="1"
+								TextWrapping="Wrap"
+								Text="{Binding IconName, UpdateSourceTrigger=PropertyChanged}"
+								TextChanged="TextFilenameChanged"
+								Cursor="IBeam" />
+
+							<Button
+								x:Name="ButtonChooseIcon"
+								Grid.Column="2"
+								Click="ImageButtonClick"
+								VerticalAlignment="Stretch"
+								Height="{Binding ActualHeight, ElementName=TextIconName, Mode=OneWay}">
+								<Viewbox>
+									<ui:SymbolIcon
+										Symbol="Folder16" />
+								</Viewbox>
+							</Button>
+						</Grid>
+						<Border
+							Grid.Row="8"
+							Grid.Column="0"
+							Grid.ColumnSpan="2"
+							Margin="0,5,0,0"
+							BorderThickness="1"
+							BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
+							<Viewbox>
+								<Image
+									x:Name="ImageModIcon"
+									VerticalAlignment="Top"
+									Stretch="Uniform"
+									Source="{Binding ModIcon}"
+									Width="276"
+									Height="162" />
+							</Viewbox>
+						</Border>
+					</StackPanel>
+
+				</Grid>
+
+				<GridSplitter
+					Grid.Row="1"
+					Grid.Column="1"
+					Width="1"
+					Margin="7,0,7,0"
+					Background="#FF4C4B4B"
+					HorizontalAlignment="Center" />
+
+				<ScrollViewer
+					Grid.Row="1"
+					Grid.Column="2">
+					<Grid
+						x:Name="GridCategory">
+						<Grid.RowDefinitions>
+							<RowDefinition
+								Height="Auto" />
+							<RowDefinition
+								Height="10" />
+							<RowDefinition
+								Height="Auto" />
+							<RowDefinition
+								Height="*" />
+						</Grid.RowDefinitions>
+						<TextBlock
+							Text="{DynamicResource TitleCategory}"
+							Grid.Row="0"
+							FontSize="14"
+							HorizontalAlignment="Center" />
+						<TextBlock
+							Text="{DynamicResource TextCategoryTip}"
+							Grid.Row="2"
+							HorizontalAlignment="Left"
+							TextWrapping="Wrap" />
+						<StackPanel
+							Grid.Row="3">
+							<CheckBox
+								x:Name="CateTruck"
+								Style="{StaticResource CateCheckBox}"
+								IsChecked="{Binding Check_truck}">
+								<Run
+									Text="truck" />
+							</CheckBox>
+							<CheckBox
+								x:Name="CateTrailer"
+								Style="{StaticResource CateCheckBox}"
+								IsChecked="{Binding Check_trailer}">
+								<Run
+									Text="trailer" />
+							</CheckBox>
+							<CheckBox
+								x:Name="CateInterior"
+								Style="{StaticResource CateCheckBox}"
+								IsChecked="{Binding Check_interior}">
+								<Run
+									Text="interior" />
+							</CheckBox>
+							<CheckBox
+								x:Name="CateTuningParts"
+								Style="{StaticResource CateCheckBox}"
+								IsChecked="{Binding Check_tuning_parts}">
+								<Run
+									Text="tuning_parts" />
+							</CheckBox>
+							<CheckBox
+								x:Name="CateAiTraffic"
+								Style="{StaticResource CateCheckBox}"
+								IsChecked="{Binding Check_ai_traffic}">
+								<Run
+									Text="ai_traffic" />
+							</CheckBox>
+							<CheckBox
+								x:Name="CateSound"
+								Style="{StaticResource CateCheckBox}"
+								IsChecked="{Binding Check_sound}">
+								<Run
+									Text="sound" />
+							</CheckBox>
+							<CheckBox
+								x:Name="CatePaintJob"
+								Style="{StaticResource CateCheckBox}"
+								IsChecked="{Binding Check_paint_job}">
+								<Run
+									Text="paint_job" />
+							</CheckBox>
+							<CheckBox
+								x:Name="CateCargoPack"
+								Style="{StaticResource CateCheckBox}"
+								IsChecked="{Binding Check_cargo_pack}">
+								<Run
+									Text="cargo_pack" />
+							</CheckBox>
+							<CheckBox
+								x:Name="CateMap"
+								Style="{StaticResource CateCheckBox}"
+								IsChecked="{Binding Check_map}">
+								<Run
+									Text="map" />
+							</CheckBox>
+							<CheckBox
+								x:Name="CateUI"
+								Style="{StaticResource CateCheckBox}"
+								IsChecked="{Binding Check_ui}">
+								<Run
+									Text="ui" />
+							</CheckBox>
+							<CheckBox
+								x:Name="CateWeatherSetup"
+								Style="{StaticResource CateCheckBox}"
+								IsChecked="{Binding Check_weather_setup}">
+								<Run
+									Text="weather_setup" />
+							</CheckBox>
+							<CheckBox
+								x:Name="CatePhysics"
+								Style="{StaticResource CateCheckBox}"
+								IsChecked="{Binding Check_physics}">
+								<Run
+									Text="physics" />
+							</CheckBox>
+							<CheckBox
+								x:Name="CateGraphics"
+								Style="{StaticResource CateCheckBox}"
+								IsChecked="{Binding Check_graphics}">
+								<Run
+									Text="graphics" />
+							</CheckBox>
+							<CheckBox
+								x:Name="CateModels"
+								Style="{StaticResource CateCheckBox}"
+								IsChecked="{Binding Check_models}">
+								<Run
+									Text="models" />
+							</CheckBox>
+							<CheckBox
+								x:Name="CateMovers"
+								Style="{StaticResource CateCheckBox}"
+								IsChecked="{Binding Check_movers}">
+								<Run
+									Text="movers" />
+							</CheckBox>
+							<CheckBox
+								x:Name="CateWalkers"
+								Style="{StaticResource CateCheckBox}"
+								IsChecked="{Binding Check_walkers}">
+								<Run
+									Text="walkers" />
+							</CheckBox>
+							<CheckBox
+								x:Name="CatePrefabs"
+								Style="{StaticResource CateCheckBox}"
+								IsChecked="{Binding Check_prefabs}">
+								<Run
+									Text="prefabs" />
+							</CheckBox>
+							<CheckBox
+								x:Name="CateOther"
+								Style="{StaticResource CateCheckBox}"
+								IsChecked="{Binding Check_other}">
+								<Run
+									Text="other" />
+							</CheckBox>
+						</StackPanel>
+					</Grid>
+				</ScrollViewer>
 			</Grid>
 
 			<GridSplitter
-				Grid.Row="1"
 				Grid.Column="1"
 				Width="1"
 				Margin="7,0,7,0"
@@ -337,457 +507,286 @@
 				HorizontalAlignment="Center" />
 
 			<Grid
-				x:Name="GridCategory"
-				Grid.Row="1"
 				Grid.Column="2">
 				<Grid.RowDefinitions>
 					<RowDefinition
 						Height="Auto" />
 					<RowDefinition
-						Height="10" />
-					<RowDefinition
 						Height="Auto" />
 					<RowDefinition
 						Height="*" />
 				</Grid.RowDefinitions>
 				<TextBlock
-					Text="{DynamicResource TitleCategory}"
-					Grid.Row="0"
-					FontSize="14"
-					HorizontalAlignment="Center" />
-				<TextBlock
-					Text="{DynamicResource TextCategoryTip}"
-					Grid.Row="2"
-					HorizontalAlignment="Left"
-					TextWrapping="Wrap" />
-				<StackPanel
-					Grid.Row="3">
-					<CheckBox
-						x:Name="CateTruck"
-						Style="{StaticResource CateCheckBox}"
-						IsChecked="{Binding Check_truck}">
-						<Run
-							Text="truck" />
-					</CheckBox>
-					<CheckBox
-						x:Name="CateTrailer"
-						Style="{StaticResource CateCheckBox}"
-						IsChecked="{Binding Check_trailer}">
-						<Run
-							Text="trailer" />
-					</CheckBox>
-					<CheckBox
-						x:Name="CateInterior"
-						Style="{StaticResource CateCheckBox}"
-						IsChecked="{Binding Check_interior}">
-						<Run
-							Text="interior"/>
-					</CheckBox>
-					<CheckBox
-						x:Name="CateTuningParts"
-						Style="{StaticResource CateCheckBox}"
-						IsChecked="{Binding Check_tuning_parts}">
-						<Run
-							Text="tuning_parts" />
-					</CheckBox>
-					<CheckBox
-						x:Name="CateAiTraffic"
-						Style="{StaticResource CateCheckBox}"
-						IsChecked="{Binding Check_ai_traffic}">
-						<Run
-							Text="ai_traffic" />
-					</CheckBox>
-					<CheckBox
-						x:Name="CateSound"
-						Style="{StaticResource CateCheckBox}"
-						IsChecked="{Binding Check_sound}">
-						<Run
-							Text="sound" />
-					</CheckBox>
-					<CheckBox
-						x:Name="CatePaintJob"
-						Style="{StaticResource CateCheckBox}"
-						IsChecked="{Binding Check_paint_job}">
-						<Run
-							Text="paint_job" />
-					</CheckBox>
-					<CheckBox
-						x:Name="CateCargoPack"
-						Style="{StaticResource CateCheckBox}"
-						IsChecked="{Binding Check_cargo_pack}">
-						<Run
-							Text="cargo_pack" />
-					</CheckBox>
-					<CheckBox
-						x:Name="CateMap"
-						Style="{StaticResource CateCheckBox}"
-						IsChecked="{Binding Check_map}">
-						<Run
-							Text="map" />
-					</CheckBox>
-					<CheckBox
-						x:Name="CateUI"
-						Style="{StaticResource CateCheckBox}"
-						IsChecked="{Binding Check_ui}">
-						<Run
-							Text="ui" />
-					</CheckBox>
-					<CheckBox
-						x:Name="CateWeatherSetup"
-						Style="{StaticResource CateCheckBox}"
-						IsChecked="{Binding Check_weather_setup}">
-						<Run
-							Text="weather_setup"/>
-					</CheckBox>
-					<CheckBox
-						x:Name="CatePhysics"
-						Style="{StaticResource CateCheckBox}"
-						IsChecked="{Binding Check_physics}">
-						<Run
-							Text="physics" />
-					</CheckBox>
-					<CheckBox
-						x:Name="CateGraphics"
-						Style="{StaticResource CateCheckBox}"
-						IsChecked="{Binding Check_graphics}">
-						<Run
-							Text="graphics" />
-					</CheckBox>
-					<CheckBox
-						x:Name="CateModels"
-						Style="{StaticResource CateCheckBox}"
-						IsChecked="{Binding Check_models}">
-						<Run
-							Text="models" />
-					</CheckBox>
-					<CheckBox
-						x:Name="CateMovers"
-						Style="{StaticResource CateCheckBox}"
-						IsChecked="{Binding Check_movers}">
-						<Run
-							Text="movers"/>
-					</CheckBox>
-					<CheckBox
-						x:Name="CateWalkers"
-						Style="{StaticResource CateCheckBox}"
-						IsChecked="{Binding Check_walkers}">
-						<Run
-							Text="walkers" />
-					</CheckBox>
-					<CheckBox
-						x:Name="CatePrefabs"
-						Style="{StaticResource CateCheckBox}"
-						IsChecked="{Binding Check_prefabs}">
-						<Run
-							Text="prefabs" />
-					</CheckBox>
-					<CheckBox
-						x:Name="CateOther"
-						Style="{StaticResource CateCheckBox}"
-						IsChecked="{Binding Check_other}">
-						<Run
-							Text="other"/>
-					</CheckBox>
-				</StackPanel>
-			</Grid>
-		</Grid>
-
-		<GridSplitter
-			Grid.Column="1"
-			Width="1"
-			Margin="7,0,7,0"
-			Background="#FF4C4B4B"
-			HorizontalAlignment="Center" />
-
-		<Grid
-			Grid.Column="2"
-			Height="{Binding ActualHeight, ElementName=grid, Mode=OneWay}">
-			<Grid.RowDefinitions>
-				<RowDefinition
-					Height="Auto" />
-				<RowDefinition
-					Height="Auto" />
-				<RowDefinition
-					Height="*" />
-			</Grid.RowDefinitions>
-			<TextBlock
-				x:Name="textBlock"
-				TextWrapping="Wrap"
-				VerticalAlignment="Top"
-				FontSize="14"
-				HorizontalAlignment="Center"
-				Text="{DynamicResource TitleDescription}" />
-			<Grid
-				Grid.Row="1"
-				Margin="0,10,0,0">
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition
-						Width="Auto" />
-					<ColumnDefinition
-						Width="*" />
-				</Grid.ColumnDefinitions>
-				<TextBlock
-					TextWrapping="Wrap"
-					VerticalAlignment="Center"
-					HorizontalAlignment="Center"
-					Text="{DynamicResource DescriptionFileName}" />
-				<TextBox
-					x:Name="TextDescriptionName"
+					x:Name="textBlock"
 					TextWrapping="Wrap"
 					VerticalAlignment="Top"
-					Grid.Column="1"
-					Text="{Binding DescriptionName, UpdateSourceTrigger=PropertyChanged}"
-					TextChanged="TextFilenameChanged" />
-			</Grid>
-
-			<Grid
-				Grid.Row="2"
-				Margin="0,5,0,0">
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition
-						Width="Auto" />
-					<ColumnDefinition
-						Width="5" />
-					<ColumnDefinition
-						Width="3*" />
-				</Grid.ColumnDefinitions>
-				<Grid.RowDefinitions>
-					<RowDefinition
-						Height="Auto" />
-					<RowDefinition
-						Height="5" />
-					<RowDefinition
-						Height="*" />
-				</Grid.RowDefinitions>
-				<Grid>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition
-							Width="*" />
-						<ColumnDefinition
-							Width="Auto" />
-					</Grid.ColumnDefinitions>
-					<TextBlock
-						Text="{DynamicResource HeaderLocale}"
-						HorizontalAlignment="Center"
-						VerticalAlignment="Bottom"
-						FontSize="14" />
-					<TextBlock
-						Grid.Column="1"
-						Text="{DynamicResource ButtonDelete}"
-						HorizontalAlignment="Center"
-						VerticalAlignment="Bottom"
-						FontSize="10"
-						Margin="0,0,10,0" />
-				</Grid>
-				<ListBox
-					Grid.Row="2"
-					d:ItemsSource="{d:SampleData ItemCount=2}"
-					ItemsSource="{Binding Locales}"
-					SelectedItem="{Binding CurrentLocale, Mode=TwoWay}"
-					SelectedIndex="0"
-					SelectionMode="Single">
-					<ListBox.ItemTemplate>
-						<DataTemplate>
-							<Grid>
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition
-										Width="*" />
-									<ColumnDefinition
-										Width="Auto" />
-								</Grid.ColumnDefinitions>
-								<TextBlock
-									Text="{Binding LocaleValue}"
-									ToolTip="{Binding LocaleDisplay}"
-									FontSize="13">
-									<TextBlock.Style>
-										<Style
-											TargetType="TextBlock"
-											BasedOn="{StaticResource {x:Type TextBlock}}">
-											<Style.Triggers>
-												<DataTrigger
-													Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=IsSelected}"
-													Value="True">
-													<Setter
-														Property="Foreground"
-														Value="White" />
-												</DataTrigger>
-											</Style.Triggers>
-										</Style>
-									</TextBlock.Style>
-								</TextBlock>
-								<Button
-									Grid.Column="1"
-									Padding="0"
-									Margin="5,0"
-									BorderThickness="0"
-									VerticalAlignment="Top"
-									Click="DeleteLocaleClick">
-									<Button.Style>
-										<Style
-											TargetType="Button"
-											BasedOn="{StaticResource GridButton}">
-											<Style.Triggers>
-												<DataTrigger
-													Binding="{Binding HasDesc}"
-													Value="False">
-													<Setter
-														Property="Visibility"
-														Value="Hidden" />
-												</DataTrigger>
-											</Style.Triggers>
-										</Style>
-									</Button.Style>
-									<ui:SymbolIcon
-										Symbol="GlobeProhibited20" />
-								</Button>
-							</Grid>
-						</DataTemplate>
-					</ListBox.ItemTemplate>
-				</ListBox>
-				<Grid Grid.Column="2">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition
-							Width="Auto" />
-						<ColumnDefinition
-							Width="*" />
-						<ColumnDefinition
-							Width="Auto" />
-						<ColumnDefinition
-							Width="Auto" />
-					</Grid.ColumnDefinitions>
-					<Button
-						x:Name="ButtonCopyFromUniversal"
-						ToolTip="{DynamicResource TipsCopyFromUniversal}"
-						Click="CopyFromUniversalClick"
-						Visibility="{Binding CopyFronUniversalVisibility}"
-						Width="{Binding ActualHeight, ElementName=ButtonCopyFromUniversal, Mode=OneWay}"
-						VerticalAlignment="Stretch">
-						<ui:SymbolIcon
-							Symbol="DocumentCopy20" />
-					</Button>
-					<TextBlock
-						Text="{DynamicResource TextFontColor}"
-						Grid.Column="2"
-						VerticalAlignment="Center" />
-					<ui:SplitButton
-						Grid.Column="3"
-						Command="{Binding ColorCommand}"
-						CommandParameter="[black]">
-						<Border
-							Width="30"
-							Height="10"
-							Background="Black"
-							d:Background="White"
-							CornerRadius="4"
-							BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
-							BorderThickness="1" />
-						<ui:SplitButton.Flyout>
-							<ContextMenu>
-								<MenuItem
-									Command="{Binding ColorCommand}"
-									CommandParameter="[red]">
-									<MenuItem.Header>
-										<Border
-											Width="30"
-											Height="10"
-											Background="Red"
-											BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
-											BorderThickness="1"
-											CornerRadius="4" />
-									</MenuItem.Header>
-								</MenuItem>
-								<MenuItem
-									Command="{Binding ColorCommand}"
-									CommandParameter="[green]">
-									<MenuItem.Header>
-										<Border
-											Width="30"
-											Height="10"
-											Background="Green"
-											BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
-											BorderThickness="1"
-											CornerRadius="4" />
-									</MenuItem.Header>
-								</MenuItem>
-								<MenuItem
-									Command="{Binding ColorCommand}"
-									CommandParameter="[blue]">
-									<MenuItem.Header>
-										<Border
-											Width="30"
-											Height="10"
-											Background="Blue"
-											BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
-											BorderThickness="1"
-											CornerRadius="4" />
-									</MenuItem.Header>
-								</MenuItem>
-								<MenuItem
-									Command="{Binding ColorCommand}"
-									CommandParameter="[white]">
-									<MenuItem.Header>
-										<Border
-											Width="30"
-											Height="10"
-											Background="White"
-											BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
-											BorderThickness="1"
-											CornerRadius="4" />
-									</MenuItem.Header>
-								</MenuItem>
-								<MenuItem
-									Command="{Binding ColorCommand}"
-									CommandParameter="[Orange]">
-									<MenuItem.Header>
-										<Border
-											Width="30"
-											Height="10"
-											Background="Orange"
-											BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
-											BorderThickness="1"
-											CornerRadius="4" />
-									</MenuItem.Header>
-								</MenuItem>
-							</ContextMenu>
-						</ui:SplitButton.Flyout>
-					</ui:SplitButton>
-				</Grid>
-				<TextBox
-					x:Name="TextDescription"
-					Grid.Row="2"
-					Grid.Column="2"
-					TextWrapping="Wrap"
-					AcceptsReturn="True"
-					Text="{Binding CurrentLocale.DescContent, UpdateSourceTrigger=PropertyChanged}"
-					VerticalScrollBarVisibility="Auto"
-					FontSize="12"
-					Cursor="IBeam" />
+					FontSize="14"
+					HorizontalAlignment="Center"
+					Text="{DynamicResource TitleDescription}" />
 				<Grid
-					Grid.Column="1"
-					Margin="5,0,0,0">
+					Grid.Row="1"
+					Margin="0,10,0,0">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition
+							Width="Auto" />
+						<ColumnDefinition
+							Width="*" />
+					</Grid.ColumnDefinitions>
+					<TextBlock
+						TextWrapping="Wrap"
+						VerticalAlignment="Center"
+						HorizontalAlignment="Center"
+						Text="{DynamicResource DescriptionFileName}" />
+					<ui:TextBox
+						x:Name="TextDescriptionName"
+						TextWrapping="Wrap"
+						VerticalAlignment="Top"
+						Grid.Column="1"
+						Text="{Binding DescriptionName, UpdateSourceTrigger=PropertyChanged}"
+						TextChanged="TextFilenameChanged" />
+				</Grid>
+
+				<Grid
+					Grid.Row="2"
+					Margin="0,5,0,0">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition
+							Width="Auto" />
+						<ColumnDefinition
+							Width="5" />
+						<ColumnDefinition
+							Width="3*" />
+					</Grid.ColumnDefinitions>
 					<Grid.RowDefinitions>
 						<RowDefinition
 							Height="Auto" />
 						<RowDefinition
+							Height="5" />
+						<RowDefinition
 							Height="*" />
 					</Grid.RowDefinitions>
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition
+								Width="*" />
+							<ColumnDefinition
+								Width="Auto" />
+						</Grid.ColumnDefinitions>
+						<TextBlock
+							Text="{DynamicResource HeaderLocale}"
+							HorizontalAlignment="Center"
+							VerticalAlignment="Bottom"
+							FontSize="14" />
+						<TextBlock
+							Grid.Column="1"
+							Text="{DynamicResource ButtonDelete}"
+							HorizontalAlignment="Center"
+							VerticalAlignment="Bottom"
+							FontSize="10"
+							Margin="0,0,10,0" />
+					</Grid>
+					<ListBox
+						Grid.Row="2"
+						d:ItemsSource="{d:SampleData ItemCount=2}"
+						ItemsSource="{Binding Locales}"
+						SelectedItem="{Binding CurrentLocale, Mode=TwoWay}"
+						SelectedIndex="0"
+						SelectionMode="Single">
+						<ListBox.ItemTemplate>
+							<DataTemplate>
+								<Grid>
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition
+											Width="*" />
+										<ColumnDefinition
+											Width="Auto" />
+									</Grid.ColumnDefinitions>
+									<TextBlock
+										Text="{Binding LocaleValue}"
+										ToolTip="{Binding LocaleDisplay}"
+										FontSize="13">
+										<TextBlock.Style>
+											<Style
+												TargetType="TextBlock"
+												BasedOn="{StaticResource {x:Type TextBlock}}">
+												<Style.Triggers>
+													<DataTrigger
+														Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=IsSelected}"
+														Value="True">
+														<Setter
+															Property="Foreground"
+															Value="White" />
+													</DataTrigger>
+												</Style.Triggers>
+											</Style>
+										</TextBlock.Style>
+									</TextBlock>
+									<Button
+										Grid.Column="1"
+										Padding="0"
+										Margin="5,0"
+										BorderThickness="0"
+										VerticalAlignment="Top"
+										Click="DeleteLocaleClick">
+										<Button.Style>
+											<Style
+												TargetType="Button"
+												BasedOn="{StaticResource GridButton}">
+												<Style.Triggers>
+													<DataTrigger
+														Binding="{Binding HasDesc}"
+														Value="False">
+														<Setter
+															Property="Visibility"
+															Value="Hidden" />
+													</DataTrigger>
+												</Style.Triggers>
+											</Style>
+										</Button.Style>
+										<ui:SymbolIcon
+											Symbol="GlobeProhibited20" />
+									</Button>
+								</Grid>
+							</DataTemplate>
+						</ListBox.ItemTemplate>
+					</ListBox>
+					<Grid
+						Grid.Column="2">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition
+								Width="Auto" />
+							<ColumnDefinition
+								Width="*" />
+							<ColumnDefinition
+								Width="Auto" />
+							<ColumnDefinition
+								Width="Auto" />
+						</Grid.ColumnDefinitions>
+						<Button
+							x:Name="ButtonCopyFromUniversal"
+							ToolTip="{DynamicResource TipsCopyFromUniversal}"
+							Click="CopyFromUniversalClick"
+							Visibility="{Binding CopyFronUniversalVisibility}"
+							Width="{Binding ActualHeight, ElementName=ButtonCopyFromUniversal, Mode=OneWay}"
+							VerticalAlignment="Stretch">
+							<ui:SymbolIcon
+								Symbol="DocumentCopy20" />
+						</Button>
+						<TextBlock
+							Text="{DynamicResource TextFontColor}"
+							Grid.Column="2"
+							VerticalAlignment="Center" />
+						<ui:SplitButton
+							Grid.Column="3"
+							Command="{Binding ColorCommand}"
+							CommandParameter="[black]">
+							<Border
+								Width="30"
+								Height="10"
+								Background="Black"
+								d:Background="White"
+								CornerRadius="4"
+								BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
+								BorderThickness="1" />
+							<ui:SplitButton.Flyout>
+								<ContextMenu>
+									<MenuItem
+										Command="{Binding ColorCommand}"
+										CommandParameter="[red]">
+										<MenuItem.Header>
+											<Border
+												Width="30"
+												Height="10"
+												Background="Red"
+												BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
+												BorderThickness="1"
+												CornerRadius="4" />
+										</MenuItem.Header>
+									</MenuItem>
+									<MenuItem
+										Command="{Binding ColorCommand}"
+										CommandParameter="[green]">
+										<MenuItem.Header>
+											<Border
+												Width="30"
+												Height="10"
+												Background="Green"
+												BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
+												BorderThickness="1"
+												CornerRadius="4" />
+										</MenuItem.Header>
+									</MenuItem>
+									<MenuItem
+										Command="{Binding ColorCommand}"
+										CommandParameter="[blue]">
+										<MenuItem.Header>
+											<Border
+												Width="30"
+												Height="10"
+												Background="Blue"
+												BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
+												BorderThickness="1"
+												CornerRadius="4" />
+										</MenuItem.Header>
+									</MenuItem>
+									<MenuItem
+										Command="{Binding ColorCommand}"
+										CommandParameter="[white]">
+										<MenuItem.Header>
+											<Border
+												Width="30"
+												Height="10"
+												Background="White"
+												BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
+												BorderThickness="1"
+												CornerRadius="4" />
+										</MenuItem.Header>
+									</MenuItem>
+									<MenuItem
+										Command="{Binding ColorCommand}"
+										CommandParameter="[Orange]">
+										<MenuItem.Header>
+											<Border
+												Width="30"
+												Height="10"
+												Background="Orange"
+												BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
+												BorderThickness="1"
+												CornerRadius="4" />
+										</MenuItem.Header>
+									</MenuItem>
+								</ContextMenu>
+							</ui:SplitButton.Flyout>
+						</ui:SplitButton>
+					</Grid>
+					<ui:TextBox
+						x:Name="TextDescription"
+						Grid.Row="2"
+						Grid.Column="2"
+						TextWrapping="Wrap"
+						AcceptsReturn="True"
+						Text="{Binding CurrentLocale.DescContent, UpdateSourceTrigger=PropertyChanged}"
+						VerticalScrollBarVisibility="Auto"
+						FontSize="12"
+						Cursor="IBeam" />
 				</Grid>
 			</Grid>
-		</Grid>
 
-		<StackPanel
-			Grid.Row="1"
-			Grid.ColumnSpan="3"
+			<StackPanel
+				Grid.Row="1"
+				Grid.ColumnSpan="3"
 				Margin="0,5,0,0">
 
-			<Button
-				x:Name="ButtonSave"
-				Content="{DynamicResource ButtonSave}"
-				Padding="60,5,60,5"
-				Grid.Row="9"
-				FontSize="14"
-				Click="ButtonResultClick"
-				HorizontalAlignment="Right" />
-		</StackPanel>
+				<Button
+					x:Name="ButtonSave"
+					Content="{DynamicResource ButtonSave}"
+					Padding="60,5,60,5"
+					Grid.Row="9"
+					FontSize="14"
+					Click="ButtonResultClick"
+					HorizontalAlignment="Right" />
+			</StackPanel>
+		</Grid>
 	</Grid>
+
 </base:BasePage>
