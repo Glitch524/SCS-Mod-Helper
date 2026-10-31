@@ -1,5 +1,4 @@
-﻿using SCS_Mod_Helper.Base;
-using SCS_Mod_Helper.Utils;
+﻿using SCS_Mod_Helper.Class.Base;
 using System.Collections.ObjectModel;
 
 namespace SCS_Mod_Helper.Modding.Accessories.AccAddon.CreatedSii;

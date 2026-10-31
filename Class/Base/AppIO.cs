@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Xml;
 
-namespace SCS_Mod_Helper.Base;
+namespace SCS_Mod_Helper.Class.Base;
 
 public abstract class AppIO {
 	protected XmlDocument doc = new();
@@ -53,6 +53,14 @@ public abstract class AppIO {
 			valueString = null;
 		else
 			valueString = string.Join(',', value);
+		WriteValueElement(name, valueString);
+	}
+	protected void WriteValueElement(string name, Floats value) {
+		string? valueString;
+		if (value == null)
+			valueString = null;
+		else
+			valueString = value.ToAppValue();
 		WriteValueElement(name, valueString);
 	}
 

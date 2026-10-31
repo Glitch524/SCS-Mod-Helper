@@ -1,7 +1,6 @@
-﻿using SCS_Mod_Helper.Base;
-using SCS_Mod_Helper.Utils;
+﻿using SCS_Mod_Helper.Class.Base;
 
-namespace SCS_Mod_Helper.Localization;
+namespace SCS_Mod_Helper.Locale.Localization;
 
 public abstract class Locale(string localeValue, string localeDisplay): BaseBinding {
 	public static readonly string LocaleValueUni = "universal";
@@ -28,7 +27,7 @@ public abstract class Locale(string localeValue, string localeDisplay): BaseBind
 		LocaleDisplay = GetString($"locale.{LocaleValue}");
 	}
 
-	protected static List<string[]> SupportedLocales {
+	protected static List<(string localeValue, string localeDisplay)> SupportedLocales {
 		get => GetLocalePair(
 			LocaleValueUni,
 			"en_gb", "en_us", "zh_cn", "zh_tw", "ja_jp", "bg_bg",
@@ -40,10 +39,10 @@ public abstract class Locale(string localeValue, string localeDisplay): BaseBind
 			"sr_sp", "sr_sr", "sv_se", "tr_tr", "uk_uk", "vi_vn");
 	}
 
-	private static List<string[]> GetLocalePair(params string[] locales) {
-		List<string[]> localeList = [];
+	private static List<(string localeValue, string localeDisplay)> GetLocalePair(params string[] locales) {
+		List<(string localeValue, string localeDisplay)> localeList = [];
 		foreach (var locale in locales) {
-			localeList.Add([locale, GetString($"locale.{locale}")]);
+			localeList.Add((locale, GetString($"locale.{locale}")));
 		}
 		return localeList;
 	}

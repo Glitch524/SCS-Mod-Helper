@@ -2,7 +2,7 @@
 using System.IO;
 using System.Windows.Media;
 
-namespace SCS_Mod_Helper.Base {
+namespace SCS_Mod_Helper.Class.Base {
 	public abstract class SCSIO() {
 
 		protected const string FileHeader = "SiiNunit";
@@ -44,9 +44,7 @@ namespace SCS_Mod_Helper.Base {
 		protected static void WriteEmptyLine(StreamWriter sw) => sw.WriteLine("");
 
 		protected void WriteLine(StreamWriter sw, string name, string? value) {
-			if (value == null)
-				return;
-			if (value.Length == 0)
+			if (string.IsNullOrEmpty(value))
 				return;
 			Write(sw, name, value);
 		}
@@ -121,6 +119,26 @@ namespace SCS_Mod_Helper.Base {
 			}
 			Write(sw, name, value);
 		}
+		protected void WriteLine(StreamWriter sw, string name, Floats floats) {
+			if (floats == null)
+				return;
+			string value;
+			switch (floats) {
+				case Float2 float2:
+					if (float2.F0 == null && float2.F1 == null)
+						return;
+					value = float2.ToSiiValue();
+					break;
+				case Float3 float3:
+					if (float3.F0 == null && float3.F1 == null && float3.F2 == null)
+						return;
+					value = float3.ToSiiValue();
+					break;
+				default:
+					throw new ArgumentException("");
+			}
+			Write(sw, name, value);
+		}
 
 		protected void WriteLine(StreamWriter sw, string name, float?[] floats, float[] defaultValue) {
 			if (Array.Equals(floats, defaultValue))
@@ -187,7 +205,7 @@ namespace SCS_Mod_Helper.Base {
 			return value;
 		}
 
-		protected static void FloatParse(string value, Action<int, float> setter) {
+		protected static void FloatParse(string value, Floats floats) {
 			value = value[1..^1];
 			var split = value.Split(',');
 			for (int i = 0; i < split.Length; i++) {
@@ -195,7 +213,7 @@ namespace SCS_Mod_Helper.Base {
 					split[i] = split[i][..^1];
 				float f;
 				try { f = float.Parse(split[i]); } catch { f = 0.0f; }
-				setter(i, f);
+				floats[i] = f;
 			}
 		}
 	}

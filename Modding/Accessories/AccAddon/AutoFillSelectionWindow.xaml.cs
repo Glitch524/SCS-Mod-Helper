@@ -1,7 +1,5 @@
-﻿using SCS_Mod_Helper.Base;
-using System.ComponentModel;
+﻿using SCS_Mod_Helper.Class.Base;
 using System.Windows;
-using Windows.ApplicationModel.Activation;
 
 namespace SCS_Mod_Helper.Modding.Accessories.AccAddon;
 
@@ -38,7 +36,7 @@ public partial class AutoFillSelectionWindow: BaseWindow {
 		string? modelPathUK,
 		string? collPath) {
 		InitializeComponent();
-		binding = new(type, modelName, modelType, modelPath, modelPathUK, collPath);
+		binding = new(() => this, type, modelName, modelType, modelPath, modelPathUK, collPath);
 		StackMain.DataContext = binding;
 	}
 
@@ -48,15 +46,16 @@ public partial class AutoFillSelectionWindow: BaseWindow {
 	}
 }
 
-public class AutoFillBinding: BaseBinding {
+public class AutoFillBinding: WindowBinding {
 
 	public AutoFillBinding(
+		Func<IBaseVisual> visualFunc,
 		int chooseType,
 		string? modelName,
 		string? modelType,
 		string? modelPath,
 		string? modelPathUK,
-		string? collPath) {
+		string? collPath): base(visualFunc) {
 		mchooseType = chooseType;
 		mCheckModelName = !string.IsNullOrEmpty(modelName);
 		mTextModelName = modelName;

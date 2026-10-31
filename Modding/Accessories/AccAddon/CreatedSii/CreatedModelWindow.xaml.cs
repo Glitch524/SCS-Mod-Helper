@@ -1,4 +1,4 @@
-﻿using SCS_Mod_Helper.Base;
+﻿using SCS_Mod_Helper.Class.Base;
 using SCS_Mod_Helper.Utils;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -12,7 +12,7 @@ namespace SCS_Mod_Helper.Modding.Accessories.AccAddon.CreatedSii;
 /// CleanSii.xaml 的交互逻辑
 /// </summary>
 public partial class CreatedModelWindow: BaseWindow {
-	private readonly CreatedModelBinding Binding = new();
+	private readonly CreatedModelBinding Binding;
 
 	readonly string ProjectLocation = Instances.ProjectLocation;
 
@@ -27,6 +27,8 @@ public partial class CreatedModelWindow: BaseWindow {
 
 	public CreatedModelWindow() {
 		InitializeComponent();
+
+		Binding = new(() => this);
 		GridMain.DataContext = Binding;
 
 		Binding.CurrentProjectLocation = ProjectLocation;

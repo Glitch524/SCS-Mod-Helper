@@ -1,5 +1,5 @@
 ﻿using Microsoft.Win32;
-using SCS_Mod_Helper.Base;
+using SCS_Mod_Helper.Class.Base;
 using SCS_Mod_Helper.Utils;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -10,11 +10,8 @@ using System.Windows.Input;
 using Wpf.Ui.Input;
 
 namespace SCS_Mod_Helper.ConverterPix; 
-public partial class ConverterPixBinding(ConverterPixWindow window, Action<PIXFile> listBoxScrollToTop): BaseBinding {
+public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PIXFile> listBoxScrollToTop): WindowBinding(visualFunc) {
 	private readonly Action<PIXFile> ScrollToFile = listBoxScrollToTop;
-
-	private ConverterPixWindow cpWindow = window;
-
 
 	private void ScrollToTop() => ScrollToFile(FileList[0]);
 
@@ -215,7 +212,7 @@ public partial class ConverterPixBinding(ConverterPixWindow window, Action<PIXFi
 		StandardErrorEncoding = Encoding.UTF8
 	};
 
-	public void ExtractFile(Window window, PIXFile pixFile) {
+	public void ExtractFile(PIXFile pixFile) {
 		StringBuilder args = new($"-b \"{PackPath}\" -e \"{DestPath}\"");
 		int type = 0;
 		if (pixFile.IsDir) {
@@ -286,10 +283,10 @@ public partial class ConverterPixBinding(ConverterPixWindow window, Action<PIXFi
 				_ => "MessageExtractedFile",
 			};
 			string resultMessage = $"{GetString(key)} {filePath}";
-			MessageBox.Show(window, resultMessage, "Result");
+			MessageBox.Show(BindingWindow, resultMessage, "Result");
 		} else {
 			string resultMessage = $"{GetString("MessageExtractFail")}\n{string.Join(Environment.NewLine, errors)}";
-			MessageBox.Show(window, resultMessage, "Result");
+			MessageBox.Show(BindingWindow, resultMessage, "Result");
 		}
 	}
 
@@ -331,71 +328,6 @@ public partial class ConverterPixBinding(ConverterPixWindow window, Action<PIXFi
 		p.WaitForExit();
 		p.Close();
 		return anims;
-	}
-
-
-	//可以用来查看文字文件内容，比如sii、mat、cfg，无法打开其他文件，tobj也不行 即使能读，也只有一点点乱码就没有了
-	public async Task ShowFile(Window window, PIXFile pixFile) {//todo 根据这个修改其他shell process
-		StringBuilder args = new($"-b \"{PackPath}\" -show_f \"{pixFile.Filename}\"");
-
-		var startInfo = new ProcessStartInfo {
-			FileName = Instances.ConverterPixPath,
-			Arguments = args.ToString(),
-			UseShellExecute = false,
-			CreateNoWindow = true,
-			RedirectStandardInput = true,
-			RedirectStandardOutput = true,
-			RedirectStandardError = true,
-			StandardOutputEncoding = Encoding.UTF8,
-			StandardErrorEncoding = Encoding.UTF8
-		};
-
-		List<string> datas = [];
-		bool get = false;
-		bool fileReadError = false;
-
-		using var p = new Process { StartInfo = startInfo };
-		p.OutputDataReceived += (sender, e) => {
-			if (e.Data == null)
-				return;
-			var line = e.Data;
-			if (line.Trim().StartsWith('*') || line.Length == 0)
-				return;
-			if (line.StartsWith("Unable to open file to read")) {
-				fileReadError = true;
-				return;
-			}
-			if (line.Trim().Contains('-')) {
-				if (get)
-					return;
-				get = true;
-				return;
-			}
-			if (get)
-				datas.Add(line);
-		};
-
-		var errorString = new StringBuilder();
-		p.ErrorDataReceived += (sender, e) => {
-			if (e.Data != null)
-				errorString.AppendLine(e.Data);
-		};
-
-		p.Start();
-		p.BeginOutputReadLine();
-		p.BeginErrorReadLine();
-
-		await p.WaitForExitAsync();
-		if (fileReadError) {
-			window.Dispatcher.Invoke(() => 
-				MessageBox.Show(window, GetString("MessageReadFileFailed"), pixFile.Filename));
-			return;
-		}
-		if (datas.Count > 0) {
-			Debug.WriteLine(string.Join(Environment.NewLine, datas));
-			window.Dispatcher.Invoke(() =>
-				MessageBox.Show(window, string.Join(Environment.NewLine, datas), pixFile.Filename));
-		}
 	}
 
 	public void TestExtractFD(PIXFile pixFile) {

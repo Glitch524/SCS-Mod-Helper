@@ -1,8 +1,10 @@
 ﻿using SCS_Mod_Helper.Utils;
+using System.Windows;
 using Wpf.Ui.Controls;
 
-namespace SCS_Mod_Helper.Base;
-public class BaseWindow: FluentWindow {
+namespace SCS_Mod_Helper.Class.Base;
+public class BaseWindow: FluentWindow, IBaseVisual {
+	public Window IWindow => this;
 
 	public BaseWindow() {
 		if (Instances.FollowSystem) {

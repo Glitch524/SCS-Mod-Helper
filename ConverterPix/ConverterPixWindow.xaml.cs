@@ -1,5 +1,5 @@
 ﻿using Microsoft.Win32;
-using SCS_Mod_Helper.Base;
+using SCS_Mod_Helper.Class.Base;
 using SCS_Mod_Helper.Utils;
 using System.Collections.ObjectModel;
 using System.Windows;
@@ -16,7 +16,7 @@ namespace SCS_Mod_Helper.ConverterPix {
 		public ConverterPixWindow() {
 			InitializeComponent();
 
-			Binding = new(this, ListBoxScrollToTop);
+			Binding = new(() => this, ListBoxScrollToTop);
 			GridMain.DataContext = Binding;
 		}
 
@@ -62,13 +62,13 @@ namespace SCS_Mod_Helper.ConverterPix {
 
 		private void ButtonExtractFileClick(object sender, RoutedEventArgs e) {
 			if (Binding.SelectedFile is PIXFile pixFile) {
-				Binding.ExtractFile(this, pixFile);
+				Binding.ExtractFile(pixFile);
 			}
 		}
 
 		private void ButtonShowFileClick(object sender, RoutedEventArgs e) {
 			if (Binding.SelectedFile is PIXFile pixFile) {
-				Binding.ReadFile(this, pixFile);
+				Binding.ReadFile(pixFile);
 			}
 		}
 

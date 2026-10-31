@@ -1,4 +1,4 @@
-﻿using SCS_Mod_Helper.Base;
+﻿using SCS_Mod_Helper.Class.Base;
 using SCS_Mod_Helper.Utils;
 using System.Collections.ObjectModel;
 
@@ -8,7 +8,7 @@ public class AccessoryType: BaseBinding {
 	public static ObservableCollection<AccessoryType> ModelTypes {
 		get {
 			mModelTypes ??= GetModelTypes();
-			DictionaryUtil.ChangeLanguage += AccessoryChangeLanguage;
+			ResourceUtil.ChangeLanguage += AccessoryChangeLanguage;
 			return mModelTypes;
 		}
 	}
@@ -71,11 +71,14 @@ public class AccessoryType: BaseBinding {
 		}
 	}
 
-
-
-
 	public AccessoryType() : this("", "", "") { }
 
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="accETS2">欧卡的饰品</param>
+	/// <param name="accATS">美卡的饰品</param>
+	/// <param name="nameKey">额外的key名称，用于在资源字典获取本地名</param>
 	public AccessoryType(
 		string accETS2,
 		string accATS,
@@ -89,6 +92,11 @@ public class AccessoryType: BaseBinding {
 			mName = GetString(nameKey);
 	}
 
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="acc">饰品的型号</param>
+	/// <param name="gameType">True代表这是ets的饰品，False是ATS的饰品，null代表属于两边共有的</param>
 	public AccessoryType(
 		string acc,
 		bool? gameType = null) {// null: both, true: ETS2, false: ATS
@@ -137,8 +145,6 @@ public class AccessoryType: BaseBinding {
 		}
 	}
 
-	private string NameKey;
-
 	private string mName;
 	public string Name {
 		get => mName;
@@ -147,11 +153,14 @@ public class AccessoryType: BaseBinding {
 			InvokeChange();
 		}
 	}
+
+	private readonly string NameKey;
 	public void RefreshName() {
 		if (Accessory.Length == 0)
 			return;
 		Name = GetString(NameKey);
 	}
+
 	private readonly bool? mGameType;
 	public bool? GameType => mGameType;
 

@@ -1,6 +1,5 @@
 ﻿using Microsoft.Win32;
-using SCS_Mod_Helper.Base;
-using SCS_Mod_Helper.Localization;
+using SCS_Mod_Helper.Class.Base;
 using SCS_Mod_Helper.Modding.Accessories.AccAddon;
 using SCS_Mod_Helper.Modding.Accessories.Physics;
 using SCS_Mod_Helper.Utils;
@@ -11,9 +10,8 @@ using System.Windows.Media.Imaging;
 
 namespace SCS_Mod_Helper.Modding.Accessories.AccHookup;
 
-public class AccHookupBinding: BaseBinding, IListDataInterface {
+public class AccHookupBinding(Func<IBaseVisual> visualFunc): WindowBinding(visualFunc), IListDataInterface {
 
-	public AccHookupBinding() { }
 	public static string ProjectLocation => Instances.ProjectLocation;
 
 	private string mStorageName = "";
@@ -24,8 +22,6 @@ public class AccHookupBinding: BaseBinding, IListDataInterface {
 			InvokeChange();
 		}
 	}
-
-	public static ObservableCollection<StringResItem> StringResList => StringResUtil.StringResList;
 
 	public readonly ObservableCollection<SuiItem> mSuiItems = [];
 	public ObservableCollection<SuiItem> SuiItems => mSuiItems;
@@ -81,30 +77,6 @@ public class AccHookupBinding: BaseBinding, IListDataInterface {
 				InvokeChange();
 			}
 		}
-	}
-
-
-	private string mCheckResResult = "";
-	public string CheckResResult {
-		get => mCheckResResult;
-		set {
-			mCheckResResult = value;
-			InvokeChange();
-		}
-	}
-
-	private bool mPopupCheckOpen = false;
-	public bool PopupCheckOpen {
-		get => mPopupCheckOpen;
-		set {
-			mPopupCheckOpen = value;
-			InvokeChange();
-		}
-	}
-
-	public void CheckNameStringRes() {
-		CheckResResult = StringResUtil.GetStringResResults(DisplayName, out _);
-		PopupCheckOpen = true;
 	}
 
 	public string IconName {
@@ -318,10 +290,10 @@ public class AccHookupBinding: BaseBinding, IListDataInterface {
 	public ListDataUC? ListDataUC = null;
 
 	public void LoadFiles() => AccHookupDataIO.LoadAddonHookup(this);
-	public void SaveFiles(Window window) => AccHookupDataIO.SaveAddonHookup(window, this);
+	public void SaveFiles() => AccHookupDataIO.SaveAddonHookup(BindingWindow, this);
 
 	//模型、碰撞体
-	public void ChooseModel(Window window, bool isColl) {
+	public void ChooseModel(bool isColl) {
 		try {
 			if (ProjectLocation.Length == 0)
 				throw new(Util.GetString("MessageProjectLocationFirst"));
@@ -379,15 +351,9 @@ public class AccHookupBinding: BaseBinding, IListDataInterface {
 			if (modelColl != null)
 				CollPath = modelColl;
 		} catch (Exception ex) {
-			MessageBox.Show(window, ex.Message);
+			MessageBox.Show(BindingWindow, ex.Message);
 		}
 	}
 
-	public void ChooseIcon(Window window) {
-		var icon = AccessoryDataUtil.ChooseIcon(window, out string? iconPath);
-		if (icon != null) {
-			ModelIcon = AccessoryDataUtil.LoadModelIcon(iconPath);
-			IconName = icon;
-		}
-	}
+	public void ChooseIcon() => CurrentHookupItem?.ChooseIcon(BindingWindow);
 }

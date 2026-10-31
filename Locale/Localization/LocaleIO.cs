@@ -1,10 +1,10 @@
-﻿using SCS_Mod_Helper.Base;
+﻿using SCS_Mod_Helper.Class.Base;
 using SCS_Mod_Helper.Utils;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
 
-namespace SCS_Mod_Helper.Localization {
+namespace SCS_Mod_Helper.Locale.Localization {
 	internal class LocaleIO(): SCSIO {
 		private const string NameLocHeader = "localization_db : .localization";
 		private const string DictPreffix = "local_module";
@@ -23,72 +23,86 @@ namespace SCS_Mod_Helper.Localization {
 
 		protected override bool HasQuote(string name) => name.Equals(NameKey) || name.Equals(NameValue);
 
-		public static void ReadLocaleDict(ObservableCollection<LocaleModule> moduleList) {
-			moduleList.Clear();
-			var localeDir = new DirectoryInfo(Paths.LocaleDir(Instances.ProjectLocation));
+		/// <summary>
+		/// 异步读取本地化目录，解析并返回所有地区的本地化模块列表。
+		/// </summary>
+		/// <remarks>遇到格式错误或异常时会弹出消息框提示错误信息。</remarks>
+		/// <returns>包含所有已解析本地化模块的列表。如果目录不存在则返回空列表。</returns>
+		public static List<LocaleModule> ReadLocaleDict() {
+			Dictionary<string, LocaleModule> modules = [];
+			var localeDir = new DirectoryInfo(Paths.LocaleDir());
 			if (!localeDir.Exists)
-				return;
-			foreach (var dir in localeDir.GetDirectories()) {//地区文件夹
+				return [.. modules.Values];
+			foreach (var dir in localeDir.GetDirectories()) {//地区文件夹，文件夹名为各个地区的locale名
 				foreach (var file in dir.GetFiles()) {
 					if (file.Name.StartsWith(DictPreffix)) {
 						try {
 							string moduleName = GetContent(file.Name, '.');
-							LocaleModule? module = null;
-							foreach (var item in moduleList) {
-								if (item.ModuleName == moduleName)
-									module = item;
-							}
-							if (module == null) {
+							if (!modules.TryGetValue(moduleName, out LocaleModule? module)) {
 								module = new(moduleName);
-								moduleList.Add(module);
+								modules.Add(moduleName, module);
 							}
 							if (module == null)
-								return;
-							var lang = dir.Name;
-							var langDict = module.GetLocale(lang)!;
-							using StreamReader sr = new(file.FullName);
-							string? line = sr.ReadLine()?.Trim();
-							if (line == null || line != FileHeader)
-								throw new(Util.GetString("MessageLoadErrNotLocale"));
-							string? stringKey = null;
-							bool copyToUni = false;
-							while ((line = sr.ReadLine()?.Trim()) != null) {
-								if (line.Length == 0 || line == "{" || line.StartsWith("localization"))
-									continue;
-								if (line == "}")
-									break;
-								if (line.StartsWith(NameKey)) {
-									stringKey = GetContent(line);
-								} else if (line.StartsWith(NameValue)) {
-									var stringValue = GetContent(line);
-									if (stringKey == KeyGenerated) {
-										if (stringValue == bool.TrueString) {
-											if (module.UniversalDict.Count == 0)
-												copyToUni = true;
-											else {
-												langDict.ClearDict();
-												break;
-											}
-										}
-									} else if (stringKey != null)
-										langDict.AddPair(stringKey, stringValue);
-									stringKey = null;
-								}
-							}
-							if (copyToUni) {
-								foreach (var p2 in langDict.Dictionary) {
-									module.UniversalDict.Add(new(p2.Key, p2.Value));
-								}
-								langDict.ClearDict();
-							}
+								return [.. modules.Values];
+							var locale = dir.Name;
+							var langDict = module.GetLocale(locale)!;
+							ReadLocaleFile(module, file, langDict);
+
 						} catch (Exception ex) {
 							MessageBox.Show(Util.GetString("MessageLoadErr") + "\n" + ex.Message);
 						}
 					}
 				}
 			}
+			return [.. modules.Values];
 		}
 
+		private static void ReadLocaleFile(LocaleModule module, FileInfo file, ModLocale langDict) {
+			using StreamReader sr = new(file.FullName);
+			string? line = sr.ReadLine()?.Trim();
+			if (line == null || line != FileHeader)
+				throw new(Util.GetString("MessageLoadErrNotLocale"));
+			string? stringKey = null;
+			bool copyToUni = false;
+			while ((line = sr.ReadLine()?.Trim()) != null) {
+				if (line.Length == 0 || line == "{" || line.StartsWith("localization"))
+					continue;
+				if (line == "}")
+					break;
+				if (line.StartsWith(NameKey)) {
+					stringKey = GetContent(line);
+				} else if (line.StartsWith(NameValue)) {
+					var stringValue = GetContent(line);
+					if (stringKey == KeyGenerated) {
+						if (stringValue == bool.TrueString) {
+							if (module.UniversalDict.Count == 0)
+								copyToUni = true;
+							else {
+								langDict.ClearDict();
+								break;
+							}
+						}
+					} else if (stringKey != null)
+						langDict.AddPair(stringKey, stringValue);
+					stringKey = null;
+				}
+			}
+			if (copyToUni) {
+				foreach (var p2 in langDict.Dictionary) {
+					module.UniversalDict.Add(new(p2.Key, p2.Value));
+				}
+				langDict.ClearDict();
+			}
+		}
+
+		/// <summary>
+		/// 提取位于指定字符之间的子字符串。
+		/// 用于提取locale文件名内的名称
+		/// 也用于提取locale文件内的key和value的值
+		/// </summary>
+		/// <param name="line">包含要提取内容的字符串。</param>
+		/// <param name="indexValue">用于界定内容的字符，默认为双引号（"）。</param>
+		/// <returns>位于两个指定字符之间的子字符串。</returns>
 		private static string GetContent(string line, char indexValue = '"') {
 			var start = line.IndexOf(indexValue);
 			var end = line.LastIndexOf(indexValue);

@@ -15,12 +15,12 @@ public partial class ConverterPixBinding {
 		TextLines.Clear();
 	}
 
-	public void ReadFile(Window window, PIXFile pixFile) {
+	public void ReadFile(PIXFile pixFile) {
 		if (pixFile.IsDir)
 			return;
 		if (TextReaderWindow == null) {
 			TextReaderWindow = new(this, pixFile) {
-				Owner = window
+				Owner = BindingWindow
 			};
 			TextReaderWindow.Show();
 		} else {
@@ -114,7 +114,6 @@ public partial class ConverterPixBinding {
 				await Application.Current.Dispatcher.InvokeAsync(() => {
 					MessageBox.Show(TextReaderWindow, GetString("MessageReadFileFailed"), pixFile.Filename);
 				});
-				p.CancelOutputRead();
 				return;
 			}
 			if (line.Trim().Contains("--")) {
@@ -140,7 +139,13 @@ public partial class ConverterPixBinding {
 			trim.StartsWith("phys_model") ||
 			trim.StartsWith("phys_model_coll") ||
 			trim.StartsWith("material") ||
-			trim.StartsWith("@include")) {
+			trim.StartsWith("@include") ||
+			trim.StartsWith("detail_model") ||
+			trim.StartsWith("lods[]") ||
+			trim.StartsWith("trailer_brace_model") || 
+			trim.StartsWith("trailer_brace_anim") ||
+			trim.StartsWith("extended_shadow_texture") ||
+			trim.StartsWith("ui_shadow")) {
 				int firstQuoteIndex = line.IndexOf('"');
 				if (firstQuoteIndex >= 0) {
 					int secondQuoteIndex = line.IndexOf('"', firstQuoteIndex + 1);
@@ -285,7 +290,10 @@ public partial class ConverterPixBinding {
 					}
 					ScrollToFile(linkFile);
 					SelectedFile = linkFile;
-					cpWindow.Focus();
+
+					foreach(var pix in Application.Current.Windows.OfType<ConverterPixWindow>()) {
+						pix.Focus();
+					}
 				}
 			});
 		}

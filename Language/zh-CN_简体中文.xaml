@@ -27,6 +27,17 @@
 	<s:String x:Key="SubtitleFolder">文件夹</s:String>
 	<s:String x:Key="SubtitleFile">{0}文件</s:String>
 	
+	<s:String x:Key="MessageFileTypeNotSupported">Mod不支持这个文件类型</s:String>
+	<s:String x:Key="TipsTabDoubleClickEdit">双击以编辑</s:String>
+	
+	<!--关于-->
+	<s:String x:Key="TitleAbout">关于</s:String>
+	<s:String x:Key="HeaderVersion">版本号：</s:String>
+	<s:String x:Key="HeaderPersonalHomepage">个人主页：</s:String>
+	<s:String x:Key="HeaderSupport">赞助：</s:String>
+	<s:String x:Key="Desc">ConverterPIX和喷漆定义功能已初步完成&#10;接下来可能会做:&#10;&#9;车辆UV图&#10;&#9;喷漆模型预览&#10;&#9;模型列表的树状表示&#10;如果有人在意的话会更新</s:String>
+	
+	
 	<!--MOD基本内容页-->
 	<s:String x:Key="TitleModManifest">MOD基本内容</s:String>
 	<s:String x:Key="BasicInfo">基本信息</s:String>
@@ -90,6 +101,7 @@
 	<s:String x:Key="ModelFilePathUKTip">非必须 如果文件后缀是_uk会自动匹配</s:String>
 	<s:String x:Key="ExtModelFilePath">车外视角模型路径</s:String>
 	<s:String x:Key="ExtModelFilePathUK">车外视角模型路径(UK)</s:String>
+	<s:String x:Key="ExtModelTip">如果不设置，将使用车内视角模型</s:String>
 	<s:String x:Key="ModelCollPath">模型碰撞文件路径</s:String>
 	<s:String x:Key="ModelSetExterior">设定车外视角模型</s:String>
 	<s:String x:Key="ModelNameTip">超过12个字符可能会不显示</s:String>
@@ -118,6 +130,7 @@
 	<s:String x:Key="ExpanderATS">美洲卡车模拟（展开以输出/应用至美卡）</s:String>
 	<s:String x:Key="VehicleID">车辆ID</s:String>
 	<s:String x:Key="VehicleProdYear">生产年份</s:String>
+	<s:String x:Key="VehicleType">车辆类型</s:String>
 	<s:String x:Key="VehicleName">车辆名称</s:String>
 	<s:String x:Key="VehicleManufacturer">制造商</s:String>
 	<s:String x:Key="VehicleDescription">车辆备注</s:String>
@@ -205,7 +218,6 @@
 	<s:String x:Key="TitleAccessoryHookup">外接模型定义文件&#10;(Accessory Hookup)</s:String>
 	<s:String x:Key="DescAccessoryHookup">Hookup用于定义外接模型（比如仪表盘套件、挡风玻璃套件）使用时需要填写suitable_for</s:String>
 	<s:String x:Key="TitleAddonStorageStorage">套件档案名（addon_hookup_storage）</s:String>
-	<s:String x:Key="HeaderHookupName">定义文件</s:String>
 	<s:String x:Key="HeaderAccessoryName">摆件名称</s:String>
 	<!--适用-->
 	<s:String x:Key="SuitableForSetDashbrd">配件-仪表盘套件（set__dashbrd）</s:String>
@@ -354,6 +366,8 @@
 	<s:String x:Key="MaskGShort">绿</s:String>
 	<s:String x:Key="MaskBShort">蓝</s:String>
 	
+	<s:String x:Key="MessageAskCreateTobj">Tobj文件不存在，是否为材质文件创建Tobj文件？&#10;你可以仅为了浏览选择不生成文件，但制作mod依旧需要tobj文件</s:String>
+	
 	<s:String x:Key="DialogFilterTextureFile">贴图文件|*.tobj;*.dds;*.tga;*.jpg;*.jpeg;*.png</s:String>
 	<s:String x:Key="DialogResultFileOutsideProject">Please put the image into the project location first</s:String>
 	
@@ -436,8 +450,7 @@
 
 	<!--设置多语言字典页-->
 	<s:String x:Key="TitleSetupLocalization">多语言字典</s:String>
-	<s:String x:Key="TextUsageTips">在此定义的键值对，可以通过输入“@@key@@”使用，游戏内会显示对应语言的value&#10;通用列表将用作所有未设置语言的默认语言（默认以英语为通用语言）</s:String>
-	<s:String x:Key="TextLocaleName">字典名称（一般使用mod名称）：</s:String>
+	<s:String x:Key="TextUsageTips">在此定义的键值对，可以通过输入“@@key@@”使用，游戏内会显示对应语言的value&#10;通用列表将用作所有未设置语言的默认语言（默认以英语为通用语言）&#10;字典名称需要确保足够独特，否则可能会与其他字典文件产生冲突</s:String>
 	<s:String x:Key="ButtonCleanUpSame">清理与Universal重复的语言</s:String>
 	<s:String x:Key="ButtonCleanUpSameTip">因为保存时需要每个语言都生成一个才能正常使用</s:String>
 	<s:String x:Key="ButtonSyncWithUni">与Universal同步</s:String>
@@ -479,16 +492,8 @@
 	<s:String x:Key="MessageDBFinishWithUnselected">未选择的数据将被丢弃</s:String>
 	
 	
-	
-	<!--关于-->
-	<s:String x:Key="TitleAbout">关于</s:String>
-	<s:String x:Key="HeaderVersion">版本号：</s:String>
-	<s:String x:Key="HeaderPersonalHomepage">个人主页：</s:String>
-	<s:String x:Key="HeaderSupport">赞助：</s:String>
-	<s:String x:Key="Desc">目前计划做喷漆的定义功能以及ConverterPIX相关功能&#10;如果有人在意的话会更新</s:String>
-	
-	
 	<!--设置-->
+	<s:String x:Key="TitleSettings">设置</s:String>
 	<s:String x:Key="AppLanguage">软件语言</s:String>
 	<s:String x:Key="TipsCustomLanguage">在软件的文件夹找到Language文件夹，在里面放好翻译好且按照格式重命名的xaml即可识别使用</s:String>
 	<s:String x:Key="ButtonLanguageDir">Language文件夹</s:String>
@@ -497,6 +502,10 @@
 	<s:String x:Key="FilterCPix">应用程序|converter_pix.exe</s:String>
 	<s:String x:Key="MessageErrNotCPix">选择的文件不是ConverterPix.exe</s:String>
 	<s:String x:Key="MessageErrDifferentStructure">选择的文件路径结构似乎有所不同，是否继续使用？</s:String>
+	<s:String x:Key="ButtonAutoDetect">自动检测</s:String>
+	<s:String x:Key="TipsAutoDetect">使用自动检测可以自动找到欧卡2和美卡的游戏路径</s:String>
+	<s:String x:Key="MessageAutoDetectNoSteamRegistry">无法找到Steam的注册表</s:String>
+	<s:String x:Key="MessageAutoDetectResultFail">无法找到以下游戏的路径：</s:String>
 	
 	
 	

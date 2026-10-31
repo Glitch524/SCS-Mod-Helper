@@ -1,10 +1,9 @@
-﻿using SCS_Mod_Helper.Base;
+﻿using SCS_Mod_Helper.Class.Base;
 using SCS_Mod_Helper.Utils;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Windows;
-using Util = SCS_Mod_Helper.Utils.Util;
 
 namespace SCS_Mod_Helper.ConverterPix {
 	/// <summary>

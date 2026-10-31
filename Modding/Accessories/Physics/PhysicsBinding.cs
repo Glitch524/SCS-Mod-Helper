@@ -1,5 +1,5 @@
 ﻿using Microsoft.Win32;
-using SCS_Mod_Helper.Base;
+using SCS_Mod_Helper.Class.Base;
 using SCS_Mod_Helper.Modding.Accessories.AccAddon;
 using SCS_Mod_Helper.Modding.Accessories.AccHookup;
 using SCS_Mod_Helper.Utils;
@@ -9,7 +9,7 @@ using System.Windows;
 
 namespace SCS_Mod_Helper.Modding.Accessories.Physics;
 
-class PhysicsBinding: BaseBinding {
+class PhysicsBinding(Func<IBaseVisual> visualFunc): WindowBinding(visualFunc) {
 	public static string ProjectLocation => Instances.ProjectLocation;
 
 	private bool localPhysics = false;
@@ -153,16 +153,6 @@ class PhysicsBinding: BaseBinding {
 			}
 		}
 	}
-
-	public string[] AeroModelTypes { get; } = [
-		PhysicsPatchData.ATFaceOneSide,
-		PhysicsPatchData.ATFaceTwoSide,
-		PhysicsPatchData.ATFaceTwoSideLiftDrag,
-		PhysicsPatchData.ATOneSide,
-		PhysicsPatchData.ATPoint,
-		PhysicsPatchData.ATTwoSide,
-		PhysicsPatchData.ATTwoSideLiftDrag
-		];
 
 
 	//模型、碰撞体

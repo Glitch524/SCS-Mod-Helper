@@ -6,7 +6,8 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:local="clr-namespace:SCS_Mod_Helper.ConverterPix"
 	xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-	xmlns:base="clr-namespace:SCS_Mod_Helper.Base"
+	xmlns:base="clr-namespace:SCS_Mod_Helper.Class.Base"
+	xmlns:c="clr-namespace:SCS_Mod_Helper.Class"
 	d:DataContext="{d:DesignInstance Type=local:ConverterPixBinding}"
 	mc:Ignorable="d"
 	WindowStartupLocation="CenterOwner"
@@ -123,7 +124,7 @@
 				</ItemsControl.ItemsPanel>
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
-						<base:HyperlinkTextBlock
+						<c:HyperlinkTextBlock
 							FormattedText="{Binding .}"
 							HyperlinkClick="OnPathClicked"
 							TextWrapping="Wrap"
@@ -268,7 +269,7 @@
 				</ItemsControl.ItemsPanel>
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
-						<base:HyperlinkTextBlock
+						<c:HyperlinkTextBlock
 							FormattedText="{Binding .}"
 							HyperlinkClick="OnPathClicked"
 							TextWrapping="Wrap"

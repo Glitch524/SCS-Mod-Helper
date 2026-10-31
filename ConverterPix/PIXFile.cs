@@ -1,4 +1,4 @@
-﻿using SCS_Mod_Helper.Base;
+﻿using SCS_Mod_Helper.Class.Base;
 
 namespace SCS_Mod_Helper.ConverterPix {
 	public class PIXFile(string filename, bool isDir): BaseBinding {

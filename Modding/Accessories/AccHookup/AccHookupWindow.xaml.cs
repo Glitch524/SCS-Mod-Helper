@@ -1,5 +1,5 @@
-﻿using SCS_Mod_Helper.Base;
-using SCS_Mod_Helper.Localization;
+﻿using SCS_Mod_Helper.Class.Base;
+using SCS_Mod_Helper.Locale;
 using SCS_Mod_Helper.Modding.Accessories.Physics;
 using SCS_Mod_Helper.Utils;
 using System.Windows;
@@ -12,18 +12,16 @@ namespace SCS_Mod_Helper.Modding.Accessories.AccHookup;
 /// AddonHookup.xaml 的交互逻辑
 /// </summary>
 public partial class AccHookupWindow: BaseWindow {
-	private readonly AccHookupBinding Binding = new();
+	private readonly AccHookupBinding Binding;
 
-	private readonly ContextMenu MenuStringRes, MenuSuitableFor;
+	private readonly ContextMenu MenuSuitableFor;
 
 	public AccHookupWindow() {
 		InitializeComponent();
 
+		Binding = new(() => this);
 		GridMain.DataContext = Binding;
 
-		MenuStringRes = (ContextMenu)Resources["MenuStringRes"];
-		MenuStringRes.PlacementTarget = ButtonChooseRes;
-		MenuStringRes.DataContext = Binding;
 		MenuSuitableFor = (ContextMenu)Resources["MenuSuitableFor"];
 		MenuSuitableFor.PlacementTarget = ButtonSelectSuitableFor;
 
@@ -74,10 +72,6 @@ public partial class AccHookupWindow: BaseWindow {
 		}
 	}
 
-	private void ChooseStringRes(object sender, RoutedEventArgs e) => MenuStringRes.IsOpen = true;
-
-	private void CheckStringRes(object sender, RoutedEventArgs e) => Binding.CheckNameStringRes();
-
 	private void OnMenuClicked(object sender, RoutedEventArgs e) {
 		MenuItem item = (MenuItem)sender;
 		ContextMenu cm = (ContextMenu)item.Parent ?? item.ContextMenu;
@@ -86,32 +80,12 @@ public partial class AccHookupWindow: BaseWindow {
 			Binding.NewSuitableFor = newSF;
 			Binding.AddNewSuitableFor();
 			TextSuitableFor.Focus();
-		} else {
-			var menuName = (string)item.CommandParameter;
-			var tag = (string)item.Tag;
-			if (menuName == "MenuStringRes") {
-				if (tag.Equals("openLocalization")) {
-					StringResUtil.OpenLocalization(this);
-				} else
-					StringResUtil.ApplyStringRes(TextDisplayName, (string)item.Tag);
-			}
 		}
 	}
 
-	private void ButtonChooseIcon(object sender, RoutedEventArgs e) => Binding.ChooseIcon(this);
+	private void ButtonChooseIcon(object sender, RoutedEventArgs e) => Binding.ChooseIcon();
 
-	private void ButtonChooseModelClick(object sender, RoutedEventArgs e) => Binding.ChooseModel(this, sender == ButtonChooseColl);
-
-	private void ButtonClearClick(object sender, RoutedEventArgs e) {
-		if (sender == ButtonIconNameClear) {
-			Binding.IconName = "";
-		} else if (sender == ButtonModelPathClear) {
-			Binding.ModelPath = "";
-		} else if (sender == ButtonCollPathClear) {
-			Binding.CollPath = "";
-		} else
-			return;
-	}
+	private void ButtonChooseModelClick(object sender, RoutedEventArgs e) => Binding.ChooseModel(sender == ButtonChooseColl);
 
 	private void NumberOnly(object sender, TextCompositionEventArgs e) => TextControl.NumberOnly(sender, e);
 	private void ButtonListClick(object sender, RoutedEventArgs e) {
@@ -188,7 +162,7 @@ public partial class AccHookupWindow: BaseWindow {
 		if (sender == ButtonCancel) {
 			Close();
 		} else if (sender == ButtonSave) {
-			Binding.SaveFiles(this);
+			Binding.SaveFiles();
 		}
 	}
 }

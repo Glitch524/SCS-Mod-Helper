@@ -1,5 +1,5 @@
-﻿using SCS_Mod_Helper.Base;
-using System.Diagnostics;
+﻿using SCS_Mod_Helper.Class;
+using SCS_Mod_Helper.Class.Base;
 using System.Text;
 using System.Windows;
 using System.Windows.Documents;

@@ -1,12 +1,15 @@
-﻿using SCS_Mod_Helper.Base;
+﻿using CommunityToolkit.Mvvm.Input;
+using SCS_Mod_Helper.Class.Base;
 using SCS_Mod_Helper.Utils;
 using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows;
+using System.Windows.Input;
 
-namespace SCS_Mod_Helper.Localization;
-public class LocaleBinding: BaseBinding {
-	public readonly ObservableCollection<LocaleModule> LocaleModules = [];
+namespace SCS_Mod_Helper.Locale.Localization;
+public class LocaleBinding(Func<IBaseVisual> visualFunc): WindowBinding(visualFunc) {
+	public readonly ObservableCollection<LocaleModule> mLocaleModules = [];
+	public ObservableCollection<LocaleModule> LocaleModules => mLocaleModules;
 	public readonly ObservableCollection<LocaleModule> DeletedModules = [];
 
 	private LocaleModule? mCurrentModule = null;
@@ -19,17 +22,8 @@ public class LocaleBinding: BaseBinding {
 			mCurrentModule = value ?? LocaleModules.FirstOrDefault();
 			InvokeChange();
 
-			InvokeChange(nameof(CurrentModuleName));
 			InvokeChange(nameof(CurrentLocaleList));
 		}
-	}
-
-	public void SetModuleNull() {
-		mCurrentModule = LocaleModules.FirstOrDefault();
-		InvokeChange(nameof(CurrentModule));
-
-		InvokeChange(nameof(CurrentModuleName));
-		InvokeChange(nameof(CurrentLocaleList));
 	}
 
 	public string CurrentModuleName {
@@ -61,7 +55,8 @@ public class LocaleBinding: BaseBinding {
 	public ObservableCollection<LocalePair>? CurrentDict => CurrentLocale?.Dictionary;
 	public ObservableCollection<LocalePair> UniversalDict => CurrentModule!.UniversalDict;
 
-	public void SyncWithUniversal(Window window) {
+	public ICommand SyncCommand => new RelayCommand(SyncWithUniversal);
+	public void SyncWithUniversal() {
 		var currentList = new List<LocalePair>(CurrentDict!);
 		var universalList = new List<LocalePair>(UniversalDict!);
 		int c = 0;
@@ -109,7 +104,7 @@ public class LocaleBinding: BaseBinding {
 				message.Append(GetString("MessageSyncResultFrom", universalList.Count));
 			}
 		}
-		MessageBox.Show(window, message.ToString(), title);
+		MessageBox.Show(BindingWindow, message.ToString(), title);
 	}
 
 	public void SyncOrder() {

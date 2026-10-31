@@ -1,17 +1,16 @@
-﻿using SCS_Mod_Helper.Localization;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 
 namespace SCS_Mod_Helper.Manifest {
 
-	public class DescLocale(string localeValue, string localeDisplay): Locale(localeValue, localeDisplay) {
+	public class DescLocale(string localeValue, string localeDisplay): Locale.Localization.Locale(localeValue, localeDisplay) {
 
 		public static ObservableCollection<DescLocale> GetLocales(out Dictionary<string, DescLocale> localeDict) {
 			ObservableCollection<DescLocale> l = [];
 			localeDict = [];
-			foreach (var locale in SupportedLocales) {
-				DescLocale descLocale = new(locale[0], locale[1]);
+			foreach (var (localeValue, localeDisplay) in SupportedLocales) {
+				DescLocale descLocale = new(localeValue, localeDisplay);
 				l.Add(descLocale);
-				localeDict.Add(locale[0], descLocale);
+				localeDict.Add(localeValue, descLocale);
 			}
 			return l;
 		}

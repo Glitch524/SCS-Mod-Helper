@@ -3,8 +3,6 @@ using System.Collections.ObjectModel;
 
 namespace SCS_Mod_Helper.Modding.Accessories.AccAddon;
 public class AccessoryAddonData: AccessoryIntData {
-	public AccessoryAddonData() : base() {
-	}
 
 	private string mModelPath = "";
 	public string ModelPath {

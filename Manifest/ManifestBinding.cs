@@ -1,25 +1,24 @@
-﻿using SCS_Mod_Helper.Base;
+﻿using SCS_Mod_Helper.Class.Base;
 using SCS_Mod_Helper.Utils;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using Wpf.Ui.Input;
 
 namespace SCS_Mod_Helper.Manifest {
-	public class ManifestBinding: BaseBinding {
+	public class ManifestBinding: WindowBinding {
 		private static ManifestBinding? mBinding = null;
-		public static ManifestBinding Instance {
-			get {
-				if (mBinding == null) {
-					mBinding = new();
-					mBinding.LoadFiles();
-				} else if (mBinding.CurrentProjectLocation != Instances.ProjectLocation)
-					mBinding.LoadFiles();
-				return mBinding;
-			}
+		public static ManifestBinding GetInstance(BasePage page) {
+			if (mBinding == null) {
+				mBinding = new(() => page);
+				mBinding.LoadFiles();
+			} else if (mBinding.CurrentProjectLocation != Instances.ProjectLocation)
+				mBinding.LoadFiles();
+			return mBinding;
 		}
 
 		public ICommand ColorCommand { get; }
@@ -28,10 +27,10 @@ namespace SCS_Mod_Helper.Manifest {
 
 		public IInsertColor? InsertColor = null;
 
-		public ManifestBinding() {
+		public ManifestBinding(Func<IBaseVisual> visualFunc): base(visualFunc) {
 			mLocales = DescLocale.GetLocales(out Dictionary<string, DescLocale> localeDict);
 			LocaleDict = localeDict;
-			DictionaryUtil.ChangeLanguage += ChangeLocales;
+			ResourceUtil.ChangeLanguage += ChangeLocales;
 
 			ColorCommand = new RelayCommand<string>((color) => InsertColor?.Invoke(color));
 		}
@@ -133,7 +132,7 @@ namespace SCS_Mod_Helper.Manifest {
 
 		public ObservableCollection<string> SelectedCategories = [];
 		public bool GetCategory(string cate) => SelectedCategories.Contains(cate);
-		public void SetCategory(bool value, string cate, [CallerMemberName] string caller = "") {
+		public void SetCategory(bool value, string cate) {
 			if (value) {
 				SelectedCategories.Add(cate);
 				if (SelectedCategories.Count > 2) {

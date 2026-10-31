@@ -1,5 +1,4 @@
-﻿using SCS_Mod_Helper.Base;
-using SCS_Mod_Helper.Localization;
+﻿using SCS_Mod_Helper.Class.Base;
 using SCS_Mod_Helper.Utils;
 using System.Drawing.Imaging;
 using System.IO;
@@ -84,7 +83,7 @@ namespace SCS_Mod_Helper.Manifest {
 			var deExt = binding.DescriptionName[..^4];
 			foreach (var locale in binding.Locales) {
 				if (locale.HasDesc) {
-					var isUniversal = locale.LocaleValue.Equals(Locale.LocaleValueUni);
+					var isUniversal = locale.LocaleValue.Equals(Locale.Localization.Locale.LocaleValueUni);
 					var dFile = Path.Combine(saveLocation, deExt);
 					if (!isUniversal)
 						dFile += $".{locale.LocaleValue}";
@@ -184,14 +183,14 @@ namespace SCS_Mod_Helper.Manifest {
 					}
 					string locale;
 					if (fileDeExt.Length == deExt.Length)
-						locale = Locale.LocaleValueUni;
+						locale = Locale.Localization.Locale.LocaleValueUni;
 					else
 						locale = filename[deExt.Length..^fileExt.Length];
 					var descLocale = binding.LocaleDict[locale];
 					descLocale.DescContent = sb.ToString();
 				}
 			}
-			binding.CurrentLocale = binding.LocaleDict[Locale.LocaleValueUni];
+			binding.CurrentLocale = binding.LocaleDict[Locale.Localization.Locale.LocaleValueUni];
 		}
 	}
 }

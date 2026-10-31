@@ -1,11 +1,11 @@
-﻿using SCS_Mod_Helper.Base;
+﻿using SCS_Mod_Helper.Class.Base;
 using SCS_Mod_Helper.Utils;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Threading;
 
 namespace SCS_Mod_Helper.Modding.Accessories.AccAddon.CreatedSii;
-internal class CreatedModelBinding: BaseBinding {
+internal class CreatedModelBinding(Func<IBaseVisual> visualFunc): WindowBinding(visualFunc) {
 	private string mCurrentProjectLocation = "";
 	public string CurrentProjectLocation {
 		get => mCurrentProjectLocation;
