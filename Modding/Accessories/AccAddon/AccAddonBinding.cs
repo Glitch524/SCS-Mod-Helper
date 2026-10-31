@@ -1,28 +1,25 @@
-﻿using Microsoft.Win32;
-using SCS_Mod_Helper.Base;
-using SCS_Mod_Helper.Localization;
+﻿using CommunityToolkit.Mvvm.Input;
+using Microsoft.Win32;
+using SCS_Mod_Helper.Class.Base;
+using SCS_Mod_Helper.Locale.StringRes;
 using SCS_Mod_Helper.Modding.Accessories.AccAddon.Popup;
 using SCS_Mod_Helper.Modding.Accessories.Physics;
 using SCS_Mod_Helper.Utils;
 using SCS_Mod_Helper.Vehicles;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
 namespace SCS_Mod_Helper.Modding.Accessories.AccAddon;
-public class AccAddonBinding: BaseBinding, IListDataInterface {
+public class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBinding(visualFunc), IListDataInterface {
 	private readonly AccessoryAddonData mAddonItem = new();
 	public AccessoryAddonData AddonItem => mAddonItem;
 
-
-	public AccAddonBinding() {
-	}
 
 	private bool mLoading = true;
 	public bool Loading {
@@ -127,17 +124,17 @@ public class AccAddonBinding: BaseBinding, IListDataInterface {
 		var requireList = Require.ToArray();
 		var vehicleListETS2 = VehiclesETS2.ToArray();
 		var vehicleListATS = VehiclesATS.ToArray();
-		Task.Run((Action)(() => {
-			AccAddonHistory.Default.DataList = ObservableCollectionToStringCollection((string[])dataList);
-			AccAddonHistory.Default.SuitableForList = ObservableCollectionToStringCollection((string[])suitableForList);
-			AccAddonHistory.Default.ConflictWithList = ObservableCollectionToStringCollection((string[])conflictWithList);
-			AccAddonHistory.Default.DefaultsList = ObservableCollectionToStringCollection((string[])defaultsList);
-			AccAddonHistory.Default.OverridesList = ObservableCollectionToStringCollection((string[])overridesList);
-			AccAddonHistory.Default.RequireList = ObservableCollectionToStringCollection((string[])requireList);
+		Task.Run(() => {
+			AccAddonHistory.Default.DataList = ObservableCollectionToStringCollection(dataList);
+			AccAddonHistory.Default.SuitableForList = ObservableCollectionToStringCollection(suitableForList);
+			AccAddonHistory.Default.ConflictWithList = ObservableCollectionToStringCollection(conflictWithList);
+			AccAddonHistory.Default.DefaultsList = ObservableCollectionToStringCollection(defaultsList);
+			AccAddonHistory.Default.OverridesList = ObservableCollectionToStringCollection(overridesList);
+			AccAddonHistory.Default.RequireList = ObservableCollectionToStringCollection(requireList);
 			AccAddonHistory.Default.VehiclesETS2 = VehiclesToStrings(vehicleListETS2);
 			AccAddonHistory.Default.VehiclesATS = VehiclesToStrings(vehicleListATS);
 			AccAddonHistory.Default.Save();
-		}));
+		});
 	}
 	private static StringCollection ObservableCollectionToStringCollection(string[] collection) {
 		var strings = new StringCollection();
@@ -174,39 +171,17 @@ public class AccAddonBinding: BaseBinding, IListDataInterface {
 		get => AddonItem.DisplayName;
 		set {
 			AddonItem.DisplayName = value;
-			CheckResResult = null;
 			InvokeChange();
-			InvokeChange(nameof(CheckResVisibility));
 		}
 	}
-	private string? LocalizedDisplayName = null;
 
-	private string? mCheckResResult = null;
-	public string? CheckResResult {
-		get => mCheckResResult;
+	public string? LocalizedDisplayName {
+		get => AddonItem.LocalizedDisplayName;
 		set {
-			mCheckResResult = value;
+			AddonItem.LocalizedDisplayName = value;
 			InvokeChange();
 		}
 	}
-
-	private bool mPopupCheckOpen = false;
-	public bool PopupCheckOpen {
-		get => mPopupCheckOpen;
-		set {
-			mPopupCheckOpen = value;
-			InvokeChange();
-		}
-	}
-
-	public Visibility CheckResVisibility => AddonItem.CheckResVisibility;
-
-	public void CheckNameStringRes() {
-		CheckResResult ??= StringResUtil.GetStringResResults(DisplayName, out LocalizedDisplayName);
-		PopupCheckOpen = true;
-	}
-
-
 
 	public string ModelName {
 		get => AddonItem.ModelName;
@@ -237,12 +212,9 @@ public class AccAddonBinding: BaseBinding, IListDataInterface {
 		}
 	}
 	public string PriceString {
-		get => Price.ToString() ?? "";
+		get => AddonItem.PriceString;
 		set {
-			if (long.TryParse(value, out long res)) {
-				Price = res;
-			} else
-				Price = null;
+			AddonItem.PriceString = value;
 			InvokeChange();
 			InvokeChange(nameof(Price));
 		}
@@ -257,12 +229,9 @@ public class AccAddonBinding: BaseBinding, IListDataInterface {
 		}
 	}
 	public string UnlockLevelString {
-		get => UnlockLevel.ToString() ?? "";
+		get => AddonItem.UnlockLevelString;
 		set {
-			if (uint.TryParse(value, out uint res)) {
-				UnlockLevel = res;
-			} else
-				UnlockLevel = null;
+			AddonItem.UnlockLevelString = value;
 			InvokeChange();
 			InvokeChange(nameof(UnlockLevel));
 		}
@@ -273,7 +242,6 @@ public class AccAddonBinding: BaseBinding, IListDataInterface {
 		set {
 			AddonItem.IconName = value;
 			InvokeChange();
-
 			InvokeChange(nameof(IconNameClearVisibility));
 		}
 	}
@@ -428,8 +396,6 @@ public class AccAddonBinding: BaseBinding, IListDataInterface {
 		}
 	}
 
-	public static ObservableCollection<StringResItem> StringResList => StringResUtil.StringResList;
-
 	public ObservableCollection<string> LookList => AddonItem.LookList;
 	public ObservableCollection<string> VariantList => AddonItem.VariantList;
 	public string Look {
@@ -449,7 +415,7 @@ public class AccAddonBinding: BaseBinding, IListDataInterface {
 
 	public List<PhysicsData> PhysicsList => AddonItem.PhysicsList;
 
-	public void LoadLooksAndVariants(Window window, string? path = null) {
+	public void LoadLooksAndVariants(string? path = null) {
 		try {
 			string oldLook = Look, oldVariant = Variant;
 			if (path == null) {
@@ -487,7 +453,7 @@ public class AccAddonBinding: BaseBinding, IListDataInterface {
 			setValue(LookList, oldLook, (set) => Look = set);
 			setValue(VariantList, oldVariant, (set) => Variant = set);
 		} catch (Exception ex) {
-			MessageBox.Show(window, Util.GetString("MessageLoadDEDErrFail") + "\n" + ex.Message);
+			MessageBox.Show(BindingWindow, Util.GetString("MessageLoadDEDErrFail") + "\n" + ex.Message);
 		}
 	}
 
@@ -729,6 +695,7 @@ public class AccAddonBinding: BaseBinding, IListDataInterface {
 		}
 	}
 
+	public bool? AddVehicleETS2 = null;
 	private bool mPopupAddVehicleOpen = false;
 	public bool PopupAddVehicleOpen {
 		get => mPopupAddVehicleOpen;
@@ -835,8 +802,9 @@ public class AccAddonBinding: BaseBinding, IListDataInterface {
 	public ObservableCollection<AccessoryVehicle> VehiclesETS2 => AddonItem.VehiclesETS2;
 	public ObservableCollection<AccessoryVehicle> VehiclesATS => AddonItem.VehiclesATS;
 
+	public ICommand SaveDEDCommand => new RelayCommand(SaveDED);
 	string? LoadedFilename = null;
-	public void SaveDED(Window window) {
+	public void SaveDED() {
 		PopupAddVehicleOpen = false;
 		SaveFileDialog saveFileDialog = new() {
 			Title = Util.GetString("SaveDED"),
@@ -848,7 +816,8 @@ public class AccAddonBinding: BaseBinding, IListDataInterface {
 		};
 		if (LoadedFilename == null) {
 			if (LocalizedDisplayName == null) {
-				StringResUtil.GetStringResResults(DisplayName, out LocalizedDisplayName);
+				StringResUtil.GetStringResResults(DisplayName, out var localizedName);
+				LocalizedDisplayName = localizedName;
 			}
 			saveFileDialog.FileName = $"{LocalizedDisplayName} {ModelType} {ModelName}";
 		} else
@@ -857,13 +826,12 @@ public class AccAddonBinding: BaseBinding, IListDataInterface {
 			SaveDedLocation(saveFileDialog.FileName);
 
 			new AddonAppIO(saveFileDialog.FileName).SaveAddon(this);
-			//AccAppIO.SaveAccAddon(this, saveFileDialog.FileName);
-
-			MessageBox.Show(window, Util.GetString("MessageSaveDED"));
+			MessageBox.Show(BindingWindow, Util.GetString("MessageSaveDED"));
 		}
 	}
 
-	public void LoadDED(Window window) {
+	public ICommand LoadDEDCommand => new RelayCommand(LoadDED);
+	public void LoadDED() {
 		try {
 			PopupAddVehicleOpen = false;
 			OpenFileDialog openFileDialog = new() {
@@ -884,8 +852,9 @@ public class AccAddonBinding: BaseBinding, IListDataInterface {
 				new AddonAppIO(openFileDialog.FileName).LoadAddon(this);
 				UpdateOthersChecked();
 			}
+			LoadLooksAndVariants();
 		} catch (Exception ex) {
-			MessageBox.Show(window, Util.GetString("MessageLoadDEDErrFail") + "\n" + ex.Message);
+			MessageBox.Show(BindingWindow, Util.GetString("MessageLoadDEDErrFail") + "\n" + ex.Message);
 		}
 	}
 
@@ -908,9 +877,7 @@ public class AccAddonBinding: BaseBinding, IListDataInterface {
 		AccAddonHistory.Default.Save();
 	}
 
-	public AddVehicleUC? AddVehicleUC;
-
-	public void AddNewVehicle(Window window, AccessoryVehicle newVehicle) {
+	public void AddNewVehicle(AccessoryVehicle newVehicle) {
 		try {
 			bool isETS2 = newVehicle.IsETS2;
 			ObservableCollection<AccessoryVehicle> Vehicles = isETS2 ? VehiclesETS2 : VehiclesATS;
@@ -942,7 +909,7 @@ public class AccAddonBinding: BaseBinding, IListDataInterface {
 			}
 			VehiclesIO.AddVehicle(newVehicle);
 		} catch (Exception ex) {
-			MessageBox.Show(window, ex.Message, Util.GetString("MessageTitleErr"));
+			MessageBox.Show(BindingWindow, ex.Message, Util.GetString("MessageTitleErr"));
 		}
 	}
 
@@ -968,7 +935,8 @@ public class AccAddonBinding: BaseBinding, IListDataInterface {
 		}
 	}
 
-	public void StartCreateSii(Window window) {
+	public ICommand StartCommand => new RelayCommand(StartCreateSii);
+	public void StartCreateSii() {
 		try {
 			PopupAddVehicleOpen = false;
 			if (!VehicleExpandedETS2 && !VehicleExpandedATS)
@@ -989,19 +957,13 @@ public class AccAddonBinding: BaseBinding, IListDataInterface {
 				throw new(Util.GetString("ModelPriceErrNoNumber"));
 			}
 			var created = AccAddonSCSIO.CreateAccAddonSii(this);
-			MessageBox.Show(window, Util.GetString(created == 0 ? "MessageCreateSiiZero" : "MessageCreateSiiResult"));
+			MessageBox.Show(BindingWindow, Util.GetString(created == 0 ? "MessageCreateSiiZero" : "MessageCreateSiiResult"));
 		} catch (Exception ex) {
-			MessageBox.Show(window, ex.Message);
+			MessageBox.Show(BindingWindow, ex.Message);
 		}
 	}
 
-	public void ChooseIcon(Window window) {
-		var icon = AccessoryDataUtil.ChooseIcon(window, out string? iconPath);
-		if (icon != null) {
-			ModelIcon = AccessoryDataUtil.LoadModelIcon(iconPath);
-			IconName = icon;
-		}
-	}
+	public void ChooseIcon() => AddonItem.ChooseIcon(BindingWindow);
 
 	public void LoadIcon() {
 		if (IconName.Length == 0)
@@ -1025,7 +987,7 @@ public class AccAddonBinding: BaseBinding, IListDataInterface {
 	public const int EXT_MODEL_UK = 3;
 	public const int MODEL_COLL = 4;
 	//模型、模型UK、碰撞体
-	public void ChooseModel(Window window, int type) {
+	public void ChooseModel(int type) {
 		if (ProjectLocation.Length == 0)
 			throw new(Util.GetString("MessageProjectLocationFirst"));
 		string title, filter, defaultExt;
@@ -1071,7 +1033,7 @@ public class AccAddonBinding: BaseBinding, IListDataInterface {
 		}
 		AccAddonHistory.Default.ChooseModelHistory = new DirectoryInfo(fileDialog.FileName).Parent!.FullName;
 		AccAddonHistory.Default.Save();
-		LoadLooksAndVariants(window, path);//修改模型路径后，look和variant都不同，需要重新读取
+		LoadLooksAndVariants(path);//修改模型路径后，look和variant都不同，需要重新读取
 		string inProjectPath = path.Replace(ProjectLocation, "");
 		var s = inProjectPath.Split('\\');
 
@@ -1167,7 +1129,7 @@ public class AccAddonBinding: BaseBinding, IListDataInterface {
 		} else
 			return;
 		if (showAR) {
-			AutoFillSelectionWindow arWindow = new(type, modelName, modelType, modelPath, modelPathUK, collPath) { Owner = window };
+			AutoFillSelectionWindow arWindow = new(type, modelName, modelType, modelPath, modelPathUK, collPath) { Owner = BindingWindow };
 			var result = arWindow.ShowDialog();
 			if (result == true) {
 				if (modelName != null && arWindow.CheckModelName)

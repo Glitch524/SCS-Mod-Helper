@@ -1,4 +1,4 @@
-﻿using SCS_Mod_Helper.Base;
+﻿using SCS_Mod_Helper.Class.Base;
 using SCS_Mod_Helper.Utils;
 using System.IO;
 using System.Windows.Media;
@@ -83,67 +83,68 @@ public class PaintJobSCSIO(): SCSIO {
 	}
 
 	public void WritePaintJobData(PaintJobBinding binding) {
-		var vehicleID = binding.CurrentVehicle!.VehicleID;
-		var paintJobName = binding.ModelName;
+		var data = binding.PaintJobData;
+		var vehicleID = data.CurrentVehicle!.VehicleID;
+		var paintJobName = data.ModelName;
 		var siiFile = Paths.AccPaintJobFile(vehicleID, paintJobName);
 		using StreamWriter sw = new(siiFile);
 		WriteFileStructure(sw, () => {
 			WriteAccPaintJobData(sw, paintJobName, vehicleID, () => {
 				bool customBase, custom1, custom2, custom3;
 
-				WriteLine(sw, NameDisplayName, binding.DisplayName);
-				WriteLine(sw, NamePrice, binding.Price);
-				WriteLine(sw, NameUnlock, binding.UnlockLevel);
-				WriteLine(sw, NameIcon, binding.IconName);
-				WriteLine(sw, NamePartType, binding.PartType, "unknown");
-				WriteLine(sw, NameSyncOverNetwork, binding.SyncOverNetwork, false);
-				WriteLine(sw, NameSuitableFor, binding.CurrentCabin!.CabinID);//当选择多个卡车时需要输出多个卡车
+				WriteLine(sw, NameDisplayName, data.DisplayName);
+				WriteLine(sw, NamePrice, data.Price);
+				WriteLine(sw, NameUnlock, data.UnlockLevel);
+				WriteLine(sw, NameIcon, data.IconName);
+				WriteLine(sw, NamePartType, data.PartType, "unknown");
+				WriteLine(sw, NameSyncOverNetwork, data.SyncOverNetwork, false);
+				WriteLine(sw, NameSuitableFor, data.CurrentCabin!.CabinID);//当选择多个卡车时需要输出多个卡车
 				//WriteLine(sw, NameConflictWith, binding.ConflictWith);
 
 				WriteEmptyLine(sw);
-				WriteLine(sw, NameBaseColor, binding.BaseColor, Colors.White);
-				customBase = binding.BaseColorCustomizable;
-				WriteLine(sw, NameBaseColorLocked, binding.BaseColorLocked, true);
-				WriteLine(sw, NamePaintJobMask, binding.PaintJobTex);
-				WriteLine(sw, NameBaseTextureOverride, binding.BaseTexOverride);
-				WriteLine(sw, NameAlternateUVSet, binding.AlternateUVSet, false);
+				WriteLine(sw, NameBaseColor, data.BaseColor, Colors.White);
+				customBase = data.BaseColorCustomizable;
+				WriteLine(sw, NameBaseColorLocked, data.BaseColorLocked, true);
+				WriteLine(sw, NamePaintJobMask, data.PaintJobTex);
+				WriteLine(sw, NameBaseTextureOverride, data.BaseTexOverride);
+				WriteLine(sw, NameAlternateUVSet, data.AlternateUVSet, false);
 
 				WriteEmptyLine(sw);
-				bool airbrush = binding.Airbrush;
+				bool airbrush = data.Airbrush;
 				if (airbrush) {
 					WriteLine(sw, NameAirbrush, airbrush, false);
-					WriteLine(sw, NameFlipFlake, binding.FlipFlake, false);
-					WriteLine(sw, NameAlternateFlipFlakeUVSet, binding.AlternateFlipFlakeUVSet, false);
-					WriteLine(sw, NameFlipColor, binding.FlipColor, Colors.Red);
-					custom1 = binding.FlipColorCustomizable;
-					WriteLine(sw, NameFlipColorLocked, binding.FlipColorLocked, true);
-					WriteLine(sw, NameFlakeColor, binding.FlakeColor, Color.FromRgb(0, 255, 0));
-					custom2 = binding.FlakeColorCustomizable;
+					WriteLine(sw, NameFlipFlake, data.FlipFlake, false);
+					WriteLine(sw, NameAlternateFlipFlakeUVSet, data.AlternateFlipFlakeUVSet, false);
+					WriteLine(sw, NameFlipColor, data.FlipColor, Colors.Red);
+					custom1 = data.FlipColorCustomizable;
+					WriteLine(sw, NameFlipColorLocked, data.FlipColorLocked, true);
+					WriteLine(sw, NameFlakeColor, data.FlakeColor, Color.FromRgb(0, 255, 0));
+					custom2 = data.FlakeColorCustomizable;
 					custom3 = false;
-					WriteLine(sw, NameFlakeColorLocked, binding.FlakeColorLocked, true);
-					WriteLine(sw, NameFlipStrength, binding.FlipStrength, 0.27f);
-					WriteLine(sw, NameFlakeShininess, binding.FlakeShininess, 50f);
-					WriteLine(sw, NameFlakeDensity, binding.FlakeDensity, 1f);
-					WriteLine(sw, NameFlakeClearcoatRolloff, binding.FlakeClearcoatRolloff, 2.2f);
-					WriteLine(sw, NameFlakeUVScale, binding.FlakeUVScale, 32f);
-					WriteLine(sw, NameFlakeVRatio, binding.FlakeVRatio, 1f);
-					WriteLine(sw, NameFlakeNoise, binding.FlakeNoise, "/material/custom/flake_noise.tobj");
+					WriteLine(sw, NameFlakeColorLocked, data.FlakeColorLocked, true);
+					WriteLine(sw, NameFlipStrength, data.FlipStrength, 0.27f);
+					WriteLine(sw, NameFlakeShininess, data.FlakeShininess, 50f);
+					WriteLine(sw, NameFlakeDensity, data.FlakeDensity, 1f);
+					WriteLine(sw, NameFlakeClearcoatRolloff, data.FlakeClearcoatRolloff, 2.2f);
+					WriteLine(sw, NameFlakeUVScale, data.FlakeUVScale, 32f);
+					WriteLine(sw, NameFlakeVRatio, data.FlakeVRatio, 1f);
+					WriteLine(sw, NameFlakeNoise, data.FlakeNoise, "/material/custom/flake_noise.tobj");
 				} else {
-					WriteLine(sw, NameMaskRColor, binding.MaskRColor, Colors.Red);
-					custom3 = binding.MaskRCustomizable;
-					WriteLine(sw, NameMaskRLocked, binding.MaskRLocked, true);
-					WriteLine(sw, NameMaskGColor, binding.MaskGColor, Color.FromRgb(0, 255, 0));
-					custom2 = binding.MaskGCustomizable;
-					WriteLine(sw, NameMaskGLocked, binding.MaskGLocked, true);
-					WriteLine(sw, NameMaskBColor, binding.MaskBColor, Colors.Blue);
-					custom1 = binding.MaskBCustomizable;
-					WriteLine(sw, NameMaskBLocked, binding.MaskBLocked, true);
+					WriteLine(sw, NameMaskRColor, data.MaskRColor, Colors.Red);
+					custom3 = data.MaskRCustomizable;
+					WriteLine(sw, NameMaskRLocked, data.MaskRLocked, true);
+					WriteLine(sw, NameMaskGColor, data.MaskGColor, Color.FromRgb(0, 255, 0));
+					custom2 = data.MaskGCustomizable;
+					WriteLine(sw, NameMaskGLocked, data.MaskGLocked, true);
+					WriteLine(sw, NameMaskBColor, data.MaskBColor, Colors.Blue);
+					custom1 = data.MaskBCustomizable;
+					WriteLine(sw, NameMaskBLocked, data.MaskBLocked, true);
 				}
 
 				if (customBase && custom1 && custom2 && custom3) {
 					WriteEmptyLine(sw);
 					Color blank = Color.FromRgb(255,255,255);
-					foreach (var variant in binding.ColorVariantList) {
+					foreach (var variant in data.ColorVariantList) {
 						Color color = customBase ? variant.ColorBase ?? blank : blank;
 						WriteLine(sw, NameColorVariant, color);
 						color = custom1 ? variant.Color1 ?? (airbrush ? Colors.Red : Colors.Blue) : blank;
@@ -157,24 +158,24 @@ public class PaintJobSCSIO(): SCSIO {
 			});
 		});
 
-		WriteOvrPaintJobData(binding);
+		WriteOvrPaintJobData(data);
 	}
 	private void WriteSimplePaintJobData(StreamWriter sw, string ovrName, Action data) {
 		WriteDataHeader(sw, HeaderSimplePaintJob, ovrName, data);
 	}
 
-	private void WriteOvrPaintJobData(PaintJobBinding binding) {
-		if (binding.OverrideList.Count == 0)
+	private void WriteOvrPaintJobData(AccPaintJobData data) {
+		if (data.OverrideList.Count == 0)
 			return;
-		var vehicleID = binding.CurrentVehicle!.VehicleID;
-		var paintJobName = binding.ModelName;
+		var vehicleID = data.CurrentVehicle!.VehicleID;
+		var paintJobName = data.ModelName;
 		var siiFile = Paths.SimplePaintJobFile(vehicleID, paintJobName);
 		using StreamWriter sw = new(siiFile);
 		WriteFileStructure(sw, () => {
-			for (int i = 0; i < binding.OverrideList.Count; i++) {
+			for (int i = 0; i < data.OverrideList.Count; i++) {
 				if (i > 0)
 					WriteEmptyLine(sw);
-				PaintJobOverrideData? ovr = binding.OverrideList[i];
+				PaintJobOverrideData? ovr = data.OverrideList[i];
 				WriteSimplePaintJobData(sw, ovr.OvrName, () => {
 					WriteLine(sw, NamePaintJobMask, ovr.AccTex);
 					WriteLine(sw, NameFlakeUVScale, ovr.AccFlakeUVScale);

@@ -1,10 +1,11 @@
-﻿using SCS_Mod_Helper.Base;
+﻿using SCS_Mod_Helper.Class.Base;
 using SCS_Mod_Helper.Vehicles;
 using System.Collections.ObjectModel;
 using System.Windows.Media.Imaging;
 
 namespace SCS_Mod_Helper.Modding.PaintJob {
 	public class PaintJobOverrideData(int index): BaseBinding {
+		//https://dariowouters.gitlab.io/scs-updates/unit/simple_paint_job_data/
 
 		public override string ToString() => OvrName;
 
@@ -20,28 +21,31 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 
 		public string OvrName => ".ovr" + Index;
 
-		private string mAccTexture = "";
+		private string mAccTex = "";
 		public string AccTex {
-			get => mAccTexture;
+			get => mAccTex;
 			set {
-				mAccTexture = value;
+				mAccTex = value;
 				InvokeChange();
+				InvokeChange(nameof(AccTexImage));
 			}
 		}
 
+		private string? LoadedAccTex = null;
 		protected BitmapSource? mAccTextureImage = null;
 		public BitmapSource? AccTexImage {
-			get => mAccTextureImage;
+			get => mAccTex == LoadedAccTex ? mAccTextureImage : null;
 			set {
 				mAccTextureImage?.Freeze();
 				mAccTextureImage = value;
+				LoadedAccTex = mAccTex;
 				InvokeChange();
 			}
 		}
 
-		private float mAccFlakeUVScale = 32f;
+		private float? mAccFlakeUVScale = 32f;
 
-		public float AccFlakeUVScale {
+		public float? AccFlakeUVScale {
 			get => mAccFlakeUVScale;
 			set {
 				mAccFlakeUVScale = value;
@@ -58,11 +62,13 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 			}
 		}
 
-		public readonly ObservableCollection<Accessory> AccList = [];
+		private readonly ObservableCollection<Accessory> mAccList = [];
 
-		public void CheckAccList(bool check) {
-			foreach(var acc in AccList) {
-				acc.Check = check;
+		public ObservableCollection<Accessory> AccList => mAccList;
+
+		public void RemoveAccList() {
+			foreach (var acc in AccList) {
+				acc.BelongingOverride = null;
 			}
 		}
 	}

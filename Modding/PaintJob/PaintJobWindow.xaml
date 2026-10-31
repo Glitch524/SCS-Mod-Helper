@@ -5,37 +5,21 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:local="clr-namespace:SCS_Mod_Helper.Modding.PaintJob"
-	xmlns:base="clr-namespace:SCS_Mod_Helper.Base"
+	xmlns:base="clr-namespace:SCS_Mod_Helper.Class.Base"
 	xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+	xmlns:utils="clr-namespace:SCS_Mod_Helper.Utils"
 	xmlns:h="http://helix-toolkit.org/wpf"
+	xmlns:dnb="clr-namespace:SCS_Mod_Helper.Locale.StringRes"
 	xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker"
 	d:DataContext="{d:DesignInstance Type=local:PaintJobBinding}"
 	ExtendsContentIntoTitleBar="True"
 	mc:Ignorable="d"
+	Width="850"
 	Height="Auto"
 	WindowStartupLocation="CenterOwner"
 	SizeToContent="Height"
 	Title="{DynamicResource TitleSetupPaintJob}">
 	<base:BaseWindow.Resources>
-		<Style
-			x:Key="CMStyle"
-			TargetType="MenuItem"
-			BasedOn="{StaticResource {x:Type MenuItem}}">
-			<Setter
-				Property="CommandParameter"
-				Value="{Binding Path=Tag, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}" />
-			<Setter
-				Property="Tag"
-				Value="{Binding Path=.}" />
-			<EventSetter
-				Event="Click"
-				Handler="OnMenuClicked" />
-		</Style>
-		<DataTemplate
-			x:Key="CMTemplate">
-			<TextBlock
-				Text="{Binding Path=.}" />
-		</DataTemplate>
 		<Style
 			TargetType="Grid">
 			<Style.Triggers>
@@ -61,47 +45,10 @@
 			</Style.Triggers>
 		</Style>
 
-		<ContextMenu
-			x:Key="MenuStringRes"
-			Tag="MenuStringRes"
-			Placement="Top"
-			ItemsSource="{Binding StringResList}">
-			<ContextMenu.ItemContainerStyle>
-				<Style
-					TargetType="MenuItem"
-					BasedOn="{StaticResource CMStyle}">
-					<Setter
-						Property="ToolTip"
-						Value="{Binding Tooltip}" />
-					<Setter
-						Property="ToolTipService.InitialShowDelay"
-						Value="100" />
-					<Setter
-						Property="Tag"
-						Value="{Binding Tag}" />
-					<Setter
-						Property="IsEnabled"
-						Value="{Binding IsEnabled}" />
-				</Style>
-			</ContextMenu.ItemContainerStyle>
-			<ContextMenu.ItemTemplate>
-				<DataTemplate>
-					<Grid>
-						<TextBlock
-							Text="{Binding Header}"
-							Visibility="{Binding TextBlockVisibility}" />
-						<Separator
-							Height="1"
-							Visibility="{Binding SeparatorVisibility}" />
-					</Grid>
-				</DataTemplate>
-			</ContextMenu.ItemTemplate>
-		</ContextMenu>
-
 		<Style
 			x:Key="TextBoxBorderless"
-			TargetType="TextBox"
-			BasedOn="{StaticResource {x:Type TextBox}}">
+			TargetType="ui:TextBox"
+			BasedOn="{StaticResource {x:Type ui:TextBox}}">
 			<Setter
 				Property="Padding"
 				Value="5,3" />
@@ -292,21 +239,22 @@
 								Symbol="ChatWarning20" />
 						</Viewbox>
 					</Border>
-					<TextBox
+					<ui:TextBox
 						x:Name="TextModelName"
 						Grid.Row="1"
 						Grid.ColumnSpan="2"
 						TextWrapping="Wrap"
 						MaxLines="1"
-						Text="{Binding ModelName, UpdateSourceTrigger=PropertyChanged}"
+						ClearButtonEnabled="False"
+						Text="{Binding PaintJobData.ModelName, UpdateSourceTrigger=PropertyChanged}"
 						VerticalAlignment="Top">
-						<TextBox.Style>
+						<ui:TextBox.Style>
 							<Style
-								TargetType="TextBox"
-								BasedOn="{StaticResource {x:Type TextBox}}">
+								TargetType="ui:TextBox"
+								BasedOn="{StaticResource {x:Type ui:TextBox}}">
 								<Style.Triggers>
 									<DataTrigger
-										Binding="{Binding NameOver12}"
+										Binding="{Binding PaintJobData.NameOver12}"
 										Value="True">
 										<Setter
 											Property="Foreground"
@@ -321,8 +269,8 @@
 									</Trigger>
 								</Style.Triggers>
 							</Style>
-						</TextBox.Style>
-					</TextBox>
+						</ui:TextBox.Style>
+					</ui:TextBox>
 				</Grid>
 				<Grid
 					Grid.Column="2">
@@ -357,7 +305,7 @@
 						Grid.Row="1"
 						Grid.ColumnSpan="2"
 						SelectedValuePath="Tag"
-						SelectedValue="{Binding PartType}"
+						SelectedValue="{Binding PaintJobData.PartType}"
 						IsEditable="True"
 						IsReadOnly="true">
 						<ComboBoxItem
@@ -383,20 +331,20 @@
 					<ComboBox
 						DisplayMemberPath="VehicleName"
 						SelectedValuePath="VehicleID"
-						SelectedItem="{Binding CurrentVehicle}"
-						ItemsSource="{Binding Vehicles}">
+						SelectedItem="{Binding PaintJobData.CurrentVehicle}"
+						ItemsSource="{Binding PaintJobData.Vehicles}">
 						<ComboBox.Style>
 							<Style
 								TargetType="ComboBox"
 								BasedOn="{StaticResource {x:Type ComboBox}}">
 								<Style.Triggers>
-									<DataTrigger
-										Binding="{Binding CurrentVehicle}"
+									<Trigger
+										Property="SelectedItem"
 										Value="{x:Null}">
 										<Setter
 											Property="Background"
 											Value="Yellow" />
-									</DataTrigger>
+									</Trigger>
 								</Style.Triggers>
 							</Style>
 						</ComboBox.Style>
@@ -412,20 +360,20 @@
 					<ComboBox
 						DisplayMemberPath="CabinName"
 						SelectedValuePath="CabinID"
-						SelectedItem="{Binding CurrentCabin}"
-						ItemsSource="{Binding CabinList}">
+						SelectedItem="{Binding PaintJobData.CurrentCabin}"
+						ItemsSource="{Binding PaintJobData.CabinList}">
 						<ComboBox.Style>
 							<Style
 								TargetType="ComboBox"
 								BasedOn="{StaticResource {x:Type ComboBox}}">
 								<Style.Triggers>
-									<DataTrigger
-										Binding="{Binding CurrentCabin}"
+									<Trigger
+										Property="SelectedItem"
 										Value="{x:Null}">
 										<Setter
 											Property="Background"
 											Value="Yellow" />
-									</DataTrigger>
+									</Trigger>
 								</Style.Triggers>
 							</Style>
 						</ComboBox.Style>
@@ -433,109 +381,19 @@
 				</StackPanel>
 
 
-				<Grid
+				<StackPanel
 					Grid.Row="2"
-					Grid.ColumnSpan="3">
-					<Grid.RowDefinitions>
-						<RowDefinition
-							Height="Auto" />
-						<RowDefinition
-							Height="Auto" />
-					</Grid.RowDefinitions>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition
-							Width="*" />
-						<ColumnDefinition
-							Width="Auto" />
-						<ColumnDefinition
-							Width="Auto" />
-					</Grid.ColumnDefinitions>
+					Grid.ColumnSpan="3"
+					VerticalAlignment="Bottom">
 					<TextBlock
 						Grid.ColumnSpan="3"
 						TextWrapping="Wrap"
 						VerticalAlignment="Top"
 						Text="{DynamicResource ModelDisplayName}" />
-					<TextBox
-						x:Name="TextDisplayName"
-						Grid.Row="1"
-						Text="{Binding DisplayName, UpdateSourceTrigger=PropertyChanged}"
-						TextWrapping="Wrap">
-						<TextBox.Style>
-							<Style
-								TargetType="TextBox"
-								BasedOn="{StaticResource TextBoxBorderless}">
-								<Style.Triggers>
-									<Trigger
-										Property="Text"
-										Value="">
-										<Setter
-											Property="Background"
-											Value="Yellow" />
-									</Trigger>
-								</Style.Triggers>
-							</Style>
-						</TextBox.Style>
-					</TextBox>
-					<Button
-						x:Name="ButtonCheckRes"
-						Grid.Row="1"
-						Grid.Column="1"
-						Click="CheckStringRes"
-						Visibility="{Binding CheckResVisibility}"
-						Style="{StaticResource ButtonBorderless}">
-						<Viewbox>
-							<ui:SymbolIcon
-								Symbol="Search16" />
-						</Viewbox>
-					</Button>
-					<Popup
-						x:Name="PopupCheckRes"
-						PlacementTarget="{Binding ElementName=ButtonCheckRes}"
-						PopupAnimation="Slide"
-						AllowsTransparency="True"
-						IsOpen="{Binding PopupCheckOpen}"
-						StaysOpen="False">
-						<Grid>
-							<Border
-								Style="{DynamicResource PopupBorder}" />
-							<StackPanel
-								Margin="10">
-								<TextBlock>
-												<Run
-										Text="{DynamicResource CheckResResult}" />
-								</TextBlock>
-								<Border
-									Margin="0,10"
-									Style="{DynamicResource SpliterBorder}" />
-								<TextBlock
-									Text="{Binding CheckResResult}" />
-								<Border
-									Margin="0,10"
-									Style="{DynamicResource SpliterBorder}" />
-								<TextBlock>
-											<Run
-										Text="{DynamicResource CheckResResultTips}" />
-								</TextBlock>
-							</StackPanel>
-						</Grid>
-					</Popup>
-					<Button
-						x:Name="ButtonChooseRes"
-						Grid.Row="1"
-						Grid.Column="2"
-						Click="ChooseStringRes"
-						Style="{StaticResource ButtonBorderless}"
-						Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}">
-						<Viewbox>
-							<ui:SymbolIcon
-								Symbol="Translate16" />
-						</Viewbox>
-					</Button>
-					<Border
-						Grid.Row="1"
-						Grid.ColumnSpan="3"
-						Style="{DynamicResource MultiControlBorder}" />
-				</Grid>
+					<dnb:DisplayNameUC
+						AccessoryData="{Binding PaintJobData, Mode=OneWay}"
+						Grid.Row="1" />
+				</StackPanel>
 				<StackPanel
 					Grid.Row="2"
 					Grid.Column="4"
@@ -569,12 +427,12 @@
 									Symbol="ChatWarning20" />
 							</Viewbox>
 						</Border>
-
 						<CheckBox
 							x:Name="CheckBoxColorBaseCustomizable"
 							Grid.Column="3"
 							Content="{DynamicResource TitleColorCustomizable}"
-							IsChecked="{Binding BaseColorCustomizable}"
+							IsChecked="{Binding PaintJobData.BaseColorCustomizable}"
+							d:IsChecked="True"
 							ToolTip="{DynamicResource TooltipColorCustomizable}" />
 					</Grid>
 					<Grid
@@ -587,7 +445,7 @@
 						</Grid.ColumnDefinitions>
 						<Border
 							d:Background="Blue"
-							Background="{Binding BaseColorVisual, Mode=OneWay}"
+							Background="{Binding PaintJobData.BaseColorVisual, Mode=OneWay}"
 							Style="{DynamicResource MultiControlBorder}" />
 						<Button
 							x:Name="ButtonBaseColor"
@@ -606,7 +464,7 @@
 					Grid.Column="6"
 					Content="{DynamicResource TitleAlternateUVSet}"
 					ToolTip="{DynamicResource TooltipAlternateUVSet}"
-					IsChecked="{Binding AlternateUVSet}"
+					IsChecked="{Binding PaintJobData.AlternateUVSet}"
 					VerticalAlignment="Bottom" />
 
 				<StackPanel
@@ -615,25 +473,20 @@
 						TextWrapping="Wrap"
 						VerticalAlignment="Top"
 						Text="{DynamicResource ModelPrice}" />
-					<TextBox
+					<ui:TextBox
 						x:Name="TextPrice"
-						Text="{Binding PriceString, UpdateSourceTrigger=PropertyChanged}"
+						Text="{Binding PaintJobData.PriceString, UpdateSourceTrigger=PropertyChanged}"
 						MaxLines="1"
+						ClearButtonEnabled="False"
+						PlaceholderText="1"
 						PreviewTextInput="NumberOnly"
 						TextWrapping="Wrap"
 						VerticalAlignment="Top">
-						<TextBox.Style>
+						<ui:TextBox.Style>
 							<Style
-								TargetType="TextBox"
-								BasedOn="{StaticResource {x:Type TextBox}}">
+								TargetType="ui:TextBox"
+								BasedOn="{StaticResource {x:Type ui:TextBox}}">
 								<Style.Triggers>
-									<Trigger
-										Property="Text"
-										Value="">
-										<Setter
-											Property="Background"
-											Value="Yellow" />
-									</Trigger>
 									<Trigger
 										Property="Text"
 										Value="0">
@@ -646,8 +499,8 @@
 									</Trigger>
 								</Style.Triggers>
 							</Style>
-						</TextBox.Style>
-					</TextBox>
+						</ui:TextBox.Style>
+					</ui:TextBox>
 				</StackPanel>
 				<StackPanel
 					Grid.Row="4"
@@ -659,29 +512,15 @@
 							Language="zh-cn"
 							Text="{DynamicResource ModelUnlockLevel}" />
 					</TextBlock>
-					<TextBox
+					<ui:TextBox
 						x:Name="TextUnlockLevel"
-						Text="{Binding UnlockLevelString, UpdateSourceTrigger=PropertyChanged}"
+						Text="{Binding PaintJobData.UnlockLevelString, UpdateSourceTrigger=PropertyChanged}"
 						MaxLines="1"
+						ClearButtonEnabled="False"
+						PlaceholderText="0"
 						PreviewTextInput="NumberOnly"
 						TextWrapping="Wrap"
-						VerticalAlignment="Top">
-						<TextBox.Style>
-							<Style
-								TargetType="TextBox"
-								BasedOn="{StaticResource {x:Type TextBox}}">
-								<Style.Triggers>
-									<Trigger
-										Property="Text"
-										Value="">
-										<Setter
-											Property="Background"
-											Value="Yellow" />
-									</Trigger>
-								</Style.Triggers>
-							</Style>
-						</TextBox.Style>
-					</TextBox>
+						VerticalAlignment="Top" />
 				</StackPanel>
 
 				<StackPanel
@@ -710,19 +549,17 @@
 								Width="*" />
 							<ColumnDefinition
 								Width="Auto" />
-							<ColumnDefinition
-								Width="Auto" />
 						</Grid.ColumnDefinitions>
-						<TextBox
+						<ui:TextBox
 							x:Name="TextIconName"
-							Text="{Binding IconName}"
+							Text="{Binding PaintJobData.IconName}"
 							MaxLines="1"
 							TextWrapping="Wrap"
 							AllowDrop="True"
 							Drop="FileDrop">
-							<TextBox.Style>
+							<ui:TextBox.Style>
 								<Style
-									TargetType="TextBox"
+									TargetType="ui:TextBox"
 									BasedOn="{StaticResource TextBoxBorderless}">
 									<Style.Triggers>
 										<Trigger
@@ -734,22 +571,11 @@
 										</Trigger>
 									</Style.Triggers>
 								</Style>
-							</TextBox.Style>
-						</TextBox>
-						<Button
-							x:Name="ButtonIconNameClear"
-							Grid.Column="1"
-							Click="ButtonClearClick"
-							Style="{StaticResource ButtonBorderless}"
-							Visibility="{Binding IconNameClearVisibility}">
-							<Viewbox>
-								<ui:SymbolIcon
-									Symbol="Dismiss16" />
-							</Viewbox>
-						</Button>
+							</ui:TextBox.Style>
+						</ui:TextBox>
 						<Button
 							x:Name="ButtonIconName"
-							Grid.Column="2"
+							Grid.Column="1"
 							Click="ButtonChooseIcon"
 							AllowDrop="True"
 							Drop="FileDrop"
@@ -778,7 +604,7 @@
 							BasedOn="{StaticResource MultiControlBorder}">
 							<Style.Triggers>
 								<DataTrigger
-									Binding="{Binding ModelIcon, Mode=OneWay}"
+									Binding="{Binding Source, ElementName=ImageIcon, Mode=OneWay}"
 									Value="{x:Null}">
 									<Setter
 										Property="Visibility"
@@ -789,8 +615,9 @@
 					</Border.Style>
 					<Viewbox>
 						<Image
+							x:Name="ImageIcon"
 							Stretch="Uniform"
-							Source="{Binding ModelIcon}"
+							Source="{Binding PaintJobData.ModelIcon}"
 							Width="256"
 							Height="64" />
 					</Viewbox>
@@ -881,7 +708,7 @@
 										TargetType="StackPanel">
 										<Style.Triggers>
 											<DataTrigger
-												Binding="{Binding CurrentVariant}"
+												Binding="{Binding SelectedValue, ElementName=ListBoxColorVariant}"
 												Value="{x:Null}">
 												<Setter
 													Property="IsEnabled"
@@ -898,7 +725,7 @@
 											BasedOn="{StaticResource {x:Type StackPanel}}">
 											<Style.Triggers>
 												<DataTrigger
-													Binding="{Binding BaseColorCustomizable}"
+													Binding="{Binding IsChecked, ElementName=CheckBoxColorBaseCustomizable}"
 													Value="false">
 													<Setter
 														Property="Visibility"
@@ -916,7 +743,7 @@
 										VerticalAlignment="Stretch"
 										Click="ButtonChooseColor"
 										d:Background="Black"
-										Background="{Binding VariantColorBaseBrush, Mode=OneWay}"
+										Background="{Binding PaintJobData.VariantColorBaseBrush, Mode=OneWay}"
 										Style="{StaticResource ColorButtonStyle}"/>
 								</StackPanel>
 								<StackPanel
@@ -930,10 +757,10 @@
 												<MultiDataTrigger>
 													<MultiDataTrigger.Conditions>
 														<Condition
-															Binding="{Binding Airbrush}"
-															Value="true" />
+															Binding="{Binding SelectedIndex, ElementName=TabMode}"
+															Value="0" />
 														<Condition
-															Binding="{Binding FlipColorCustomizable}"
+															Binding="{Binding IsChecked, ElementName=CheckBoxFlipColorCustomizable}"
 															Value="false" />
 													</MultiDataTrigger.Conditions>
 													<Setter
@@ -943,10 +770,10 @@
 												<MultiDataTrigger>
 													<MultiDataTrigger.Conditions>
 														<Condition
-															Binding="{Binding Airbrush}"
-															Value="false" />
+															Binding="{Binding SelectedIndex, ElementName=TabMode}"
+															Value="1" />
 														<Condition
-															Binding="{Binding MaskBCustomizable}"
+															Binding="{Binding IsChecked, ElementName=CheckBoxMaskBCustomizable}"
 															Value="false" />
 													</MultiDataTrigger.Conditions>
 													<Setter
@@ -967,8 +794,8 @@
 													Value="{DynamicResource MaskBShort}" />
 												<Style.Triggers>
 													<DataTrigger
-														Binding="{Binding Airbrush}"
-														Value="True">
+														Binding="{Binding SelectedIndex, ElementName=TabMode}"
+														Value="0">
 														<Setter
 															Property="Text"
 															Value="{DynamicResource FlipColorShort}" />
@@ -983,7 +810,7 @@
 										VerticalAlignment="Stretch"
 										Click="ButtonChooseColor"
 										d:Background="Blue"
-										Background="{Binding VariantColor1Brush, Mode=OneWay}"
+										Background="{Binding PaintJobData.VariantColor1Brush, Mode=OneWay}"
 										Style="{StaticResource ColorButtonStyle}" />
 								</StackPanel>
 								<StackPanel
@@ -997,10 +824,10 @@
 												<MultiDataTrigger>
 													<MultiDataTrigger.Conditions>
 														<Condition
-															Binding="{Binding Airbrush}"
-															Value="true" />
+															Binding="{Binding SelectedIndex, ElementName=TabMode}"
+															Value="0" />
 														<Condition
-															Binding="{Binding FlakeColorCustomizable}"
+															Binding="{Binding IsChecked, ElementName=CheckBoxFlakeColorCustomizable}"
 															Value="false" />
 													</MultiDataTrigger.Conditions>
 													<Setter
@@ -1010,10 +837,10 @@
 												<MultiDataTrigger>
 													<MultiDataTrigger.Conditions>
 														<Condition
-															Binding="{Binding Airbrush}"
-															Value="false" />
+															Binding="{Binding SelectedIndex, ElementName=TabMode}"
+															Value="1" />
 														<Condition
-															Binding="{Binding MaskGCustomizable}"
+															Binding="{Binding IsChecked, ElementName=CheckBoxMaskGCustomizable}"
 															Value="false" />
 													</MultiDataTrigger.Conditions>
 													<Setter
@@ -1034,8 +861,8 @@
 													Value="{DynamicResource MaskGShort}" />
 												<Style.Triggers>
 													<DataTrigger
-														Binding="{Binding Airbrush}"
-														Value="True">
+														Binding="{Binding SelectedIndex, ElementName=TabMode}"
+														Value="0">
 														<Setter
 															Property="Text"
 															Value="{DynamicResource FlakeColorShort}" />
@@ -1050,7 +877,7 @@
 										VerticalAlignment="Stretch"
 										Click="ButtonChooseColor"
 										d:Background="Lime"
-										Background="{Binding VariantColor2Brush, Mode=OneWay}"
+										Background="{Binding PaintJobData.VariantColor2Brush, Mode=OneWay}"
 										Style="{StaticResource ColorButtonStyle}">
 									</Button>
 								</StackPanel>
@@ -1063,8 +890,8 @@
 											BasedOn="{StaticResource {x:Type StackPanel}}">
 											<Style.Triggers>
 												<DataTrigger
-													Binding="{Binding Airbrush}"
-													Value="true">
+													Binding="{Binding SelectedIndex, ElementName=TabMode}"
+													Value="0">
 													<Setter
 														Property="Visibility"
 														Value="Collapsed" />
@@ -1072,10 +899,10 @@
 												<MultiDataTrigger>
 													<MultiDataTrigger.Conditions>
 														<Condition
-															Binding="{Binding Airbrush}"
-															Value="false" />
+															Binding="{Binding SelectedIndex, ElementName=TabMode}"
+															Value="1" />
 														<Condition
-															Binding="{Binding MaskRCustomizable}"
+															Binding="{Binding IsChecked, ElementName=CheckBoxMaskRCustomizable}"
 															Value="false" />
 													</MultiDataTrigger.Conditions>
 													<Setter
@@ -1094,7 +921,7 @@
 										VerticalAlignment="Stretch"
 										Click="ButtonChooseColor"
 										d:Background="Red"
-										Background="{Binding VariantColor3Brush, Mode=OneWay}"
+										Background="{Binding PaintJobData.VariantColor3Brush, Mode=OneWay}"
 										Style="{StaticResource ColorButtonStyle}" />
 								</StackPanel>
 							</StackPanel>
@@ -1134,22 +961,22 @@
 													<MultiDataTrigger>
 														<MultiDataTrigger.Conditions>
 															<Condition
-																Binding="{Binding BaseColorCustomizable}"
+																Binding="{Binding IsChecked, ElementName=CheckBoxColorBaseCustomizable}"
 																Value="False" />
 															<Condition
-																Binding="{Binding FlipColorCustomizable}"
+																Binding="{Binding IsChecked, ElementName=CheckBoxFlipColorCustomizable}"
 																Value="False" />
 															<Condition
-																Binding="{Binding FlakeColorCustomizable}"
+																Binding="{Binding IsChecked, ElementName=CheckBoxFlakeColorCustomizable}"
 																Value="False" />
 															<Condition
-																Binding="{Binding MaskRCustomizable}"
+																Binding="{Binding IsChecked, ElementName=CheckBoxMaskRCustomizable}"
 																Value="False" />
 															<Condition
-																Binding="{Binding MaskGCustomizable}"
+																Binding="{Binding IsChecked, ElementName=CheckBoxMaskGCustomizable}"
 																Value="False" />
 															<Condition
-																Binding="{Binding MaskBCustomizable}"
+																Binding="{Binding IsChecked, ElementName=CheckBoxMaskBCustomizable}"
 																Value="False" />
 														</MultiDataTrigger.Conditions>
 														<Setter
@@ -1169,22 +996,22 @@
 													<MultiDataTrigger>
 														<MultiDataTrigger.Conditions>
 															<Condition
-																Binding="{Binding BaseColorCustomizable}"
+																Binding="{Binding IsChecked, ElementName=CheckBoxColorBaseCustomizable}"
 																Value="False" />
 															<Condition
-																Binding="{Binding FlipColorCustomizable}"
+																Binding="{Binding IsChecked, ElementName=CheckBoxFlipColorCustomizable}"
 																Value="False" />
 															<Condition
-																Binding="{Binding FlakeColorCustomizable}"
+																Binding="{Binding IsChecked, ElementName=CheckBoxFlakeColorCustomizable}"
 																Value="False" />
 															<Condition
-																Binding="{Binding MaskRCustomizable}"
+																Binding="{Binding IsChecked, ElementName=CheckBoxMaskRCustomizable}"
 																Value="False" />
 															<Condition
-																Binding="{Binding MaskGCustomizable}"
+																Binding="{Binding IsChecked, ElementName=CheckBoxMaskGCustomizable}"
 																Value="False" />
 															<Condition
-																Binding="{Binding MaskBCustomizable}"
+																Binding="{Binding IsChecked, ElementName=CheckBoxMaskBCustomizable}"
 																Value="False" />
 														</MultiDataTrigger.Conditions>
 														<Setter
@@ -1203,7 +1030,7 @@
 										<Button
 											Padding="10,3"
 											Margin="5"
-											Click="AddVariantClick"
+											Command="{Binding PaintJobData.AddVariantCommand}"
 											HorizontalAlignment="Right">
 											<Viewbox>
 												<ui:SymbolIcon
@@ -1224,7 +1051,7 @@
 														Value="Collapsed" />
 													<Style.Triggers>
 														<DataTrigger
-															Binding="{Binding ColorVariantList.Count}"
+															Binding="{Binding ItemsSource.Count, ElementName=ListBoxColorVariant}"
 															Value="0">
 															<Setter
 																Property="Visibility"
@@ -1235,10 +1062,11 @@
 											</TextBlock.Style>
 										</TextBlock>
 										<ListBox
+											x:Name="ListBoxColorVariant"
 											Grid.Row="1"
 											Margin="5"
-											ItemsSource="{Binding ColorVariantList}"
-											SelectedValue="{Binding CurrentVariant}"
+											ItemsSource="{Binding PaintJobData.ColorVariantList}"
+											SelectedValue="{Binding PaintJobData.CurrentVariant}"
 											IsSynchronizedWithCurrentItem="True"
 											SelectionChanged="VariantColorSelected">
 											<ListBox.Style>
@@ -1247,7 +1075,7 @@
 													BasedOn="{StaticResource {x:Type ListBox}}">
 													<Style.Triggers>
 														<DataTrigger
-															Binding="{Binding ColorVariantList.Count}"
+															Binding="{Binding ItemsSource.Count, ElementName=ListBoxColorVariant}"
 															Value="0">
 															<Setter
 																Property="Visibility"
@@ -1310,7 +1138,7 @@
 																				Value="White" />
 																		</DataTrigger>
 																		<DataTrigger
-																			Binding="{Binding ElementName=CheckBoxColorBaseCustomizable, Path=IsChecked}"
+																			Binding="{Binding IsChecked, ElementName=CheckBoxColorBaseCustomizable}"
 																			Value="False">
 																			<Setter
 																				Property="Visibility"
@@ -1486,7 +1314,8 @@
 															Height="20"
 															Grid.Column="5"
 															Margin="5,0,0,0"
-															Click="RemoveVariantClick">
+															Command="{Binding DataContext.PaintJobData.RemoveVariantCommand, ElementName=ListBoxColorVariant}"
+															CommandParameter="{Binding Path=.}">
 															<Viewbox>
 																<ui:SymbolIcon
 																	Symbol="Dismiss20" />
@@ -1534,32 +1363,18 @@
 								Width="*" />
 							<ColumnDefinition
 								Width="Auto" />
-							<ColumnDefinition
-								Width="Auto" />
 						</Grid.ColumnDefinitions>
-						<TextBox
+						<ui:TextBox
 							x:Name="TextPaintJobTex"
-							Text="{Binding PaintJobTex}"
+							Text="{Binding PaintJobData.PaintJobTex}"
 							MaxLines="1"
 							TextWrapping="Wrap"
 							Style="{StaticResource TextBoxBorderless}"
 							AllowDrop="True"
-							Drop="FileDrop">
-						</TextBox>
-						<Button
-							x:Name="ButtonPaintJobTexClear"
-							Grid.Column="1"
-							Click="ButtonClearClick"
-							Style="{StaticResource ButtonBorderless}"
-							Visibility="{Binding PaintJobTexVisibility}">
-							<Viewbox>
-								<ui:SymbolIcon
-									Symbol="Dismiss16" />
-							</Viewbox>
-						</Button>
+							Drop="FileDrop" />
 						<Button
 							x:Name="ButtonPaintJob"
-							Grid.Column="2"
+							Grid.Column="1"
 							Style="{StaticResource ButtonBorderless}"
 							Click="ButtonChooseTextureClick"
 							AllowDrop="True"
@@ -1606,32 +1421,19 @@
 								Width="*" />
 							<ColumnDefinition
 								Width="Auto" />
-							<ColumnDefinition
-								Width="Auto" />
 						</Grid.ColumnDefinitions>
-						<TextBox
+						<ui:TextBox
 							x:Name="TextBaseTexOverride"
-							Text="{Binding BaseTexOverride}"
+							Text="{Binding PaintJobData.BaseTexOverride}"
 							MaxLines="1"
 							TextWrapping="Wrap"
 							Style="{StaticResource TextBoxBorderless}"
 							AllowDrop="True"
 							Drop="FileDrop">
-						</TextBox>
-						<Button
-							x:Name="ButtonBaseTexOverrideClear"
-							Grid.Column="1"
-							Click="ButtonClearClick"
-							Style="{StaticResource ButtonBorderless}"
-							Visibility="{Binding BaseTexOverrideVisibility}">
-							<Viewbox>
-								<ui:SymbolIcon
-									Symbol="Dismiss16" />
-							</Viewbox>
-						</Button>
+						</ui:TextBox>
 						<Button
 							x:Name="ButtonBaseTexOverride"
-							Grid.Column="2"
+							Grid.Column="1"
 							Style="{StaticResource ButtonBorderless}"
 							Click="ButtonChooseTextureClick"
 							AllowDrop="True"
@@ -1670,7 +1472,7 @@
 				Grid.Row="3"
 				Grid.Column="0"
 				Grid.ColumnSpan="3"
-				SelectedIndex="{Binding TabIndex}">
+				SelectedIndex="{Binding PaintJobData.TabIndex}">
 				<TabItem
 					Header="{DynamicResource HeaderAirbrush}">
 					<StackPanel
@@ -1692,15 +1494,16 @@
 							<CheckBox
 								x:Name="CheckFlipFlake"
 								Content="{DynamicResource TitleFlipFlake}"
-								IsChecked="{Binding FlipFlake}" />
+								IsChecked="{Binding PaintJobData.FlipFlake}"
+								d:IsChecked="True"/>
 							<CheckBox
 								x:Name="CheckAltFlipFlakeUVSet"
 								Grid.Column="2"
 								Content="{DynamicResource TitleAlternateFlipFlakeUVSet}"
-								IsChecked="{Binding AlternateFlipFlakeUVSet}" />
+								IsChecked="{Binding PaintJobData.AlternateFlipFlakeUVSet}" />
 						</Grid>
 						<Grid
-							IsEnabled="{Binding FlipFlake}">
+							IsEnabled="{Binding IsChecked, ElementName=CheckFlipFlake}">
 							<Grid.RowDefinitions>
 								<RowDefinition
 									Height="Auto" />
@@ -1773,7 +1576,7 @@
 									x:Name="CheckBoxFlipColorCustomizable"
 									Grid.Column="3"
 									Content="{DynamicResource TitleColorCustomizable}"
-									IsChecked="{Binding FlipColorCustomizable}"
+									IsChecked="{Binding PaintJobData.FlipColorCustomizable}"
 									ToolTip="{DynamicResource TooltipColorCustomizable}"
 									VerticalContentAlignment="Bottom" />
 							</Grid>
@@ -1787,7 +1590,7 @@
 								</Grid.ColumnDefinitions>
 								<Border
 									d:Background="Pink"
-									Background="{Binding FlipColorVisual, Mode=OneWay}"
+									Background="{Binding PaintJobData.FlipColorVisual, Mode=OneWay}"
 									Style="{DynamicResource MultiControlBorder}" />
 								<Button
 									x:Name="ButtonFlipColor"
@@ -1830,30 +1633,16 @@
 									</Viewbox>
 								</Border>
 							</Grid>
-							<TextBox
+							<ui:TextBox
 								x:Name="TextFlipStrength"
 								Grid.Row="1"
 								Grid.Column="2"
-								Text="{Binding FlipStrength, UpdateSourceTrigger=PropertyChanged}"
+								ClearButtonEnabled="False"
+								Text="{Binding PaintJobData.FlipStrength, UpdateSourceTrigger=PropertyChanged, Converter={x:Static utils:FloatConverter.Instance}}"
+								PlaceholderText="0.27"
 								PreviewTextInput="FloatOnly"
 								TextWrapping="Wrap"
-								VerticalAlignment="Top">
-								<TextBox.Style>
-									<Style
-										TargetType="TextBox"
-										BasedOn="{StaticResource {x:Type TextBox}}">
-										<Style.Triggers>
-											<DataTrigger
-												Binding="{Binding IsFlipStrengthDefault}"
-												Value="True">
-												<Setter
-													Property="Foreground"
-													Value="LightGray" />
-											</DataTrigger>
-										</Style.Triggers>
-									</Style>
-								</TextBox.Style>
-							</TextBox>
+								VerticalAlignment="Top" />
 
 							<Grid
 								Grid.Row="3">
@@ -1890,7 +1679,7 @@
 									x:Name="CheckBoxFlakeColorCustomizable"
 									Grid.Column="3"
 									Content="{DynamicResource TitleColorCustomizable}"
-									IsChecked="{Binding FlakeColorCustomizable}"
+									IsChecked="{Binding PaintJobData.FlakeColorCustomizable}"
 									ToolTip="{DynamicResource TooltipColorCustomizable}"
 									VerticalContentAlignment="Bottom" />
 							</Grid>
@@ -1904,7 +1693,7 @@
 								</Grid.ColumnDefinitions>
 								<Border
 									d:Background="LimeGreen"
-									Background="{Binding FlakeColorVisual, Mode=OneWay}"
+									Background="{Binding PaintJobData.FlakeColorVisual, Mode=OneWay}"
 									Style="{DynamicResource MultiControlBorder}" />
 								<Button
 									x:Name="ButtonFlakeColor"
@@ -1924,30 +1713,16 @@
 								TextWrapping="Wrap"
 								VerticalAlignment="Bottom"
 								Text="{DynamicResource TitleFlakeShininess}" />
-							<TextBox
+							<ui:TextBox
 								Grid.Row="4"
 								Grid.Column="2"
 								MaxLines="1"
-								Text="{Binding FlakeShininess, UpdateSourceTrigger=PropertyChanged}"
+								ClearButtonEnabled="False"
+								Text="{Binding PaintJobData.FlakeShininess, UpdateSourceTrigger=PropertyChanged, Converter={x:Static utils:FloatConverter.Instance}}"
+								PlaceholderText="50"
 								PreviewTextInput="FloatOnly"
 								TextWrapping="Wrap"
-								VerticalAlignment="Top">
-								<TextBox.Style>
-									<Style
-										TargetType="TextBox"
-										BasedOn="{StaticResource {x:Type TextBox}}">
-										<Style.Triggers>
-											<DataTrigger
-												Binding="{Binding IsFlakeShininessDefault}"
-												Value="True">
-												<Setter
-													Property="Foreground"
-													Value="LightGray" />
-											</DataTrigger>
-										</Style.Triggers>
-									</Style>
-								</TextBox.Style>
-							</TextBox>
+								VerticalAlignment="Top" />
 
 
 							<StackPanel
@@ -1968,29 +1743,15 @@
 									</Viewbox>
 								</Border>
 							</StackPanel>
-							<TextBox
+							<ui:TextBox
 								Grid.Row="7"
 								MaxLines="1"
-								Text="{Binding FlakeDensity, UpdateSourceTrigger=PropertyChanged}"
+								ClearButtonEnabled="False"
+								Text="{Binding PaintJobData.FlakeDensity, UpdateSourceTrigger=PropertyChanged, Converter={x:Static utils:FloatConverter.Instance}}"
+								PlaceholderText="1"
 								PreviewTextInput="FloatOnly"
 								TextWrapping="Wrap"
-								VerticalAlignment="Top">
-								<TextBox.Style>
-									<Style
-										TargetType="TextBox"
-										BasedOn="{StaticResource {x:Type TextBox}}">
-										<Style.Triggers>
-											<DataTrigger
-												Binding="{Binding IsFlakeDensityDefault}"
-												Value="True">
-												<Setter
-													Property="Foreground"
-													Value="LightGray" />
-											</DataTrigger>
-										</Style.Triggers>
-									</Style>
-								</TextBox.Style>
-							</TextBox>
+								VerticalAlignment="Top" />
 
 
 							<StackPanel
@@ -2013,29 +1774,16 @@
 									</Viewbox>
 								</Border>
 							</StackPanel>
-							<TextBox
+							<ui:TextBox
 								Grid.Row="7"
 								Grid.Column="2"
-								Text="{Binding FlakeClearcoatRolloff, UpdateSourceTrigger=PropertyChanged}"
+								ClearButtonEnabled="False"
+								Text="{Binding PaintJobData.FlakeClearcoatRolloff, UpdateSourceTrigger=PropertyChanged, Converter={x:Static utils:FloatConverter.Instance}}"
+								PlaceholderText="2.2"
 								PreviewTextInput="FloatOnly"
 								TextWrapping="Wrap"
-								VerticalAlignment="Top">
-								<TextBox.Style>
-									<Style
-										TargetType="TextBox"
-										BasedOn="{StaticResource {x:Type TextBox}}">
-										<Style.Triggers>
-											<DataTrigger
-												Binding="{Binding IsFlakeClearcoatRolloffDefault}"
-												Value="True">
-												<Setter
-													Property="Foreground"
-													Value="LightGray" />
-											</DataTrigger>
-										</Style.Triggers>
-									</Style>
-								</TextBox.Style>
-							</TextBox>
+								VerticalAlignment="Top" />
+
 
 
 							<StackPanel
@@ -2057,28 +1805,15 @@
 									</Viewbox>
 								</Border>
 							</StackPanel>
-							<TextBox
+							<ui:TextBox
 								Grid.Row="10"
-								Text="{Binding FlakeUVScale, UpdateSourceTrigger=PropertyChanged}"
+								ClearButtonEnabled="False"
+								Text="{Binding PaintJobData.FlakeUVScale, UpdateSourceTrigger=PropertyChanged, Converter={x:Static utils:FloatConverter.Instance}}"
+								PlaceholderText="32"
 								PreviewTextInput="FloatOnly"
 								TextWrapping="Wrap"
-								VerticalAlignment="Top">
-								<TextBox.Style>
-									<Style
-										TargetType="TextBox"
-										BasedOn="{StaticResource {x:Type TextBox}}">
-										<Style.Triggers>
-											<DataTrigger
-												Binding="{Binding IsFlakeUVScaleDefault}"
-												Value="True">
-												<Setter
-													Property="Foreground"
-													Value="LightGray" />
-											</DataTrigger>
-										</Style.Triggers>
-									</Style>
-								</TextBox.Style>
-							</TextBox>
+								VerticalAlignment="Top" />
+
 
 							<TextBlock
 								x:Name="TitleFlakeVRatio"
@@ -2088,29 +1823,15 @@
 								VerticalAlignment="Bottom"
 								Text="{DynamicResource TitleFlakeVRatio}"
 								ToolTip="{DynamicResource TooltipFlakeVRatio}" />
-							<TextBox
+							<ui:TextBox
 								Grid.Row="10"
 								Grid.Column="2"
-								Text="{Binding FlakeVRatio, UpdateSourceTrigger=PropertyChanged}"
+								ClearButtonEnabled="False"
+								Text="{Binding PaintJobData.FlakeVRatio, UpdateSourceTrigger=PropertyChanged, Converter={x:Static utils:FloatConverter.Instance}}"
+								PlaceholderText="1"
 								PreviewTextInput="FloatOnly"
 								TextWrapping="Wrap"
-								VerticalAlignment="Top">
-								<TextBox.Style>
-									<Style
-										TargetType="TextBox"
-										BasedOn="{StaticResource {x:Type TextBox}}">
-										<Style.Triggers>
-											<DataTrigger
-												Binding="{Binding IsFlakeVRatioDefault}"
-												Value="True">
-												<Setter
-													Property="Foreground"
-													Value="LightGray" />
-											</DataTrigger>
-										</Style.Triggers>
-									</Style>
-								</TextBox.Style>
-							</TextBox>
+								VerticalAlignment="Top" />
 
 							<StackPanel
 								Grid.Row="12"
@@ -2138,42 +1859,14 @@
 										Width="*" />
 									<ColumnDefinition
 										Width="Auto" />
-									<ColumnDefinition
-										Width="Auto" />
 								</Grid.ColumnDefinitions>
-								<TextBox
-									Text="{Binding FlakeNoise}"
+								<ui:TextBox
+									Text="{Binding PaintJobData.FlakeNoise}"
+									PlaceholderText="/material/custom/flake_noise.tobj"
 									MaxLines="1"
 									TextWrapping="Wrap"
 									AllowDrop="True"
-									Drop="FileDrop">
-									<TextBox.Style>
-										<Style
-											TargetType="TextBox"
-											BasedOn="{StaticResource {x:Type TextBox}}">
-											<Style.Triggers>
-												<DataTrigger
-													Binding="{Binding IsFlakeNoiseDefault}"
-													Value="True">
-													<Setter
-														Property="Foreground"
-														Value="LightGray" />
-												</DataTrigger>
-											</Style.Triggers>
-										</Style>
-									</TextBox.Style>
-								</TextBox>
-								<Button
-									x:Name="ButtonFlakeNoiseClear"
-									Grid.Column="1"
-									Click="ButtonClearClick"
-									Style="{StaticResource ButtonBorderless}"
-									Visibility="{Binding FlakeNoiseVisibility}">
-									<Viewbox>
-										<ui:SymbolIcon
-											Symbol="Dismiss16" />
-									</Viewbox>
-								</Button>
+									Drop="FileDrop" />
 								<Button
 									x:Name="ButtonChooseFlakeNoise"
 									Grid.Column="2"
@@ -2210,15 +1903,31 @@
 									Value="14" />
 							</Style>
 							<Style
-								x:Key="StyleTextBoxColor"
-								TargetType="TextBox"
-								BasedOn="{StaticResource TextBoxBorderless}">
+								x:Key="StyleTextBlockColorR"
+								TargetType="TextBlock"
+								BasedOn="{StaticResource StyleTextBlockColor}">
 								<Setter
-									Property="Padding"
-									Value="0,3" />
+									Property="Text"
+									Value="R:" />
 								<Setter
-									Property="FontSize"
-									Value="14" />
+									Property="Margin"
+									Value="2,0,0,0" />
+							</Style>
+							<Style
+								x:Key="StyleTextBlockColorG"
+								TargetType="TextBlock"
+								BasedOn="{StaticResource StyleTextBlockColor}">
+								<Setter
+									Property="Text"
+									Value="G:" />
+							</Style>
+							<Style
+								x:Key="StyleTextBlockColorB"
+								TargetType="TextBlock"
+								BasedOn="{StaticResource StyleTextBlockColor}">
+								<Setter
+									Property="Text"
+									Value="B:" />
 							</Style>
 							<Style
 								x:Key="StyleColorResult"
@@ -2233,6 +1942,37 @@
 								<Setter
 									Property="CornerRadius"
 									Value="3.3,0,0,3.8"></Setter>
+							</Style>
+							<Style
+								x:Key="HashTextBlock"
+								TargetType="TextBlock"
+								BasedOn="{StaticResource {x:Type TextBlock}}">
+								<Setter
+									Property="Margin"
+									Value="2,0,0,0" />
+								<Setter
+									Property="Text"
+									Value="#" />
+								<Setter
+									Property="FontSize"
+									Value="14" />
+								<Setter
+									Property="VerticalAlignment"
+									Value="Center" />
+							</Style>
+							<Style
+								x:Key="StyleTextBoxColor"
+								TargetType="ui:TextBox"
+								BasedOn="{StaticResource TextBoxBorderless}">
+								<Setter
+									Property="Padding"
+									Value="0,3" />
+								<Setter
+									Property="FontSize"
+									Value="14" />
+								<Setter
+									Property="ClearButtonEnabled"
+									Value="False" />
 							</Style>
 						</Grid.Resources>
 						<Grid.ColumnDefinitions>
@@ -2320,7 +2060,7 @@
 								Grid.Column="3"
 								Content="{DynamicResource TitleColorCustomizable}"
 								ToolTip="{DynamicResource TooltipColorCustomizable}"
-								IsChecked="{Binding MaskRCustomizable}" />
+								IsChecked="{Binding PaintJobData.MaskRCustomizable}" />
 						</Grid>
 						<Grid
 							Grid.Row="3">
@@ -2332,7 +2072,7 @@
 							</Grid.ColumnDefinitions>
 							<Border
 								d:Background="Red"
-								Background="{Binding MaskRColorVisual, Mode=OneWay}"
+								Background="{Binding PaintJobData.MaskRColorVisual, Mode=OneWay}"
 								Style="{DynamicResource StyleColorResult}" />
 							<Button
 								x:Name="ButtonMaskR"
@@ -2348,7 +2088,6 @@
 								Grid.ColumnSpan="2"
 								Style="{DynamicResource MultiControlBorder}" />
 						</Grid>
-
 						<Grid
 							Grid.Row="3"
 							Grid.Column="2">
@@ -2358,21 +2097,21 @@
 								<ColumnDefinition
 									Width="*" />
 							</Grid.ColumnDefinitions>
-							<TextBlock
-								Text="#"
-								Style="{StaticResource StyleTextBlockColor}" />
-							<TextBox
-								x:Name="TextMaskRHex"
-								Grid.Column="1"
-								d:Text="FF0000"
-								PreviewTextInput="HexCheck"
-								DataObject.Pasting="OnPasted"
-								Text="{Binding MaskRColorHex}"
-								Style="{StaticResource StyleTextBoxColor}" />
-
 							<Border
 								Grid.ColumnSpan="2"
 								Style="{DynamicResource MultiControlBorder}" />
+							<TextBlock
+								Style="{StaticResource HashTextBlock}"/>
+							<ui:TextBox
+								x:Name="TextMaskRHex"
+								Grid.Column="1"
+								VerticalContentAlignment="Center"
+								d:Text="FF0000"
+								BorderThickness="0"
+								PreviewTextInput="HexCheck"
+								DataObject.Pasting="OnPasted"
+								Text="{Binding PaintJobData.MaskRColorHex}"
+								Padding="0,3" />
 						</Grid>
 						<Grid
 							Grid.Row="3"
@@ -2392,38 +2131,36 @@
 									Width="*" />
 							</Grid.ColumnDefinitions>
 							<TextBlock
-								Text="R:"
-								Style="{StaticResource StyleTextBlockColor}" />
-							<TextBox
+								Style="{StaticResource StyleTextBlockColorR}" />
+							<ui:TextBox
 								Grid.Column="1"
 								d:Text="255"
 								PreviewTextInput="NumberOnly"
-								Text="{Binding MaskRColorR}"
+								Text="{Binding PaintJobData.MaskRColorR}"
 								Style="{StaticResource StyleTextBoxColor}" />
 							<TextBlock
-								Text="G:"
 								Grid.Column="2"
-								Style="{StaticResource StyleTextBlockColor}" />
-							<TextBox
+								Style="{StaticResource StyleTextBlockColorG}" />
+							<ui:TextBox
 								Grid.Column="3"
 								d:Text="255"
 								PreviewTextInput="NumberOnly"
-								Text="{Binding MaskRColorG}"
+								Text="{Binding PaintJobData.MaskRColorG}"
 								Style="{StaticResource StyleTextBoxColor}" />
 							<TextBlock
-								Text="B:"
 								Grid.Column="4"
-								Style="{StaticResource StyleTextBlockColor}" />
-							<TextBox
+								Style="{StaticResource StyleTextBlockColorB}" />
+							<ui:TextBox
 								Grid.Column="5"
 								d:Text="255"
 								PreviewTextInput="NumberOnly"
-								Text="{Binding MaskRColorB}"
+								Text="{Binding PaintJobData.MaskRColorB}"
 								Style="{StaticResource StyleTextBoxColor}" />
 							<Border
 								Grid.ColumnSpan="6"
 								Style="{DynamicResource MultiControlBorder}" />
 						</Grid>
+						
 
 						<Grid
 							Grid.Row="5"
@@ -2459,7 +2196,7 @@
 								Grid.Column="3"
 								Content="{DynamicResource TitleColorCustomizable}"
 								ToolTip="{DynamicResource TooltipColorCustomizable}"
-								IsChecked="{Binding MaskGCustomizable}" />
+								IsChecked="{Binding PaintJobData.MaskGCustomizable}" />
 						</Grid>
 						<Grid
 							Grid.Row="6">
@@ -2471,7 +2208,7 @@
 							</Grid.ColumnDefinitions>
 							<Border
 								d:Background="Green"
-								Background="{Binding MaskGColorVisual, Mode=OneWay}"
+								Background="{Binding PaintJobData.MaskGColorVisual, Mode=OneWay}"
 								Style="{DynamicResource StyleColorResult}" />
 							<Button
 								x:Name="ButtonMaskG"
@@ -2487,7 +2224,6 @@
 								Grid.ColumnSpan="2"
 								Style="{DynamicResource MultiControlBorder}" />
 						</Grid>
-
 						<Grid
 							Grid.Row="6"
 							Grid.Column="2">
@@ -2497,19 +2233,20 @@
 								<ColumnDefinition
 									Width="*" />
 							</Grid.ColumnDefinitions>
-							<TextBlock
-								Text="#"
-								Style="{StaticResource StyleTextBlockColor}" />
-							<TextBox
-								Grid.Column="1"
-								d:Text="FF0000"
-								PreviewTextInput="HexCheck"
-								DataObject.Pasting="OnPasted"
-								Text="{Binding MaskGColorHex}"
-								Style="{StaticResource StyleTextBoxColor}" />
 							<Border
 								Grid.ColumnSpan="2"
 								Style="{DynamicResource MultiControlBorder}" />
+							<TextBlock
+								Style="{StaticResource HashTextBlock}" />
+							<ui:TextBox
+								Grid.Column="1"
+								d:Text="FF0000"
+								BorderThickness="0"
+								PreviewTextInput="HexCheck"
+								DataObject.Pasting="OnPasted"
+								Text="{Binding PaintJobData.MaskGColorHex}"
+								Padding="0,3"
+								VerticalContentAlignment="Center"/>
 						</Grid>
 						<Grid
 							Grid.Row="6"
@@ -2529,33 +2266,30 @@
 									Width="*" />
 							</Grid.ColumnDefinitions>
 							<TextBlock
-								Text="R:"
-								Style="{StaticResource StyleTextBlockColor}" />
-							<TextBox
+								Style="{StaticResource StyleTextBlockColorR}" />
+							<ui:TextBox
 								Grid.Column="1"
 								d:Text="255"
 								PreviewTextInput="NumberOnly"
-								Text="{Binding MaskGColorR}"
+								Text="{Binding PaintJobData.MaskGColorR}"
 								Style="{StaticResource StyleTextBoxColor}" />
 							<TextBlock
-								Text="G:"
 								Grid.Column="2"
-								Style="{StaticResource StyleTextBlockColor}" />
-							<TextBox
+								Style="{StaticResource StyleTextBlockColorG}" />
+							<ui:TextBox
 								Grid.Column="3"
 								d:Text="255"
 								PreviewTextInput="NumberOnly"
-								Text="{Binding MaskGColorG}"
+								Text="{Binding PaintJobData.MaskGColorG}"
 								Style="{StaticResource StyleTextBoxColor}" />
 							<TextBlock
-								Text="B:"
 								Grid.Column="4"
-								Style="{StaticResource StyleTextBlockColor}" />
-							<TextBox
+								Style="{StaticResource StyleTextBlockColorB}" />
+							<ui:TextBox
 								Grid.Column="5"
 								d:Text="255"
 								PreviewTextInput="NumberOnly"
-								Text="{Binding MaskGColorB}"
+								Text="{Binding PaintJobData.MaskGColorB}"
 								Style="{StaticResource StyleTextBoxColor}" />
 							<Border
 								Grid.ColumnSpan="6"
@@ -2597,7 +2331,7 @@
 								Grid.Column="3"
 								Content="{DynamicResource TitleColorCustomizable}"
 								ToolTip="{DynamicResource TooltipColorCustomizable}"
-								IsChecked="{Binding MaskBCustomizable}" />
+								IsChecked="{Binding PaintJobData.MaskBCustomizable}" />
 						</Grid>
 						<Grid
 							Grid.Row="9">
@@ -2609,7 +2343,7 @@
 							</Grid.ColumnDefinitions>
 							<Border
 								d:Background="Blue"
-								Background="{Binding MaskBColorVisual, Mode=OneWay}"
+								Background="{Binding PaintJobData.MaskBColorVisual, Mode=OneWay}"
 								Style="{DynamicResource StyleColorResult}" />
 							<Button
 								x:Name="ButtonMaskB"
@@ -2625,7 +2359,6 @@
 								Grid.ColumnSpan="2"
 								Style="{DynamicResource MultiControlBorder}" />
 						</Grid>
-
 						<Grid
 							Grid.Row="9"
 							Grid.Column="2">
@@ -2635,19 +2368,20 @@
 								<ColumnDefinition
 									Width="*" />
 							</Grid.ColumnDefinitions>
-							<TextBlock
-								Text="#"
-								Style="{StaticResource StyleTextBlockColor}" />
-							<TextBox
-								Grid.Column="1"
-								d:Text="FF0000"
-								PreviewTextInput="HexCheck"
-								DataObject.Pasting="OnPasted"
-								Text="{Binding MaskBColorHex}"
-								Style="{StaticResource StyleTextBoxColor}" />
 							<Border
 								Grid.ColumnSpan="2"
 								Style="{DynamicResource MultiControlBorder}" />
+							<TextBlock
+								Style="{StaticResource HashTextBlock}" />
+							<ui:TextBox
+								Grid.Column="1"
+								d:Text="FF0000"
+								BorderThickness="0"
+								PreviewTextInput="HexCheck"
+								DataObject.Pasting="OnPasted"
+								Text="{Binding PaintJobData.MaskBColorHex}"
+								Padding="0,3"
+								VerticalContentAlignment="Center"/>
 						</Grid>
 						<Grid
 							Grid.Row="9"
@@ -2667,33 +2401,30 @@
 									Width="*" />
 							</Grid.ColumnDefinitions>
 							<TextBlock
-								Text="R:"
-								Style="{StaticResource StyleTextBlockColor}" />
-							<TextBox
+								Style="{StaticResource StyleTextBlockColorR}" />
+							<ui:TextBox
 								Grid.Column="1"
 								d:Text="255"
 								PreviewTextInput="NumberOnly"
-								Text="{Binding MaskBColorR}"
+								Text="{Binding PaintJobData.MaskBColorR}"
 								Style="{StaticResource StyleTextBoxColor}" />
 							<TextBlock
-								Text="G:"
 								Grid.Column="2"
-								Style="{StaticResource StyleTextBlockColor}" />
-							<TextBox
+								Style="{StaticResource StyleTextBlockColorG}" />
+							<ui:TextBox
 								Grid.Column="3"
 								d:Text="255"
 								PreviewTextInput="NumberOnly"
-								Text="{Binding MaskBColorG}"
+								Text="{Binding PaintJobData.MaskBColorG}"
 								Style="{StaticResource StyleTextBoxColor}" />
 							<TextBlock
-								Text="B:"
 								Grid.Column="4"
-								Style="{StaticResource StyleTextBlockColor}" />
-							<TextBox
+								Style="{StaticResource StyleTextBlockColorB}" />
+							<ui:TextBox
 								Grid.Column="5"
 								d:Text="255"
 								PreviewTextInput="NumberOnly"
-								Text="{Binding MaskBColorB}"
+								Text="{Binding PaintJobData.MaskBColorB}"
 								Style="{StaticResource StyleTextBoxColor}" />
 							<Border
 								Grid.ColumnSpan="6"
@@ -2749,9 +2480,9 @@
 						x:Name="TabOvr"
 						Grid.Row="1"
 						Grid.ColumnSpan="5"
-						SelectedValue="{Binding SelectedOverride}"
+						SelectedValue="{Binding PaintJobData.SelectedOverride}"
 						d:ItemsSource="{d:SampleData ItemCount=2}"
-						ItemsSource="{Binding OverrideList}"
+						ItemsSource="{Binding PaintJobData.OverrideList}"
 						VerticalAlignment="Top">
 						<TabControl.ItemTemplate>
 							<DataTemplate>
@@ -2762,7 +2493,8 @@
 									<Button
 										Margin="3,0,0,0"
 										BorderThickness="0"
-										Click="OvrTabClick">
+										Command="{Binding DataContext.RemoveOvrCommand, ElementName=TabOvr}"
+										CommandParameter="{Binding .}">
 										<Viewbox>
 											<ui:SymbolIcon
 												Symbol="Dismiss20" />
@@ -2780,7 +2512,7 @@
 						VerticalAlignment="Bottom"
 						BorderThickness="0"
 						Background="{x:Null}"
-						Click="AddOvrClick"
+						Command="{Binding AddOvrCommand}"
 						Height="24">
 						<Viewbox>
 							<ui:SymbolIcon
@@ -2797,7 +2529,7 @@
 							TargetType="Grid">
 							<Style.Triggers>
 								<DataTrigger
-									Binding="{Binding SelectedOverride}"
+									Binding="{Binding SelectedValue, ElementName=TabOvr}"
 									Value="{x:Null}">
 									<Setter
 										Property="IsEnabled"
@@ -2864,26 +2596,14 @@
 								<ColumnDefinition
 									Width="Auto" />
 							</Grid.ColumnDefinitions>
-							<TextBox
+							<ui:TextBox
 								x:Name="TextAccTex"
-								Text="{Binding AccTex, UpdateSourceTrigger=PropertyChanged}"
-								MaxLines="1"
-								TextWrapping="Wrap"
+								Text="{Binding PaintJobData.SelectedOverride.AccTex, UpdateSourceTrigger=PropertyChanged}"
+								TextWrapping="WrapWithOverflow"
 								Style="{StaticResource TextBoxBorderless}"
 								AllowDrop="True"
 								Drop="FileDrop">
-							</TextBox>
-							<Button
-								x:Name="ButtonAccTexClear"
-								Grid.Column="1"
-								Click="ButtonClearClick"
-								Style="{StaticResource ButtonBorderless}"
-								Visibility="{Binding AccTexVisibility}">
-								<Viewbox>
-									<ui:SymbolIcon
-										Symbol="Dismiss16" />
-								</Viewbox>
-							</Button>
+							</ui:TextBox>
 							<Button
 								x:Name="ButtonChooseAccTex"
 								Grid.Column="2"
@@ -2925,7 +2645,8 @@
 						<StackPanel
 							Orientation="Horizontal"
 							Margin="6,0,0,0">
-							<CheckBox />
+							<CheckBox
+								IsChecked="{Binding PaintJobData.IsCheckAllChecked}"/>
 							<TextBlock
 								Text="{DynamicResource TitleAccessoryParts}"
 								FontSize="12"
@@ -2933,30 +2654,75 @@
 								VerticalAlignment="Bottom"></TextBlock>
 						</StackPanel>
 
-						<ListBox
+						<ItemsControl
 							x:Name="ListAccList"
 							Grid.Row="1"
-							SelectionMode="Single"
-							Margin="0,5,0,0"
 							BorderBrush="{DynamicResource TextControlElevationBorderBrush}"
-							BorderThickness="1"
+							BorderThickness="1,0,1,1"
 							d:ItemsSource="{d:SampleData ItemCount=2}"
-							ItemsSource="{Binding AccessoryList}">
-							<ListBox.ItemContainerStyle>
-								<Style
-									TargetType="ListBoxItem"
-									BasedOn="{StaticResource {x:Type ListBoxItem}}">
-									<EventSetter
-										Event="RequestBringIntoView"
-										Handler="ListBoxItemRequestBringIntoViewHandler" />
-								</Style>
-							</ListBox.ItemContainerStyle>
-							<ListBox.ItemTemplate>
+							ItemsSource="{Binding PaintJobData.AccessoryList}"
+							ScrollViewer.CanContentScroll="True"
+							ScrollViewer.HorizontalScrollBarVisibility="Auto"
+							ScrollViewer.VerticalScrollBarVisibility="Auto">
+							<ItemsControl.Template>
+								<ControlTemplate
+									TargetType="ItemsControl">
+									<ScrollViewer
+										VerticalScrollBarVisibility="Auto"
+										HorizontalScrollBarVisibility="Auto">
+										<ScrollViewer.Template>
+											<ControlTemplate
+												TargetType="ScrollViewer">
+												<Grid>
+													<Grid.ColumnDefinitions>
+														<ColumnDefinition
+															Width="*" />
+														<ColumnDefinition
+															Width="Auto" />
+													</Grid.ColumnDefinitions>
+													<Grid.RowDefinitions>
+														<RowDefinition
+															Height="*" />
+														<RowDefinition
+															Height="Auto" />
+													</Grid.RowDefinitions>
+													<ScrollContentPresenter
+														Grid.Column="0"
+														Grid.Row="0"
+														Margin="{TemplateBinding Padding}" />
+													<ScrollBar
+														x:Name="PART_VerticalScrollBar"
+														Grid.Column="1"
+														Grid.Row="0"
+														Orientation="Vertical"
+														Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+														Value="{TemplateBinding VerticalOffset}"
+														Maximum="{TemplateBinding ScrollableHeight}"
+														ViewportSize="{TemplateBinding ViewportHeight}" />
+													<ScrollBar
+														x:Name="PART_HorizontalScrollBar"
+														Grid.Column="0"
+														Grid.Row="1"
+														Orientation="Horizontal"
+														Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+														Value="{TemplateBinding HorizontalOffset}"
+														Maximum="{TemplateBinding ScrollableWidth}"
+														ViewportSize="{TemplateBinding ViewportWidth}" />
+												</Grid>
+											</ControlTemplate>
+										</ScrollViewer.Template>
+										<ItemsPresenter />
+									</ScrollViewer>
+								</ControlTemplate>
+							</ItemsControl.Template>
+							<ItemsControl.ItemTemplate>
 								<DataTemplate>
 									<StackPanel
-										Orientation="Horizontal">
+										Orientation="Horizontal"
+										Margin="0,3">
 										<TextBlock
 											d:Text="N"
+											Margin="3,0"
 											Text="{Binding BelongingOverride.Index}"
 											Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}"
 											HorizontalAlignment="Center"
@@ -2970,11 +2736,12 @@
 											ToolTip="{Binding Path=AccName}"
 											IsChecked="{Binding Check}"
 											Checked="AccessoryChecked"
-											Unchecked="AccessoryUnchecked" />
+											Unchecked="AccessoryUnchecked"
+											RequestBringIntoView="AccListCheckBoxRequestBringIntoView"/>
 									</StackPanel>
 								</DataTemplate>
-							</ListBox.ItemTemplate>
-						</ListBox>
+							</ItemsControl.ItemTemplate>
+						</ItemsControl>
 					</Grid>
 
 					<StackPanel
@@ -2997,28 +2764,29 @@
 								</Viewbox>
 							</Border>
 						</StackPanel>
-						<TextBox
+						<ui:TextBox
 							MaxLines="1"
-							Text="{Binding AccFlakeUVScale, UpdateSourceTrigger=PropertyChanged}"
+							ClearButtonEnabled="False"
+							Text="{Binding PaintJobData.SelectedOverride.AccFlakeUVScale, UpdateSourceTrigger=PropertyChanged, Converter={x:Static utils:FloatConverter.Instance}}"
 							PreviewTextInput="FloatOnly"
 							TextWrapping="Wrap"
 							VerticalAlignment="Top">
-							<TextBox.Style>
+							<ui:TextBox.Style>
 								<Style
-									TargetType="TextBox"
-									BasedOn="{StaticResource {x:Type TextBox}}">
+									TargetType="ui:TextBox"
+									BasedOn="{StaticResource {x:Type ui:TextBox}}">
 									<Style.Triggers>
-										<DataTrigger
-											Binding="{Binding IsAccFlakeUVScaleDefault}"
+										<Trigger
+											Property="IsEnabled"
 											Value="True">
 											<Setter
-												Property="Foreground"
-												Value="LightGray" />
-										</DataTrigger>
+												Property="PlaceholderText"
+												Value="32" />
+										</Trigger>
 									</Style.Triggers>
 								</Style>
-							</TextBox.Style>
-						</TextBox>
+							</ui:TextBox.Style>
+						</ui:TextBox>
 					</StackPanel>
 					<StackPanel
 						Grid.Row="4"
@@ -3030,28 +2798,29 @@
 								VerticalAlignment="Bottom"
 								Text="{DynamicResource TitleFlakeVRatio}" />
 						</StackPanel>
-						<TextBox
+						<ui:TextBox
 							MaxLines="1"
-							Text="{Binding AccFlakeVRatio, UpdateSourceTrigger=PropertyChanged}"
+							ClearButtonEnabled="False"
+							Text="{Binding PaintJobData.SelectedOverride.AccFlakeVRatio, UpdateSourceTrigger=PropertyChanged, Converter={x:Static utils:FloatConverter.Instance}}"
 							PreviewTextInput="FloatOnly"
 							TextWrapping="Wrap"
 							VerticalAlignment="Top">
-							<TextBox.Style>
+							<ui:TextBox.Style>
 								<Style
-									TargetType="TextBox"
-									BasedOn="{StaticResource {x:Type TextBox}}">
+									TargetType="ui:TextBox"
+									BasedOn="{StaticResource {x:Type ui:TextBox}}">
 									<Style.Triggers>
-										<DataTrigger
-											Binding="{Binding IsAccFlakeVRatioDefault}"
+										<Trigger
+											Property="IsEnabled"
 											Value="True">
 											<Setter
-												Property="Foreground"
-												Value="LightGray" />
-										</DataTrigger>
+												Property="PlaceholderText"
+												Value="1" />
+										</Trigger>
 									</Style.Triggers>
 								</Style>
-							</TextBox.Style>
-						</TextBox>
+							</ui:TextBox.Style>
+						</ui:TextBox>
 					</StackPanel>
 
 					<Grid
@@ -3069,7 +2838,7 @@
 									TargetType="Viewbox">
 									<Style.Triggers>
 										<DataTrigger
-											Binding="{Binding AccTex.Length}"
+											Binding="{Binding Text.Length, ElementName=TextAccTex}"
 											Value="0">
 											<Setter
 												Property="Visibility"
@@ -3086,7 +2855,7 @@
 								</Border>
 								<Image
 									d:Source="/Vehicles/UV/xg_plus.daf.2021.cabin.png"
-									Source="{Binding AccTexImage}" />
+									Source="{Binding PaintJobData.SelectedOverride.AccTexImage}" />
 							</Grid>
 						</Viewbox>
 					</Grid>
@@ -3116,7 +2885,7 @@
 				Grid.Column="2"
 				Margin="0,0,5,0"
 				Content="Sync over network"
-				IsChecked="{Binding SyncOverNetwork}" />
+				IsChecked="{Binding PaintJobData.SyncOverNetwork}" />
 			<Button
 				Grid.Column="3"
 				Content="{DynamicResource ButtonStart}"
@@ -3128,49 +2897,49 @@
 						BasedOn="{StaticResource {x:Type Button}}">
 						<Style.Triggers>
 							<DataTrigger
-								Binding="{Binding ModelName.Length}"
+								Binding="{Binding PaintJobData.ModelName.Length}"
 								Value="0">
 								<Setter
 									Property="IsEnabled"
 									Value="False" />
 							</DataTrigger>
 							<DataTrigger
-								Binding="{Binding CurrentVehicle}"
+								Binding="{Binding PaintJobData.CurrentVehicle}"
 								Value="{x:Null}">
 								<Setter
 									Property="IsEnabled"
 									Value="False" />
 							</DataTrigger>
 							<DataTrigger
-								Binding="{Binding CurrentCabin}"
+								Binding="{Binding PaintJobData.CurrentCabin}"
 								Value="{x:Null}">
 								<Setter
 									Property="IsEnabled"
 									Value="False" />
 							</DataTrigger>
 							<DataTrigger
-								Binding="{Binding DisplayName.Length}"
+								Binding="{Binding PaintJobData.DisplayName.Length}"
 								Value="0">
 								<Setter
 									Property="IsEnabled"
 									Value="False" />
 							</DataTrigger>
 							<DataTrigger
-								Binding="{Binding PriceString.Length}"
+								Binding="{Binding PaintJobData.PriceString.Length}"
 								Value="0">
 								<Setter
 									Property="IsEnabled"
 									Value="False" />
 							</DataTrigger>
 							<DataTrigger
-								Binding="{Binding UnlockLevelString.Length}"
+								Binding="{Binding PaintJobData.UnlockLevelString.Length}"
 								Value="0">
 								<Setter
 									Property="IsEnabled"
 									Value="False" />
 							</DataTrigger>
 							<DataTrigger
-								Binding="{Binding IconName.Length}"
+								Binding="{Binding PaintJobData.IconName.Length}"
 								Value="0">
 								<Setter
 									Property="IsEnabled"

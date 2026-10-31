@@ -1,12 +1,14 @@
-﻿using SCS_Mod_Helper.Base;
-using SCS_Mod_Helper.Localization;
+﻿using SCS_Mod_Helper.Class.Base;
+using SCS_Mod_Helper.Locale;
 using SCS_Mod_Helper.Modding.Accessories.Physics;
+using SCS_Mod_Helper.Vehicles;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Navigation;
 
 namespace SCS_Mod_Helper.Modding.Accessories.AccAddon;
 
@@ -14,114 +16,78 @@ namespace SCS_Mod_Helper.Modding.Accessories.AccAddon;
 /// Interaction logic for MainWindow.xaml
 /// </summary>
 public partial class AccAddonWindow: BaseWindow {
-	private readonly AccAddonBinding binding = new();
+	private readonly AccAddonBinding Binding;
 	private bool VehicleExpandedETS2 {
-		get => binding.VehicleExpandedETS2; 
-		set => binding.VehicleExpandedETS2 = value;
+		get => Binding.VehicleExpandedETS2; 
+		set => Binding.VehicleExpandedETS2 = value;
 	}
 	private bool VehicleExpandedATS {
-		get => binding.VehicleExpandedATS; 
-		set => binding.VehicleExpandedATS = value;
+		get => Binding.VehicleExpandedATS; 
+		set => Binding.VehicleExpandedATS = value;
 	}
 
-	private ObservableCollection<AccessoryVehicle> VehiclesETS2 => binding.VehiclesETS2;
-	private ObservableCollection<AccessoryVehicle> VehiclesATS => binding.VehiclesATS;
+	private ObservableCollection<AccessoryVehicle> VehiclesETS2 => Binding.VehiclesETS2;
+	private ObservableCollection<AccessoryVehicle> VehiclesATS => Binding.VehiclesATS;
 
-	private readonly ContextMenu MenuStringRes, MenuModelType, MenuLook, MenuVariant;
+	private readonly ContextMenu MenuModelType, MenuLook, MenuVariant;
 
 	public AccAddonWindow() {
 		InitializeComponent();
 
-		GridMain.DataContext = binding;
+		Binding = new(() => this);
+		GridMain.DataContext = Binding;
 
-		MenuStringRes = (ContextMenu)Resources["MenuStringRes"];
-		MenuStringRes.PlacementTarget = ButtonChooseRes;
-		MenuStringRes.DataContext = binding;
 		MenuModelType = (ContextMenu)Resources["MenuModelType"];
+		MenuModelType.ItemsSource = Binding.ModelTypes;
 		MenuLook = (ContextMenu)Resources["MenuLook"];
-		MenuLook.ItemsSource = binding.LookList;
+		MenuLook.ItemsSource = Binding.LookList;
 		MenuVariant = (ContextMenu)Resources["MenuVariant"];
-		MenuVariant.ItemsSource = binding.VariantList;
+		MenuVariant.ItemsSource = Binding.VariantList;
 
 		Loaded += OnLoaded;
 	}
 
 	private async void OnLoaded(object sender, RoutedEventArgs e) {
-		var tLoad = binding.LoadVehicles();
+		var tLoad = Binding.LoadVehicles();
 		await tLoad;
-		binding.LoadHistory();
-		binding.ModelIcon = AccessoryDataUtil.LoadModelIconByIconName(binding.IconName);
+		Binding.LoadHistory();
+		Binding.ModelIcon = AccessoryDataUtil.LoadModelIconByIconName(Binding.IconName);
 
-		binding.LoadLooksAndVariants(this);
-		binding.UpdateOthersChecked();
-		binding.Loading = false;
+		Binding.LoadLooksAndVariants();
+		Binding.UpdateOthersChecked();
+		Binding.Loading = false;
 	}
-
-	private void ChooseStringRes(object sender, RoutedEventArgs e) => MenuStringRes.IsOpen = true;
-
-	private void CheckStringRes(object sender, RoutedEventArgs e) => binding.CheckNameStringRes();
 
 	private void OnMenuClicked(object sender, RoutedEventArgs e) {
 		MenuItem item = (MenuItem)sender;
-		ContextMenu cm = (ContextMenu)item.Parent;
+		var menuName = (string)item.CommandParameter;
+		ContextMenu cm = menuName switch {
+			nameof(MenuModelType) => MenuModelType,
+			nameof(MenuLook) => MenuLook,
+			nameof(MenuVariant) => MenuVariant,
+			_ => throw new ArgumentException("")
+		};
+		AccessoryVehicle vehicle = (AccessoryVehicle)cm.DataContext;
 		if (cm == MenuModelType) {
-			AccessoryVehicle vehicle = (AccessoryVehicle)cm.DataContext;
-			var type = (string)item.Tag;
-			int i;
-			if ((i = type.IndexOf('/')) == -1)
-				vehicle.ModelType = (string)item.Tag;
-			else if (vehicle.IsETS2)
-				vehicle.ModelType = type[..i];
-			else
-				vehicle.ModelType = type[(i + 1)..];
-		} else {
-			var menuName = (string)item.CommandParameter;
-			cm = menuName switch {
-				"MenuStringRes" => MenuStringRes,
-				"MenuLook" => MenuLook,
-				_ => MenuVariant,
-			};
-			if (cm == MenuStringRes) {
-				var tag = (string)item.Tag;
-				if (tag.Equals("openLocalization")) {
-					StringResUtil.OpenLocalization(this);
-				} else {
-					StringResUtil.ApplyStringRes(TextDisplayName, tag);
-				}
+			var acc = (AccessoryType) item.DataContext;
+			if (vehicle.IsETS2) {
+				if (acc.ForETS2)
+					vehicle.ModelType = acc.AccessoryETS2!;
 			} else {
-				AccessoryVehicle vehicle = (AccessoryVehicle)cm.DataContext;
-				if (cm == MenuModelType) {
-				} else if (cm == MenuLook) {
-					vehicle.Look = (string)item.DataContext;
-				} else if (cm == MenuVariant) {
-					vehicle.Variant = (string)item.DataContext;
-				} else
-					return;
+				if (acc.ForATS)
+					vehicle.ModelType = acc.AccessoryATS!;
 			}
-		}
-	}
-
-	private void SaveOnClosing(object? sender, CancelEventArgs e) => binding.SaveHistory();
-
-	private void ButtonClearClick(object sender, RoutedEventArgs e) {
-		if (sender == ButtonIconNameClear) {
-			binding.IconName = "";
-			binding.ModelIcon = null;
-		} else if (sender == ButtonChooseModelClear)
-			binding.ModelPath = "";
-		else if (sender == ButtonChooseModelUKClear)
-			binding.ModelPathUK = "";
-		else if (sender == ButtonChooseExtModelClear)
-			binding.ExtModelPath = "";
-		else if (sender == ButtonChooseExtModelUKClear)
-			binding.ExtModelPathUK = "";
-		else if (sender == ButtonChooseCollClear)
-			binding.CollPath = "";
-		else
+		} else if (cm == MenuLook) {
+			vehicle.Look = (string)item.DataContext;
+		} else if (cm == MenuVariant) {
+			vehicle.Variant = (string)item.DataContext;
+		} else
 			return;
 	}
 
-	private void ButtonChooseIcon(object sender, RoutedEventArgs e) => binding.ChooseIcon(this);
+	private void SaveOnClosing(object? sender, CancelEventArgs e) => Binding.SaveHistory();
+
+	private void ButtonChooseIcon(object sender, RoutedEventArgs e) => Binding.ChooseIcon();
 
 	private void ButtonChooseModelClick(object sender, RoutedEventArgs e) {
 		try {
@@ -138,16 +104,16 @@ public partial class AccAddonWindow: BaseWindow {
 				type = AccAddonBinding.MODEL_COLL;
 			else
 				return;
-			binding.ChooseModel(this, type);
+			Binding.ChooseModel(type);
 		} catch (Exception ex) {
 			MessageBox.Show(this, ex.Message);
 		}
 	}
 
 	private void ButtonHideIn(object sender, RoutedEventArgs e) {
-		if (binding.HideInUC == null) {
-			binding.HideInUC = new(binding);
-			PopupHideIn.Child = binding.HideInUC;
+		if (Binding.HideInUC == null) {
+			Binding.HideInUC = new(Binding);
+			PopupHideIn.Child = Binding.HideInUC;
 		}
 		PopupHideIn.IsOpen = true;
 	}
@@ -156,22 +122,22 @@ public partial class AccAddonWindow: BaseWindow {
 		TextBox target;
 		if (sender == ButtonAddData) {
 			target = TextData;
-			binding.AddNewData();
+			Binding.AddNewData();
 		} else if (sender == ButtonAddSuitableFor) {
 			target = TextSuitableFor;
-			binding.AddNewSuitableFor();
+			Binding.AddNewSuitableFor();
 		} else if (sender == ButtonAddConflictWith) {
 			target = TextConflictWith;
-			binding.AddNewConflictWith();
+			Binding.AddNewConflictWith();
 		} else if (sender == ButtonAddDefaults) {
 			target = TextDefaults;
-			binding.AddNewDefaults();
+			Binding.AddNewDefaults();
 		} else if (sender == ButtonAddOverrides) {
 			target = TextOverrides;
-			binding.AddNewOverrides();
+			Binding.AddNewOverrides();
 		} else if (sender == ButtonAddRequire) {
 			target = TextRequire;
-			binding.AddNewRequire();
+			Binding.AddNewRequire();
 		} else
 			return;
 		target.Focus();
@@ -196,48 +162,30 @@ public partial class AccAddonWindow: BaseWindow {
 			var physName = selected.PhysicsName;
 			if (!physName.EndsWith(AccSCSIO.NamePSuffix))
 				physName += AccSCSIO.NamePSuffix;
-			binding.AddNewData(physName);
+			Binding.AddNewData(physName);
 			TextData.Focus();
 
 			int i = 0;
-			while (i < binding.PhysicsList.Count) {
-				var p = binding.PhysicsList[i];
+			while (i < Binding.PhysicsList.Count) {
+				var p = Binding.PhysicsList[i];
 				if (p.PhysicsName == selected.PhysicsName) {
-					binding.PhysicsList.Remove(p);
+					Binding.PhysicsList.Remove(p);
 					continue;
 				}
 				i++;
 			}
-			binding.PhysicsList.Add(selected);
+			Binding.PhysicsList.Add(selected);
 		}
 	}
 
 	private void ShowPopupListData(TextBox target) {
-		if (binding.ListDataUC == null) {
-			binding.ListDataUC = new();
-			PopupListData.Child = binding.ListDataUC;
+		if (Binding.ListDataUC == null) {
+			Binding.ListDataUC = new();
+			PopupListData.Child = Binding.ListDataUC;
 		}
-		binding.OpeningList = target.Name;
+		Binding.OpeningList = target.Name;
 		PopupListData.PlacementTarget = target;
 		PopupListData.IsOpen = true;
-	}
-
-	private void ButtonStartClick(object sender, RoutedEventArgs e) => binding.StartCreateSii(this);
-
-	private void ButtonSaveClick(object sender, RoutedEventArgs e) {
-
-		//AddonHistoryIO aahio = new();
-		//aahio.SaveAddon(binding);
-
-		binding.SaveDED(this);
-	}
-
-	private void ButtonLoadClick(object sender, RoutedEventArgs e) {
-		//AddonHistoryIO aahio = new();
-		//aahio.LoadAddon(binding);
-
-		binding.LoadDED(this);
-		binding.LoadLooksAndVariants(this);
 	}
 
 	private void NumberOnly(object sender, TextCompositionEventArgs e) => e.Handled = RegexNumber().IsMatch(e.Text);
@@ -246,26 +194,16 @@ public partial class AccAddonWindow: BaseWindow {
 	private partial Regex RegexNumber();
 
 	private void ButtonVehicleReinit(object sender, RoutedEventArgs e) {
-		binding.PopupAddVehicleOpen = false;
-		binding.ReinitVehicleList();
+		Binding.PopupAddVehicleOpen = false;
+		Binding.ReinitVehicleList();
 	}
 
 	private void ButtonAddVehicleClick(object sender, RoutedEventArgs e) {
 		PopupAddVehicle.PlacementTarget = (Button)sender;
-		if (binding.AddVehicleUC == null) {
-			binding.AddVehicleUC = new(sender == ButtonAddVehicleETS2, AddVehicleResult);
-			PopupAddVehicle.Child = binding.AddVehicleUC;
+		if (sender == ButtonAddVehicleETS2) {
+			Binding.AddVehicleETS2 = true;
 		}
-		binding.AddVehicleUC.Clean();
 		PopupAddVehicle.IsOpen = true;
-	}
-
-	private void AddVehicleResult(bool OK) {
-		if (OK) {
-			AccessoryVehicle newVehicle = binding.AddVehicleUC?.NewVehicle!;
-			binding.AddNewVehicle(this, newVehicle);
-		}
-		PopupAddVehicle.IsOpen = false;
 	}
 
 	private void ButtonDeleteVehicleClick(object sender, RoutedEventArgs e) {
@@ -299,7 +237,7 @@ public partial class AccAddonWindow: BaseWindow {
 			}
 		}
 		if (sender == ButtonCoverModelType) {
-			var acc = binding.CurrentModelType;
+			var acc = Binding.CurrentModelType;
 			ForeachValue((t) => {
 				if (acc.ForETS2)
 					t.ModelType = acc.AccessoryETS2!;
@@ -317,7 +255,7 @@ public partial class AccAddonWindow: BaseWindow {
 	private void VehicleCheckBoxClick(object sender, RoutedEventArgs e) {
 		CheckBox box = (CheckBox)sender;
 		AccessoryVehicle selected = (AccessoryVehicle)box.DataContext;
-		binding.SetSelected(selected);
-		binding.OverwriteEmpty(selected, selected.Check);
+		Binding.SetSelected(selected);
+		Binding.OverwriteEmpty(selected, selected.Check);
 	}
 }

@@ -1,0 +1,140 @@
+﻿<base:BaseUserControl
+	x:Class="SCS_Mod_Helper.Locale.StringRes.DisplayNameUC"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+	xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+	xmlns:local="clr-namespace:SCS_Mod_Helper.Locale.StringRes"
+	xmlns:base="clr-namespace:SCS_Mod_Helper.Class.Base"
+	d:DataContext="{d:DesignInstance Type=local:StringResBinding}"
+	mc:Ignorable="d" 
+	d:DesignHeight="25.78"
+	d:DesignWidth="200">
+	<base:BaseUserControl.Resources>
+		<Style
+			x:Key="ButtonBorderless"
+			TargetType="Button"
+			BasedOn="{StaticResource {x:Type Button}}">
+			<Setter
+				Property="Padding"
+				Value="2" />
+			<Setter
+				Property="VerticalAlignment"
+				Value="Top" />
+			<Setter
+				Property="BorderThickness"
+				Value="0" />
+			<Setter
+				Property="Width"
+				Value="{Binding ActualHeight, ElementName=TextDisplayName}" />
+			<Setter
+				Property="Height"
+				Value="{Binding ActualHeight, ElementName=TextDisplayName}" />
+		</Style>
+	</base:BaseUserControl.Resources>
+	<Grid
+		x:Name="PanelMain">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition
+				Width="*" />
+			<ColumnDefinition
+				Width="Auto" />
+			<ColumnDefinition
+				Width="Auto" />
+		</Grid.ColumnDefinitions>
+		<Border
+			Grid.ColumnSpan="3"
+			Style="{DynamicResource MultiControlBorder}" />
+		<ui:TextBox
+			x:Name="TextDisplayName"
+			Grid.Row="1"
+			MinHeight="25.78"
+			Text="{Binding DisplayName, UpdateSourceTrigger=PropertyChanged}"
+			Padding="5,3"
+			VerticalContentAlignment="Center"
+			TextWrapping="Wrap">
+			<ui:TextBox.Style>
+				<Style
+					TargetType="ui:TextBox"
+					BasedOn="{StaticResource {x:Type ui:TextBox}}">
+					<Setter
+						Property="BorderThickness"
+						Value="0" />
+					<Style.Triggers>
+						<Trigger
+							Property="Text"
+							Value="">
+							<Setter
+								Property="Background"
+								Value="Yellow" />
+						</Trigger>
+					</Style.Triggers>
+				</Style>
+			</ui:TextBox.Style>
+		</ui:TextBox>
+		<Button
+			x:Name="ButtonCheckRes"
+			Grid.Column="1"
+			Command="{Binding CheckDisplayNameResult}"
+			Visibility="{Binding CheckResVisibility}"
+			Style="{StaticResource ButtonBorderless}">
+			<Viewbox>
+				<ui:SymbolIcon
+					Symbol="Search16" />
+			</Viewbox>
+		</Button>
+		<Popup
+			x:Name="PopupCheckRes"
+			PlacementTarget="{Binding ElementName=ButtonCheckRes}"
+			PopupAnimation="Slide"
+			AllowsTransparency="True"
+			IsOpen="{Binding PopupCheckOpen}"
+			StaysOpen="False">
+			<Grid>
+				<Border
+					Style="{DynamicResource PopupBorder}" />
+				<StackPanel
+					Margin="10">
+					<TextBlock>
+						<Run
+							Text="{DynamicResource CheckResResult}" />
+					</TextBlock>
+					<Border
+						Margin="0,10"
+						Style="{DynamicResource SpliterBorder}" />
+					<TextBlock
+						Text="{Binding CheckResResult}" />
+					<Border
+						Margin="0,10"
+						Style="{DynamicResource SpliterBorder}" />
+					<TextBlock>
+						<Run
+							Text="{DynamicResource CheckResResultTips}" />
+					</TextBlock>
+				</StackPanel>
+			</Grid>
+		</Popup>
+		<Button
+			x:Name="ButtonChooseRes"
+			Grid.Column="2"
+			Command="{Binding OpenPopupStringRes}"
+			Style="{StaticResource ButtonBorderless}"
+			Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}">
+			<Viewbox>
+				<ui:SymbolIcon
+					Symbol="Translate16" />
+			</Viewbox>
+		</Button>
+		<Popup
+			x:Name="PopupStringRes"
+			PlacementTarget="{Binding ElementName=ButtonChooseRes}"
+			PopupAnimation="Slide"
+			AllowsTransparency="True"
+			IsOpen="{Binding PopupStringResOpen}"
+			StaysOpen="False">
+			<local:StringResPopupUC
+				x:Name="StringResUC" />
+		</Popup>
+	</Grid>
+</base:BaseUserControl>

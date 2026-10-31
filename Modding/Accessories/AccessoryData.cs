@@ -1,4 +1,4 @@
-﻿using SCS_Mod_Helper.Base;
+﻿using SCS_Mod_Helper.Class.Base;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -39,12 +39,18 @@ namespace SCS_Mod_Helper.Modding.Accessories {
 			set {
 				mDisplayName = value;
 				InvokeChange();
-
-				InvokeChange(nameof(CheckResVisibility));
 			}
 		}
 
-		public Visibility CheckResVisibility => DisplayName.Contains("@@") ? Visibility.Visible : Visibility.Collapsed;
+		protected string? mLocalizedDisplayName = null;
+		public string? LocalizedDisplayName {
+			get => mLocalizedDisplayName;
+			set {
+				mLocalizedDisplayName = value;
+				InvokeChange();
+			}
+		}
+
 
 		protected long? mPrice = null;
 		public long? Price {
@@ -52,6 +58,18 @@ namespace SCS_Mod_Helper.Modding.Accessories {
 			set {
 				mPrice = value;
 				InvokeChange();
+				InvokeChange(nameof(PriceString));
+			}
+		}
+		public string PriceString {
+			get => Price.ToString() ?? "";
+			set {
+				if (long.TryParse(value, out long res)) {
+					Price = res;
+				} else
+					Price = null;
+				InvokeChange();
+				InvokeChange(nameof(Price));
 			}
 		}
 
@@ -61,6 +79,18 @@ namespace SCS_Mod_Helper.Modding.Accessories {
 			set {
 				mUnlockLevel = value;
 				InvokeChange();
+				InvokeChange(nameof(UnlockLevelString));
+			}
+		}
+		public string UnlockLevelString {
+			get => UnlockLevel.ToString() ?? "";
+			set {
+				if (uint.TryParse(value, out uint res)) {
+					UnlockLevel = res;
+				} else
+					UnlockLevel = null;
+				InvokeChange();
+				InvokeChange(nameof(UnlockLevel));
 			}
 		}
 
@@ -70,16 +100,27 @@ namespace SCS_Mod_Helper.Modding.Accessories {
 			set {
 				mIconName = value;
 				InvokeChange();
+				InvokeChange(nameof(ModelIcon));
 			}
 		}
 
+		private string? LoadedIconName = null;
 		protected BitmapSource? mModelIcon = null;
 		public BitmapSource? ModelIcon {
-			get => mModelIcon;
+			get => mIconName == LoadedIconName ? mModelIcon : null;
 			set {
 				mModelIcon?.Freeze();
 				mModelIcon = value;
+				LoadedIconName = mIconName;
 				InvokeChange();
+			}
+		}
+
+		public void ChooseIcon(Window window) {
+			var icon = AccessoryDataUtil.ChooseIcon(window, out string? iconPath);
+			if (icon != null) {
+				IconName = icon;
+				ModelIcon = AccessoryDataUtil.LoadModelIcon(iconPath);
 			}
 		}
 

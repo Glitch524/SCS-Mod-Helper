@@ -1,115 +1,32 @@
 ﻿using ColorPicker;
-using SCS_Mod_Helper.Base;
-using SCS_Mod_Helper.Localization;
+using SCS_Mod_Helper.Class.Base;
 using SCS_Mod_Helper.Utils;
 using SCS_Mod_Helper.Vehicles;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace SCS_Mod_Helper.Modding.PaintJob {
 	/// <summary>
 	/// PaintJobWindow.xaml 的交互逻辑
 	/// </summary>
 	public partial class PaintJobWindow: BaseWindow {
-		private readonly PaintJobBinding Binding = new();
+		private readonly PaintJobBinding Binding;
 
-		private readonly ContextMenu MenuStringRes;
 		public PaintJobWindow() {
 			InitializeComponent();
 
+			Binding = new(() => this);
 			GridMain.DataContext = Binding;
-
-			MenuStringRes = (ContextMenu)Resources["MenuStringRes"];
-			MenuStringRes.PlacementTarget = ButtonChooseRes;
-			MenuStringRes.DataContext = Binding;
 		}
-
-
-		public static Color ColorMask(
-		Color baseColor,
-		Color paintJobColor,
-		Color maskR,
-		Color maskG,
-		Color maskB) {
-			float remain = 1f;
-
-			float percentR = paintJobColor.R / 255f;
-			float percentG = paintJobColor.G / 255f;
-			float percentB = paintJobColor.B / 255f;
-			Debug.WriteLine($"pjFloat = {paintJobColor.R}={percentR}%, {paintJobColor.G}={percentG}%, {paintJobColor.B}={percentB}%");
-
-			float percent = percentR;
-			remain -= percent;
-
-			Color colorR = Color.FromRgb(
-				(byte)(percent * maskR.R),
-				(byte)(percent * maskR.G),
-				(byte)(percent * maskR.B));
-			Debug.WriteLine($"blendR={colorR} percent={percent}");
-
-
-			percent = percentG * remain;
-			remain -= percent;
-
-			Color colorG = Color.FromRgb(
-				(byte)(percent * maskG.R),
-				(byte)(percent * maskG.G),
-				(byte)(percent * maskG.B));
-			Debug.WriteLine($"blendG={colorG} percent={percent}");
-
-
-			percent = percentB * remain;
-			remain -= percent;
-
-			Color colorB = Color.FromRgb(
-				(byte)(percent * maskB.R),
-				(byte)(percent * maskB.G),
-				(byte)(percent * maskB.B));
-			Debug.WriteLine($"blendB={colorB} percent={percent}");
-
-			Color colorBase = Color.FromRgb(
-				(byte)(remain * baseColor.R),
-				(byte)(remain * baseColor.G),
-				(byte)(remain * baseColor.B));
-
-			Color result = Color.FromRgb(
-				(byte)(colorR.R + colorG.R + colorB.R + colorBase.R),
-				(byte)(colorR.G + colorG.G + colorB.G + colorBase.G),
-				(byte)(colorR.B + colorG.B + colorB.B + colorBase.B));
-
-			return result;
-		}
-
-		private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			var answer = MessageBox.Show(this, $"Selected Tab: {((TabItem)((TabControl)sender).SelectedItem).Header}");
-			Debug.WriteLine($"Selected Tab: {((TabItem)((TabControl)sender).SelectedItem).Header} answer={answer}");
-		}
-
-
-		private void OnMenuClicked(object sender, RoutedEventArgs e) {
-			MenuItem item = (MenuItem)sender;
-			var menuName = (string)item.CommandParameter;
-			if (menuName == "MenuStringRes") {
-				var tag = (string)item.Tag;
-				if (tag.Equals("openLocalization")) {
-					StringResUtil.OpenLocalization(this);
-				} else {
-					StringResUtil.ApplyStringRes(TextDisplayName, tag);
-				}
-			}
-		}
-
 
 		private void NumberOnly(object sender, TextCompositionEventArgs e) => TextControl.NumberOnly(sender, e);
 
 		private void FloatOnly(object sender, TextCompositionEventArgs e) => TextControl.FloatOnly(sender, e);
 
 		private void HexCheck(object sender, TextCompositionEventArgs e) {
-			if (sender is TextBox textBox) {
+			if (sender is Wpf.Ui.Controls.TextBox textBox) {
 				if (textBox.Text.Length >= 6 && textBox.SelectionLength == 0) {
 					e.Handled = true;
 					return;
@@ -155,65 +72,7 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 			}
 		}
 
-		private void ButtonChooseVehicle(object sender, RoutedEventArgs e) {
-
-		}
-
-		private void CheckStringRes(object sender, RoutedEventArgs e) => Binding.CheckNameStringRes();
-		private void ChooseStringRes(object sender, RoutedEventArgs e) => MenuStringRes.IsOpen = true;
-
-		private void ButtonChooseIcon(object sender, RoutedEventArgs e) => Binding.ChooseIcon(this);
-
-		private void ButtonChooseColor(object sender, RoutedEventArgs e) {
-			PopupColorPicker.PlacementTarget = (UIElement)sender;
-			PopupColorPicker.IsOpen = true;
-			string property;
-			if (sender == ButtonBaseColor) {
-				property = "BaseColor";
-			} else if (sender == ButtonVariantBase) {
-				property = "VariantColorBase";
-			} else if (sender == ButtonVariant1) {
-				property = "VariantColor1";
-			} else if (sender == ButtonVariant2) {
-				property = "VariantColor2";
-			} else if (sender == ButtonVariant3) {
-				property = "VariantColor3";
-			} else if (sender == ButtonFlipColor) {
-				property = "FlipColor";
-			} else if (sender == ButtonFlakeColor) {
-				property = "FlakeColor";
-			} else if (sender == ButtonMaskR) {
-				property = "MaskRColor";
-			} else if (sender == ButtonMaskG) {
-				property = "MaskGColor";
-			} else if (sender == ButtonMaskB) {
-				property = "MaskBColor";
-			} else
-				throw new ArgumentException("");
-			Binding colorBinding = new() {
-				Source = Binding,
-				Path = new PropertyPath(property),
-				Mode = BindingMode.TwoWay
-			};
-			VehicleColorPicker.SetBinding(PickerControlBase.SelectedColorProperty, colorBinding);
-		}
-
-		private void ButtonClearClick(object sender, RoutedEventArgs e) {
-			if (sender == ButtonIconNameClear) {
-				Binding.IconName = "";
-				Binding.ModelIcon = null;
-			} else if (sender == ButtonPaintJobTexClear) {
-				Binding.PaintJobTex = "";
-				Binding.PaintJobTexImage = null;
-			} else if (sender == ButtonBaseTexOverrideClear) {
-				Binding.BaseTexOverride = "";
-			} else if (sender == ButtonFlakeNoiseClear) {
-				Binding.FlakeNoise = AccPaintJobData.DefaultFlakeNoise;
-			} else if (sender == ButtonAccTexClear) {
-				Binding.AccTex = "";
-				Binding.AccTexImage = null;
-			}
-		}
+		private void ButtonChooseIcon(object sender, RoutedEventArgs e) => Binding.ChooseIcon();
 
 		private void ButtonChooseTextureClick(object sender, RoutedEventArgs e) {
 			int type;
@@ -226,7 +85,44 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 			} else if (sender == ButtonChooseAccTex) {
 				type = PaintJobBinding.TEX_ACC_TEX;
 			} else { return; }
-			Binding.ChooseTex(this, type);
+			Binding.ChooseTex(type);
+		}
+
+		private void FileDrop(object sender, DragEventArgs e) => Binding.FileDrop();
+
+
+		private void ButtonChooseColor(object sender, RoutedEventArgs e) {
+			PopupColorPicker.PlacementTarget = (UIElement)sender;
+			PopupColorPicker.IsOpen = true;
+			string property;
+			if (sender == ButtonBaseColor) {
+				property = nameof(Binding.PaintJobData.BaseColor);
+			} else if (sender == ButtonVariantBase) {
+				property = nameof(Binding.PaintJobData.VariantColorBase);
+			} else if (sender == ButtonVariant1) {
+				property = nameof(Binding.PaintJobData.VariantColor1);
+			} else if (sender == ButtonVariant2) {
+				property = nameof(Binding.PaintJobData.VariantColor2);
+			} else if (sender == ButtonVariant3) {
+				property = nameof(Binding.PaintJobData.VariantColor3);
+			} else if (sender == ButtonFlipColor) {
+				property = nameof(Binding.PaintJobData.FlipColor);
+			} else if (sender == ButtonFlakeColor) {
+				property = nameof(Binding.PaintJobData.FlakeColor);
+			} else if (sender == ButtonMaskR) {
+				property = nameof(Binding.PaintJobData.MaskRColor);
+			} else if (sender == ButtonMaskG) {
+				property = nameof(Binding.PaintJobData.MaskGColor);
+			} else if (sender == ButtonMaskB) {
+				property = nameof(Binding.PaintJobData.MaskBColor);
+			} else
+				throw new ArgumentException("");
+			Binding colorBinding = new() {
+				Source = Binding.PaintJobData,
+				Path = new PropertyPath(property.ToString()),
+				Mode = BindingMode.TwoWay
+			};
+			VehicleColorPicker.SetBinding(PickerControlBase.SelectedColorProperty, colorBinding);
 		}
 
 		private void ColorVariantClick(object sender, RoutedEventArgs e) {
@@ -242,26 +138,6 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 			}
 		}
 
-		private void AddVariantClick(object sender, RoutedEventArgs e) {
-			Binding.AddColorVariant();
-		}
-
-		private void RemoveVariantClick(object sender, RoutedEventArgs e) {
-			if (sender is Button button) {
-				var variant = (ColorVariant) button.DataContext;
-				Binding.RemoveColorVariant(variant);
-			}
-		}
-
-		private void OvrTabClick(object sender, RoutedEventArgs e) {
-			if (sender is Button button) {
-				var ovrData = (PaintJobOverrideData)button.DataContext;
-				Binding.ControlOvrTab(ovrData);
-			}
-		}
-
-		private void AddOvrClick(object sender, RoutedEventArgs e) => Binding.AddOvr();
-
 		private void AccessoryChecked(object sender, RoutedEventArgs e) {
 			if (sender is CheckBox checkBox) {
 				var acc = (Accessory)checkBox.DataContext;
@@ -276,22 +152,13 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 			}
 		}
 
-		private void FileDrop(object sender, DragEventArgs e) {
+		private void ButtonPaintJobPreviewClick(object sender, RoutedEventArgs e) => Binding.OpenPaintJobPreview();
 
-		}
+		private void ButtonStartClick(object sender, RoutedEventArgs e) => Binding.CreatePaintJobSii();
 
-		private void ButtonPaintJobPreviewClick(object sender, RoutedEventArgs e) {
-			Binding.OpenPaintJobPreview(this);
-		}
 
-		private void ButtonStartClick(object sender, RoutedEventArgs e) {
-			Binding.CreatePaintJobSii(this);
-		}
-
-		private void ListBoxItemRequestBringIntoViewHandler(object sender, RequestBringIntoViewEventArgs e) {
-			e.Handled = true;
-		}
-    }
+		private void AccListCheckBoxRequestBringIntoView(object sender, RequestBringIntoViewEventArgs e) => e.Handled = true;//用来避免点击acc listbox在点击checkbox时的自动滑动
+	}
 }
 
 

@@ -7,8 +7,11 @@
 	xmlns:local="clr-namespace:SCS_Mod_Helper.Modding.Accessories.AccAddon"
 	xmlns:main="clr-namespace:SCS_Mod_Helper.Main"
 	xmlns:utils="clr-namespace:SCS_Mod_Helper.Utils"
-	xmlns:base="clr-namespace:SCS_Mod_Helper.Base"
+	xmlns:base="clr-namespace:SCS_Mod_Helper.Class.Base"
 	xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+	xmlns:res="clr-namespace:SCS_Mod_Helper.Locale.StringRes"
+	xmlns:cls="clr-namespace:SCS_Mod_Helper.Class"
+	xmlns:popup="clr-namespace:SCS_Mod_Helper.Modding.Accessories.AccAddon.Popup"
 	d:DataContext="{d:DesignInstance Type=local:AccAddonBinding}"
 	mc:Ignorable="d"
 	Title="{DynamicResource TitleAccessoryAddon}"
@@ -37,152 +40,31 @@
 				Text="{Binding Path=.}" />
 		</DataTemplate>
 
-
 		<ContextMenu
-			x:Key="MenuStringRes"
-			Tag="MenuStringRes"
-			Placement="Top"
-			ItemsSource="{Binding StringResList}">
-			<ContextMenu.ItemContainerStyle>
-				<Style
-					TargetType="MenuItem"
-					BasedOn="{StaticResource CMStyle}">
-					<Setter
-						Property="ToolTip"
-						Value="{Binding Tooltip}" />
-					<Setter
-						Property="ToolTipService.InitialShowDelay"
-						Value="100" />
-					<Setter
-						Property="Tag"
-						Value="{Binding Tag}" />
-					<Setter
-						Property="IsEnabled"
-						Value="{Binding IsEnabled}" />
-				</Style>
-			</ContextMenu.ItemContainerStyle>
+			x:Key="MenuModelType"
+			Tag="MenuModelType"
+			ItemContainerStyle="{StaticResource CMStyle}"
+			ItemsSource="{Binding DataContext.ModelTypes, ElementName=GridMain}">
 			<ContextMenu.ItemTemplate>
 				<DataTemplate>
 					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition
+								Width="Auto" />
+							<ColumnDefinition
+								Width="*" 
+								MinWidth="10"/>
+							<ColumnDefinition
+								Width="Auto" />
+						</Grid.ColumnDefinitions>
 						<TextBlock
-							Text="{Binding Header}"
-							Visibility="{Binding TextBlockVisibility}" />
-						<Separator
-							Height="1"
-							Visibility="{Binding SeparatorVisibility}" />
+							Text="{Binding Path=Accessory}" />
+						<TextBlock
+							Grid.Column="2"
+							Text="{Binding Path=Name}" />
 					</Grid>
 				</DataTemplate>
 			</ContextMenu.ItemTemplate>
-		</ContextMenu>
-		
-		<ContextMenu
-			x:Key="MenuModelType">
-			<MenuItem
-				Header="{DynamicResource MenuItem.cup_holder}"
-				Click="OnMenuClicked"
-				Tag="cup_holder">
-			</MenuItem>
-			<MenuItem
-				Header="{DynamicResource MenuItem.curtain_f}"
-				Click="OnMenuClicked"
-				Tag="curtain_f">
-			</MenuItem>
-			<MenuItem
-				Header="{DynamicResource MenuItem.drv_plate}"
-				Click="OnMenuClicked"
-				Tag="drv_plate">
-			</MenuItem>
-			<MenuItem
-				Header="{DynamicResource MenuItem.codrv_plate}"
-				Click="OnMenuClicked"
-				Tag="codrv_plate">
-			</MenuItem>
-			<MenuItem
-				Header="{DynamicResource MenuItem.flag_l}"
-				Click="OnMenuClicked"
-				Tag="flag_l/flag_f_l">
-			</MenuItem>
-			<MenuItem
-				Header="{DynamicResource MenuItem.flag_r}"
-				Click="OnMenuClicked"
-				Tag="flag_r/flag_f_r">
-			</MenuItem>
-			<MenuItem
-				Header="{DynamicResource MenuItem.back_wall}"
-				Click="OnMenuClicked"
-				Tag="inlight_bck/bckpanel">
-			</MenuItem>
-			<MenuItem
-				Header="{DynamicResource MenuItem.l_pillow}"
-				Click="OnMenuClicked"
-				Tag="l_pillow">
-			</MenuItem>
-			<MenuItem
-				Header="{DynamicResource MenuItem.set_cabinet}"
-				Click="OnMenuClicked"
-				Tag="set_cabinet">
-			</MenuItem>
-			<MenuItem
-				Header="{DynamicResource MenuItem.set_glass}"
-				Click="OnMenuClicked"
-				Tag="set_glass">
-			</MenuItem>
-			<MenuItem
-				Header="{DynamicResource MenuItem.set_lglass}"
-				Click="OnMenuClicked"
-				Tag="set_lglass">
-			</MenuItem>
-			<MenuItem
-				Header="{DynamicResource MenuItem.sterring_w}"
-				Click="OnMenuClicked"
-				Tag="sterring_w">
-			</MenuItem>
-			<MenuItem
-				Header="{DynamicResource MenuItem.toyhang}"
-				Click="OnMenuClicked"
-				Tag="toyhang">
-			</MenuItem>
-			<MenuItem
-				Header="{DynamicResource MenuItem.toyac}"
-				Click="OnMenuClicked"
-				Tag="toyac">
-			</MenuItem>
-			<MenuItem
-				Header="{DynamicResource MenuItem.toystand}"
-				Click="OnMenuClicked"
-				Tag="toystand">
-			</MenuItem>
-			<MenuItem
-				Header="{DynamicResource MenuItem.toyseat}"
-				Click="OnMenuClicked"
-				Tag="toyseat">
-			</MenuItem>
-			<MenuItem
-				Header="{DynamicResource MenuItem.toybed}"
-				Click="OnMenuClicked"
-				Tag="toybed">
-			</MenuItem>
-			<MenuItem
-				Header="{DynamicResource MenuItem.toybig}"
-				Click="OnMenuClicked"
-				Tag="toybig">
-			</MenuItem>
-			<MenuItem
-				Header="{DynamicResource MenuItem.toyback}"
-				Click="OnMenuClicked"
-				Tag="toyback">
-			</MenuItem>
-			<MenuItem
-				Header="{DynamicResource MenuItem.toysofa}"
-				Click="OnMenuClicked"
-				Tag="toysofa">
-			</MenuItem>
-			<MenuItem
-				Header="{DynamicResource MenuItem.toytable}"
-				Click="OnMenuClicked"
-				Tag="toytable">
-			</MenuItem>
-
 		</ContextMenu>
 		<ContextMenu
 			x:Key="MenuLook"
@@ -212,7 +94,7 @@
 
 		<Style
 			x:Key="VehicleTableTextBoxStyle"
-			TargetType="TextBox"
+			TargetType="ui:TextBox"
 			BasedOn="{StaticResource TableTextBoxStyle}">
 			<Style.Triggers>
 				<MultiDataTrigger>
@@ -235,8 +117,8 @@
 		
 		<Style
 			x:Key="TextBoxBorderless"
-			TargetType="TextBox"
-			BasedOn="{StaticResource {x:Type TextBox}}">
+			TargetType="ui:TextBox"
+			BasedOn="{StaticResource {x:Type ui:TextBox}}">
 			<Setter
 				Property="Padding"
 				Value="5,3" />
@@ -370,7 +252,7 @@
 				<RowDefinition
 					Height="Auto" />
 			</Grid.RowDefinitions>
-			<ScrollViewer 
+			<ScrollViewer
 				x:Name="ControlPanel"
 				Grid.ColumnSpan="2"
 				Padding="0,0,15,0">
@@ -429,17 +311,18 @@
 							TextWrapping="Wrap"
 							VerticalAlignment="Center"
 							Text="{DynamicResource SCSProjectLocation}" />
-						<TextBox
+						<ui:TextBox
 							x:Name="TextProjectLocation"
 							IsReadOnly="True"
 							TextWrapping="Wrap"
 							VerticalAlignment="Top"
+							ClearButtonEnabled="False"
 							MaxLines="1"
 							Text="{Binding ProjectLocation, Mode=OneWay}">
-							<TextBox.Style>
+							<ui:TextBox.Style>
 								<Style
-									TargetType="TextBox"
-									BasedOn="{StaticResource {x:Type TextBox}}">
+									TargetType="ui:TextBox"
+									BasedOn="{StaticResource {x:Type ui:TextBox}}">
 									<Style.Triggers>
 										<DataTrigger
 											Binding="{Binding ProjectExist}"
@@ -460,115 +343,22 @@
 										</Trigger>
 									</Style.Triggers>
 								</Style>
-							</TextBox.Style>
-						</TextBox>
+							</ui:TextBox.Style>
+						</ui:TextBox>
 					</StackPanel>
 
-					<Grid
+					<StackPanel
 						Grid.Row="2"
 						Grid.ColumnSpan="3">
-						<Grid.RowDefinitions>
-							<RowDefinition
-								Height="Auto" />
-							<RowDefinition
-								Height="Auto" />
-						</Grid.RowDefinitions>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition
-								Width="*" />
-							<ColumnDefinition
-								Width="Auto" />
-							<ColumnDefinition
-								Width="Auto" />
-						</Grid.ColumnDefinitions>
 						<TextBlock
-							Grid.ColumnSpan="3"
 							Margin="0,5,0,0"
 							TextWrapping="Wrap"
 							VerticalAlignment="Top"
 							Text="{DynamicResource ModelDisplayName}" />
-
-						<Border
-							Grid.Row="1"
-							Grid.ColumnSpan="3"
-							Style="{DynamicResource MultiControlBorder}" />
-						<TextBox
-							x:Name="TextDisplayName"
-							Grid.Row="1"
-							Text="{Binding DisplayName, UpdateSourceTrigger=PropertyChanged}"
-							TextWrapping="Wrap">
-							<TextBox.Style>
-								<Style
-									TargetType="TextBox"
-									BasedOn="{StaticResource TextBoxBorderless}">
-									<Style.Triggers>
-										<Trigger
-											Property="Text"
-											Value="">
-											<Setter
-												Property="Background"
-												Value="Yellow" />
-										</Trigger>
-									</Style.Triggers>
-								</Style>
-							</TextBox.Style>
-						</TextBox>
-						<Button
-							x:Name="ButtonCheckRes"
-							Grid.Row="1"
-							Grid.Column="1"
-							Click="CheckStringRes"
-							Visibility="{Binding CheckResVisibility}"
-							Style="{StaticResource ButtonBorderless}">
-							<Viewbox>
-								<ui:SymbolIcon
-									Symbol="Search16" />
-							</Viewbox>
-						</Button>
-						<Popup
-							x:Name="PopupCheckRes"
-							PlacementTarget="{Binding ElementName=ButtonCheckRes}"
-							PopupAnimation="Slide"
-							AllowsTransparency="True"
-							IsOpen="{Binding PopupCheckOpen}"
-							StaysOpen="False">
-							<Grid>
-								<Border
-									Style="{DynamicResource PopupBorder}" />
-								<StackPanel
-									Margin="10">
-									<TextBlock>
-												<Run
-											Text="{DynamicResource CheckResResult}" />
-									</TextBlock>
-									<Border
-										Margin="0,10"
-										Style="{DynamicResource SpliterBorder}" />
-									<TextBlock
-										Text="{Binding CheckResResult}" />
-									<Border
-										Margin="0,10"
-										Style="{DynamicResource SpliterBorder}" />
-									<TextBlock>
-											<Run
-											Text="{DynamicResource CheckResResultTips}" />
-									</TextBlock>
-								</StackPanel>
-							</Grid>
-						</Popup>
-						<Button
-							x:Name="ButtonChooseRes"
-							Grid.Row="1"
-							Grid.Column="2"
-							Click="ChooseStringRes"
-							Style="{StaticResource ButtonBorderless}"
-							Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}">
-							<Viewbox>
-								<ui:SymbolIcon
-									Symbol="Translate16" />
-							</Viewbox>
-						</Button>
-					</Grid>
+						<res:DisplayNameUC
+							AccessoryData="{Binding AddonItem, Mode=OneWay}"
+							Grid.Row="1" />
+					</StackPanel>
 
 					<Grid
 						Grid.Row="4">
@@ -600,18 +390,19 @@
 									Symbol="ChatWarning20" />
 							</Viewbox>
 						</Border>
-						<TextBox
+						<ui:TextBox
 							x:Name="TextModelName"
 							Grid.Row="1"
 							Grid.ColumnSpan="2"
 							TextWrapping="Wrap"
 							MaxLines="1"
-							Text="{Binding ModelName, UpdateSourceTrigger=PropertyChanged}"
+							Text="{Binding AddonItem.ModelName, UpdateSourceTrigger=PropertyChanged}"
+							PlaceholderText="{DynamicResource ModelNameTip}"
 							VerticalAlignment="Top">
-							<TextBox.Style>
+							<ui:TextBox.Style>
 								<Style
-									TargetType="TextBox"
-									BasedOn="{StaticResource {x:Type TextBox}}">
+									TargetType="ui:TextBox"
+									BasedOn="{StaticResource {x:Type ui:TextBox}}">
 									<Style.Triggers>
 										<DataTrigger
 											Binding="{Binding NameOver12}"
@@ -629,8 +420,8 @@
 										</Trigger>
 									</Style.Triggers>
 								</Style>
-							</TextBox.Style>
-						</TextBox>
+							</ui:TextBox.Style>
+						</ui:TextBox>
 					</Grid>
 
 					<Grid
@@ -667,7 +458,7 @@
 							Grid.Row="1"
 							Grid.ColumnSpan="2"
 							SelectedValuePath="Tag"
-							SelectedValue="{Binding PartType}"
+							SelectedValue="{Binding AddonItem.PartType}"
 							IsEditable="True"
 							IsReadOnly="True">
 							<ComboBoxItem
@@ -692,25 +483,20 @@
 							TextWrapping="Wrap"
 							VerticalAlignment="Top"
 							Text="{DynamicResource ModelPrice}" />
-						<TextBox
+						<ui:TextBox
 							x:Name="TextPrice"
-							Text="{Binding PriceString}"
+							Text="{Binding AddonItem.PriceString}"
 							MaxLines="1"
 							PreviewTextInput="NumberOnly"
+							ClearButtonEnabled="False"
+							PlaceholderText="1"
 							TextWrapping="Wrap"
 							VerticalAlignment="Top">
-							<TextBox.Style>
+							<ui:TextBox.Style>
 								<Style
-									TargetType="TextBox"
-									BasedOn="{StaticResource {x:Type TextBox}}">
+									TargetType="ui:TextBox"
+									BasedOn="{StaticResource {x:Type ui:TextBox}}">
 									<Style.Triggers>
-										<Trigger
-											Property="Text"
-											Value="">
-											<Setter
-												Property="Background"
-												Value="Yellow" />
-										</Trigger>
 										<Trigger
 											Property="Text"
 											Value="0">
@@ -723,8 +509,8 @@
 										</Trigger>
 									</Style.Triggers>
 								</Style>
-							</TextBox.Style>
-						</TextBox>
+							</ui:TextBox.Style>
+						</ui:TextBox>
 					</StackPanel>
 
 					<StackPanel
@@ -738,29 +524,15 @@
 								Language="zh-cn"
 								Text="{DynamicResource ModelUnlockLevel}" />
 						</TextBlock>
-						<TextBox
+						<ui:TextBox
 							x:Name="TextUnlockLevel"
-							Text="{Binding UnlockLevelString}"
+							Text="{Binding AddonItem.UnlockLevelString}"
 							MaxLines="1"
 							PreviewTextInput="NumberOnly"
 							TextWrapping="Wrap"
-							VerticalAlignment="Top">
-							<TextBox.Style>
-								<Style
-									TargetType="TextBox"
-									BasedOn="{StaticResource {x:Type TextBox}}">
-									<Style.Triggers>
-										<Trigger
-											Property="Text"
-											Value="">
-											<Setter
-												Property="Background"
-												Value="Yellow" />
-										</Trigger>
-									</Style.Triggers>
-								</Style>
-							</TextBox.Style>
-						</TextBox>
+							ClearButtonEnabled="False"
+							PlaceholderText="0"
+							VerticalAlignment="Top" />
 					</StackPanel>
 
 					<StackPanel
@@ -789,20 +561,18 @@
 									Width="*" />
 								<ColumnDefinition
 									Width="Auto" />
-								<ColumnDefinition
-									Width="Auto" />
 							</Grid.ColumnDefinitions>
 							<Border
 								Grid.ColumnSpan="3"
 								Style="{DynamicResource MultiControlBorder}" />
-							<TextBox
+							<ui:TextBox
 								x:Name="TextIconName"
-								Text="{Binding IconName}"
+								Text="{Binding AddonItem.IconName}"
 								MaxLines="1"
 								TextWrapping="Wrap">
-								<TextBox.Style>
+								<ui:TextBox.Style>
 									<Style
-										TargetType="TextBox"
+										TargetType="ui:TextBox"
 										BasedOn="{StaticResource TextBoxBorderless}">
 										<Style.Triggers>
 											<Trigger
@@ -814,22 +584,11 @@
 											</Trigger>
 										</Style.Triggers>
 									</Style>
-								</TextBox.Style>
-							</TextBox>
-							<Button
-								x:Name="ButtonIconNameClear"
-								Grid.Column="1"
-								Click="ButtonClearClick"
-								Style="{StaticResource ButtonBorderless}"
-								Visibility="{Binding IconNameClearVisibility}">
-								<Viewbox>
-									<ui:SymbolIcon
-										Symbol="Dismiss16" />
-								</Viewbox>
-							</Button>
+								</ui:TextBox.Style>
+							</ui:TextBox>
 							<Button
 								x:Name="ButtonIconName"
-								Grid.Column="2"
+								Grid.Column="1"
 								Click="ButtonChooseIcon"
 								Style="{StaticResource ButtonBorderless}">
 								<Viewbox>
@@ -854,7 +613,7 @@
 								BasedOn="{StaticResource MultiControlBorder}">
 								<Style.Triggers>
 									<DataTrigger
-										Binding="{Binding ModelIcon}"
+										Binding="{Binding ElementName=ImageIcon, Path=Source}"
 										Value="{x:Null}">
 										<Setter
 											Property="Visibility"
@@ -865,8 +624,9 @@
 						</Border.Style>
 						<Viewbox>
 							<Image
+								x:Name="ImageIcon"
 								Stretch="Uniform"
-								Source="{Binding ModelIcon}"
+								Source="{Binding AddonItem.ModelIcon}"
 								Width="256"
 								Height="64" />
 						</Viewbox>
@@ -898,14 +658,14 @@
 									Value="True" />
 								<Style.Triggers>
 									<DataTrigger
-										Binding="{Binding ExtModelPath}"
+										Binding="{Binding AddonItem.ExtModelPath}"
 										Value="">
 										<Setter
 											Property="IsChecked"
 											Value="False" />
 									</DataTrigger>
 									<DataTrigger
-										Binding="{Binding ExtModelPathUK}"
+										Binding="{Binding AddonItem.ExtModelPathUK}"
 										Value="">
 										<Setter
 											Property="IsChecked"
@@ -931,8 +691,6 @@
 									Width="*" />
 								<ColumnDefinition
 									Width="Auto" />
-								<ColumnDefinition
-									Width="Auto" />
 							</Grid.ColumnDefinitions>
 
 							<TextBlock
@@ -945,16 +703,16 @@
 								Grid.Column="0"
 								Grid.ColumnSpan="3"
 								Style="{DynamicResource MultiControlBorder}" />
-							<TextBox
+							<ui:TextBox
 								x:Name="TextModelPath"
 								Grid.Row="1"
 								Grid.Column="0"
-								Text="{Binding ModelPath, UpdateSourceTrigger=PropertyChanged}"
+								Text="{Binding AddonItem.ModelPath, UpdateSourceTrigger=PropertyChanged}"
 								TextWrapping="Wrap"
 								MaxLines="2">
-								<TextBox.Style>
+								<ui:TextBox.Style>
 									<Style
-										TargetType="TextBox"
+										TargetType="ui:TextBox"
 										BasedOn="{StaticResource TextBoxBorderless}">
 										<Style.Triggers>
 											<Trigger
@@ -966,24 +724,12 @@
 											</Trigger>
 										</Style.Triggers>
 									</Style>
-								</TextBox.Style>
-							</TextBox>
-							<Button
-								x:Name="ButtonChooseModelClear"
-								Grid.Row="1"
-								Grid.Column="1"
-								Click="ButtonClearClick"
-								Style="{StaticResource ButtonBorderless}"
-								Visibility="{Binding ModelPathClearVisibility}">
-								<Viewbox>
-									<ui:SymbolIcon
-										Symbol="Dismiss16" />
-								</Viewbox>
-							</Button>
+								</ui:TextBox.Style>
+							</ui:TextBox>
 							<Button
 								x:Name="ButtonChooseModel"
 								Grid.Row="1"
-								Grid.Column="2"
+								Grid.Column="1"
 								Click="ButtonChooseModelClick"
 								Style="{StaticResource ButtonBorderless}">
 								<Viewbox>
@@ -1004,8 +750,6 @@
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition
 									Width="*" />
-								<ColumnDefinition
-									Width="Auto" />
 								<ColumnDefinition
 									Width="Auto" />
 							</Grid.ColumnDefinitions>
@@ -1031,7 +775,7 @@
 								Grid.Row="1"
 								Grid.ColumnSpan="3"
 								Style="{DynamicResource MultiControlBorder}" />
-							<TextBox
+							<ui:TextBox
 								x:Name="TextModelPathUK"
 								Grid.Row="1"
 								Grid.Column="0"
@@ -1040,21 +784,9 @@
 								MaxLines="2"
 								Style="{StaticResource TextBoxBorderless}" />
 							<Button
-								x:Name="ButtonChooseModelUKClear"
-								Grid.Row="1"
-								Grid.Column="1"
-								Click="ButtonClearClick"
-								Style="{StaticResource ButtonBorderless}"
-								Visibility="{Binding ModelPathUKClearVisibility}">
-								<Viewbox>
-									<ui:SymbolIcon
-										Symbol="Dismiss16" />
-								</Viewbox>
-							</Button>
-							<Button
 								x:Name="ButtonChooseModelUK"
 								Grid.Row="1"
-								Grid.Column="2"
+								Grid.Column="1"
 								Click="ButtonChooseModelClick"
 								Style="{StaticResource ButtonBorderless}">
 								<Viewbox>
@@ -1109,26 +841,15 @@
 								Grid.Column="0"
 								Grid.ColumnSpan="3"
 								Style="{DynamicResource MultiControlBorder}" />
-							<TextBox
+							<ui:TextBox
 								x:Name="TextExtModelPath"
 								Grid.Row="1"
 								Grid.Column="0"
 								Text="{Binding ExtModelPath, UpdateSourceTrigger=PropertyChanged}"
+								PlaceholderText="{DynamicResource ExtModelTip}"
 								TextWrapping="Wrap"
 								MaxLines="2"
 								Style="{StaticResource TextBoxBorderless}" />
-							<Button
-								x:Name="ButtonChooseExtModelClear"
-								Grid.Row="1"
-								Grid.Column="1"
-								Click="ButtonClearClick"
-								Style="{StaticResource ButtonBorderless}"
-								Visibility="{Binding ExtModelPathClearVisibility}">
-								<Viewbox>
-									<ui:SymbolIcon
-										Symbol="Dismiss16" />
-								</Viewbox>
-							</Button>
 							<Button
 								x:Name="ButtonChooseExtModel"
 								Grid.Row="1"
@@ -1168,26 +889,15 @@
 								Grid.Row="1"
 								Grid.ColumnSpan="3"
 								Style="{DynamicResource MultiControlBorder}" />
-							<TextBox
+							<ui:TextBox
 								x:Name="TextExtModelPathUK"
 								Grid.Row="1"
 								Grid.Column="0"
 								Text="{Binding ExtModelPathUK}"
+								PlaceholderText="{DynamicResource ExtModelTip}"
 								TextWrapping="Wrap"
 								MaxLines="2"
 								Style="{StaticResource TextBoxBorderless}" />
-							<Button
-								x:Name="ButtonChooseExtModelUKClear"
-								Grid.Row="1"
-								Grid.Column="1"
-								Click="ButtonClearClick"
-								Style="{StaticResource ButtonBorderless}"
-								Visibility="{Binding ExtModelPathUKClearVisibility}">
-								<Viewbox>
-									<ui:SymbolIcon
-										Symbol="Dismiss16" />
-								</Viewbox>
-							</Button>
 							<Button
 								x:Name="ButtonChooseExtModelUK"
 								Grid.Row="1"
@@ -1240,24 +950,13 @@
 						<Border
 							Grid.ColumnSpan="3"
 							Style="{DynamicResource MultiControlBorder}" />
-						<TextBox
+						<ui:TextBox
 							x:Name="TextCollPath"
 							Grid.Column="0"
 							Text="{Binding CollPath}"
 							TextWrapping="Wrap"
 							MaxLines="2"
 							Style="{StaticResource TextBoxBorderless}" />
-						<Button
-							x:Name="ButtonChooseCollClear"
-							Grid.Column="1"
-							Click="ButtonClearClick"
-							Style="{StaticResource ButtonBorderless}"
-							Visibility="{Binding CollPathClearVisibility}">
-							<Viewbox>
-								<ui:SymbolIcon
-									Symbol="Dismiss16" />
-							</Viewbox>
-						</Button>
 						<Button
 							x:Name="ButtonChooseColl"
 							Grid.Column="2"
@@ -1341,7 +1040,7 @@
 									Symbol="ClipboardPaste16" />
 							</Viewbox>
 						</Button>
-						<TextBox
+						<ui:TextBox
 							x:Name="TextAccName"
 							Text="{Binding CurrentModelType.Name}"
 							Grid.Row="1"
@@ -1497,7 +1196,7 @@
 								Grid.Row="1"
 								Grid.ColumnSpan="2"
 								Style="{DynamicResource MultiControlBorder}" />
-							<TextBox
+							<ui:TextBox
 								x:Name="TextHideIn"
 								Grid.Row="1"
 								IsReadOnly="True"
@@ -1542,10 +1241,10 @@
 										Tag="vehicle" />
 									<ComboBoxItem
 										Content="{DynamicResource ElectricTypeAuxLight}"
-										Tag="aux_light"  />
+										Tag="aux_light" />
 									<ComboBoxItem
 										Content="{DynamicResource ElectricTypeVehicleInterior}"
-										Tag="vehicle_interior"  />
+										Tag="vehicle_interior" />
 								</ComboBox.Items>
 							</ComboBox>
 						</StackPanel>
@@ -1603,7 +1302,7 @@
 									</Style>
 								</TextBlock.Style>
 							</TextBlock>
-							<TextBox
+							<ui:TextBox
 								x:Name="TextData"
 								Grid.Row="1"
 								GotFocus="ListDataGotFocus"
@@ -1686,7 +1385,7 @@
 									</Style>
 								</TextBlock.Style>
 							</TextBlock>
-							<TextBox
+							<ui:TextBox
 								x:Name="TextSuitableFor"
 								Grid.Row="1"
 								GotFocus="ListDataGotFocus"
@@ -1757,7 +1456,7 @@
 									</Style>
 								</TextBlock.Style>
 							</TextBlock>
-							<TextBox
+							<ui:TextBox
 								x:Name="TextConflictWith"
 								Grid.Row="1"
 								GotFocus="ListDataGotFocus"
@@ -1829,7 +1528,7 @@
 									</Style>
 								</TextBlock.Style>
 							</TextBlock>
-							<TextBox
+							<ui:TextBox
 								x:Name="TextDefaults"
 								Grid.Row="1"
 								GotFocus="ListDataGotFocus"
@@ -1899,7 +1598,7 @@
 									</Style>
 								</TextBlock.Style>
 							</TextBlock>
-							<TextBox
+							<ui:TextBox
 								x:Name="TextOverrides"
 								Grid.Row="1"
 								GotFocus="ListDataGotFocus"
@@ -1968,14 +1667,13 @@
 									</Style>
 								</TextBlock.Style>
 							</TextBlock>
-							<TextBox
+							<ui:TextBox
 								x:Name="TextRequire"
 								Grid.Row="1"
 								GotFocus="ListDataGotFocus"
 								LostFocus="ListDataLostFocus"
 								Text="{Binding NewRequire, UpdateSourceTrigger=PropertyChanged}"
-								Style="{StaticResource TextBoxBorderless}">
-							</TextBox>
+								Style="{StaticResource TextBoxBorderless}" />
 							<Button
 								x:Name="ButtonAddRequire"
 								Grid.Row="1"
@@ -2001,7 +1699,7 @@
 					</Grid>
 				</Grid>
 			</ScrollViewer>
-
+			
 			<Grid
 				x:Name="GridVehicles"
 				Grid.Column="2"
@@ -2044,27 +1742,19 @@
 						</RowDefinition.Style>
 					</RowDefinition>
 				</Grid.RowDefinitions>
-				<Grid>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition
-							Width="*" />
-						<ColumnDefinition
-							Width="Auto" />
-					</Grid.ColumnDefinitions>
-					<TextBlock>
-					<Run
-							Text="{DynamicResource ModelVehicleTip}" />
-					</TextBlock>
-
+				<DockPanel>
 					<Button
 						x:Name="ButtonInitialize"
 						Grid.Column="1"
 						Content="{DynamicResource ButtonInitializeVehicles}"
 						Padding="20,5"
 						FontSize="14"
+						DockPanel.Dock="Right"
 						Click="ButtonVehicleReinit"
 						VerticalAlignment="Bottom" />
-				</Grid>
+					<TextBlock
+						Text="{DynamicResource ModelVehicleTip}" />
+				</DockPanel>
 				<Expander
 					x:Name="ExpanderETS2"
 					Grid.Row="1"
@@ -2164,7 +1854,7 @@
 								Width="3*">
 								<DataGridTemplateColumn.CellTemplate>
 									<DataTemplate>
-										<TextBox
+										<ui:TextBox
 											Text="{Binding ModelType, UpdateSourceTrigger=PropertyChanged}"
 											ContextMenu="{StaticResource MenuModelType}"
 											Style="{StaticResource VehicleTableTextBoxStyle}" />
@@ -2176,7 +1866,7 @@
 								Width="3*">
 								<DataGridTemplateColumn.CellTemplate>
 									<DataTemplate>
-										<TextBox
+										<ui:TextBox
 											Text="{Binding Look, UpdateSourceTrigger=PropertyChanged}"
 											ContextMenu="{StaticResource MenuLook}"
 											Style="{StaticResource VehicleTableTextBoxStyle}" />
@@ -2188,7 +1878,7 @@
 								Width="3*">
 								<DataGridTemplateColumn.CellTemplate>
 									<DataTemplate>
-										<TextBox
+										<ui:TextBox
 											Text="{Binding Variant, UpdateSourceTrigger=PropertyChanged}"
 											ContextMenu="{StaticResource MenuVariant}"
 											Style="{StaticResource VehicleTableTextBoxStyle}" />
@@ -2310,7 +2000,7 @@
 								Width="3*">
 								<DataGridTemplateColumn.CellTemplate>
 									<DataTemplate>
-										<TextBox
+										<ui:TextBox
 											Text="{Binding ModelType, UpdateSourceTrigger=PropertyChanged}"
 											ContextMenu="{StaticResource MenuModelType}"
 											Style="{StaticResource VehicleTableTextBoxStyle}" />
@@ -2322,7 +2012,7 @@
 								Width="3*">
 								<DataGridTemplateColumn.CellTemplate>
 									<DataTemplate>
-										<TextBox
+										<ui:TextBox
 											Text="{Binding Look, UpdateSourceTrigger=PropertyChanged}"
 											ContextMenu="{StaticResource MenuLook}"
 											Style="{StaticResource VehicleTableTextBoxStyle}" />
@@ -2334,7 +2024,7 @@
 								Width="3*">
 								<DataGridTemplateColumn.CellTemplate>
 									<DataTemplate>
-										<TextBox
+										<ui:TextBox
 											Text="{Binding Variant, UpdateSourceTrigger=PropertyChanged}"
 											ContextMenu="{StaticResource MenuVariant}"
 											Style="{StaticResource VehicleTableTextBoxStyle}" />
@@ -2357,7 +2047,9 @@
 				x:Name="PopupAddVehicle"
 				PopupAnimation="Slide"
 				AllowsTransparency="True"
-				IsOpen="{Binding PopupAddVehicleOpen}" />
+				IsOpen="{Binding PopupAddVehicleOpen}">
+				<local:AddVehicleUC />
+			</Popup>
 
 			<Border
 				Grid.Row="1"
@@ -2390,14 +2082,14 @@
 					Content="{DynamicResource SaveDED}"
 					Grid.Column="0"
 					Padding="40,3"
-					Click="ButtonSaveClick" />
+					Command="{Binding SaveDEDCommand}" />
 				<Button
 					x:Name="ButtonLoad"
 					Content="{DynamicResource LoadDED}"
 					Grid.Column="1"
 					Margin="5,0,0,0"
 					Padding="40,3"
-					Click="ButtonLoadClick" />
+					Command="{Binding LoadDEDCommand}" />
 				<CheckBox
 					x:Name="CheckDeleteUnchecked"
 					Grid.Column="3"
@@ -2415,7 +2107,7 @@
 					Margin="5,0,0,0"
 					Padding="40,5"
 					FontSize="15"
-					Click="ButtonStartClick" />
+					Command="{Binding StartCommand}" />
 			</Grid>
 		</Grid>
 			<ui:ProgressRing
