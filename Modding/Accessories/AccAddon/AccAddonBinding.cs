@@ -16,7 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
 namespace SCS_Mod_Helper.Modding.Accessories.AccAddon;
-public class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBinding(visualFunc), IListDataInterface {
+public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBinding(visualFunc), IListDataInterface {
 	private readonly AccessoryAddonData mAddonItem = new();
 	public AccessoryAddonData AddonItem => mAddonItem;
 
@@ -695,7 +695,6 @@ public class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBinding(visual
 		}
 	}
 
-	public bool? AddVehicleETS2 = null;
 	private bool mPopupAddVehicleOpen = false;
 	public bool PopupAddVehicleOpen {
 		get => mPopupAddVehicleOpen;
@@ -877,42 +876,6 @@ public class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBinding(visual
 		AccAddonHistory.Default.Save();
 	}
 
-	public void AddNewVehicle(AccessoryVehicle newVehicle) {
-		try {
-			bool isETS2 = newVehicle.IsETS2;
-			ObservableCollection<AccessoryVehicle> Vehicles = isETS2 ? VehiclesETS2 : VehiclesATS;
-			if (newVehicle.VehicleID[0] <= 'm') {
-				for (int i = 0; i < Vehicles.Count; i++) {
-					var cVehicle = Vehicles[i];
-					var cResult = newVehicle.CompareTo(cVehicle);
-					if (cResult == 0) {
-						throw new(Util.GetString("MessageAddErrSameID"));
-					} else if (cResult < 0) {
-						Vehicles.Insert(i, newVehicle);
-						break;
-					} else if (i == Vehicles.Count - 1)
-						Vehicles.Add(newVehicle);
-				}
-			} else {
-				for (int i = Vehicles.Count - 1; i >= 0; i--) {
-					var cVehicle = Vehicles[i];
-					var cResult = newVehicle.VehicleID.CompareTo(cVehicle.VehicleID);
-					if (cResult == 0) {
-						throw new(Util.GetString("MessageAddErrSameID"));
-					} else if (cResult > 0) {
-						Vehicles.Insert(i + 1, newVehicle);
-						break;
-					} else if (i == 0)
-						Vehicles.Insert(0, newVehicle);
-				}
-				Vehicles.Insert(0, newVehicle);
-			}
-			VehiclesIO.AddVehicle(newVehicle);
-		} catch (Exception ex) {
-			MessageBox.Show(BindingWindow, ex.Message, Util.GetString("MessageTitleErr"));
-		}
-	}
-
 	public static void DeleteVehicle(bool ets2, ObservableCollection<AccessoryVehicle> Vehicles, DataGrid Table) {
 		List<string> vehicleIDs = [];
 		while (Table.SelectedIndex != -1) {
@@ -965,21 +928,6 @@ public class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBinding(visual
 
 	public void ChooseIcon() => AddonItem.ChooseIcon(BindingWindow);
 
-	public void LoadIcon() {
-		if (IconName.Length == 0)
-			return;
-		var iconPath = IconName;
-		if (iconPath.Contains('/'))
-			iconPath = iconPath.Replace("/", "\\");
-		iconPath = Paths.AccessoryIconDir(ProjectLocation, iconPath);
-		var fullIconPath = iconPath + ".tga";
-		if (!File.Exists(fullIconPath)) {
-			fullIconPath = iconPath + ".dds";
-			if (!File.Exists(fullIconPath))
-				return;
-		}
-		ModelIcon = AccessoryDataUtil.LoadModelIcon(fullIconPath);
-	}
 
 	public const int MODEL = 0;
 	public const int MODEL_UK = 1;

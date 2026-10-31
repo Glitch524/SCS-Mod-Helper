@@ -203,7 +203,7 @@ public partial class AccAddonWindow: BaseWindow {
 		if (sender == ButtonAddVehicleETS2) {
 			Binding.AddVehicleETS2 = true;
 		}
-		PopupAddVehicle.IsOpen = true;
+		Binding.PopupAddVehicleOpen = true;
 	}
 
 	private void ButtonDeleteVehicleClick(object sender, RoutedEventArgs e) {
