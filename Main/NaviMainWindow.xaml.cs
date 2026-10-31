@@ -1,6 +1,6 @@
-﻿using SCS_Mod_Helper.Base;
+﻿using SCS_Mod_Helper.Class.Base;
 using SCS_Mod_Helper.ConverterPix;
-using SCS_Mod_Helper.Localization;
+using SCS_Mod_Helper.Locale.Localization;
 using SCS_Mod_Helper.Modding.PaintJob;
 using SCS_Mod_Helper.Setting;
 using SCS_Mod_Helper.Utils;
@@ -15,17 +15,19 @@ namespace SCS_Mod_Helper.Main;
 /// NaviMainWindow.xaml 的交互逻辑
 /// </summary>
 public partial class NaviMainWindow: BaseWindow {
-	readonly MainWindowBinding binding;
+	public MainWindowBinding Binding;
 	public NaviMainWindow() {
 		InitializeComponent();
-		binding = new(new(OpenWindow), new(Test));
-		GridMain.DataContext = binding;
+		Binding = new(() => this, OpenWindow, Test);
+		GridMain.DataContext = Binding;
+
 	}
 
 	protected override void OnContentRendered(EventArgs e) {
 		base.OnContentRendered(e);
 		VehiclesIO.CheckDBMigration(this);
 		_ = Task.Delay(100).ContinueWith(_ => SystemVerification.StorageAsync());
+
 	}
 
 	private void OpenWindow(string? type) {
@@ -74,14 +76,13 @@ public partial class NaviMainWindow: BaseWindow {
 	}
 
 	private void NaviMainWindowLoaded(object sender, RoutedEventArgs e) => Navigation.Navigate("ModManifest");
-
 }
 
-public class MainWindowBinding(RelayCommand<string> windowCommand, RelayCommand<string> testCommand): BaseBinding {
+public class MainWindowBinding(Func<IBaseVisual> visualFunc, Action<string?> windowAction, Action<string?> testAction): WindowBinding(visualFunc) {
 
-	public RelayCommand<string> WindowCommand { get; } = windowCommand;
+	public RelayCommand<string> WindowCommand { get; } = new RelayCommand<string>(windowAction);
 
-	public RelayCommand<string> TestCommand { get; } = testCommand;
+	public RelayCommand<string> TestCommand { get; } = new RelayCommand<string>(testAction);
 
-	public Visibility TestVisibility => Debugger.IsAttached ? Visibility.Visible : Visibility.Collapsed;
+	public static Visibility TestVisibility => Debugger.IsAttached ? Visibility.Visible : Visibility.Collapsed;
 }

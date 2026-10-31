@@ -4,16 +4,16 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	xmlns:base="clr-namespace:SCS_Mod_Helper.Base"
+	xmlns:base="clr-namespace:SCS_Mod_Helper.Class.Base"
 	xmlns:local="clr-namespace:SCS_Mod_Helper.Main"
+	xmlns:about="clr-namespace:SCS_Mod_Helper.Main.About"
 	xmlns:setting="clr-namespace:SCS_Mod_Helper.Setting"
 	xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
 	xmlns:manifest="clr-namespace:SCS_Mod_Helper.Manifest"
-	xmlns:localization="clr-namespace:SCS_Mod_Helper.Localization"
 	d:DataContext="{d:DesignInstance Type=local:MainWindowBinding}"
 	mc:Ignorable="d"
 	Loaded="NaviMainWindowLoaded"
-	Title="SCS Model Helper"
+	Title="SCS Mod Helper"
 	Height="700"
 	Width="1200"
 	ExtendsContentIntoTitleBar="True"
@@ -27,7 +27,7 @@
 				Height="*" />
 		</Grid.RowDefinitions>
 		<ui:TitleBar
-			Title="SCS Model Helper"
+			Title="SCS Mod Helper"
 			VerticalAlignment="Top"
 			VerticalContentAlignment="Stretch">
 			<ui:TitleBar.Icon>
@@ -39,14 +39,13 @@
 			x:Name="Navigation"
 			Grid.Row="1"
 			IsBackButtonVisible="Collapsed"
-			OpenPaneLength="200"
-			Cursor="">
+			OpenPaneLength="200">
 			<ui:NavigationView.MenuItems>
 				<ui:NavigationViewItem
 					Content="{DynamicResource TitleModManifest}"
 					Icon="{ui:SymbolIcon DocumentEdit20}"
 					TargetPageType="{x:Type manifest:ModManifestPage}"
-					TargetPageTag="ModManifest"/>
+					TargetPageTag="ModManifest" />
 				<ui:NavigationViewItem
 					Content="{DynamicResource TitleAccessory}"
 					Icon="{ui:SymbolIcon Chess20}"
@@ -56,7 +55,7 @@
 					Content="{DynamicResource TitleSetupLocalization}"
 					Icon="{ui:SymbolIcon BookOpenGlobe20}"
 					Command="{Binding WindowCommand}"
-					CommandParameter="ModLocalization"/>
+					CommandParameter="ModLocalization" />
 				<ui:NavigationViewItem
 					Content="{DynamicResource TitleSetupPaintJob}"
 					Icon="{ui:SymbolIcon PaintBrush20}"
@@ -80,9 +79,9 @@
 				<ui:NavigationViewItem
 					Content="{DynamicResource TitleAbout}"
 					Icon="{ui:SymbolIcon Info28}"
-					TargetPageType="{x:Type local:AboutPage}" />
+					TargetPageType="{x:Type about:AboutPage}" />
 				<ui:NavigationViewItem
-					Content="Settings"
+					Content="{DynamicResource TitleSettings}"
 					Icon="{ui:SymbolIcon Settings32}"
 					TargetPageType="{x:Type setting:SettingsPage}" />
 			</ui:NavigationView.FooterMenuItems>
