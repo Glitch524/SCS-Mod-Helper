@@ -2,10 +2,7 @@
 using SCS_Mod_Helper.Utils;
 using SCS_Mod_Helper.Vehicles;
 using System.Collections.ObjectModel;
-using System.Text.RegularExpressions;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 
 namespace SCS_Mod_Helper.Modding.Accessories.AccAddon;
@@ -29,7 +26,6 @@ public partial class AddVehicleUC: BaseUserControl {
 	}
 
 	public void Clean() {
-		TextNewVehicleID.Text = string.Empty;
 		TextNewVehicleType.SelectedValue = "Truck";
 		TextNewDisplayName.Text = string.Empty;
 		TextNewManufacturer.Text = string.Empty;
@@ -39,27 +35,7 @@ public partial class AddVehicleUC: BaseUserControl {
 
 	private void ButtonResultClick(object sender, RoutedEventArgs e) {
 		if (sender == ButtonOK) {
-			if (TextNewVehicleID.Text.Length == 0 || TextNewDisplayName.Text.Length == 0) {
-				MessageBox.Show(Window.GetWindow(this), Util.GetString("MessageAddErrNotFilled"));
-				return;
-			}
-			int prod;
-			if (string.IsNullOrEmpty(TextNewVehicleProdYear.Text))
-				prod = DateTime.Now.Year;
-			else
-				prod = int.Parse(TextNewVehicleProdYear.Text);
-			AccessoryVehicle newVehicle = new(TextNewVehicleID.Text,
-				  prod,
-				  TextNewDisplayName.Text,
-				  TextNewDescription.Text,
-				  (string)TextNewVehicleType.SelectedValue,
-				  TextNewManufacturer.Text,
-				  Binding.AddVehicleETS2 == true,
-				  false);
-			Clean();
-			VehiclesIO.AddVehicle(newVehicle);
-			Binding.AddNewVehicle(newVehicle);
-			Binding.AddVehicleETS2 = null;
+			Binding.AddNewVehicleClick();
 			Binding.PopupAddVehicleOpen = false;
 		} else if (sender == ButtonCancel)
 			Binding.PopupAddVehicleOpen = false;
@@ -70,6 +46,32 @@ public partial class AddVehicleUC: BaseUserControl {
 
 public partial class AccAddonBinding {
 	public bool? AddVehicleETS2 = null;
+
+	public void AddNewVehicleClick() {
+		if (NewManufacturer.Length == 0 || 
+			NewVehicleCodename.Length == 0 ||
+			NewVehicleName.Length == 0) {
+			MessageBox.Show(BindingWindow, Util.GetString("MessageAddErrNotFilled"));
+			return;
+		}
+		int prod;
+		if (string.IsNullOrEmpty(NewProdYear))
+			prod = DateTime.Now.Year;
+		else
+			prod = int.Parse(NewProdYear);
+		AccessoryVehicle newVehicle = new(NewVehicleID,
+			  prod,
+			  NewVehicleName,
+			  NewDescription ?? string.Empty,
+			  NewVehicleType,
+			  NewManufacturer,
+			  AddVehicleETS2 == true,
+			  false);
+		Clean();
+		VehiclesIO.AddVehicle(newVehicle);
+		AddNewVehicle(newVehicle);
+		AddVehicleETS2 = null;
+	}
 
 	public void AddNewVehicle(AccessoryVehicle newVehicle) {
 		try {
@@ -104,6 +106,68 @@ public partial class AccAddonBinding {
 			VehiclesIO.AddVehicle(newVehicle);
 		} catch (Exception ex) {
 			MessageBox.Show(BindingWindow, ex.Message, Util.GetString("MessageTitleErr"));
+		}
+	}
+
+	public void Clean() {
+		NewManufacturer = string.Empty;
+		NewVehicleCodename = string.Empty;
+		NewProdYear = string.Empty;
+		NewVehicleType = "Truck";
+		NewVehicleName = string.Empty;
+		NewDescription = string.Empty;
+	}
+
+	public string NewVehicleID => (mNewManufacturer?.Length > 0 || mNewVehicleCodename?.Length > 0) ? $"{mNewManufacturer}.{mNewVehicleCodename}" : string.Empty;
+	private string mNewManufacturer = string.Empty;
+	public string NewManufacturer {
+		get => mNewManufacturer;
+		set {
+			mNewManufacturer = value;
+			InvokeChange();
+			InvokeChange(nameof(NewVehicleID));
+		}
+	}
+	private string mNewVehicleCodename = null;
+	public string NewVehicleCodename {
+		get => mNewVehicleCodename;
+		set {
+			mNewVehicleCodename = value;
+			InvokeChange();
+			InvokeChange(nameof(NewVehicleID));
+		}
+	}
+	private string mNewProdYear = null;
+	public string NewProdYear {
+		get => mNewProdYear;
+		set {
+			mNewProdYear = value;
+			InvokeChange();
+		}
+	}
+	public static string NewProdYearPlaceholder => DateTime.Now.Year.ToString();
+	private string mNewVehicleType = "Truck";
+	public string NewVehicleType {
+		get => mNewVehicleType;
+		set {
+			mNewVehicleType = value;
+			InvokeChange();
+		}
+	}
+	private string mNewVehicleName = null;
+	public string NewVehicleName {
+		get => mNewVehicleName;
+		set {
+			mNewVehicleName = value;
+			InvokeChange();
+		}
+	}
+	private string mNewDescription = null;
+	public string NewDescription {
+		get => mNewDescription;
+		set {
+			mNewDescription = value;
+			InvokeChange();
 		}
 	}
 }
