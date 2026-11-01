@@ -10,7 +10,7 @@ using System.Windows.Threading;
 namespace SCS_Mod_Helper.Main.About.AvatarNameService; 
 
 public abstract class AuthorInfo: BaseBinding {
-	private const string DefaultUsername = "Glitch524(Default)";
+	private const string DefaultUsername = "Glitch524";
 	private string? mDisplayName = null;
 	public string? DisplayName { 
 		get {
@@ -123,12 +123,13 @@ public abstract class AuthorInfo: BaseBinding {
 			if (bytes != null) {
 				bitmap.StreamSource = new MemoryStream(bytes);
 			} else {
-				var uri = new Uri($"pack://application:,,,/Modding/PaintJob/arrow.png", UriKind.RelativeOrAbsolute);
-				//var uri = new Uri($"pack://application:,,,/Main/About/head.png", UriKind.RelativeOrAbsolute);
-				bitmap.UriSource = uri;
+				throw new ArgumentNullException("bytes", "Avatar file does not exist.");
 			}
 		} catch (Exception e) {
-			Debug.WriteLine(e);
+			if (e.Message != "Avatar file does not exist.")
+				Debug.WriteLine($"[AuthorInfo] Failed to read avatar file:\n{e.Message}");
+			var uri = new Uri($"pack://application:,,,/Main/About/DefaultIcon.jpg", UriKind.RelativeOrAbsolute);
+			bitmap.UriSource = uri;
 		}
 		bitmap.EndInit();
 		bitmap.Freeze();

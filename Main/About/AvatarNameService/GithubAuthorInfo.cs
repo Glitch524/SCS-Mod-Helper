@@ -9,10 +9,10 @@ using System.Windows;
 namespace SCS_Mod_Helper.Main.About.AvatarNameService;
 
 public class GithubAuthorInfo: AuthorInfo {
-	protected static readonly HttpClient httpClient = new(new SocketsHttpHandler {
+	protected static readonly HttpClient mHttpClient = new(new SocketsHttpHandler {
 		PooledConnectionLifetime = TimeSpan.FromMinutes(2)
 	});
-	protected override HttpClient HttpClient => httpClient;
+	protected override HttpClient HttpClient => mHttpClient;
 
 
 	public GithubAuthorInfo(): base(

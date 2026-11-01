@@ -13,9 +13,9 @@ namespace SCS_Mod_Helper.Main.About.AvatarNameService;
 public class BiliAuthorInfo: AuthorInfo {//吊李卤味，拿个头像同做贼咁
 	private static readonly CookieContainer cookies = new();
 
-	protected override HttpClient HttpClient => BiliHttpClient;
+	protected override HttpClient HttpClient => mHttpClient;
 
-	private static readonly HttpClient BiliHttpClient = new(new SocketsHttpHandler {
+	private static readonly HttpClient mHttpClient = new(new SocketsHttpHandler {
 		PooledConnectionLifetime = TimeSpan.FromMinutes(2),
 		CookieContainer = cookies,
 		AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
