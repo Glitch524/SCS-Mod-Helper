@@ -4,7 +4,6 @@
 	xmlns:s="clr-namespace:System;assembly=mscorlib"
 	xml:space="preserve">
 
-	<!--回车	&#x000D;	&#13;-->
 	<!--换行	&#x000A;	&#10;-->
 	<!--空格	&#x0020;	&#32;-->
 	<!--Tab		&#x0009;	&#9;-->

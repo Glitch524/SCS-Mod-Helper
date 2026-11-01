@@ -4,7 +4,6 @@
 	xmlns:s="clr-namespace:System;assembly=mscorlib"
 	xml:space="preserve">
 	
-	<!--Return	&#x000D;	&#13;-->
 	<!--Return	&#x000A;	&#10;-->
 	<!--Space	&#x0020;	&#32;-->
 	<!--Tab		&#x0009;	&#9;-->

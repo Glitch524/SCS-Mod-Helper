@@ -41,9 +41,7 @@
 		<None Remove="Images\AppIcon.png" />
 		<None Remove="Images\Icon_ATS.png" />
 		<None Remove="Images\Icon_ETS2.png" />
-		<None Remove="Main\About\Icon\BiliIcon.ico" />
-		<None Remove="Main\About\Icon\GithubIcon.ico" />
-		<None Remove="Main\About\Icon\SteamIcon.ico" />
+		<None Remove="Main\About\Icon\Icon302.ico" />
 		<None Remove="Modding\PaintJob\ChannelColorizeEffect.ps" />
 	</ItemGroup>
 
@@ -79,9 +77,10 @@
 		<Resource Include="Images\Icon_ATS.png" />
 		<Resource Include="Images\Icon_ETS2.png" />
 		<Resource Include="Main\About\DefaultIcon.jpg" />
-		<Resource Include="Main\About\Icon\BiliIcon.ico" />
-		<Resource Include="Main\About\Icon\GithubIcon.ico" />
-		<Resource Include="Main\About\Icon\SteamIcon.ico" />
+		<Resource Include="Main\About\Icon\Icon302.ico" />
+		<Resource Include="Main\About\Icon\IconBili.ico" />
+		<Resource Include="Main\About\Icon\IconGithub.ico" />
+		<Resource Include="Main\About\Icon\IconSteam.ico" />
 		<Resource Include="Modding\PaintJob\ColorMask\ChannelColorizeEffect.ps" />
 		<Resource Include="Vehicles\en-US.xaml" />
 		<Resource Include="Vehicles\UV\xg_plus.daf.2021.cabin.png" />

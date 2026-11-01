@@ -23,6 +23,17 @@
 			Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
 	</Style>
 	<Style
+		TargetType="ui:Button"
+		BasedOn="{StaticResource {x:Type ui:Button}}">
+		<Setter
+			Property="Padding"
+			Value="0" />
+		<Setter
+			Property="Background"
+			Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+	</Style>
+	
+	<Style
 		TargetType="ui:SplitButton"
 		BasedOn="{StaticResource {x:Type ui:SplitButton}}">
 		<Setter
