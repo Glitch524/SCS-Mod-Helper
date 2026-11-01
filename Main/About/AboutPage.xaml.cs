@@ -1,6 +1,7 @@
 ﻿using SCS_Mod_Helper.Class.Base;
 using SCS_Mod_Helper.Main.About.AvatarNameService;
 using SCS_Mod_Helper.Utils;
+using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Windows;
@@ -25,7 +26,7 @@ public partial class AboutPage: BasePage {
 	}
 
 	private void HyperlinkClick(object sender, RequestNavigateEventArgs e) {
-		System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo {
+		Process.Start(new ProcessStartInfo {
 			FileName = e.Uri.ToString(),
 			UseShellExecute = true
 		});
@@ -73,11 +74,18 @@ public class AboutBinding(Func<IBaseVisual> windowFunc): WindowBinding(windowFun
 		_ => null,
 	};
 
-	public static ICommand UserLinkCommand => new RelayCommand<object>(o => {
-		var AuthorLink = "";
-		throw new NotImplementedException("UserLinkCommand is not implemented yet.");
-		System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo {
-			FileName = AuthorLink,
+	public static ICommand CommandAuthorLink => new RelayCommand<object>(o => {
+		if (o is string authorLink) {
+			Process.Start(new ProcessStartInfo {
+				FileName = authorLink,
+				UseShellExecute = true
+			});
+		}
+	});
+
+	public static ICommand Command302 => new RelayCommand<object>(o => {
+		Process.Start(new ProcessStartInfo {
+			FileName = "https://www.dogfight360.com/blog/18682/",
 			UseShellExecute = true
 		});
 	});

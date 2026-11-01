@@ -10,6 +10,8 @@
 	d:DataContext="{d:DesignInstance Type=local:AboutBinding}"
 	mc:Ignorable="d"
 	d:Background="White"
+	d:Width="991"
+	d:Height="651"
 	Title="{DynamicResource TitleAbout}">
 	<base:BasePage.Resources>
 		<Style
@@ -25,14 +27,14 @@
 	</base:BasePage.Resources>
 	<Grid
 		x:Name="GridMain"
-		Margin="40">
+		Margin="20">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition
 				Width="Auto" />
 			<ColumnDefinition
-				Width="10" />
-			<ColumnDefinition 
-				Width="Auto"/>
+				Width="*" />
+			<ColumnDefinition
+				Width="Auto" />
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
 			<RowDefinition
@@ -40,190 +42,230 @@
 			<RowDefinition
 				Height="Auto" />
 			<RowDefinition
-				Height="Auto" />
+				Height="*" />
 			<RowDefinition
 				Height="Auto" />
 		</Grid.RowDefinitions>
 		<StackPanel>
-			<TabControl
-				SelectedIndex="{Binding SelectedTab}">
-				<TabItem>
-					<TabItem.Header>
-						<Viewbox
-							Stretch="Uniform"
-							Height="20">
-							<Image
-								Source="/Main/About/Icon/BiliIcon.ico" />
-						</Viewbox>
-					</TabItem.Header>
-				</TabItem>
-				<TabItem>
-					<TabItem.Header>
-						<Viewbox
-							Stretch="Uniform"
-							Height="20">
-							<Image
-								Source="/Main/About/Icon/GithubIcon.ico" />
-						</Viewbox>
-					</TabItem.Header>
-				</TabItem>
-				<TabItem>
-					<TabItem.Header>
-						<Viewbox
-							Stretch="Uniform"
-							Height="20">
-							<Image
-								Source="/Main/About/Icon/SteamIcon.ico" />
-						</Viewbox>
-					</TabItem.Header>
-				</TabItem>
-			</TabControl>
-			<Grid>
-				<Grid.RowDefinitions>
-					<RowDefinition
-						Height="5" />
-					<RowDefinition
-						Height="Auto" />
-					<RowDefinition
-						Height="Auto" />
-					<RowDefinition
-						Height="5" />
-				</Grid.RowDefinitions>
+			<TextBlock
+				HorizontalAlignment="Center">
+				<Hyperlink
+					NavigateUri="https://github.com/Glitch524/SCS-Model-Helper"
+					RequestNavigate="HyperlinkClick"
+					FontSize="16"
+					FontWeight="Bold">SCS Mod Helper</Hyperlink>
+			</TextBlock>
+			<TextBlock
+				HorizontalAlignment="Center">
+				<Run
+					Text="{DynamicResource HeaderVersion}" /><Run
+					Text="{Binding AppVersion, Mode=OneWay}" />
+			</TextBlock>
+		</StackPanel>
+		<StackPanel
+			Grid.Row="1">
+			<Grid
+				Grid.Row="1">
 				<Grid.ColumnDefinitions>
-					<ColumnDefinition
-						Width="20" />
 					<ColumnDefinition
 						Width="Auto" />
 					<ColumnDefinition
-						Width="20" />
+						Width="10" />
+					<ColumnDefinition
+						Width="Auto" />
 				</Grid.ColumnDefinitions>
-				<Border
-					Grid.ColumnSpan="3"
-					Grid.RowSpan="4"
-					BorderThickness="1,0,1,1"
-					BorderBrush="{StaticResource TextControlElevationBorderBrush}" />
-				<Ellipse
-					Width="100"
-					Height="100"
-					Grid.Column="1"
-					Grid.Row="1"
-					StrokeThickness="2"
-					Stroke="{StaticResource TextControlElevationBorderBrush}"/>
-				<Image
-					Width="100"
-					Height="100"
-					Grid.Column="1"
-					Grid.Row="1"
-					Source="{Binding CurrentInfo.Avatar}"
-					d:Source="/Main/About/head.jpg">
-					<Image.Clip>
-						<EllipseGeometry
-							Center="50,50"
-							RadiusX="50"
-							RadiusY="50" />
-					</Image.Clip>
-				</Image>
-				<TextBlock
-					HorizontalAlignment="Center"
-					Grid.Column="1"
-					Grid.Row="2"
-					Margin="0,5,0,0">
-				<Hyperlink
-						Command="{Binding UserLinkCommand}"
-						CommandParameter="{Binding CurrentInfo.Link}">
-						<Run
-							Text="{Binding CurrentInfo.DisplayName}"
-							d:Text="Glitch524" />
+				<StackPanel>
+					<TabControl
+						x:Name="TabProfile"
+						SelectedIndex="{Binding SelectedTab}">
+						<TabItem>
+							<TabItem.Header>
+								<Viewbox
+									Stretch="Uniform"
+									Height="20">
+									<Image
+										Source="/Main/About/Icon/BiliIcon.ico" />
+								</Viewbox>
+							</TabItem.Header>
+						</TabItem>
+						<TabItem>
+							<TabItem.Header>
+								<Viewbox
+									Stretch="Uniform"
+									Height="20">
+									<Image
+										Source="/Main/About/Icon/GithubIcon.ico" />
+								</Viewbox>
+							</TabItem.Header>
+						</TabItem>
+						<TabItem>
+							<TabItem.Header>
+								<Viewbox
+									Stretch="Uniform"
+									Height="20">
+									<Image
+										Source="/Main/About/Icon/SteamIcon.ico" />
+								</Viewbox>
+							</TabItem.Header>
+						</TabItem>
+					</TabControl>
+					<Grid>
+						<Grid.RowDefinitions>
+							<RowDefinition
+								Height="5" />
+							<RowDefinition
+								Height="Auto" />
+							<RowDefinition
+								Height="Auto" />
+							<RowDefinition
+								Height="5" />
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition
+								Width="20" />
+							<ColumnDefinition
+								Width="Auto" />
+							<ColumnDefinition
+								Width="20" />
+						</Grid.ColumnDefinitions>
+						<Border
+							Grid.ColumnSpan="3"
+							Grid.RowSpan="4"
+							BorderThickness="1,0,1,1"
+							BorderBrush="{StaticResource TextControlElevationBorderBrush}" />
+						<Ellipse
+							Width="100"
+							Height="100"
+							Grid.Column="1"
+							Grid.Row="1"
+							StrokeThickness="2"
+							Stroke="{StaticResource TextControlElevationBorderBrush}" />
+						<Image
+							Width="100"
+							Height="100"
+							Grid.Column="1"
+							Grid.Row="1"
+							Source="{Binding CurrentInfo.Avatar}"
+							d:Source="/Main/About/DefaultIcon.jpg">
+							<Image.Clip>
+								<EllipseGeometry
+									Center="50,50"
+									RadiusX="50"
+									RadiusY="50" />
+							</Image.Clip>
+						</Image>
+						<TextBlock
+							HorizontalAlignment="Center"
+							Grid.ColumnSpan="3"
+							Grid.Row="2"
+							Margin="0,5,0,0">
+							<Hyperlink
+								Command="{Binding CommandAuthorLink}"
+								CommandParameter="{Binding CurrentInfo.Link}">
+								<Run
+									Text="{Binding CurrentInfo.DisplayName}"
+									d:Text="Glitch524" />
 				</Hyperlink>
-				</TextBlock>
-			</Grid>
-		</StackPanel>
-		<Grid
-			Grid.Column="2"
-			Margin="0,0,0,0">
-			<Grid.RowDefinitions>
-				<RowDefinition
-					Height="Auto" />
-				<RowDefinition
-					Height="*" />
-				<RowDefinition
-					Height="Auto" />
-			</Grid.RowDefinitions>
-			<TextBlock>
-				<Run
-					Text="Github:" />
-				<Hyperlink
-					NavigateUri="https://github.com/Glitch524/SCS-Model-Helper"
-					RequestNavigate="HyperlinkClick">SCS Mod Helper</Hyperlink>
-				<LineBreak />
-				<Run
-					Text="{DynamicResource HeaderVersion}" />
-				<Run
-					Text="{Binding AppVersion, Mode=OneWay}" />
-			</TextBlock>
-			<StackPanel
-				Grid.Row="2"
-				Grid.Column="1"
-				Margin="0,15,0,0">
-				<TextBlock
-					Margin="0,5,0,0"
-					Text="{DynamicResource HeaderSupport}" />
-				<TextBlock
-					x:Name="TextKoFi"
-					Margin="20,5,0,0">
-					<TextBlock.Style>
-						<Style
-							TargetType="TextBlock"
-							BasedOn="{StaticResource {x:Type TextBlock}}">
-							<Style.Triggers>
-								<DataTrigger
-									Binding="{Binding IsCN}"
-									Value="True">
-									<Setter
-										Property="Visibility"
-										Value="Collapsed" />
-								</DataTrigger>
-							</Style.Triggers>
-						</Style>
-					</TextBlock.Style>
-					<Run
-						Text="Ko-Fi:" />
+						</TextBlock>
+					</Grid>
+				</StackPanel>
+				<StackPanel
+					Grid.Row="2"
+					Grid.Column="2"
+					Margin="0,15,0,0"
+					VerticalAlignment="Bottom">
+					<TextBlock
+						Margin="0,5,0,0"
+						Text="{DynamicResource HeaderSupport}" />
+					<TextBlock
+						x:Name="TextKoFi"
+						Margin="20,5,0,0">
+						<TextBlock.Style>
+							<Style
+								TargetType="TextBlock"
+								BasedOn="{StaticResource {x:Type TextBlock}}">
+								<Style.Triggers>
+									<DataTrigger
+										Binding="{Binding IsCN}"
+										Value="True">
+										<Setter
+											Property="Visibility"
+											Value="Collapsed" />
+									</DataTrigger>
+								</Style.Triggers>
+							</Style>
+						</TextBlock.Style>
+						<Run
+							Text="Ko-Fi:" />
 					<Hyperlink
-						NavigateUri="https://ko-fi.com/glitch524"
-						RequestNavigate="HyperlinkClick">Glitch524</Hyperlink>
-				</TextBlock>
-				<TextBlock
-					x:Name="TextBilibili"
-					Margin="20,5,0,0">
-					<TextBlock.Style>
-						<Style
-							TargetType="TextBlock"
-							BasedOn="{StaticResource {x:Type TextBlock}}">
-							<Style.Triggers>
-								<DataTrigger
-									Binding="{Binding IsCN}"
-									Value="False">
-									<Setter
-										Property="Visibility"
-										Value="Collapsed" />
-								</DataTrigger>
-							</Style.Triggers>
-						</Style>
-					</TextBlock.Style>
+							NavigateUri="https://ko-fi.com/glitch524"
+							RequestNavigate="HyperlinkClick">Glitch524</Hyperlink>
+					</TextBlock>
+					<TextBlock
+						x:Name="TextBilibili"
+						Margin="20,5,0,0">
+						<TextBlock.Style>
+							<Style
+								TargetType="TextBlock"
+								BasedOn="{StaticResource {x:Type TextBlock}}">
+								<Style.Triggers>
+									<MultiDataTrigger>
+										<MultiDataTrigger.Conditions>
+											<Condition
+												Binding="{Binding IsCN}"
+												Value="False" />
+										</MultiDataTrigger.Conditions>
+										<Setter
+											Property="Visibility"
+											Value="Collapsed" />
+									</MultiDataTrigger>
+								</Style.Triggers>
+							</Style>
+						</TextBlock.Style>
 					<Run
-						Text="←如果不介意可以在B站充电" />
+							Text="←如果不介意可以在B站充电" />
 					<LineBreak />
 					<Run
-						Text="←里面也有基本的MOD教程" />
-				</TextBlock>
-			</StackPanel>
-		</Grid>
-		<TextBlock
-			Grid.Row="2"
-			Grid.ColumnSpan="3"
-			Margin="0,30,0,0">
-			<Run
+							Text="←里面也有基本的MOD教程" />
+					</TextBlock>
+				</StackPanel>
+			</Grid>
+			<TextBlock
+				Grid.Row="2"
+				Grid.ColumnSpan="3"
+				Margin="0,30,0,0"
 				Text="{DynamicResource Desc}" />
-		</TextBlock>
-    </Grid>
+		</StackPanel>
+		<StackPanel
+			Grid.Row="3"
+			Grid.ColumnSpan="3">
+			<TextBlock Text="*如果无法正常访问Github和Steam社区，可以选择使用Steamcommunity 302"
+				HorizontalAlignment="Right" />
+			<Button
+				Margin="0,5,0,0"
+				Padding="10,3"
+				Content="Steamcommunity 302"
+				HorizontalAlignment="Right"
+				Command="{Binding Command302}">
+				<Button.Style>
+					<Style
+						TargetType="Button"
+						BasedOn="{StaticResource {x:Type Button}}">
+						<Style.Triggers>
+							<MultiDataTrigger>
+								<MultiDataTrigger.Conditions>
+									<Condition
+										Binding="{Binding IsCN}"
+										Value="False" />
+								</MultiDataTrigger.Conditions>
+								<Setter
+									Property="Visibility"
+									Value="Collapsed" />
+							</MultiDataTrigger>
+						</Style.Triggers>
+					</Style>
+				</Button.Style>
+			</Button>
+		</StackPanel>
+	</Grid>
 </base:BasePage>

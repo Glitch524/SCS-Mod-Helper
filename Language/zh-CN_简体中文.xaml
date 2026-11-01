@@ -41,7 +41,7 @@
 	
 	<!--关于-->
 	<s:String x:Key="TitleAbout">关于</s:String>
-	<s:String x:Key="HeaderVersion">版本号：</s:String>
+	<s:String x:Key="HeaderVersion">版本：</s:String>
 	<s:String x:Key="HeaderPersonalHomepage">个人主页：</s:String>
 	<s:String x:Key="HeaderSupport">赞助：</s:String>
 	<s:String x:Key="Desc">ConverterPIX和喷漆定义功能已初步完成&#10;接下来可能会做:&#10;&#9;车辆UV图&#10;&#9;喷漆模型预览&#10;&#9;模型列表的树状表示&#10;如果有人在意的话会更新</s:String>
