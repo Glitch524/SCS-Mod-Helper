@@ -1,14 +1,21 @@
 ﻿using SCS_Mod_Helper.Locale.StringRes;
-using SCS_Mod_Helper.Locale.Localization;
 using SCS_Mod_Helper.Setting;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Windows;
-using Wpf.Ui.Appearance;
+using System.Reflection;
 
 namespace SCS_Mod_Helper.Utils;
 public static partial class Instances {
 	public static string GameVersion = "1.62";
+
+	private static string? mVersion = null;
+	public static string Version {
+		get {
+			if (mVersion == null) {
+				var assembly = Assembly.GetEntryAssembly();
+				mVersion = assembly?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "Unknown";
+			}
+			return mVersion;
+		}
+	}
 
 	public static string CurrentLanguage {
 		get {

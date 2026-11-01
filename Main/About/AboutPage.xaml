@@ -30,7 +30,7 @@
 			<ColumnDefinition
 				Width="Auto" />
 			<ColumnDefinition
-				Width="5" />
+				Width="10" />
 			<ColumnDefinition 
 				Width="Auto"/>
 		</Grid.ColumnDefinitions>
@@ -45,31 +45,102 @@
 				Height="Auto" />
 		</Grid.RowDefinitions>
 		<StackPanel>
-			<Image
-				Width="100"
-				Source="{Binding Avatar}"
-				d:Source="/Images/AppIcon.ico">
-				<Image.Clip>
-					<EllipseGeometry
-						Center="50,50"
-						RadiusX="50"
-						RadiusY="50" />
-				</Image.Clip>
-			</Image>
-			<TextBlock
-				HorizontalAlignment="Center"
-				Margin="0,5,0,0">
+			<TabControl
+				SelectedIndex="{Binding SelectedTab}">
+				<TabItem>
+					<TabItem.Header>
+						<Viewbox
+							Stretch="Uniform"
+							Height="20">
+							<Image
+								Source="/Main/About/Icon/BiliIcon.ico" />
+						</Viewbox>
+					</TabItem.Header>
+				</TabItem>
+				<TabItem>
+					<TabItem.Header>
+						<Viewbox
+							Stretch="Uniform"
+							Height="20">
+							<Image
+								Source="/Main/About/Icon/GithubIcon.ico" />
+						</Viewbox>
+					</TabItem.Header>
+				</TabItem>
+				<TabItem>
+					<TabItem.Header>
+						<Viewbox
+							Stretch="Uniform"
+							Height="20">
+							<Image
+								Source="/Main/About/Icon/SteamIcon.ico" />
+						</Viewbox>
+					</TabItem.Header>
+				</TabItem>
+			</TabControl>
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition
+						Height="5" />
+					<RowDefinition
+						Height="Auto" />
+					<RowDefinition
+						Height="Auto" />
+					<RowDefinition
+						Height="5" />
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition
+						Width="20" />
+					<ColumnDefinition
+						Width="Auto" />
+					<ColumnDefinition
+						Width="20" />
+				</Grid.ColumnDefinitions>
+				<Border
+					Grid.ColumnSpan="3"
+					Grid.RowSpan="4"
+					BorderThickness="1,0,1,1"
+					BorderBrush="{StaticResource TextControlElevationBorderBrush}" />
+				<Ellipse
+					Width="100"
+					Height="100"
+					Grid.Column="1"
+					Grid.Row="1"
+					StrokeThickness="2"
+					Stroke="{StaticResource TextControlElevationBorderBrush}"/>
+				<Image
+					Width="100"
+					Height="100"
+					Grid.Column="1"
+					Grid.Row="1"
+					Source="{Binding CurrentInfo.Avatar}"
+					d:Source="/Main/About/head.jpg">
+					<Image.Clip>
+						<EllipseGeometry
+							Center="50,50"
+							RadiusX="50"
+							RadiusY="50" />
+					</Image.Clip>
+				</Image>
+				<TextBlock
+					HorizontalAlignment="Center"
+					Grid.Column="1"
+					Grid.Row="2"
+					Margin="0,5,0,0">
 				<Hyperlink
-					Command="{Binding UserLinkCommand}">
-					<Run
-						Text="{Binding Username}"
-						d:Text="Glitch524"/>
+						Command="{Binding UserLinkCommand}"
+						CommandParameter="{Binding CurrentInfo.Link}">
+						<Run
+							Text="{Binding CurrentInfo.DisplayName}"
+							d:Text="Glitch524" />
 				</Hyperlink>
-			</TextBlock>
+				</TextBlock>
+			</Grid>
 		</StackPanel>
 		<Grid
 			Grid.Column="2"
-			Margin="50,0,0,0">
+			Margin="0,0,0,0">
 			<Grid.RowDefinitions>
 				<RowDefinition
 					Height="Auto" />
@@ -88,7 +159,7 @@
 				<Run
 					Text="{DynamicResource HeaderVersion}" />
 				<Run
-					Text="{DynamicResource Version}" />
+					Text="{Binding AppVersion, Mode=OneWay}" />
 			</TextBlock>
 			<StackPanel
 				Grid.Row="2"

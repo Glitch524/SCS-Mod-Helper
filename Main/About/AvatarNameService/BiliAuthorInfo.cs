@@ -8,26 +8,33 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace SCS_Mod_Helper.HttpService;
+namespace SCS_Mod_Helper.Main.About.AvatarNameService;
 
-public class BilibiliIOService: IIOService {//吊李卤味，拿个头像同做贼咁
+public class BiliAuthorInfo: AuthorInfo {//吊李卤味，拿个头像同做贼咁
 	private static readonly CookieContainer cookies = new();
 
-	protected static readonly HttpClient httpClient = new(new SocketsHttpHandler {
+	protected override HttpClient HttpClient => BiliHttpClient;
+
+	private static readonly HttpClient BiliHttpClient = new(new SocketsHttpHandler {
 		PooledConnectionLifetime = TimeSpan.FromMinutes(2),
 		CookieContainer = cookies,
 		AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
 	});
 
-	static BilibiliIOService() {
-		httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(
+
+
+	public BiliAuthorInfo(): base(
+			"https://space.bilibili.com/1970055",
+			Paths.BiliAvatarFile(),
+			Paths.BiliNameFile()) {
+		HttpClient.DefaultRequestHeaders.UserAgent.ParseAdd(
 			"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
 			"(KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36");
 
-		httpClient.DefaultRequestHeaders.Referrer = new Uri("https://space.bilibili.com/");
-		httpClient.DefaultRequestHeaders.Add("Origin", "https://space.bilibili.com");
-		httpClient.DefaultRequestHeaders.Accept.ParseAdd("application/json, text/plain, */*");
-		httpClient.DefaultRequestHeaders.AcceptLanguage.ParseAdd("zh-CN,zh;q=0.9");
+		HttpClient.DefaultRequestHeaders.Referrer = new Uri("https://space.bilibili.com/");
+		HttpClient.DefaultRequestHeaders.Add("Origin", "https://space.bilibili.com");
+		HttpClient.DefaultRequestHeaders.Accept.ParseAdd("application/json, text/plain, */*");
+		HttpClient.DefaultRequestHeaders.AcceptLanguage.ParseAdd("zh-CN,zh;q=0.9");
 	}
 
 	/// <summary>
@@ -36,7 +43,7 @@ public class BilibiliIOService: IIOService {//吊李卤味，拿个头像同做�
 	private static string FilterSpecialChars(string s) => new(Array.FindAll(s.ToCharArray(), c => !"!'()*".Contains(c)));
 
 
-	public async Task<UserInfo?> GetAvatarAsync() {
+	protected override async Task<(string? AvatarUrl, string? DisplayName)> GetUserInfoAsync() {
 		await EnsureCookiesAsync();
 
 		var parameters = new Dictionary<string, string> { { "mid", "1970055" } };
@@ -53,7 +60,7 @@ public class BilibiliIOService: IIOService {//吊李卤味，拿个头像同做�
 
 		Debug.WriteLine($"[WBI] 请求URL：{url}");
 
-		using var resp = await httpClient.GetAsync(url);
+		using var resp = await HttpClient.GetAsync(url);
 		var body = await resp.Content.ReadAsStringAsync();
 
 		Debug.WriteLine($"[WBI] HTTP状态码: {resp.StatusCode}");
@@ -68,27 +75,24 @@ public class BilibiliIOService: IIOService {//吊李卤味，拿个头像同做�
 			response = JsonSerializer.Deserialize<BiliApiResponse>(body);
 			if (response == null) {
 				Debug.WriteLine("[WBI] 响应体解析后为null");
-				return null;
+				return (null, null);
 			}
 		} catch (Exception e) {
 			Debug.WriteLine($"[WBI]反序列化失败：{e.Message}");
-			return null;
+			return (null, null);
 		}
 		if (response?.Code != 0 || response.Data == null)
-			return null;
-		return new UserInfo {
-			DisplayName = response.Data.Name,
-			AvatarUrl = response.Data.Face
-		};
+			return (null, null);
+		return (response.Data.Face, response.Data.Name);
 	}
 
-	private static async Task EnsureCookiesAsync() {
+	private async Task EnsureCookiesAsync() {
 		if (cookies.Count > 0)
 			return;
 		Debug.WriteLine("[WBI] 首次请求首页获取Cookie...");
-		var homeResp = await httpClient.GetAsync("https://www.bilibili.com/");
+		var homeResp = await HttpClient.GetAsync("https://www.bilibili.com/");
 		Debug.WriteLine($"[WBI] 首页HTTP状态码：{homeResp.StatusCode}, cookie数量：{cookies.Count}");
-		var apiResp = await httpClient.GetAsync("https://api.bilibili.com/");
+		var apiResp = await HttpClient.GetAsync("https://api.bilibili.com/");
 		Debug.WriteLine($"[WBI] API HTTP状态码：{apiResp.StatusCode}, cookie数量：{cookies.Count}");
 
 		var wwwCookies = cookies.GetCookies(new Uri("https://www.bilibili.com/"));
@@ -120,7 +124,7 @@ public class BilibiliIOService: IIOService {//吊李卤味，拿个头像同做�
 	/// <summary>
 	/// 计算 w_rid 签名
 	/// </summary>
-	private static async Task<string> CalcWridAsync(Dictionary<string, string> parameters) {
+	private async Task<string> CalcWridAsync(Dictionary<string, string> parameters) {
 		var (imgKey, subKey) = await GetWbiKeysAsync();
 		var mixinKey = GetMixinKey(imgKey, subKey);//"ea1db124af3c7062474693fa704f4ff8"
 
@@ -151,7 +155,7 @@ public class BilibiliIOService: IIOService {//吊李卤味，拿个头像同做�
 	/// <summary>
 	/// 从 nav 接口获取 img_key 和 sub_key
 	/// </summary>
-	private static async Task<(string imgKey, string subKey)> GetWbiKeysAsync() {
+	private async Task<(string imgKey, string subKey)> GetWbiKeysAsync() {
 		// img_key 和 sub_key 每 12 小时轮换一次，缓存一段时间内复用，不要每次请求都重新获取。
 
 		string wridPath = Paths.WridFile();
@@ -168,7 +172,7 @@ public class BilibiliIOService: IIOService {//吊李卤味，拿个头像同做�
 		}
 
 		var navUrl = "https://api.bilibili.com/x/web-interface/nav";
-		var json = await httpClient.GetStringAsync(navUrl);
+		var json = await HttpClient.GetStringAsync(navUrl);
 		var doc = JsonDocument.Parse(json);
 		var root = doc.RootElement;
 
@@ -210,6 +214,7 @@ public class BilibiliIOService: IIOService {//吊李卤味，拿个头像同做�
 		}
 		return sb.ToString()[..32];
 	}
+
 }
 
 public class BiliUserInfo {

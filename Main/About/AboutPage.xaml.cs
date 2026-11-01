@@ -1,5 +1,5 @@
 ﻿using SCS_Mod_Helper.Class.Base;
-using SCS_Mod_Helper.HttpService;
+using SCS_Mod_Helper.Main.About.AvatarNameService;
 using SCS_Mod_Helper.Utils;
 using System.IO;
 using System.Net.Http;
@@ -21,9 +21,7 @@ public partial class AboutPage: BasePage {
 		Binding = new(() => this);
 		GridMain.DataContext = Binding;
 
-		Task.Run(() => {
-			_ = Binding.LoadAvatarAndName();
-		});
+		Binding.SelectedTab = 0;
 	}
 
 	private void HyperlinkClick(object sender, RequestNavigateEventArgs e) {
@@ -36,113 +34,51 @@ public partial class AboutPage: BasePage {
 }
 
 public class AboutBinding(Func<IBaseVisual> windowFunc): WindowBinding(windowFunc) {
+	public string AppVersion => Instances.Version;
 	public static bool IsCN => Instances.CurrentLanguage == "zh-CN";
 
-	private BitmapImage? mAvatar = null;
-	public BitmapImage? Avatar {
-		get => mAvatar;
+	private int mSelectedTab = 0;
+	public int SelectedTab {
+		get => mSelectedTab;
 		set {
-			mAvatar = value;
+			mSelectedTab = value;
 			InvokeChange();
+			InvokeChange(nameof(CurrentInfo));
 		}
 	}
 
-	private const string DefualtUsername = "Glitch524";
-	private string mUsername = DefualtUsername;
-	public string Username {
-		get => mUsername;
-		set {
-			mUsername = value;
-			InvokeChange();
+	private AuthorInfo? BiliAuthorInfo {
+		get {
+			field ??= new BiliAuthorInfo();
+			return field;
+		}
+	}
+	private AuthorInfo? GithubAuthorInfo {
+		get {
+			field ??= new GithubAuthorInfo();
+			return field;
+		}
+	}
+	private AuthorInfo? SteamAuthorInfo {
+		get {
+			field ??= new SteamAuthorInfo();
+			return field;
 		}
 	}
 
-	private static string UserLink => IsCN ? "https://space.bilibili.com/1970055" : "https://github.com/Glitch524";
+	public AuthorInfo? CurrentInfo => SelectedTab switch {
+		0 => BiliAuthorInfo,
+		1 => GithubAuthorInfo,
+		2 => SteamAuthorInfo,
+		_ => null,
+	};
 
 	public static ICommand UserLinkCommand => new RelayCommand<object>(o => {
+		var AuthorLink = "";
+		throw new NotImplementedException("UserLinkCommand is not implemented yet.");
 		System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo {
-			FileName = UserLink,
+			FileName = AuthorLink,
 			UseShellExecute = true
 		});
 	});
-
-	public async Task LoadAvatarAndName() {
-		string avatarPath = Paths.UserAvatarFile();
-		string namePath = Paths.UsernameFile();
-		DirectoryInfo avatarInfo = new(avatarPath);
-		DirectoryInfo parent = new(Paths.AppPath);
-		if (!parent.Exists)
-			parent.Create();
-		if (File.Exists(avatarPath) && File.Exists(namePath)) {
-			var createTime = avatarInfo.CreationTime;
-			var now = DateTime.Now;
-			var span = now - createTime;
-			if (span.TotalDays < 10) {
-				_ = ReadANFile(avatarPath, namePath);
-				return;
-			}
-		}
-		IIOService avatarService = IsCN ? new BilibiliIOService() : new GithubAvatarService();
-		var info = await avatarService.GetAvatarAsync();
-		if (info != null) {
-			await SaveANFile(info);
-		}
-		_ = ReadANFile(avatarPath, namePath);
-	}
-
-	private async Task ReadANFile(string avatarPath, string namePath) {
-		var result = await Task.Run(() => {
-			var bitmap = new BitmapImage();
-			bitmap.BeginInit();
-			bitmap.CacheOption = BitmapCacheOption.OnLoad;
-			if (File.Exists(avatarPath)) {
-				bitmap.StreamSource = new MemoryStream(File.ReadAllBytes(avatarPath));
-			} else {
-				var uri = new Uri($"pack://application:,,,/Modding/PaintJob/arrow.png", UriKind.RelativeOrAbsolute);
-				//var uri = new Uri($"pack://application:,,,/Main/About/head.png", UriKind.RelativeOrAbsolute);
-				bitmap.UriSource = uri;
-			}
-			bitmap.EndInit();
-			bitmap.Freeze();
-
-			string name;
-			bool profileCN;
-			if (File.Exists(namePath)) {
-				name = File.ReadAllText(namePath);
-			} else {
-				name = DefualtUsername;
-				profileCN = IsCN;
-			}
-			return (bitmap, name);
-		});
-		Avatar = result.bitmap;
-		Username = result.name;
-	}
-
-
-	protected static readonly HttpClient httpClient = new(new SocketsHttpHandler {
-		PooledConnectionLifetime = TimeSpan.FromMinutes(2)
-	});
-
-	private static async Task SaveANFile(UserInfo info) {
-		string avatarPath = Paths.UserAvatarFile();
-		string namePath = Paths.UsernameFile();
-		string tempPath = avatarPath + ".tmp";
-
-		try {
-			await using (var stream = await httpClient.GetStreamAsync(info.AvatarUrl)) {
-				await using var tempFile = File.Create(tempPath);
-				await stream.CopyToAsync(tempFile);
-			}
-			File.Move(tempPath, avatarPath, overwrite: true);
-		} catch {
-			if (File.Exists(tempPath))
-				File.Delete(tempPath);
-		}
-
-		if (info.DisplayName != null) {
-			File.Delete(namePath);
-			File.WriteAllText(namePath, $"{info.DisplayName}");
-		}
-	}
 }
