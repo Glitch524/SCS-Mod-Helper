@@ -118,5 +118,17 @@ namespace SCS_Mod_Helper.Setting {
                 this["ATSGamePath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool NeedToUpgrade {
+            get {
+                return ((bool)(this["NeedToUpgrade"]));
+            }
+            set {
+                this["NeedToUpgrade"] = value;
+            }
+        }
     }
 }

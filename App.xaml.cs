@@ -1,5 +1,7 @@
 ﻿using Microsoft.Win32;
+using SCS_Mod_Helper.Modding.Accessories.AccAddon;
 using SCS_Mod_Helper.Modding.Accessories.Physics;
+using SCS_Mod_Helper.Setting;
 using SCS_Mod_Helper.Utils;
 using System.Diagnostics;
 using System.IO;
@@ -16,6 +18,25 @@ public partial class App: Application {
 	}
 
 	private void App_Startup(object sender, StartupEventArgs e) {
+		if (Settings.Default.NeedToUpgrade) {
+			try {
+				Settings.Default.Upgrade();
+				Settings.Default.NeedToUpgrade = false;
+				Settings.Default.Save();
+
+			} catch (Exception ex) {
+				Debug.WriteLine($"Error during settings upgrade: {ex.Message}");
+			}
+		}
+		if (AccAddonHistory.Default.NeedToUpgrade) {
+			try {
+				AccAddonHistory.Default.Upgrade();
+				AccAddonHistory.Default.NeedToUpgrade = false;
+				AccAddonHistory.Default.Save();
+			} catch (Exception ex) {
+				Debug.WriteLine($"Error during AccAddonHistory upgrade: {ex.Message}");
+			}
+		}
 		ResourceUtil.SetLanguage();
 		SystemEvents.UserPreferenceChanged += OnUserPreferenceChanged;
 		ResourceUtil.SetTheme();

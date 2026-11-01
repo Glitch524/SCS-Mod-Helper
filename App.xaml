@@ -10,9 +10,6 @@
 	Exit="OnExit">
 	<Application.Resources>
 		<ResourceDictionary>
-			<s:String
-				x:Key="Version">V2.0</s:String>
-
 			<ResourceDictionary.MergedDictionaries>
 				<ui:ThemesDictionary
 					Theme="Light" />

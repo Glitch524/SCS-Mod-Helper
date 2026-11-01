@@ -4,16 +4,13 @@ namespace SCS_Mod_Helper.Utils;
 
 partial class Paths {
 	private static readonly string LocalAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-	public static string AppPath = Path.Combine(LocalAppData, "SCS Mod Helper");
+	public static string AppLocalPath = Path.Combine(LocalAppData, "Glitch524", "SCS Mod Helper");
 
 	public static string ManifestFile(string? projectLocation = null) => Path.Combine(projectLocation ?? Instances.ProjectLocation, "manifest.sii");
 
 
-	public static string EmbDBFile() => Path.Combine(AppPath, "TempVehicles.db");
-	public static string EmbHashFile() => Path.Combine(AppPath, "TempVehicles.hash");
-	public static string UserAvatarFile() => Path.Combine(AppPath, "user_avatar.png");
-	public static string UsernameFile() => Path.Combine(AppPath, "username");
-	public static string WridFile() => Path.Combine(AppPath, "wbi");
+	public static string EmbDBFile() => Path.Combine(AppLocalPath, "TempVehicles.db");
+	public static string EmbHashFile() => Path.Combine(AppLocalPath, "TempVehicles.hash");
 
 
 	public static string CustomDBPath() => @"Vehicles\CustomVehicles.db";

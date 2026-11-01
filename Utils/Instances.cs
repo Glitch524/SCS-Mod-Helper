@@ -11,7 +11,7 @@ public static partial class Instances {
 		get {
 			if (mVersion == null) {
 				var assembly = Assembly.GetEntryAssembly();
-				mVersion = assembly?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "Unknown";
+				mVersion = assembly?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion.Split('+')[0] ?? "Unknown";
 			}
 			return mVersion;
 		}

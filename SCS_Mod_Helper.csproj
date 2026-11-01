@@ -1,115 +1,126 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
-    <RootNamespace>SCS_Mod_Helper</RootNamespace>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <UseWPF>true</UseWPF>
-	  <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
-	  <ApplicationManifest>app.manifest</ApplicationManifest>
-	  <ApplicationIcon>Images\AppIcon.ico</ApplicationIcon>
-	  <AssemblyName>SCS Mod Helper</AssemblyName>
-	  <Platforms>AnyCPU;x86;x64</Platforms>
-	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
+		<RootNamespace>SCS_Mod_Helper</RootNamespace>
+		<Version>2.0.0</Version>
+		<AssemblyVersion>2.0.0.0</AssemblyVersion>
+		<FileVersion>2.0.0.0</FileVersion>
+		<InformationalVersion>2.0.0</InformationalVersion>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UseWPF>true</UseWPF>
+		<IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<ApplicationIcon>Images\AppIcon.ico</ApplicationIcon>
+		<AssemblyName>SCS Mod Helper</AssemblyName>
+		<Platforms>AnyCPU;x86;x64</Platforms>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<Authors>Glitch524</Authors>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <Optimize>True</Optimize>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<Optimize>True</Optimize>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <Optimize>True</Optimize>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+		<Optimize>True</Optimize>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
-    <Optimize>True</Optimize>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+		<Optimize>True</Optimize>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Window1.xaml.cs" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Remove="Window1.xaml.cs" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Remove="App.config" />
-    <None Remove="Images\AppIcon.png" />
-    <None Remove="Images\Icon_ATS.png" />
-    <None Remove="Images\Icon_ETS2.png" />
-    <None Remove="Main\About\head.jpg" />
-    <None Remove="Modding\PaintJob\ChannelColorizeEffect.ps" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="App.config" />
+		<None Remove="Images\AppIcon.png" />
+		<None Remove="Images\Icon_ATS.png" />
+		<None Remove="Images\Icon_ETS2.png" />
+		<None Remove="Main\About\head.jpg" />
+		<None Remove="Main\About\Icon\BiliIcon.ico" />
+		<None Remove="Main\About\Icon\GithubIcon.ico" />
+		<None Remove="Main\About\Icon\SteamIcon.ico" />
+		<None Remove="Modding\PaintJob\ChannelColorizeEffect.ps" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Page Remove="Vehicles\en-US.xaml" />
-    <Page Remove="Vehicles\zh-CN.xaml" />
-  </ItemGroup>
+	<ItemGroup>
+		<Page Remove="Vehicles\en-US.xaml" />
+		<Page Remove="Vehicles\zh-CN.xaml" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Resource Include="Images\AppIcon.ico" />
-  </ItemGroup>
+	<ItemGroup>
+		<Resource Include="Images\AppIcon.ico" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="App.config" />
-    <EmbeddedResource Include="Vehicles\DefaultVehicles.db">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
-  </ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="App.config" />
+		<EmbeddedResource Include="Vehicles\DefaultVehicles.db">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</EmbeddedResource>
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="HelixToolkit.Wpf" Version="3.1.2" />
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="11.0.0-rc.1.26425.128" />
-    <PackageReference Include="Pfim" Version="0.11.4" />
-    <PackageReference Include="PixiEditor.ColorPicker" Version="3.4.2.3" />
-    <PackageReference Include="System.Drawing.Common" Version="11.0.0-rc.1.26425.128" />
-    <PackageReference Include="System.Management" Version="10.0.12" />
-    <PackageReference Include="System.Reflection.Metadata" Version="11.0.0-rc.1.26425.128" />
-    <PackageReference Include="WPF-UI" Version="4.3.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="HelixToolkit.Wpf" Version="3.1.2" />
+		<PackageReference Include="Microsoft.Data.Sqlite" Version="11.0.0-rc.1.26425.128" />
+		<PackageReference Include="Pfim" Version="0.11.4" />
+		<PackageReference Include="PixiEditor.ColorPicker" Version="3.4.2.3" />
+		<PackageReference Include="System.Drawing.Common" Version="11.0.0-rc.1.26425.128" />
+		<PackageReference Include="System.Management" Version="10.0.12" />
+		<PackageReference Include="System.Reflection.Metadata" Version="11.0.0-rc.1.26425.128" />
+		<PackageReference Include="WPF-UI" Version="4.3.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Resource Include="Images\AppIcon.png" />
-    <Resource Include="Images\Icon_ATS.png" />
-    <Resource Include="Images\Icon_ETS2.png" />
-    <Resource Include="Main\About\head.jpg" />
-    <Resource Include="Modding\PaintJob\ColorMask\ChannelColorizeEffect.ps" />
-    <Resource Include="Vehicles\en-US.xaml" />
-    <Resource Include="Vehicles\UV\xg_plus.daf.2021.cabin.png" />
-    <Resource Include="Vehicles\zh-CN.xaml" />
-  </ItemGroup>
+	<ItemGroup>
+		<Resource Include="Images\AppIcon.png" />
+		<Resource Include="Images\Icon_ATS.png" />
+		<Resource Include="Images\Icon_ETS2.png" />
+		<Resource Include="Main\About\head.jpg" />
+		<Resource Include="Main\About\Icon\BiliIcon.ico" />
+		<Resource Include="Main\About\Icon\GithubIcon.ico" />
+		<Resource Include="Main\About\Icon\SteamIcon.ico" />
+		<Resource Include="Modding\PaintJob\ColorMask\ChannelColorizeEffect.ps" />
+		<Resource Include="Vehicles\en-US.xaml" />
+		<Resource Include="Vehicles\UV\xg_plus.daf.2021.cabin.png" />
+		<Resource Include="Vehicles\zh-CN.xaml" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="Modding\Accessories\AccAddon\AccAddonHistory.Designer.cs">
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>AccAddonHistory.settings</DependentUpon>
-    </Compile>
-    <Compile Update="Setting\Settings.Designer.cs">
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Update="Modding\Accessories\AccAddon\AccAddonHistory.Designer.cs">
+			<DesignTimeSharedInput>True</DesignTimeSharedInput>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>AccAddonHistory.settings</DependentUpon>
+		</Compile>
+		<Compile Update="Setting\Settings.Designer.cs">
+			<DesignTimeSharedInput>True</DesignTimeSharedInput>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Settings.settings</DependentUpon>
+		</Compile>
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Update="Language\en-US_English(US).txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Language\example.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Modding\Accessories\AccAddon\AccAddonHistory.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>AccAddonHistory.Designer.cs</LastGenOutput>
-    </None>
-    <None Update="Setting\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<None Update="Language\en-US_English(US).txt">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Language\example.txt">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Modding\Accessories\AccAddon\AccAddonHistory.settings">
+			<Generator>SettingsSingleFileGenerator</Generator>
+			<LastGenOutput>AccAddonHistory.Designer.cs</LastGenOutput>
+		</None>
+		<None Update="Setting\Settings.settings">
+			<Generator>SettingsSingleFileGenerator</Generator>
+			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
+		</None>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include=".github\" />
-  </ItemGroup>
+	<ItemGroup>
+		<Folder Include=".github\" />
+	</ItemGroup>
 
 </Project>
