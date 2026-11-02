@@ -1,0 +1,2 @@
+﻿en-US=Honestly, I'm currently having a tough time&#10;Your support means a lot to me
+zh-CN=说实话，其实我生活过得有点艰难$#10;你的任何赞助都能给我很大的帮助
