@@ -679,7 +679,8 @@
 						<ui:SplitButton
 							Grid.Column="3"
 							Command="{Binding ColorCommand}"
-							CommandParameter="[black]">
+							CommandParameter="[black]"
+							Focusable="False">
 							<Border
 								Width="30"
 								Height="10"

@@ -132,13 +132,15 @@ public partial class ModManifestPage: BasePage {
 		DescContent = DescContent.Insert(sStart, color);
 		sStart += color.Length;
 
-		if (sLength > 0) {
+		if (sLength > 0) {//如果插入前有选中字符，就让颜色和normal包裹字符，光标移动到末尾
 			var sEnd = sStart + sLength;
 			DescContent = DescContent.Insert(sEnd, "[normal]");
 			sEnd += "[normal]".Length;
 			TextDescription.SelectionStart = sEnd;
-		} else
+		} else { //但是如果没有选中字符，就插入颜色和normal，光标留在中间
+			DescContent = DescContent.Insert(sStart, "[normal]");
 			TextDescription.SelectionStart = sStart;
+		}
 		TextDescription.Focus();
 	}
 
