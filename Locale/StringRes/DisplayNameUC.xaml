@@ -77,6 +77,8 @@
 		<Button
 			x:Name="ButtonCheckRes"
 			Grid.Column="1"
+			Height="25.78"
+			Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}"
 			Command="{Binding CheckDisplayNameResult}"
 			Visibility="{Binding CheckResVisibility}"
 			Style="{StaticResource ButtonBorderless}">
@@ -119,9 +121,10 @@
 		<Button
 			x:Name="ButtonChooseRes"
 			Grid.Column="2"
+			Height="25.78"
+			Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}"
 			Command="{Binding OpenPopupStringRes}"
-			Style="{StaticResource ButtonBorderless}"
-			Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}">
+			Style="{StaticResource ButtonBorderless}">
 			<Viewbox>
 				<ui:SymbolIcon
 					Symbol="Translate16" />
