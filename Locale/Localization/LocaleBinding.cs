@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Input;
 
 namespace SCS_Mod_Helper.Locale.Localization;
+
 public class LocaleBinding(Func<IBaseVisual> visualFunc): WindowBinding(visualFunc) {
 	public readonly ObservableCollection<LocaleModule> mLocaleModules = [];
 	public ObservableCollection<LocaleModule> LocaleModules => mLocaleModules;
@@ -59,49 +60,34 @@ public class LocaleBinding(Func<IBaseVisual> visualFunc): WindowBinding(visualFu
 	public void SyncWithUniversal() {
 		var currentList = new List<LocalePair>(CurrentDict!);
 		var universalList = new List<LocalePair>(UniversalDict!);
-		int c = 0;
-		while (c < currentList.Count) {
-			var cPair = currentList[c];
-			if (cPair.Key.Length == 0 && cPair.Value.Length == 0) {
-				currentList.RemoveAt(c);
-				continue;
-			}
-			for (int u = 0; u < universalList.Count; u++) {
-				var uPair = universalList[u];
-				if (uPair.Key.Length == 0 && uPair.Value.Length == 0) {
-					universalList.RemoveAt(c);
-					continue;
-				}
-				if (cPair.Key.Equals(uPair.Key)) {
-					currentList.RemoveAt(c);
-					universalList.RemoveAt(u);
-					c--;//因为不能直接continue外面的循环，只能break，但是c会+1，先-1保持c不变
-					break;
-				}
-			}
-			c++;
-		}
+
+		var currentKey = new HashSet<string>(currentList.Where(p => p.Key.Length > 0 || p.Value.Length > 0).Select(p => p.Key));
+		var universalKey = new HashSet<string>(universalList.Where(p => p.Key.Length > 0 || p.Value.Length > 0).Select(p => p.Key));
+
+		var onlyInCurrent = currentKey.Except(universalKey).ToHashSet();
+		var onlyInUniversal = universalKey.Except(currentKey).ToHashSet();
+
 		//最后剩下的就是对方没有的pair，交换插入即可
-		static void AddAll(ObservableCollection<LocalePair> dict, List<LocalePair> list) {
+		static void AddAll(ObservableCollection<LocalePair> dict, List<LocalePair> list, HashSet<string> onlySet) {
 			foreach (var pair in list) {
-				if (pair.Key.Length == 0 && pair.Value.Length == 0)
-					continue;
-				dict.Add(new(pair.Key, pair.Value));
+				if (onlySet.Contains(pair.Key)) {
+					dict.Add(new(pair.Key, pair.Value));
+				}
 			}
 		}
-		AddAll(CurrentDict!, universalList);
-		AddAll(UniversalDict, currentList);
+		AddAll(CurrentDict!, universalList, onlyInUniversal);
+		AddAll(UniversalDict, currentList, onlyInCurrent);
 		var title = GetString("MessageTitleSyncResult");
 		StringBuilder message = new();
-		if (currentList.Count == 0 && universalList.Count == 0) {
+		if (onlyInCurrent.Count == 0 && onlyInUniversal.Count == 0) {
 			message.Append(GetString("MessageSyncResultZero"));
 		} else {
-			if (currentList.Count > 0)
-				message.Append(GetString("MessageSyncResultTo", currentList.Count));
-			if (universalList.Count > 0) {
+			if (onlyInCurrent.Count > 0)
+				message.Append(GetString("MessageSyncResultTo", onlyInCurrent.Count));
+			if (onlyInUniversal.Count > 0) {
 				if (message.Length > 0)
 					message.Append('\n');
-				message.Append(GetString("MessageSyncResultFrom", universalList.Count));
+				message.Append(GetString("MessageSyncResultFrom", onlyInUniversal.Count));
 			}
 		}
 		MessageBox.Show(BindingWindow, message.ToString(), title);
