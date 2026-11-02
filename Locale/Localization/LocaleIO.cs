@@ -10,10 +10,13 @@ namespace SCS_Mod_Helper.Locale.Localization {
 		private const string DictPreffix = "local_module";
 		private const string NameKey = "key";
 		private const string NameValue = "val";
-		private const string KeyGenerated = "Generated";//自动生成的键值对 用来判断locale文件是否为自动创建的文件 用户编写的文件gen为false
-		private void WriteLocalHeader(StreamWriter sw, Action data) {
+		private const string KeyGenerated = "# Generated";//用来判断locale文件是否为自动创建的文件
+		private void WriteLocalHeader(StreamWriter sw, bool generated, Action data) {
 			sw.Write(new string('\t', TabCount));
-			sw.WriteLine(NameLocHeader);
+			sw.Write(NameLocHeader);
+			if (generated)
+				sw.Write(" " + KeyGenerated);
+			sw.WriteLine();
 			BraceIn(sw);
 			data();
 			BraceOut(sw);
@@ -65,33 +68,33 @@ namespace SCS_Mod_Helper.Locale.Localization {
 			string? stringKey = null;
 			bool copyToUni = false;
 			while ((line = sr.ReadLine()?.Trim()) != null) {
-				if (line.Length == 0 || line == "{" || line.StartsWith("localization"))
+				if (line.Length == 0 || line == "{")
 					continue;
+				if (line.StartsWith("localization_db")) {
+					if (line.EndsWith(KeyGenerated)) {
+						if (module.UniversalDict.Count == 0) {
+							copyToUni = true;
+						} else {
+							break;//如果在已经使用自动生成的文件收集到universal以后，其他自动生成文件已经没有必要读了，所以直接停止读文件
+						}
+					}
+					continue;
+				}
 				if (line == "}")
 					break;
 				if (line.StartsWith(NameKey)) {
 					stringKey = GetContent(line);
 				} else if (line.StartsWith(NameValue)) {
 					var stringValue = GetContent(line);
-					if (stringKey == KeyGenerated) {
-						if (stringValue == bool.TrueString) {
-							if (module.UniversalDict.Count == 0)
-								copyToUni = true;
-							else {
-								langDict.ClearDict();
-								break;
-							}
+					if (stringKey != null) {
+						if (copyToUni) {
+							module.UniversalDict.Add(new(stringKey, stringValue));
+						} else {
+							langDict.AddPair(stringKey, stringValue);
 						}
-					} else if (stringKey != null)
-						langDict.AddPair(stringKey, stringValue);
+					}
 					stringKey = null;
 				}
-			}
-			if (copyToUni) {
-				foreach (var p2 in langDict.Dictionary) {
-					module.UniversalDict.Add(new(p2.Key, p2.Value));
-				}
-				langDict.ClearDict();
 			}
 		}
 
@@ -159,9 +162,7 @@ namespace SCS_Mod_Helper.Locale.Localization {
 			{
 				using StreamWriter sw = new(localeFile);
 				WriteFileStructure(sw, () => {
-					WriteLocalHeader(sw, () => {
-						WriteLine(sw, NameKey, KeyGenerated);
-						WriteLine(sw, NameValue, Genearated);
+					WriteLocalHeader(sw, Genearated, () => {
 						foreach (var pair in dict) {
 							if (pair.Key.Length == 0)
 								continue;

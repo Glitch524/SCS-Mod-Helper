@@ -28,16 +28,66 @@
 				Property="IsExpanded"
 				Value="True" />
 		</Style>
+		<Style
+			x:Key="CardPanelStyle"
+			TargetType="StackPanel">
+			<Setter
+				Property="Orientation"
+				Value="Horizontal" />
+		</Style>
+		<Style
+			x:Key="CardTitleStyle"
+			TargetType="ui:TextBlock">
+			<Setter
+				Property="FontTypography"
+				Value="BodyStrong" />
+			<Setter
+				Property="VerticalAlignment"
+				Value="Center" />
+			<Setter
+				Property="Margin"
+				Value="10,0,0,0" />
+		</Style>
+		<Style
+			x:Key="CardExpanderIconStyle"
+			TargetType="Viewbox">
+			<Setter
+				Property="Height"
+				Value="30" />
+		</Style>
+		<Style
+			x:Key="CardControlIconStyle"
+			TargetType="Viewbox">
+			<Setter
+				Property="Height"
+				Value="40" />
+		</Style>
+		<Style
+			x:Key="StaticInfoBarStyle"
+			TargetType="ui:InfoBar"
+			BasedOn="{StaticResource {x:Type ui:InfoBar}}">
+			<Setter
+				Property="IsOpen"
+				Value="True" />
+			<Setter
+				Property="IsClosable"
+				Value="False" />
+			<Setter
+				Property="FontSize"
+				Value="12" />
+			<Setter
+				Property="VerticalAlignment"
+				Value="Center" />
+		</Style>
 	</base:BasePage.Resources>
 	<StackPanel
-		x:Name="PanelMain"
-		Orientation="Vertical">
+		x:Name="PanelMain">
 		<ui:CardExpander>
 			<ui:CardExpander.Header>
 				<StackPanel
-					Orientation="Horizontal"
-					Height="40">
-					<Viewbox>
+					Style="{StaticResource CardPanelStyle}">
+					<Viewbox
+						Style="{StaticResource CardExpanderIconStyle}">
 						<ui:SymbolIcon
 							Symbol="Settings20" />
 					</Viewbox>
@@ -52,17 +102,15 @@
 				<ui:CardControl>
 					<ui:CardControl.Header>
 						<StackPanel
-							Orientation="Horizontal"
-							Height="40">
-							<Viewbox>
+							Style="{StaticResource CardPanelStyle}">
+							<Viewbox
+								Style="{StaticResource CardControlIconStyle}">
 								<ui:SymbolIcon
 									Symbol="Translate20" />
 							</Viewbox>
 							<ui:TextBlock
-								FontTypography="BodyStrong"
-								Text="{DynamicResource AppLanguage}"
-								VerticalAlignment="Center"
-								Margin="10,0,0,0" />
+								Style="{StaticResource CardTitleStyle}"
+								Text="{DynamicResource AppLanguage}" />
 						</StackPanel>
 					</ui:CardControl.Header>
 					<ComboBox
@@ -82,10 +130,7 @@
 					</Grid.ColumnDefinitions>
 					<ui:InfoBar
 						Message="{DynamicResource TipsCustomLanguage}"
-						IsOpen="True"
-						IsClosable="False"
-						FontSize="12"
-						VerticalAlignment="Center" />
+						Style="{StaticResource StaticInfoBarStyle}"/>
 					<ui:SplitButton
 						x:Name="ButtonDirLanguage"
 						Grid.Column="1"
@@ -106,17 +151,15 @@
 				<ui:CardControl>
 					<ui:CardControl.Header>
 						<StackPanel
-							Orientation="Horizontal"
-							Height="40">
-							<Viewbox>
+							Style="{StaticResource CardPanelStyle}">
+							<Viewbox
+								Style="{StaticResource CardControlIconStyle}">
 								<ui:SymbolIcon
 									Symbol="PaintBrush20" />
 							</Viewbox>
 							<ui:TextBlock
-								FontTypography="BodyStrong"
-								Text="{DynamicResource ColorMode}"
-								VerticalAlignment="Center"
-								Margin="10,0,0,0" />
+								Style="{StaticResource CardTitleStyle}"
+								Text="{DynamicResource ColorMode}" />
 						</StackPanel>
 					</ui:CardControl.Header>
 					<ComboBox
@@ -138,21 +181,19 @@
 				<ui:CardControl>
 					<ui:CardControl.Header>
 						<StackPanel
-							Orientation="Horizontal"
-							Height="40">
-							<Viewbox>
+							Style="{StaticResource CardPanelStyle}">
+							<Viewbox
+								Style="{StaticResource CardControlIconStyle}">
 								<ui:SymbolIcon
 									Symbol="Search20" />
 							</Viewbox>
 							<StackPanel>
 								<ui:TextBlock
-									FontTypography="BodyStrong"
-									Text="{DynamicResource TitleUpdateCheckFrequency}"
-									VerticalAlignment="Center"
-									Margin="10,0,0,0" />
+									Style="{StaticResource CardTitleStyle}"
+									Text="{DynamicResource TitleUpdateCheckFrequency}" />
 								<ui:TextBlock
-									FontSize="12"
 									Text="{DynamicResource MessageUpdateCheckFrequency}"
+									FontSize="12"
 									Margin="10,5,0,0" />
 							</StackPanel>
 						</StackPanel>
@@ -179,17 +220,15 @@
 				<ui:CardControl>
 					<ui:CardControl.Header>
 						<StackPanel
-							Orientation="Horizontal"
-							Height="40">
-							<Viewbox>
+							Style="{StaticResource CardPanelStyle}">
+							<Viewbox
+								Style="{StaticResource CardControlIconStyle}">
 								<ui:SymbolIcon
 									Symbol="SearchInfo20" />
 							</Viewbox>
 							<ui:TextBlock
-								FontTypography="BodyStrong"
-								Text="{DynamicResource TitleShowUpdateNotification}"
-								VerticalAlignment="Center"
-								Margin="10,0,0,0" />
+								Style="{StaticResource CardTitleStyle}"
+								Text="{DynamicResource TitleShowUpdateNotification}" />
 						</StackPanel>
 					</ui:CardControl.Header>
 					<ui:ToggleSwitch
@@ -198,17 +237,15 @@
 				<ui:CardControl>
 					<ui:CardControl.Header>
 						<StackPanel
-							Orientation="Horizontal"
-							Height="40">
-							<Viewbox>
+							Style="{StaticResource CardPanelStyle}">
+							<Viewbox
+								Style="{StaticResource CardControlIconStyle}">
 								<ui:SymbolIcon
 									Symbol="Bug20" />
 							</Viewbox>
 							<ui:TextBlock
-								FontTypography="BodyStrong"
-								Text="{DynamicResource TitleMaxStoreExcpCount}"
-								VerticalAlignment="Center"
-								Margin="10,0,0,0" />
+								Style="{StaticResource CardTitleStyle}"
+								Text="{DynamicResource TitleMaxStoreExcpCount}" />
 						</StackPanel>
 					</ui:CardControl.Header>
 					<ui:NumberBox 
@@ -223,33 +260,29 @@
 		<ui:CardExpander>
 			<ui:CardExpander.Header>
 				<StackPanel
-					Orientation="Horizontal"
-					Height="40">
-					<Viewbox>
+					Style="{StaticResource CardPanelStyle}">
+					<Viewbox
+						Style="{StaticResource CardExpanderIconStyle}">
 						<ui:SymbolIcon
 							Symbol="FolderMultiple16" />
 					</Viewbox>
 					<ui:TextBlock
-						FontTypography="BodyStrong"
-						Text="{DynamicResource TitlePaths}"
-						VerticalAlignment="Center"
-						Margin="10,0,0,0" />
+						Style="{StaticResource CardTitleStyle}"
+						Text="{DynamicResource TitlePaths}" />
 				</StackPanel>
 			</ui:CardExpander.Header>
 			<StackPanel>
 				<ui:CardControl>
 					<ui:CardControl.Header>
 						<StackPanel
-							Orientation="Horizontal"
-							Height="40">
-							<Viewbox>
+							Style="{StaticResource CardPanelStyle}">
+							<Viewbox
+								Style="{StaticResource CardControlIconStyle}">
 								<Image
 									Source="/Images/Icon_ETS2.png" />
 							</Viewbox>
 							<ui:TextBlock
-								FontTypography="BodyStrong"
-								VerticalAlignment="Center"
-								Margin="10,0,0,0">
+								Style="{StaticResource CardTitleStyle}">
 								<Run
 									Text="{DynamicResource ETS2}" />
 								<Run
@@ -277,16 +310,14 @@
 				<ui:CardControl>
 					<ui:CardControl.Header>
 						<StackPanel
-							Orientation="Horizontal"
-							Height="40">
-							<Viewbox>
+							Style="{StaticResource CardPanelStyle}">
+							<Viewbox
+								Style="{StaticResource CardControlIconStyle}">
 								<Image
 									Source="/Images/Icon_ATS.png" />
 							</Viewbox>
 							<ui:TextBlock
-								FontTypography="BodyStrong"
-								VerticalAlignment="Center"
-								Margin="10,0,0,0">
+								Style="{StaticResource CardTitleStyle}">
 								<Run
 									Text="{DynamicResource ATS}" />
 								<Run
@@ -321,10 +352,7 @@
 					</Grid.ColumnDefinitions>
 					<ui:InfoBar
 						Message="{DynamicResource TipsAutoDetect}"
-						IsOpen="True"
-						FontSize="12"
-						IsClosable="False"
-						VerticalAlignment="Center" />
+						Style="{StaticResource StaticInfoBarStyle}"/>
 					<Button
 						x:Name="ButtonCheckPath"
 						Grid.Column="1"
@@ -338,16 +366,14 @@
 				<ui:CardControl>
 					<ui:CardControl.Header>
 						<StackPanel
-							Orientation="Horizontal"
-							Height="40">
-							<Viewbox>
+							Style="{StaticResource CardPanelStyle}">
+							<Viewbox
+								Style="{StaticResource CardControlIconStyle}">
 								<ui:SymbolIcon
 									Symbol="BoxSearch20" />
 							</Viewbox>
 							<ui:TextBlock
-								FontTypography="BodyStrong"
-								VerticalAlignment="Center"
-								Margin="10,0,0,0">
+								Style="{StaticResource CardTitleStyle}">
 								<Hyperlink
 									NavigateUri="https://github.com/mwl4/ConverterPIX"
 									RequestNavigate="HyperlinkClick">Converter PIX</Hyperlink>
@@ -370,16 +396,14 @@
 				<ui:CardControl>
 					<ui:CardControl.Header>
 						<StackPanel
-							Orientation="Horizontal"
-							Height="40">
-							<Viewbox>
+							Style="{StaticResource CardPanelStyle}">
+							<Viewbox
+								Style="{StaticResource CardControlIconStyle}">
 								<ui:SymbolIcon
 									Symbol="BoxEdit20" />
 							</Viewbox>
 							<ui:TextBlock
-								FontTypography="BodyStrong"
-								VerticalAlignment="Center"
-								Margin="10,0,0,0">
+								Style="{StaticResource CardTitleStyle}">
 								<Hyperlink
 									NavigateUri="https://modding.scssoft.com/wiki/Documentation/Tools/Conversion_Tools"
 									RequestNavigate="HyperlinkClick">Conversion Tools</Hyperlink>

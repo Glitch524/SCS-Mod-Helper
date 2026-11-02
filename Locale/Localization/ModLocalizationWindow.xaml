@@ -114,7 +114,7 @@
 				</Grid.RowDefinitions>
 				<Button
 					x:Name="ButtonClean"
-					Command="{Binding SyncCommand}"
+					Command="{Binding CleanupCommand}"
 					Padding="3"
 					HorizontalAlignment="Stretch">
 					<Button.Style>
@@ -271,7 +271,7 @@
 						Content="{DynamicResource ButtonSyncWithUni}"
 						HorizontalAlignment="Left"
 						Padding="3"
-						Click="ButtonSyncingClick"
+						Command="{Binding SyncCommand}"
 						VerticalAlignment="Bottom">
 						<Button.Style>
 							<Style
@@ -304,7 +304,7 @@
 						HorizontalAlignment="Left"
 						Padding="3"
 						VerticalAlignment="Bottom"
-						Click="ButtonSyncingClick">
+						Command="{Binding SyncOrderCommand}">
 						<Button.Style>
 							<Style
 								TargetType="Button"

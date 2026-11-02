@@ -508,7 +508,7 @@
 	<s:String x:Key="ItemWeekly">每周</s:String>
 	<s:String x:Key="ItemNever">从不</s:String>
 	<s:String x:Key="TitleShowUpdateNotification">显示更新提示</s:String>
-	<s:String x:Key="TitleMaxStoreExcpCount">最大错误文件保存数量</s:String>
+	<s:String x:Key="TitleMaxStoreExcpCount">错误文件保存数量上限</s:String>
 	<s:String x:Key="ButtonAutoDetect">自动检测</s:String>
 	<s:String x:Key="TipsAutoDetect">使用自动检测可以自动找到欧卡2和美卡的游戏路径</s:String>
 	<s:String x:Key="MessageAutoDetectNoSteamRegistry">无法找到Steam的注册表</s:String>

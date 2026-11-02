@@ -107,6 +107,7 @@ public class LocaleBinding(Func<IBaseVisual> visualFunc): WindowBinding(visualFu
 		MessageBox.Show(BindingWindow, message.ToString(), title);
 	}
 
+	public ICommand SyncOrderCommand => new RelayCommand(SyncOrder);
 	public void SyncOrder() {
 		if (CurrentModule == null)
 			return;
@@ -133,6 +134,7 @@ public class LocaleBinding(Func<IBaseVisual> visualFunc): WindowBinding(visualFu
 		}
 	}
 
+	public ICommand CleanupCommand => new RelayCommand(CleanSameDict);
 	public void CleanSameDict() {
 		if (CurrentModule == null)
 			return;
