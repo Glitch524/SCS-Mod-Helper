@@ -64,8 +64,8 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 		LoadList(AccAddonHistory.Default.RequireList, Require);
 		if (Require.Count > 0)
 			InvokeChange(nameof(RequireListContent));
-		ReadVehiclesHistory(AccAddonHistory.Default.VehiclesETS2, VehiclesETS2);
-		ReadVehiclesHistory(AccAddonHistory.Default.VehiclesATS, VehiclesATS);
+		SelectedCountETS2 = ReadVehiclesHistory(AccAddonHistory.Default.VehiclesETS2, VehiclesETS2);
+		SelectedCountATS = ReadVehiclesHistory(AccAddonHistory.Default.VehiclesATS, VehiclesATS);
 	}
 	private static void LoadList(StringCollection? strings, ObservableCollection<string> list) {
 		if (strings == null)

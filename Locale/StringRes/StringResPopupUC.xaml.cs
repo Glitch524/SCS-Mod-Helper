@@ -46,8 +46,9 @@ public partial class StringResPopupUC: BaseUserControl {
 			var selectedItem = e.AddedItems[0];
 			listBox.SelectedIndex = -1;
 
-			if (selectedItem is StringResItem item)
+			if (selectedItem is StringResItem item) {
 				ApplyStringResId?.Invoke(item.Header);
+			}
 		}
 	}
 }

@@ -60,6 +60,13 @@ public partial class DisplayNameUC: BaseUserControl {
 	public void ApplyStringRes(string resId) {
 		TextDisplayName.SelectedText = $"@@{resId}@@";
 		TextDisplayName.Focus();
+		Binding.PopupStringResOpen = false;
+		Binding.CheckResResult = null;
+	}
+
+	private void TextDisplayNameChanged(object sender, System.Windows.Controls.TextChangedEventArgs e) {
+		Binding.CheckResResult = null;
+		Binding.InvokeChange(nameof(Binding.CheckResVisibility));
 	}
 }
 
@@ -71,29 +78,17 @@ public partial class StringResBinding(Func<IBaseVisual> windowFunc): WindowBindi
 		set {
 			mAccessoryData = value;
 			InvokeChange();
-			InvokeChange(nameof(DisplayName));
 		}
 	}
 
-	public string DisplayName {
-		get => AccessoryData?.DisplayName ?? string.Empty;
-		set {
-			AccessoryData?.DisplayName = value;
-
-			CheckResResult = null;
-
-			InvokeChange();
-			InvokeChange(nameof(CheckResVisibility));
-		}
-	}
-	public Visibility CheckResVisibility => DisplayName.Contains("@@") ? Visibility.Visible : Visibility.Collapsed;
+	public Visibility CheckResVisibility => AccessoryData?.DisplayName.Contains("@@") == true ? Visibility.Visible : Visibility.Collapsed;
 
 	public string? LocalizedDisplayName {
 		get {
 			if (AccessoryData == null)
 				return null;
 			if (AccessoryData.LocalizedDisplayName == null) {
-				StringResUtil.GetStringResResults(DisplayName, out var localizedName);
+				StringResUtil.GetStringResResults(AccessoryData.DisplayName, out var localizedName);
 				AccessoryData.LocalizedDisplayName = localizedName;
 			}
 			return AccessoryData.LocalizedDisplayName;
@@ -125,8 +120,10 @@ public partial class StringResBinding(Func<IBaseVisual> windowFunc): WindowBindi
 	public ICommand CheckDisplayNameResult => new RelayCommand(CheckNameStringRes);
 	public void CheckNameStringRes() {
 		if (CheckResResult == null) {
-			CheckResResult = StringResUtil.GetStringResResults(DisplayName, out var localized);
-			LocalizedDisplayName = localized;
+			if (AccessoryData == null)
+				return;
+			CheckResResult = StringResUtil.GetStringResResults(AccessoryData.DisplayName, out var localized);
+			AccessoryData.LocalizedDisplayName = localized;
 		}
 		PopupCheckOpen = true;
 	}
