@@ -191,7 +191,7 @@ public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PI
 
 	private static Process CallPix(string args) {
 		Process p = new();
-		p.StartInfo.FileName = Instances.ConverterPixPath;
+		p.StartInfo.FileName = Instances.ConverterPixExe!;
 		p.StartInfo.Arguments = args;
 		p.StartInfo.UseShellExecute = false;
 		p.StartInfo.RedirectStandardInput = true;
@@ -201,7 +201,7 @@ public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PI
 		return p;
 	}
 	private static ProcessStartInfo CallPixInfo(string args) => new() {
-		FileName = Instances.ConverterPixPath,
+		FileName = Instances.ConverterPixExe!,
 		Arguments = args.ToString(),
 		UseShellExecute = false,
 		CreateNoWindow = true,

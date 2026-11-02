@@ -43,8 +43,8 @@ public partial class NaviMainWindow: BaseWindow {
 				window = new PaintJobWindow();
 				break;
 			case "ConverterPIX":
-				string pixPath = Instances.ConverterPixPath;
-				if (string.IsNullOrEmpty(pixPath) || !File.Exists(pixPath)) {
+				var PixExe = Instances.ConverterPixExe;
+				if (string.IsNullOrEmpty(PixExe) || !File.Exists(PixExe)) {
 					var result = MessageBox.Show(GetString("MessagePixNotSet"), GetString("MessageTitleNotice"));
 					if (result == MessageBoxResult.OK) {
 						Navigation.Navigate("Settings");

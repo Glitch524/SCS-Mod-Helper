@@ -292,47 +292,28 @@ public class SettingsBinding(Func<IBaseVisual> windowFunc): WindowBinding(window
 	}
 	public void ChooseConverterPixPath() {
 		string start = ConverterPixPath;
-		if (start.Length > 0)
-			start = new DirectoryInfo(start).Parent?.FullName ?? "";
-		var fileDialog = new OpenFileDialog {
+		var folderDialog = new OpenFolderDialog {
 			Multiselect = false,
 			InitialDirectory = start,
-			DefaultExt = "converter_pix.exe",
 			Title = "ConverterPix" + GetString("ExternalToolsPath"),
-			Filter = Util.GetFilter("FilterCPix")
 		};
-		if (fileDialog.ShowDialog() == true) {
-			if (fileDialog.SafeFileName != "converter_pix.exe") {
-				MessageBox.Show(BindingWindow, "MessageErrNotCPix");
-				return;
-			}
-			var path = fileDialog.FileName;
-			var parent = Directory.GetParent(path)!;
-			var is64Bit = Environment.Is64BitOperatingSystem;
-			switch (parent.Name) {
-				case "win_x86":
-					if (is64Bit) {
-						path = path.Replace("win_x86", "win_x64");
-					}
-					break;
-				case "win_x64":
-					if (!is64Bit) {
-						path = path.Replace("win_x64", "win_x86");
-					}
-					break;
-				default:
-					var result = MessageBox.Show(
-						GetString("MessageErrDifferentStructure"),
-						GetString("MessageTitleNotice"),
-						MessageBoxButton.YesNo);
-					if (result != MessageBoxResult.Yes) {
-						return;
-					}
-					break;
+		if (folderDialog.ShowDialog() == true) {
+			var path = folderDialog.FolderName;
+			var is64 = Environment.Is64BitOperatingSystem;
+			var exe = Path.Combine(path, @"bin", is64 ? "win_x64" : "win_x86", "converter_pix.exe");
+			if (!File.Exists(exe)) {
+				var result = MessageBox.Show(
+					GetString("MessageErrDifferentStructure"),
+					GetString("MessageTitleNotice"),
+					MessageBoxButton.YesNo);
+				if (result != MessageBoxResult.Yes) {
+					return;
+				}
 			}
 			ConverterPixPath = path;
 		}
 	}
+
 	public string ConversionToolsPath {
 		get => Instances.ConversionToolsPath;
 		set {

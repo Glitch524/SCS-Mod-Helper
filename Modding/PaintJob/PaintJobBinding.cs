@@ -92,14 +92,6 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 			} else {
 				CheckTexPath(tag, filePath);
 			}
-
-			//icon是从material ui accessory开始
-			//首先，先确定文件处于项目文件夹内。
-			//TextIconName
-			//TextPaintJobTex
-			//TextBaseTexOverride
-			//ButtonChooseFlakeNoise
-			//TextAccTex
 		}
 
 		public const string TEX_PAINT_JOB = "PaintJobTex";

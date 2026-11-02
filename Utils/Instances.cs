@@ -1,5 +1,6 @@
 ﻿using SCS_Mod_Helper.Locale.StringRes;
 using SCS_Mod_Helper.Setting;
+using System.IO;
 using System.Net.Http;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -88,6 +89,18 @@ public static partial class Instances {
 			mConverterPixPath = value;
 			Settings.Default.ConverterPixPath = value;
 			Settings.Default.Save();
+		}
+	}
+
+	private static string? mConverterPixExe = null;
+	public static string? ConverterPixExe {
+		get {
+			if (mConverterPixExe == null) {
+				if (mConverterPixPath.Length == 0)
+					return null;
+				mConverterPixExe = Path.Combine(mConverterPixPath, @"bin", Environment.Is64BitOperatingSystem ? "win_x64" : "win_x86", "converter_pix.exe");
+			}
+			return mConverterPixExe;
 		}
 	}
 
