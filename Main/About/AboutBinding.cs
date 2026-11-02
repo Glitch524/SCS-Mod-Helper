@@ -4,6 +4,10 @@ using SCS_Mod_Helper.Setting;
 using SCS_Mod_Helper.Utils;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Windows;
 using System.Windows.Input;
 using Wpf.Ui.Input;
 
@@ -146,8 +150,135 @@ namespace SCS_Mod_Helper.Main {
 			});
 		});
 
-		public ObservableCollection<string> ListSponserBili { get; } = [];
+		private bool loaded = false;
+		private readonly ObservableCollection<string> mListSpBili = [];
+		public ObservableCollection<string> ListSpBili {
+			get {
+				if (!loaded && !loading) 
+					_ = LoadSpRawFilesAsync();
+				return mListSpBili;
+			}
+		}
 
-		public ObservableCollection<string> ListSponserKofi { get; } = [];
+		private readonly ObservableCollection<string> mListSpKofi = [];
+		public ObservableCollection<string> ListSpKofi {
+			get {
+				if (!loaded && !loading) 
+					_ = LoadSpRawFilesAsync();
+				return mListSpKofi;
+			}
+		}
+
+		public string mExtraDesc;
+		public string ExtraDesc {
+			get {
+				if (!loaded && !loading)
+					_ = LoadSpRawFilesAsync();
+				return mExtraDesc;
+			}
+			set {
+				if (value.Contains("$#10;"))
+					value = value.Replace("$#10;", "\n");
+				mExtraDesc = value;
+				InvokeChange();
+			}
+		}
+
+		private bool loading = false;
+		public async Task LoadSpRawFilesAsync() {
+			loading = true;
+			mListSpBili!.Clear();
+			mListSpKofi!.Clear();
+			await LoadSpRawFileAsync("bili");
+			await LoadSpRawFileAsync("kofi");
+			await LoadExtraDescRawFileAsync();
+
+			loaded = true;
+			loading = false;
+		}
+
+		private async Task LoadSpRawFileAsync(string type) {
+			ObservableCollection<string> list;
+			string url;
+			if (type == "bili") {
+				list = mListSpBili!;
+				url = $"https://raw.githubusercontent.com/Glitch524/SCS-Mod-Helper/refs/heads/master/Main/About/SpBili.txt";
+			} else if (type == "kofi") {
+				list = mListSpKofi!;
+				url = $"https://raw.githubusercontent.com/Glitch524/SCS-Mod-Helper/refs/heads/master/Main/About/SpKofi.txt";
+			} else
+				return;
+
+			await using var stream = await HttpClient.GetStreamAsync(url);
+			using var reader = new StreamReader(stream);
+
+			var buffer = new List<string>();
+			string? line;
+			
+			while((line = await reader.ReadLineAsync()) != null) {
+				CancellationToken.ThrowIfCancellationRequested();
+				if (!string.IsNullOrWhiteSpace(line))
+					buffer.Add(line);
+
+				if (buffer.Count >= 50) {
+					foreach (var item in buffer)
+						list.Add(item);
+					buffer.Clear();
+					await Task.Yield();
+				}
+			}
+			if (buffer.Count > 0) {
+				foreach (var item in buffer) {
+					list.Add(item);
+				}
+			}
+		}
+
+		private async Task LoadExtraDescRawFileAsync() {
+			var extraDescFile = new FileInfo(Paths.ExtraDescPath());
+			if(extraDescFile.Exists) {
+				var creationTime = extraDescFile.CreationTime;
+				if (DateTime.Now - creationTime < TimeSpan.FromDays(1)) {
+					var lines = await File.ReadAllLinesAsync(extraDescFile.FullName);
+					foreach (var line in lines) {
+						if (line.StartsWith(Instances.CurrentLanguage)) {
+							Application.Current.Dispatcher.Invoke(() => {
+								ExtraDesc = line[(line.IndexOf('=') + 1)..];
+							});
+						}
+					}
+					return;
+				}
+			}
+
+			string url = $"https://raw.githubusercontent.com/Glitch524/SCS-Mod-Helper/refs/heads/master/Main/About/ExtraDesc.txt";
+			var desc = await HttpClient.GetStringAsync(url);
+			await File.WriteAllTextAsync(extraDescFile.FullName, desc);
+			var split = desc.Split("\n");
+			foreach(var line in split) {
+				if (line.StartsWith(Instances.CurrentLanguage)) {
+					Application.Current.Dispatcher.Invoke(() => {
+						ExtraDesc = line[('=' + 1)..];
+					});
+				}
+			}
+		}
+
+
+		private HttpClient? mHttpClient = null;
+		private HttpClient HttpClient {
+			get {
+				if(mHttpClient == null) {
+					mHttpClient = new(new SocketsHttpHandler {
+						PooledConnectionIdleTimeout = TimeSpan.FromMinutes(2)
+					}) {
+						Timeout = TimeSpan.FromSeconds(30)
+					};
+					mHttpClient.DefaultRequestHeaders.Add("User-Agent", "SCS Mod Helper/2.0");
+					mHttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github+json"));
+				}
+				return mHttpClient;
+			}
+		}
 	}
 }

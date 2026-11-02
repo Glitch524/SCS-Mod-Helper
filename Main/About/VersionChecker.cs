@@ -90,7 +90,7 @@ public partial class VersionChecker {
 	}
 
 	private async Task<Version> GetRemoteVersionAsync(CancellationToken cancellationToken) {
-		var url = $"https://github.com/Glitch524/SCS-Model-Helper/releases/latest";
+		var url = $"https://github.com/Glitch524/SCS-Mod-Helper/releases/latest";
 		using var response = await HttpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
 
 		if (!IsRedirect(response.StatusCode)) {

@@ -43,10 +43,12 @@
 	<s:String x:Key="HeaderVersion">版本：</s:String>
 	<s:String x:Key="ToolTipNewestVersion">Github最新版本：{0}</s:String>
 	<s:String x:Key="ToolTipUpdateCheckFailed">检查更新失败</s:String>
-	<s:String x:Key="TipsUpdateCheckSettings">你可以在设置中调整更新检查频率</s:String>
 	<s:String x:Key="TipsNewVersion">新版本！</s:String>
 	<s:String x:Key="HeaderPersonalHomepage">个人主页：</s:String>
 	<s:String x:Key="HeaderSupport">赞助：</s:String>
+	<s:String x:Key="HeaderSponser">赞助者</s:String>
+	<s:String x:Key="SponserBilibili">哔哩哔哩</s:String>
+	<s:String x:Key="SponserKoFi">Ko-Fi</s:String>
 	<s:String x:Key="Desc">ConverterPIX和喷漆定义功能已初步完成&#10;接下来可能会做:&#10;&#9;车辆UV图&#10;&#9;喷漆模型预览&#10;&#9;模型列表的树状表示&#10;如果有人在意的话会更新</s:String>
 	
 	
@@ -637,5 +639,5 @@
 	<s:String x:Key="locale.uk_uk">乌克兰语</s:String>
 	<s:String x:Key="locale.vi_vn">越南语</s:String>
 	
-	<s:String x:Key="MessageCheck">此软件免费发布于Github:https://github.com/Glitch524/SCS-Model-Helper，除非作者本人分发，任何（有偿）获取都不属于作者本人行为。如果向任何人付费获取，请尽快退款。</s:String>
+	<s:String x:Key="MessageCheck">此软件免费发布于Github:https://github.com/Glitch524/SCS-Mod-Helper，除非作者本人分发，任何（有偿）获取都不属于作者本人行为。如果向任何人付费获取，请尽快退款。</s:String>
 </ResourceDictionary>

@@ -43,10 +43,12 @@
 	<s:String x:Key="HeaderVersion">Version: </s:String>
 	<s:String x:Key="ToolTipNewestVersion">Github newest version: {0}</s:String>
 	<s:String x:Key="ToolTipUpdateCheckFailed">Update check failed</s:String>
-	<s:String x:Key="TipsUpdateCheckSettings">You can set Update Check Frequency at Settings</s:String>
 	<s:String x:Key="TipsNewVersion">New Version!</s:String>
 	<s:String x:Key="HeaderPersonalHomepage">Personal Homepage: </s:String>
 	<s:String x:Key="HeaderSupport">Support: </s:String>
+	<s:String x:Key="HeaderSponser">Sponser</s:String>
+	<s:String x:Key="SponserBilibili">Bilibili</s:String>
+	<s:String x:Key="SponserKoFi">Ko-Fi</s:String>
 	<s:String x:Key="Desc">The ConverterPIX and paintjob features is added&#10;&#9;Next I might work on:&#10;&#9;Vehicle UV maps&#10;&#9;Model preview&#10;&#9;Tree view for the model list&#10;update might happen if someone cares</s:String>
 	
 	
@@ -637,5 +639,5 @@
 	<s:String x:Key="locale.uk_uk">Ukrainian</s:String>
 	<s:String x:Key="locale.vi_vn">Vietnamese</s:String>
 	
-	<s:String x:Key="MessageCheck">This software was first released for free on GitHub:https://github.com/Glitch524/SCS-Model-Helper. Unless distributed by the author themselves, any (paid) acquisition is not the author's action. If you paid anyone to get it, please request a refund as soon as possible.</s:String>
+	<s:String x:Key="MessageCheck">This software was first released for free on GitHub:https://github.com/Glitch524/SCS-Mod-Helper. Unless distributed by the author themselves, any (paid) acquisition is not the author's action. If you paid anyone to get it, please request a refund as soon as possible.</s:String>
 </ResourceDictionary>
