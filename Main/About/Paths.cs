@@ -2,6 +2,7 @@
 
 namespace SCS_Mod_Helper.Utils; 
 public partial class Paths {
+	public static string UpdateCheckHistoryPath() => Path.Combine(AppLocalPath, "UpdateCheckHistory");
 	public static string BiliAvatarFile() => Path.Combine(AppLocalPath, "bili_user_avatar.png");
 	public static string BiliNameFile() => Path.Combine(AppLocalPath, "bili_username");
 	public static string WridFile() => Path.Combine(AppLocalPath, "wbi");

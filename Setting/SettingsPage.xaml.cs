@@ -93,6 +93,23 @@ public class SettingsBinding(Func<IBaseVisual> windowFunc): WindowBinding(window
 		}
 	}
 
+	public string UpdateCheckFrequency {
+		get => Instances.UpdateCheckFrequency;
+		set {
+			Instances.UpdateCheckFrequency = value;
+			InvokeChange();
+		}
+	}
+
+	public bool ShowUpdateAvailable {
+		get => Instances.ShowUpdateAvailable;
+		set {
+			Instances.ShowUpdateAvailable = value;
+			InvokeChange();
+		}
+	}
+
+
 	public string ETS2GamePath {
 		get => Instances.ETS2GamePath;
 		set {

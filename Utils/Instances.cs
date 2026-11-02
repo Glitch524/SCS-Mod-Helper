@@ -1,21 +1,33 @@
 ﻿using SCS_Mod_Helper.Locale.StringRes;
 using SCS_Mod_Helper.Setting;
+using System.Net.Http;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace SCS_Mod_Helper.Utils;
 public static partial class Instances {
 	public static string GameVersion = "1.62";
 
-	private static string? mVersion = null;
-	public static string Version {
+	private static string? mAppVersionString = null;
+	public static string AppVersionString {
 		get {
-			if (mVersion == null) {
+			if (mAppVersionString == null) {
 				var assembly = Assembly.GetEntryAssembly();
-				mVersion = assembly?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion.Split('+')[0] ?? "Unknown";
+				mAppVersionString = assembly?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion.Split('+')[0] ?? "Unknown";
 			}
-			return mVersion;
+			return mAppVersionString;
 		}
 	}
+
+	public static Version AppVersion {
+		get {
+			var versionString = VersionRegex().Replace(AppVersionString, "");
+			return Version.Parse(versionString);
+		}
+	}
+
+	[GeneratedRegex(@"[^0-9.]")]
+	public static partial Regex VersionRegex();
 
 	public static string CurrentLanguage {
 		get {
@@ -39,6 +51,22 @@ public static partial class Instances {
 	}
 
 	public static bool FollowSystem => CurrentTheme == "FollowSystem";
+
+	public static string UpdateCheckFrequency {
+		get => Settings.Default.UpdateCheckFrequency;
+		set {
+			Settings.Default.UpdateCheckFrequency = value;
+			Settings.Default.Save();
+		}
+	}
+
+	public static bool ShowUpdateAvailable {
+		get => Settings.Default.ShowUpdateAvailable;
+		set {
+			Settings.Default.ShowUpdateAvailable = value;
+			Settings.Default.Save();
+		}
+	}
 
 	private static string mConverterPixPath = Settings.Default.ConverterPixPath;
 	public static string ConverterPixPath {

@@ -130,5 +130,29 @@ namespace SCS_Mod_Helper.Setting {
                 this["NeedToUpgrade"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("hourly")]
+        public string UpdateCheckFrequency {
+            get {
+                return ((string)(this["UpdateCheckFrequency"]));
+            }
+            set {
+                this["UpdateCheckFrequency"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ShowUpdateAvailable {
+            get {
+                return ((bool)(this["ShowUpdateAvailable"]));
+            }
+            set {
+                this["ShowUpdateAvailable"] = value;
+            }
+        }
     }
 }

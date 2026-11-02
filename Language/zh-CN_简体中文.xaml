@@ -41,6 +41,10 @@
 	<!--关于-->
 	<s:String x:Key="TitleAbout">关于</s:String>
 	<s:String x:Key="HeaderVersion">版本：</s:String>
+	<s:String x:Key="ToolTipNewestVersion">Github最新版本：{0}</s:String>
+	<s:String x:Key="ToolTipUpdateCheckFailed">检查更新失败</s:String>
+	<s:String x:Key="TipsUpdateCheckSettings">你可以在设置中调整更新检查频率</s:String>
+	<s:String x:Key="TipsNewVersion">新版本！</s:String>
 	<s:String x:Key="HeaderPersonalHomepage">个人主页：</s:String>
 	<s:String x:Key="HeaderSupport">赞助：</s:String>
 	<s:String x:Key="Desc">ConverterPIX和喷漆定义功能已初步完成&#10;接下来可能会做:&#10;&#9;车辆UV图&#10;&#9;喷漆模型预览&#10;&#9;模型列表的树状表示&#10;如果有人在意的话会更新</s:String>
@@ -493,14 +497,21 @@
 	<s:String x:Key="TipsCustomLanguage">在软件的文件夹找到Language文件夹，在里面放好翻译好且按照格式重命名的xaml即可识别使用</s:String>
 	<s:String x:Key="ButtonLanguageDir">Language文件夹</s:String>
 	<s:String x:Key="ColorMode">颜色模式</s:String>
-	<s:String x:Key="ExternalToolsPath">路径</s:String>
-	<s:String x:Key="FilterCPix">应用程序|converter_pix.exe</s:String>
-	<s:String x:Key="MessageErrNotCPix">选择的文件不是ConverterPix.exe</s:String>
-	<s:String x:Key="MessageErrDifferentStructure">选择的文件路径结构似乎有所不同，是否继续使用？</s:String>
+	<s:String x:Key="TitleUpdateCheckFrequency">启动时自动检查更新频率</s:String>
+	<s:String x:Key="MessageUpdateCheckFrequency">选择启动时检查更新的频率 （将使用历史记录作为检查结果）</s:String>
+	<s:String x:Key="ItemHourly">每小时</s:String>
+	<s:String x:Key="ItemDaily">每天</s:String>
+	<s:String x:Key="ItemWeekly">每周</s:String>
+	<s:String x:Key="ItemNever">从不</s:String>
+	<s:String x:Key="TitleShowUpdateNotification">显示更新提示</s:String>
 	<s:String x:Key="ButtonAutoDetect">自动检测</s:String>
 	<s:String x:Key="TipsAutoDetect">使用自动检测可以自动找到欧卡2和美卡的游戏路径</s:String>
 	<s:String x:Key="MessageAutoDetectNoSteamRegistry">无法找到Steam的注册表</s:String>
 	<s:String x:Key="MessageAutoDetectResultFail">无法找到以下游戏的路径：</s:String>
+	<s:String x:Key="ExternalToolsPath">路径</s:String>
+	<s:String x:Key="FilterCPix">应用程序|converter_pix.exe</s:String>
+	<s:String x:Key="MessageErrNotCPix">选择的文件不是ConverterPix.exe</s:String>
+	<s:String x:Key="MessageErrDifferentStructure">选择的文件路径结构似乎有所不同，是否继续使用？</s:String>
 	
 	
 	
@@ -524,6 +535,7 @@
 	<s:String x:Key="ButtonSelect">选定</s:String>
 	<s:String x:Key="ButtonBrowse">浏览</s:String>
 	<s:String x:Key="ButtonDontShowAgain">不再显示</s:String>
+	<s:String x:Key="ButtonRetry">重试</s:String>
 	<s:String x:Key="CheckBoxSelectAll">全选</s:String>
 
 	<s:String x:Key="FilterAllFiles">所有文件|*.*</s:String>

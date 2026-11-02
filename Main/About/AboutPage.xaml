@@ -4,10 +4,12 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
 	xmlns:local="clr-namespace:SCS_Mod_Helper.Main.About"
+	xmlns:main="clr-namespace:SCS_Mod_Helper.Main"
 	xmlns:base="clr-namespace:SCS_Mod_Helper.Class.Base"
 	xmlns:util="clr-namespace:SCS_Mod_Helper.Utils"
-	d:DataContext="{d:DesignInstance Type=local:AboutBinding}"
+	d:DataContext="{d:DesignInstance Type=main:MainBinding}"
 	mc:Ignorable="d"
 	d:Background="White"
 	d:Width="991"
@@ -28,229 +30,580 @@
 	<Grid
 		x:Name="GridMain"
 		Margin="20">
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition
-				Width="Auto" />
-			<ColumnDefinition
-				Width="*" />
-			<ColumnDefinition
-				Width="Auto" />
-		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
-			<RowDefinition
-				Height="Auto" />
-			<RowDefinition
-				Height="Auto" />
 			<RowDefinition
 				Height="*" />
 			<RowDefinition
 				Height="Auto" />
 		</Grid.RowDefinitions>
-		<StackPanel>
-			<TextBlock
-				HorizontalAlignment="Center">
-				<Hyperlink
-					NavigateUri="https://github.com/Glitch524/SCS-Model-Helper"
-					RequestNavigate="HyperlinkClick"
-					FontSize="16"
-					FontWeight="Bold">SCS Mod Helper</Hyperlink>
-			</TextBlock>
-			<TextBlock
-				HorizontalAlignment="Center">
-				<Run
-					Text="{DynamicResource HeaderVersion}" /><Run
-					Text="{Binding AppVersion, Mode=OneWay}" />
-			</TextBlock>
-		</StackPanel>
-		<StackPanel
-			Grid.Row="1">
-			<Grid
+		<Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition
+					Width="Auto" />
+				<ColumnDefinition
+					Width="10" />
+				<ColumnDefinition
+					Width="*" />
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition
+					Height="Auto" />
+				<RowDefinition
+					Height="Auto" />
+				<RowDefinition
+					Height="*" />
+				<RowDefinition
+					Height="Auto" />
+			</Grid.RowDefinitions>
+			<StackPanel>
+				<TextBlock
+					HorizontalAlignment="Center">
+					<Hyperlink
+						NavigateUri="https://github.com/Glitch524/SCS-Model-Helper"
+						RequestNavigate="HyperlinkClick"
+						FontSize="16"
+						FontWeight="Bold">SCS Mod Helper</Hyperlink>
+				</TextBlock>
+				<StackPanel
+					Margin="0,5,0,0"
+					HorizontalAlignment="Center">
+					<StackPanel
+						Orientation="Horizontal"
+						HorizontalAlignment="Center">
+						<CheckBox
+							x:Name="CheckHasUpdate"
+							Visibility="Collapsed"
+							d:IsChecked="False"
+							IsChecked="{Binding HasUpdate, Mode=OneWay}" />
+						<TextBlock
+							HorizontalAlignment="Center"
+							VerticalAlignment="Center"
+							Text="{DynamicResource HeaderVersion}" />
+						<TextBlock
+							HorizontalAlignment="Center"
+							VerticalAlignment="Center"
+							d:Text="Current"
+							Text="{Binding AppVersion, Mode=OneWay}">
+							<TextBlock.Style>
+								<Style
+									TargetType="TextBlock"
+									BasedOn="{StaticResource {x:Type TextBlock}}">
+									<Style.Triggers>
+										<DataTrigger
+											Binding="{Binding ElementName=CheckHasUpdate, Path=IsChecked}"
+											Value="True">
+											<Setter
+												Property="Visibility"
+												Value="Collapsed" />
+										</DataTrigger>
+									</Style.Triggers>
+								</Style>
+							</TextBlock.Style>
+						</TextBlock>
+						<Button
+							x:Name="ButtonCheckUpdate"
+							Background="Transparent"
+							Margin="5,0,0,0"
+							Command="{Binding CheckUpdatePopupCommand}"
+							ToolTip="{Binding RemoteVersionToolTip}">
+							<Button.Style>
+								<Style
+									TargetType="Button"
+									BasedOn="{StaticResource {x:Type Button}}">
+									<Style.Triggers>
+										<DataTrigger
+											Binding="{Binding ElementName=CheckHasUpdate, Path=IsChecked}"
+											Value="True">
+											<Setter
+												Property="Visibility"
+												Value="Collapsed" />
+										</DataTrigger>
+										<DataTrigger
+											Binding="{Binding Checking}"
+											Value="True">
+											<Setter
+												Property="IsEnabled"
+												Value="False" />
+										</DataTrigger>
+									</Style.Triggers>
+								</Style>
+							</Button.Style>
+							<Viewbox
+								Stretch="Uniform"
+								Height="20">
+								<ui:SymbolIcon
+									Symbol="Search20"
+									d:Foreground="Red">
+									<ui:SymbolIcon.Style>
+										<Style
+											TargetType="ui:SymbolIcon">
+											<Style.Triggers>
+												<DataTrigger
+													Binding="{Binding UpdateCheckFailed}"
+													Value="True">
+													<Setter
+														Property="Foreground"
+														Value="Red" />
+												</DataTrigger>
+											</Style.Triggers>
+										</Style>
+									</ui:SymbolIcon.Style>
+								</ui:SymbolIcon>
+							</Viewbox>
+						</Button>
+						<Popup
+							x:Name="PopupUpdateResult"
+							PlacementTarget="{Binding ElementName=ButtonCheckUpdate}"
+							IsOpen="{Binding PopupUpdateResultOpen}"
+							StaysOpen="False"
+							AllowsTransparency="True">
+							<Grid>
+								<Border
+									Style="{DynamicResource PopupBorder}" />
+								<StackPanel
+									Margin="10">
+									<TextBlock
+										Text="{Binding RemoteVersionToolTip}" />
+									<TextBlock
+										Text="如果无法正常访问Github和Steam社区，可以选择使用Steamcommunity 302">
+										<TextBlock.Style>
+											<Style
+												TargetType="TextBlock"
+												BasedOn="{StaticResource {x:Type TextBlock}}">
+												<Setter
+													Property="Visibility"
+													Value="Collapsed" />
+												<Style.Triggers>
+													<MultiDataTrigger>
+														<MultiDataTrigger.Conditions>
+															<Condition
+																Binding="{Binding IsCN}"
+																Value="True" />
+															<Condition
+																Binding="{Binding UpdateCheckFailed}"
+																Value="True" />
+														</MultiDataTrigger.Conditions>
+														<MultiDataTrigger.Setters>
+															<Setter
+																Property="Visibility"
+																Value="Visible" />
+														</MultiDataTrigger.Setters>
+													</MultiDataTrigger>
+												</Style.Triggers>
+											</Style>
+										</TextBlock.Style>
+									</TextBlock>
+									<Button
+										Content="{DynamicResource ButtonRetry}"
+										Margin="0,5,0,0"
+										Padding="20,3"
+										Command="{Binding RetryUpdateCheckCommand}">
+										<Button.Style>
+											<Style
+												TargetType="Button"
+												BasedOn="{StaticResource {x:Type Button}}">
+												<Setter
+													Property="Visibility"
+													Value="Collapsed" />
+												<Style.Triggers>
+													<DataTrigger
+														Binding="{Binding UpdateCheckFailed}"
+														Value="True">
+														<Setter
+															Property="Visibility"
+															Value="Visible" />
+													</DataTrigger>
+												</Style.Triggers>
+											</Style>
+										</Button.Style>
+									</Button>
+								</StackPanel>
+							</Grid>
+						</Popup>
+						<TextBlock
+							HorizontalAlignment="Center"
+							VerticalAlignment="Center">
+							<Hyperlink
+								NavigateUri="https://github.com/Glitch524/SCS-Model-Helper/releases/latest"
+								RequestNavigate="HyperlinkClick">
+								<Run
+									Text="{Binding RemoteVersion}"
+									d:Text="Newer" />
+							</Hyperlink>
+							<Run
+								Text="{DynamicResource TipsNewVersion}"
+								FontSize="10" />
+							<TextBlock.Style>
+								<Style
+									TargetType="TextBlock"
+									BasedOn="{StaticResource {x:Type TextBlock}}">
+									<Setter
+										Property="Visibility"
+										Value="Collapsed" />
+									<Style.Triggers>
+										<DataTrigger
+											Binding="{Binding ElementName=CheckHasUpdate, Path=IsChecked}"
+											Value="True">
+											<Setter
+												Property="Visibility"
+												Value="Visible" />
+										</DataTrigger>
+									</Style.Triggers>
+								</Style>
+							</TextBlock.Style>
+						</TextBlock>
+					</StackPanel>
+					<TextBlock
+						Text="{DynamicResource TipsUpdateCheckSettings}"
+						Margin="0,5,0,0"
+						FontSize="12" />
+				</StackPanel>
+			</StackPanel>
+			<StackPanel
 				Grid.Row="1">
+				<Grid
+					Grid.Row="1">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition
+							Width="Auto" />
+						<ColumnDefinition
+							Width="10" />
+						<ColumnDefinition
+							Width="Auto" />
+					</Grid.ColumnDefinitions>
+					<StackPanel>
+						<TabControl
+							x:Name="TabProfile"
+							SelectedIndex="{Binding SelectedTab}">
+							<TabItem>
+								<TabItem.Header>
+									<Viewbox
+										Stretch="Uniform"
+										Height="20">
+										<Image
+											Source="/Main/About/Icon/IconBili.ico" />
+									</Viewbox>
+								</TabItem.Header>
+							</TabItem>
+							<TabItem>
+								<TabItem.Header>
+									<Viewbox
+										Stretch="Uniform"
+										Height="20">
+										<Image
+											Source="/Main/About/Icon/IconGithub.ico" />
+									</Viewbox>
+								</TabItem.Header>
+							</TabItem>
+							<TabItem>
+								<TabItem.Header>
+									<Viewbox
+										Stretch="Uniform"
+										Height="20">
+										<Image
+											Source="/Main/About/Icon/IconSteam.ico" />
+									</Viewbox>
+								</TabItem.Header>
+							</TabItem>
+						</TabControl>
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition
+									Height="5" />
+								<RowDefinition
+									Height="Auto" />
+								<RowDefinition
+									Height="Auto" />
+								<RowDefinition
+									Height="5" />
+							</Grid.RowDefinitions>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition
+									Width="20" />
+								<ColumnDefinition
+									Width="Auto" />
+								<ColumnDefinition
+									Width="20" />
+							</Grid.ColumnDefinitions>
+							<Border
+								Grid.ColumnSpan="3"
+								Grid.RowSpan="4"
+								BorderThickness="1,0,1,1"
+								BorderBrush="{StaticResource TextControlElevationBorderBrush}" />
+							<Ellipse
+								Width="100"
+								Height="100"
+								Grid.Column="1"
+								Grid.Row="1"
+								StrokeThickness="2"
+								Stroke="{StaticResource TextControlElevationBorderBrush}" />
+							<Image
+								Width="100"
+								Height="100"
+								Grid.Column="1"
+								Grid.Row="1"
+								Source="{Binding CurrentInfo.Avatar}"
+								d:Source="/Main/About/DefaultIcon.jpg">
+								<Image.Clip>
+									<EllipseGeometry
+										Center="50,50"
+										RadiusX="50"
+										RadiusY="50" />
+								</Image.Clip>
+							</Image>
+							<TextBlock
+								HorizontalAlignment="Center"
+								Grid.ColumnSpan="3"
+								Grid.Row="2"
+								Margin="0,5,0,0">
+								<Hyperlink
+									Command="{Binding CommandAuthorLink}"
+									CommandParameter="{Binding CurrentInfo.Link}">
+									<Run
+										Text="{Binding CurrentInfo.DisplayName}"
+										d:Text="Glitch524" />
+								</Hyperlink>
+							</TextBlock>
+						</Grid>
+					</StackPanel>
+					<StackPanel
+						Grid.Row="2"
+						Grid.Column="2"
+						Margin="0,15,0,0"
+						VerticalAlignment="Bottom">
+						<TextBlock
+							Margin="0,5,0,0"
+							Text="{DynamicResource HeaderSupport}" />
+						<TextBlock
+							x:Name="TextKoFi"
+							Margin="20,5,0,0">
+							<TextBlock.Style>
+								<Style
+									TargetType="TextBlock"
+									BasedOn="{StaticResource {x:Type TextBlock}}">
+									<Style.Triggers>
+										<DataTrigger
+											Binding="{Binding IsCN}"
+											Value="True">
+											<Setter
+												Property="Visibility"
+												Value="Collapsed" />
+										</DataTrigger>
+									</Style.Triggers>
+								</Style>
+							</TextBlock.Style>
+						<Run
+								Text="Ko-Fi:" />
+					<Hyperlink
+								NavigateUri="https://ko-fi.com/glitch524"
+								RequestNavigate="HyperlinkClick">Glitch524</Hyperlink>
+						</TextBlock>
+						<TextBlock
+							x:Name="TextBilibili"
+							Margin="20,5,0,0">
+							<TextBlock.Style>
+								<Style
+									TargetType="TextBlock"
+									BasedOn="{StaticResource {x:Type TextBlock}}">
+									<Style.Triggers>
+										<MultiDataTrigger>
+											<MultiDataTrigger.Conditions>
+												<Condition
+													Binding="{Binding IsCN}"
+													Value="False" />
+											</MultiDataTrigger.Conditions>
+											<Setter
+												Property="Visibility"
+												Value="Collapsed" />
+										</MultiDataTrigger>
+									</Style.Triggers>
+								</Style>
+							</TextBlock.Style>
+					<Run
+								Text="←如果不介意可以在B站充电" />
+					<LineBreak />
+					<Run
+								Text="←里面也有基本的MOD教程" />
+						</TextBlock>
+					</StackPanel>
+				</Grid>
+				<TextBlock
+					Grid.Row="2"
+					Grid.ColumnSpan="3"
+					Margin="0,30,0,0"
+					Text="{DynamicResource Desc}" />
+			</StackPanel>
+			<Grid
+				Grid.Row="1"
+				Grid.Column="2"
+				Grid.RowSpan="2">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition
-						Width="Auto" />
+						Width="*" />
 					<ColumnDefinition
 						Width="10" />
 					<ColumnDefinition
-						Width="Auto" />
+						Width="*" />
 				</Grid.ColumnDefinitions>
-				<StackPanel>
-					<TabControl
-						x:Name="TabProfile"
-						SelectedIndex="{Binding SelectedTab}">
-						<TabItem>
-							<TabItem.Header>
-								<Viewbox
-									Stretch="Uniform"
-									Height="20">
-									<Image
-										Source="/Main/About/Icon/BiliIcon.ico" />
-								</Viewbox>
-							</TabItem.Header>
-						</TabItem>
-						<TabItem>
-							<TabItem.Header>
-								<Viewbox
-									Stretch="Uniform"
-									Height="20">
-									<Image
-										Source="/Main/About/Icon/GithubIcon.ico" />
-								</Viewbox>
-							</TabItem.Header>
-						</TabItem>
-						<TabItem>
-							<TabItem.Header>
-								<Viewbox
-									Stretch="Uniform"
-									Height="20">
-									<Image
-										Source="/Main/About/Icon/SteamIcon.ico" />
-								</Viewbox>
-							</TabItem.Header>
-						</TabItem>
-					</TabControl>
-					<Grid>
-						<Grid.RowDefinitions>
-							<RowDefinition
-								Height="5" />
-							<RowDefinition
-								Height="Auto" />
-							<RowDefinition
-								Height="Auto" />
-							<RowDefinition
-								Height="5" />
-						</Grid.RowDefinitions>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition
-								Width="20" />
-							<ColumnDefinition
-								Width="Auto" />
-							<ColumnDefinition
-								Width="20" />
-						</Grid.ColumnDefinitions>
-						<Border
-							Grid.ColumnSpan="3"
-							Grid.RowSpan="4"
-							BorderThickness="1,0,1,1"
-							BorderBrush="{StaticResource TextControlElevationBorderBrush}" />
-						<Ellipse
-							Width="100"
-							Height="100"
-							Grid.Column="1"
-							Grid.Row="1"
-							StrokeThickness="2"
-							Stroke="{StaticResource TextControlElevationBorderBrush}" />
-						<Image
-							Width="100"
-							Height="100"
-							Grid.Column="1"
-							Grid.Row="1"
-							Source="{Binding CurrentInfo.Avatar}"
-							d:Source="/Main/About/DefaultIcon.jpg">
-							<Image.Clip>
-								<EllipseGeometry
-									Center="50,50"
-									RadiusX="50"
-									RadiusY="50" />
-							</Image.Clip>
-						</Image>
+				<Grid.Resources>
+					<Style x:Key="ItemsControlStyle"
+						TargetType="ItemsControl">
+						<Setter Property="Margin"
+							Value="5,5,0,0" />
+						<Setter
+							Property="VirtualizingPanel.IsVirtualizing"
+							Value="True" />
+						<Setter
+							Property="VirtualizingPanel.VirtualizationMode"
+							Value="Recycling" />
+						<Setter
+							Property="ScrollViewer.CanContentScroll"
+							Value="True" />
+						<Setter
+							Property="TextOptions.TextFormattingMode"
+							Value="Display" />
+						<Setter
+							Property="ScrollViewer.HorizontalScrollBarVisibility"
+							Value="Auto" />
+						<Setter
+							Property="ScrollViewer.VerticalScrollBarVisibility"
+							Value="Auto" />
+					</Style>
+					<ControlTemplate
+						x:Key="ItemsControlTemplate"
+						TargetType="ItemsControl">
+						<ScrollViewer
+							VerticalScrollBarVisibility="Auto"
+							HorizontalScrollBarVisibility="Auto">
+							<ScrollViewer.Template>
+								<ControlTemplate
+									TargetType="ScrollViewer">
+									<Grid>
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition
+												Width="*" />
+											<ColumnDefinition
+												Width="Auto" />
+										</Grid.ColumnDefinitions>
+										<Grid.RowDefinitions>
+											<RowDefinition
+												Height="*" />
+											<RowDefinition
+												Height="Auto" />
+										</Grid.RowDefinitions>
+										<ScrollContentPresenter
+											Grid.Column="0"
+											Grid.Row="0"
+											Margin="{TemplateBinding Padding}" />
+										<ScrollBar
+											x:Name="PART_VerticalScrollBar"
+											Grid.Column="1"
+											Grid.Row="0"
+											Orientation="Vertical"
+											Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+											Value="{TemplateBinding VerticalOffset}"
+											Maximum="{TemplateBinding ScrollableHeight}"
+											ViewportSize="{TemplateBinding ViewportHeight}" />
+										<ScrollBar
+											x:Name="PART_HorizontalScrollBar"
+											Grid.Column="0"
+											Grid.Row="1"
+											Orientation="Horizontal"
+											Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+											Value="{TemplateBinding HorizontalOffset}"
+											Maximum="{TemplateBinding ScrollableWidth}"
+											ViewportSize="{TemplateBinding ViewportWidth}" />
+									</Grid>
+								</ControlTemplate>
+							</ScrollViewer.Template>
+							<ItemsPresenter />
+						</ScrollViewer>
+					</ControlTemplate>
+					<ItemsPanelTemplate x:Key="ItemsControlItemsPanelTemplate">
+						<VirtualizingStackPanel />
+					</ItemsPanelTemplate>
+					<DataTemplate x:Key="ItemsControlItemTemplate">
 						<TextBlock
-							HorizontalAlignment="Center"
-							Grid.ColumnSpan="3"
-							Grid.Row="2"
-							Margin="0,5,0,0">
-							<Hyperlink
-								Command="{Binding CommandAuthorLink}"
-								CommandParameter="{Binding CurrentInfo.Link}">
-								<Run
-									Text="{Binding CurrentInfo.DisplayName}"
-									d:Text="Glitch524" />
-				</Hyperlink>
-						</TextBlock>
-					</Grid>
-				</StackPanel>
-				<StackPanel
-					Grid.Row="2"
+							Text="{Binding Path=.}"
+							TextWrapping="Wrap"
+							FontSize="12" />
+					</DataTemplate>
+				</Grid.Resources>
+				<Border
+					BorderBrush="Black"
+					BorderThickness="1">
+					<Border.Style>
+						<Style
+							TargetType="Border">
+							<Style.Triggers>
+								<DataTrigger 
+									Binding="{Binding ElementName=ListBoxSponserBili, Path=Items.Count}" 
+									Value="0">
+									<Setter 
+										Property="Visibility" 
+										Value="Collapsed" />
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</Border.Style>
+					<ItemsControl
+						x:Name="ListBoxSponserBili"
+						ItemsSource="{Binding ListSponserBili}"
+						d:ItemsSource="{d:SampleData ItemCount=2}"
+						Style="{StaticResource ItemsControlStyle}"
+						Template="{StaticResource ItemsControlTemplate}"
+						ItemsPanel="{StaticResource ItemsControlItemsPanelTemplate}"
+						ItemTemplate="{StaticResource ItemsControlItemTemplate}" />
+				</Border>
+				<Border
 					Grid.Column="2"
-					Margin="0,15,0,0"
-					VerticalAlignment="Bottom">
-					<TextBlock
-						Margin="0,5,0,0"
-						Text="{DynamicResource HeaderSupport}" />
-					<TextBlock
-						x:Name="TextKoFi"
-						Margin="20,5,0,0">
-						<TextBlock.Style>
-							<Style
-								TargetType="TextBlock"
-								BasedOn="{StaticResource {x:Type TextBlock}}">
-								<Style.Triggers>
-									<DataTrigger
-										Binding="{Binding IsCN}"
-										Value="True">
-										<Setter
-											Property="Visibility"
-											Value="Collapsed" />
-									</DataTrigger>
-								</Style.Triggers>
-							</Style>
-						</TextBlock.Style>
-						<Run
-							Text="Ko-Fi:" />
-					<Hyperlink
-							NavigateUri="https://ko-fi.com/glitch524"
-							RequestNavigate="HyperlinkClick">Glitch524</Hyperlink>
-					</TextBlock>
-					<TextBlock
-						x:Name="TextBilibili"
-						Margin="20,5,0,0">
-						<TextBlock.Style>
-							<Style
-								TargetType="TextBlock"
-								BasedOn="{StaticResource {x:Type TextBlock}}">
-								<Style.Triggers>
-									<MultiDataTrigger>
-										<MultiDataTrigger.Conditions>
-											<Condition
-												Binding="{Binding IsCN}"
-												Value="False" />
-										</MultiDataTrigger.Conditions>
-										<Setter
-											Property="Visibility"
-											Value="Collapsed" />
-									</MultiDataTrigger>
-								</Style.Triggers>
-							</Style>
-						</TextBlock.Style>
-					<Run
-							Text="←如果不介意可以在B站充电" />
-					<LineBreak />
-					<Run
-							Text="←里面也有基本的MOD教程" />
-					</TextBlock>
-				</StackPanel>
+					BorderBrush="Black"
+					BorderThickness="1">
+					<Border.Style>
+						<Style
+							TargetType="Border">
+							<Style.Triggers>
+								<DataTrigger
+									Binding="{Binding ElementName=ListBoxSponserKofi, Path=Items.Count}"
+									Value="0">
+									<Setter
+										Property="Visibility"
+										Value="Collapsed" />
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</Border.Style>
+					<ItemsControl
+						x:Name="ListBoxSponserKofi"
+						ItemsSource="{Binding ListSponserKofi}"
+						d:ItemsSource="{d:SampleData ItemCount=2}"
+						Style="{StaticResource ItemsControlStyle}"
+						Template="{StaticResource ItemsControlTemplate}"
+						ItemsPanel="{StaticResource ItemsControlItemsPanelTemplate}"
+						ItemTemplate="{StaticResource ItemsControlItemTemplate}" />
+				</Border>
 			</Grid>
-			<TextBlock
-				Grid.Row="2"
-				Grid.ColumnSpan="3"
-				Margin="0,30,0,0"
-				Text="{DynamicResource Desc}" />
-		</StackPanel>
+
+		</Grid>
 		<StackPanel
-			Grid.Row="3"
-			Grid.ColumnSpan="3">
+			Grid.Row="1"
+			Margin="0,10,0,0">
 			<TextBlock Text="*如果无法正常访问Github和Steam社区，可以选择使用Steamcommunity 302"
 				HorizontalAlignment="Right" />
-			<Button
+			<ui:Button
 				Margin="0,5,0,0"
-				Padding="10,3"
+				Padding="10,4"
 				Content="Steamcommunity 302"
 				HorizontalAlignment="Right"
 				Command="{Binding Command302}">
-				<Button.Style>
+				<ui:Button.Icon>
+					<ui:ImageIcon
+						Source="/Main/About/Icon/Icon302.ico" />
+				</ui:Button.Icon>
+				<ui:Button.Style>
 					<Style
-						TargetType="Button"
-						BasedOn="{StaticResource {x:Type Button}}">
+						TargetType="ui:Button"
+						BasedOn="{StaticResource {x:Type ui:Button}}">
 						<Style.Triggers>
 							<MultiDataTrigger>
 								<MultiDataTrigger.Conditions>
@@ -264,8 +617,8 @@
 							</MultiDataTrigger>
 						</Style.Triggers>
 					</Style>
-				</Button.Style>
-			</Button>
+				</ui:Button.Style>
+			</ui:Button>
 		</StackPanel>
 	</Grid>
 </base:BasePage>

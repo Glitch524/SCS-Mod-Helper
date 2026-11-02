@@ -29,5 +29,11 @@
     <Setting Name="NeedToUpgrade" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="UpdateCheckFrequency" Type="System.String" Scope="User">
+      <Value Profile="(Default)">hourly</Value>
+    </Setting>
+    <Setting Name="ShowUpdateAvailable" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

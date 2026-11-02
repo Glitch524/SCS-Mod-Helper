@@ -15,7 +15,7 @@ namespace SCS_Mod_Helper.Main;
 /// NaviMainWindow.xaml 的交互逻辑
 /// </summary>
 public partial class NaviMainWindow: BaseWindow {
-	public MainWindowBinding Binding;
+	public MainBinding Binding;
 	public NaviMainWindow() {
 		InitializeComponent();
 		Binding = new(() => this, OpenWindow, Test);
@@ -28,6 +28,7 @@ public partial class NaviMainWindow: BaseWindow {
 		VehiclesIO.CheckDBMigration(this);
 		_ = Task.Delay(100).ContinueWith(_ => SystemVerification.StorageAsync());
 
+		Binding.CheckUpdate();
 	}
 
 	private void OpenWindow(string? type) {
@@ -78,7 +79,7 @@ public partial class NaviMainWindow: BaseWindow {
 	private void NaviMainWindowLoaded(object sender, RoutedEventArgs e) => Navigation.Navigate("ModManifest");
 }
 
-public class MainWindowBinding(Func<IBaseVisual> visualFunc, Action<string?> windowAction, Action<string?> testAction): WindowBinding(visualFunc) {
+public partial class MainBinding(Func<IBaseVisual> visualFunc, Action<string?> windowAction, Action<string?> testAction): WindowBinding(visualFunc) {
 
 	public RelayCommand<string> WindowCommand { get; } = new RelayCommand<string>(windowAction);
 

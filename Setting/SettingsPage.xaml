@@ -107,6 +107,66 @@
 					Orientation="Horizontal"
 					Height="40">
 					<Viewbox>
+						<ui:SymbolIcon
+							Symbol="Search20" />
+					</Viewbox>
+					<StackPanel>
+						<ui:TextBlock
+							FontTypography="BodyStrong"
+							Text="{DynamicResource TitleUpdateCheckFrequency}"
+							VerticalAlignment="Center"
+							Margin="10,0,0,0" />
+						<ui:TextBlock
+							FontSize="12"
+							Text="{DynamicResource MessageUpdateCheckFrequency}"
+							Margin="10,5,0,0" />
+					</StackPanel>
+				</StackPanel>
+			</ui:CardControl.Header>
+			<ComboBox
+				Width="150"
+				SelectedValue="{Binding UpdateCheckFrequency}"
+				SelectedValuePath="Tag"
+				Padding="5">
+				<ComboBoxItem
+					Content="{DynamicResource ItemHourly}"
+					Tag="hourly" />
+				<ComboBoxItem
+					Content="{DynamicResource ItemDaily}"
+					Tag="daily" />
+				<ComboBoxItem
+					Content="{DynamicResource ItemWeekly}"
+					Tag="weekly" />
+				<ComboBoxItem
+					Content="{DynamicResource ItemNever}"
+					Tag="never" />
+			</ComboBox>
+		</ui:CardControl>
+		<ui:CardControl>
+			<ui:CardControl.Header>
+				<StackPanel
+					Orientation="Horizontal"
+					Height="40">
+					<Viewbox>
+						<ui:SymbolIcon
+							Symbol="SearchInfo20" />
+					</Viewbox>
+					<ui:TextBlock
+						FontTypography="BodyStrong"
+						Text="{DynamicResource TitleShowUpdateNotification}"
+						VerticalAlignment="Center"
+						Margin="10,0,0,0" />
+				</StackPanel>
+			</ui:CardControl.Header>
+			<ui:ToggleSwitch
+				IsChecked="{Binding ShowUpdateAvailable}"/>
+		</ui:CardControl>
+		<ui:CardControl>
+			<ui:CardControl.Header>
+				<StackPanel
+					Orientation="Horizontal"
+					Height="40">
+					<Viewbox>
 						<Image
 							Source="/Images/Icon_ETS2.png" />
 					</Viewbox>

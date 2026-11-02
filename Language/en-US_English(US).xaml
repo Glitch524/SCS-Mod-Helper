@@ -41,6 +41,10 @@
 	<!--About-->
 	<s:String x:Key="TitleAbout">About</s:String>
 	<s:String x:Key="HeaderVersion">Version: </s:String>
+	<s:String x:Key="ToolTipNewestVersion">Github newest version: {0}</s:String>
+	<s:String x:Key="ToolTipUpdateCheckFailed">Update check failed</s:String>
+	<s:String x:Key="TipsUpdateCheckSettings">You can set Update Check Frequency at Settings</s:String>
+	<s:String x:Key="TipsNewVersion">New Version!</s:String>
 	<s:String x:Key="HeaderPersonalHomepage">Personal Homepage: </s:String>
 	<s:String x:Key="HeaderSupport">Support: </s:String>
 	<s:String x:Key="Desc">The ConverterPIX and paintjob features is added&#10;&#9;Next I might work on:&#10;&#9;Vehicle UV maps&#10;&#9;Model preview&#10;&#9;Tree view for the model list&#10;update might happen if someone cares</s:String>
@@ -493,14 +497,21 @@
 	<s:String x:Key="TipsCustomLanguage">Find the Language directory in the app's location, place a translated xaml file and rename in the specific format, then you can find the new language here.</s:String>
 	<s:String x:Key="ButtonLanguageDir">Language folder</s:String>
 	<s:String x:Key="ColorMode">Color Mode</s:String>
-	<s:String x:Key="ExternalToolsPath"> Path</s:String>
-	<s:String x:Key="FilterCPix">App|converter_pix.exe</s:String>
-	<s:String x:Key="MessageErrNotCPix">Selected file is not ConverterPix.exe</s:String>
-	<s:String x:Key="MessageErrDifferentStructure">Selected file's directory seems different, continue?</s:String>
+	<s:String x:Key="TitleUpdateCheckFrequency">Auto Update Check Frequency on Startup</s:String>
+	<s:String x:Key="MessageUpdateCheckFrequency">Select how often to check for updates on startup. (Will use history as check result)</s:String>
+	<s:String x:Key="ItemHourly">Every Hour</s:String>
+	<s:String x:Key="ItemDaily">Every Day</s:String>
+	<s:String x:Key="ItemWeekly">Every Week</s:String>
+	<s:String x:Key="ItemNever">Never</s:String>
+	<s:String x:Key="TitleShowUpdateNotification">Show Update Notification</s:String>
 	<s:String x:Key="ButtonAutoDetect">Auto Detect</s:String>
 	<s:String x:Key="TipsAutoDetect">Use Auto Detect to automaticaly find the game path for ETS2 and ATS</s:String>
 	<s:String x:Key="MessageAutoDetectNoSteamRegistry">Can't find registry data for steam</s:String>
 	<s:String x:Key="MessageAutoDetectResultFail">Can't find the path of the game:</s:String>
+	<s:String x:Key="ExternalToolsPath"> Path</s:String>
+	<s:String x:Key="FilterCPix">App|converter_pix.exe</s:String>
+	<s:String x:Key="MessageErrNotCPix">Selected file is not ConverterPix.exe</s:String>
+	<s:String x:Key="MessageErrDifferentStructure">Selected file's directory seems different, continue?</s:String>
 
 
 
@@ -524,6 +535,7 @@
 	<s:String x:Key="ButtonSelect">Select</s:String>
 	<s:String x:Key="ButtonBrowse">Browse</s:String>
 	<s:String x:Key="ButtonDontShowAgain">Don't show again</s:String>
+	<s:String x:Key="ButtonRetry">Retry</s:String>
 	<s:String x:Key="CheckBoxSelectAll">Select All</s:String>
 
 	<s:String x:Key="FilterAllFiles">All Files|*.*</s:String>

@@ -10,7 +10,7 @@
 	xmlns:setting="clr-namespace:SCS_Mod_Helper.Setting"
 	xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
 	xmlns:manifest="clr-namespace:SCS_Mod_Helper.Manifest"
-	d:DataContext="{d:DesignInstance Type=local:MainWindowBinding}"
+	d:DataContext="{d:DesignInstance Type=local:MainBinding}"
 	mc:Ignorable="d"
 	Loaded="NaviMainWindowLoaded"
 	Title="SCS Mod Helper"
@@ -79,7 +79,42 @@
 				<ui:NavigationViewItem
 					Content="{DynamicResource TitleAbout}"
 					Icon="{ui:SymbolIcon Info28}"
-					TargetPageType="{x:Type about:AboutPage}" />
+					TargetPageType="{x:Type about:AboutPage}">
+					<ui:NavigationViewItem.InfoBadge>
+						<ui:InfoBadge
+							Value="↑"
+							Margin="0,0,5,0"
+							Severity="Attention"
+							d:Visibility="Visible">
+							<ui:InfoBadge.Style>
+								<Style
+									TargetType="ui:InfoBadge"
+									BasedOn="{StaticResource {x:Type ui:InfoBadge}}">
+									<Setter
+										Property="Visibility"
+										Value="Collapsed" />
+									<Style.Triggers>
+										<MultiDataTrigger>
+											<MultiDataTrigger.Conditions>
+												<Condition
+													Binding="{Binding HasUpdate}"
+													Value="True" />
+												<Condition
+													Binding="{Binding ShowInfoBadge}"
+													Value="True" />
+											</MultiDataTrigger.Conditions>
+											<MultiDataTrigger.Setters>
+												<Setter
+													Property="Visibility"
+													Value="Visible" />
+											</MultiDataTrigger.Setters>
+										</MultiDataTrigger>
+									</Style.Triggers>
+								</Style>
+							</ui:InfoBadge.Style>
+						</ui:InfoBadge>
+					</ui:NavigationViewItem.InfoBadge>
+				</ui:NavigationViewItem>
 				<ui:NavigationViewItem
 					Content="{DynamicResource TitleSettings}"
 					Icon="{ui:SymbolIcon Settings32}"
