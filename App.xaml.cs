@@ -49,10 +49,30 @@ public partial class App: Application {
 	}
 
 	private void UnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e) {
+		CheckExceptionCounts();
 		var exceptionPath = Paths.ExcpPath();
+		var ex = e.Exception;
 		using StreamWriter sw = new(exceptionPath);
-		sw.WriteLine(e.Exception.Message);
-		sw.Write(e.Exception.StackTrace);
+		sw.WriteLine($"Time={DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}");
+		sw.WriteLine($"Version={Instances.AppVersion}");
+		sw.WriteLine($"OS Version={Environment.OSVersion}");
+		sw.WriteLine();
+		sw.WriteLine($"Exception");
+		sw.WriteLine($"Type={ex.GetType().FullName} Message={ex.Message}");
+		sw.WriteLine(ex);
+	}
+
+	private static void CheckExceptionCounts() {
+		var excpDir = new DirectoryInfo(Paths.ExcpDir());
+		var files = excpDir.GetFiles();
+		var storedExcpCount = Settings.Default.StoredExcpCount;
+		if (files.Length < storedExcpCount) 
+			return;
+		var excps = files.OrderBy(f => f.CreationTime).ToList();
+		while(excps.Count >= storedExcpCount) {
+			excps.First().Delete();
+			excps.RemoveAt(0);
+		}
 	}
 
 	private void OnExit(object sender, ExitEventArgs e) {

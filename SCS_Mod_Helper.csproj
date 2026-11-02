@@ -41,6 +41,8 @@
 		<None Remove="Images\AppIcon.png" />
 		<None Remove="Images\Icon_ATS.png" />
 		<None Remove="Images\Icon_ETS2.png" />
+		<None Remove="Language\en-US_English%28US%29.txt" />
+		<None Remove="Language\example.txt" />
 		<None Remove="Main\About\Icon\Icon302.ico" />
 		<None Remove="Modding\PaintJob\ChannelColorizeEffect.ps" />
 	</ItemGroup>
@@ -76,6 +78,10 @@
 		<Resource Include="Images\AppIcon.png" />
 		<Resource Include="Images\Icon_ATS.png" />
 		<Resource Include="Images\Icon_ETS2.png" />
+		<EmbeddedResource Include="Language\en-US_English(US).txt" />
+		<EmbeddedResource Include="Language\example.txt">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</EmbeddedResource>
 		<Resource Include="Main\About\DefaultIcon.jpg" />
 		<Resource Include="Main\About\Icon\Icon302.ico" />
 		<Resource Include="Main\About\Icon\IconBili.ico" />
@@ -101,12 +107,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="Language\en-US_English(US).txt">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="Language\example.txt">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
 		<None Update="Modding\Accessories\AccAddon\AccAddonHistory.settings">
 			<Generator>SettingsSingleFileGenerator</Generator>
 			<LastGenOutput>AccAddonHistory.Designer.cs</LastGenOutput>

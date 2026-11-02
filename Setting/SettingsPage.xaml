@@ -19,308 +19,387 @@
 				Property="Background"
 				Value="{x:Null}" />
 		</Style>
+		<Style
+			TargetType="ui:CardExpander" BasedOn="{StaticResource {x:Type ui:CardExpander}}">
+			<Setter
+				Property="ContentPadding"
+				Value="15,0,0,5" />
+			<Setter
+				Property="IsExpanded"
+				Value="True" />
+		</Style>
 	</base:BasePage.Resources>
 	<StackPanel
 		x:Name="PanelMain"
 		Orientation="Vertical">
-		<ui:CardControl>
-			<ui:CardControl.Header>
+		<ui:CardExpander>
+			<ui:CardExpander.Header>
 				<StackPanel
 					Orientation="Horizontal"
 					Height="40">
 					<Viewbox>
 						<ui:SymbolIcon
-							Symbol="Translate20" />
+							Symbol="Settings20" />
 					</Viewbox>
 					<ui:TextBlock
 						FontTypography="BodyStrong"
-						Text="{DynamicResource AppLanguage}"
+						Text="{DynamicResource TitleSettings}"
 						VerticalAlignment="Center"
 						Margin="10,0,0,0" />
 				</StackPanel>
-			</ui:CardControl.Header>
-			<ComboBox
-				DisplayMemberPath="LanguageName"
-				SelectedValuePath="Locale"
-				ItemsSource="{Binding Languages}"
-				SelectedValue="{Binding CurrentLanguage}"
-				Width="150"
-				Padding="5" />
-		</ui:CardControl>
-		<Grid>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition
-					Width="*" />
-				<ColumnDefinition
-					Width="Auto" />
-			</Grid.ColumnDefinitions>
-			<ui:InfoBar
-				Message="{DynamicResource TipsCustomLanguage}"
-				IsOpen="True"
-				IsClosable="False"
-				FontSize="12"
-				VerticalAlignment="Center" />
-			<Button
-				x:Name="ButtonDirLanguage"
-				Grid.Column="1"
-				Width="150"
-				Padding="0,5,0,5"
-				Click="ButtonClick"
-				Margin="15,0,15,0"
-				Content="{DynamicResource ButtonLanguageDir}" />
-		</Grid>
-		<ui:CardControl>
-			<ui:CardControl.Header>
+			</ui:CardExpander.Header>
+			<StackPanel>
+				<ui:CardControl>
+					<ui:CardControl.Header>
+						<StackPanel
+							Orientation="Horizontal"
+							Height="40">
+							<Viewbox>
+								<ui:SymbolIcon
+									Symbol="Translate20" />
+							</Viewbox>
+							<ui:TextBlock
+								FontTypography="BodyStrong"
+								Text="{DynamicResource AppLanguage}"
+								VerticalAlignment="Center"
+								Margin="10,0,0,0" />
+						</StackPanel>
+					</ui:CardControl.Header>
+					<ComboBox
+						DisplayMemberPath="LanguageName"
+						SelectedValuePath="Locale"
+						ItemsSource="{Binding Languages}"
+						SelectedValue="{Binding CurrentLanguage}"
+						Width="150"
+						Padding="5" />
+				</ui:CardControl>
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition
+							Width="*" />
+						<ColumnDefinition
+							Width="Auto" />
+					</Grid.ColumnDefinitions>
+					<ui:InfoBar
+						Message="{DynamicResource TipsCustomLanguage}"
+						IsOpen="True"
+						IsClosable="False"
+						FontSize="12"
+						VerticalAlignment="Center" />
+					<ui:SplitButton
+						x:Name="ButtonDirLanguage"
+						Grid.Column="1"
+						Width="150"
+						Margin="15,0,15,0"
+						Background="Transparent"
+						Command="{Binding OpenLanguageCommand}"
+						Content="{DynamicResource ButtonLanguageDir}">
+						<ui:SplitButton.Flyout>
+							<ContextMenu>
+								<MenuItem
+									Header="{DynamicResource ButtonGenerateSample}"
+									Command="{Binding GenerateSampleCommand}" />
+							</ContextMenu>
+						</ui:SplitButton.Flyout>
+					</ui:SplitButton>
+				</Grid>
+				<ui:CardControl>
+					<ui:CardControl.Header>
+						<StackPanel
+							Orientation="Horizontal"
+							Height="40">
+							<Viewbox>
+								<ui:SymbolIcon
+									Symbol="PaintBrush20" />
+							</Viewbox>
+							<ui:TextBlock
+								FontTypography="BodyStrong"
+								Text="{DynamicResource ColorMode}"
+								VerticalAlignment="Center"
+								Margin="10,0,0,0" />
+						</StackPanel>
+					</ui:CardControl.Header>
+					<ComboBox
+						Width="150"
+						SelectedValue="{Binding CurrentTheme}"
+						SelectedValuePath="Tag"
+						Padding="5">
+						<ComboBoxItem
+							Content="{DynamicResource ThemeFollowSystem}"
+							Tag="FollowSystem" />
+						<ComboBoxItem
+							Content="{DynamicResource ThemeLight}"
+							Tag="Light" />
+						<ComboBoxItem
+							Content="{DynamicResource ThemeDark}"
+							Tag="Dark" />
+					</ComboBox>
+				</ui:CardControl>
+				<ui:CardControl>
+					<ui:CardControl.Header>
+						<StackPanel
+							Orientation="Horizontal"
+							Height="40">
+							<Viewbox>
+								<ui:SymbolIcon
+									Symbol="Search20" />
+							</Viewbox>
+							<StackPanel>
+								<ui:TextBlock
+									FontTypography="BodyStrong"
+									Text="{DynamicResource TitleUpdateCheckFrequency}"
+									VerticalAlignment="Center"
+									Margin="10,0,0,0" />
+								<ui:TextBlock
+									FontSize="12"
+									Text="{DynamicResource MessageUpdateCheckFrequency}"
+									Margin="10,5,0,0" />
+							</StackPanel>
+						</StackPanel>
+					</ui:CardControl.Header>
+					<ComboBox
+						Width="150"
+						SelectedValue="{Binding UpdateCheckFrequency}"
+						SelectedValuePath="Tag"
+						Padding="5">
+						<ComboBoxItem
+							Content="{DynamicResource ItemHourly}"
+							Tag="hourly" />
+						<ComboBoxItem
+							Content="{DynamicResource ItemDaily}"
+							Tag="daily" />
+						<ComboBoxItem
+							Content="{DynamicResource ItemWeekly}"
+							Tag="weekly" />
+						<ComboBoxItem
+							Content="{DynamicResource ItemNever}"
+							Tag="never" />
+					</ComboBox>
+				</ui:CardControl>
+				<ui:CardControl>
+					<ui:CardControl.Header>
+						<StackPanel
+							Orientation="Horizontal"
+							Height="40">
+							<Viewbox>
+								<ui:SymbolIcon
+									Symbol="SearchInfo20" />
+							</Viewbox>
+							<ui:TextBlock
+								FontTypography="BodyStrong"
+								Text="{DynamicResource TitleShowUpdateNotification}"
+								VerticalAlignment="Center"
+								Margin="10,0,0,0" />
+						</StackPanel>
+					</ui:CardControl.Header>
+					<ui:ToggleSwitch
+						IsChecked="{Binding ShowUpdateAvailable}" />
+				</ui:CardControl>
+				<ui:CardControl>
+					<ui:CardControl.Header>
+						<StackPanel
+							Orientation="Horizontal"
+							Height="40">
+							<Viewbox>
+								<ui:SymbolIcon
+									Symbol="Bug20" />
+							</Viewbox>
+							<ui:TextBlock
+								FontTypography="BodyStrong"
+								Text="{DynamicResource TitleMaxStoreExcpCount}"
+								VerticalAlignment="Center"
+								Margin="10,0,0,0" />
+						</StackPanel>
+					</ui:CardControl.Header>
+					<ui:NumberBox 
+						Minimum="0"
+						Width="150"
+						MaxDecimalPlaces="0"
+						Value="{Binding StoredExceptionCount, UpdateSourceTrigger=PropertyChanged}"/>
+				</ui:CardControl>
+			</StackPanel>
+		</ui:CardExpander>
+
+		<ui:CardExpander>
+			<ui:CardExpander.Header>
 				<StackPanel
 					Orientation="Horizontal"
 					Height="40">
 					<Viewbox>
 						<ui:SymbolIcon
-							Symbol="PaintBrush20" />
+							Symbol="FolderMultiple16" />
 					</Viewbox>
 					<ui:TextBlock
 						FontTypography="BodyStrong"
-						Text="{DynamicResource ColorMode}"
+						Text="{DynamicResource TitlePaths}"
 						VerticalAlignment="Center"
 						Margin="10,0,0,0" />
 				</StackPanel>
-			</ui:CardControl.Header>
-			<ComboBox
-				Width="150"
-				SelectedValue="{Binding CurrentTheme}"
-				SelectedValuePath="Tag"
-				Padding="5">
-				<ComboBoxItem
-					Content="{DynamicResource ThemeFollowSystem}"
-					Tag="FollowSystem" />
-				<ComboBoxItem
-					Content="{DynamicResource ThemeLight}"
-					Tag="Light" />
-				<ComboBoxItem
-					Content="{DynamicResource ThemeDark}"
-					Tag="Dark" />
-			</ComboBox>
-		</ui:CardControl>
-		<ui:CardControl>
-			<ui:CardControl.Header>
-				<StackPanel
-					Orientation="Horizontal"
-					Height="40">
-					<Viewbox>
-						<ui:SymbolIcon
-							Symbol="Search20" />
-					</Viewbox>
-					<StackPanel>
-						<ui:TextBlock
-							FontTypography="BodyStrong"
-							Text="{DynamicResource TitleUpdateCheckFrequency}"
-							VerticalAlignment="Center"
-							Margin="10,0,0,0" />
-						<ui:TextBlock
-							FontSize="12"
-							Text="{DynamicResource MessageUpdateCheckFrequency}"
-							Margin="10,5,0,0" />
-					</StackPanel>
-				</StackPanel>
-			</ui:CardControl.Header>
-			<ComboBox
-				Width="150"
-				SelectedValue="{Binding UpdateCheckFrequency}"
-				SelectedValuePath="Tag"
-				Padding="5">
-				<ComboBoxItem
-					Content="{DynamicResource ItemHourly}"
-					Tag="hourly" />
-				<ComboBoxItem
-					Content="{DynamicResource ItemDaily}"
-					Tag="daily" />
-				<ComboBoxItem
-					Content="{DynamicResource ItemWeekly}"
-					Tag="weekly" />
-				<ComboBoxItem
-					Content="{DynamicResource ItemNever}"
-					Tag="never" />
-			</ComboBox>
-		</ui:CardControl>
-		<ui:CardControl>
-			<ui:CardControl.Header>
-				<StackPanel
-					Orientation="Horizontal"
-					Height="40">
-					<Viewbox>
-						<ui:SymbolIcon
-							Symbol="SearchInfo20" />
-					</Viewbox>
-					<ui:TextBlock
-						FontTypography="BodyStrong"
-						Text="{DynamicResource TitleShowUpdateNotification}"
-						VerticalAlignment="Center"
-						Margin="10,0,0,0" />
-				</StackPanel>
-			</ui:CardControl.Header>
-			<ui:ToggleSwitch
-				IsChecked="{Binding ShowUpdateAvailable}"/>
-		</ui:CardControl>
-		<ui:CardControl>
-			<ui:CardControl.Header>
-				<StackPanel
-					Orientation="Horizontal"
-					Height="40">
-					<Viewbox>
-						<Image
-							Source="/Images/Icon_ETS2.png" />
-					</Viewbox>
-					<ui:TextBlock
-						FontTypography="BodyStrong"
-						VerticalAlignment="Center"
-						Margin="10,0,0,0">
-						<Run
-							Text="{DynamicResource ETS2}" />
-						<Run
-							Text="{DynamicResource ExternalToolsPath}" />
-						<Run
-							Text=" " />
-						<Hyperlink
-							Click="FilePathClick"
-							Tag="{Binding ETS2GamePath}">
-							<Run
-								Text="{Binding ETS2GamePath}"
-								FontWeight="Bold"
-								d:Text="ETS2 Path" />
-						</Hyperlink>
-					</ui:TextBlock>
-				</StackPanel>
-			</ui:CardControl.Header>
-			<Button
-				x:Name="ButtonBrowsePathETS2"
-				Width="150"
-				Content="{DynamicResource ButtonBrowse}"
-				Padding="0,5,0,5"
-				Click="ButtonClick" />
-		</ui:CardControl>
-		<ui:CardControl>
-			<ui:CardControl.Header>
-				<StackPanel
-					Orientation="Horizontal"
-					Height="40">
-					<Viewbox>
-						<Image
-							Source="/Images/Icon_ATS.png" />
-					</Viewbox>
-					<ui:TextBlock
-						FontTypography="BodyStrong"
-						VerticalAlignment="Center"
-						Margin="10,0,0,0">
-						<Run
-							Text="{DynamicResource ATS}" />
-						<Run
-							Text="{DynamicResource ExternalToolsPath}" />
-						<Run
-							Text=" " />
-						<Hyperlink
-							Click="FilePathClick"
-							Tag="{Binding ATSGamePath}">
-							<Run
-								Text="{Binding ATSGamePath}"
-								FontWeight="Bold"
-								d:Text="ATS Path" />
-						</Hyperlink>
-					</ui:TextBlock>
-				</StackPanel>
-			</ui:CardControl.Header>
-			<Button
-				x:Name="ButtonBrowsePathATS"
-				Width="150"
-				Content="{DynamicResource ButtonBrowse}"
-				Padding="0,5,0,5"
-				Click="ButtonClick"
-				Margin="0,5,0,0" />
-		</ui:CardControl>
-		<Grid>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition
-					Width="*" />
-				<ColumnDefinition
-					Width="Auto" />
-			</Grid.ColumnDefinitions>
-			<ui:InfoBar
-				Message="{DynamicResource TipsAutoDetect}"
-				IsOpen="True"
-				FontSize="12"
-				IsClosable="False"
-				VerticalAlignment="Center" />
-			<Button
-				x:Name="ButtonCheckPath"
-				Grid.Column="1"
-				Width="150"
-				Padding="0,5,0,5"
-				Click="ButtonClick"
-				Margin="15,0,15,0"
-				Content="{DynamicResource ButtonAutoDetect}" />
-		</Grid>
-		<ui:CardControl>
-			<ui:CardControl.Header>
-				<StackPanel
-					Orientation="Horizontal"
-					Height="40">
-					<Viewbox>
-						<ui:SymbolIcon
-							Symbol="BoxSearch20" />
-					</Viewbox>
-					<ui:TextBlock
-						FontTypography="BodyStrong"
-						VerticalAlignment="Center"
-						Margin="10,0,0,0">
-						<Hyperlink
-							NavigateUri="https://github.com/mwl4/ConverterPIX"
-							RequestNavigate="HyperlinkClick">Converter PIX</Hyperlink>
-						<Run
-							Text="{DynamicResource ExternalToolsPath}" />
-						<Run
-							Text="{Binding ConverterPixPath}"
-							Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-							d:Text="Converter Pix Path" />
-					</ui:TextBlock>
-				</StackPanel>
-			</ui:CardControl.Header>
-			<Button
-				x:Name="ButtonConverterPix"
-				Width="150"
-				Content="{DynamicResource ButtonBrowse}"
-				Padding="0,5,0,5"
-				Click="ButtonClick" />
-		</ui:CardControl>
-		<ui:CardControl>
-			<ui:CardControl.Header>
-				<StackPanel
-					Orientation="Horizontal"
-					Height="40">
-					<Viewbox>
-						<ui:SymbolIcon
-							Symbol="BoxEdit20" />
-					</Viewbox>
-					<ui:TextBlock
-						FontTypography="BodyStrong"
-						VerticalAlignment="Center"
-						Margin="10,0,0,0">
-						<Hyperlink
-							NavigateUri="https://modding.scssoft.com/wiki/Documentation/Tools/Conversion_Tools"
-							RequestNavigate="HyperlinkClick">Conversion Tools</Hyperlink>
-						<Run
-							Text="{DynamicResource ExternalToolsPath}" />
-						<Run
-							Text="{Binding ConversionToolsPath}"
-							Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-							d:Text="Conversion Tools Path" />
-					</ui:TextBlock>
-				</StackPanel>
-			</ui:CardControl.Header>
-			<Button
-				x:Name="ButtonConversionTools"
-				Width="150"
-				Content="{DynamicResource ButtonBrowse}"
-				Padding="0,5,0,5"
-				Click="ButtonClick" />
-		</ui:CardControl>
+			</ui:CardExpander.Header>
+			<StackPanel>
+				<ui:CardControl>
+					<ui:CardControl.Header>
+						<StackPanel
+							Orientation="Horizontal"
+							Height="40">
+							<Viewbox>
+								<Image
+									Source="/Images/Icon_ETS2.png" />
+							</Viewbox>
+							<ui:TextBlock
+								FontTypography="BodyStrong"
+								VerticalAlignment="Center"
+								Margin="10,0,0,0">
+								<Run
+									Text="{DynamicResource ETS2}" />
+								<Run
+									Text="{DynamicResource ExternalToolsPath}" />
+								<Run
+									Text=" " />
+								<Hyperlink
+									Click="FilePathClick"
+									Tag="{Binding ETS2GamePath}">
+									<Run
+										Text="{Binding ETS2GamePath}"
+										FontWeight="Bold"
+										d:Text="ETS2 Path" />
+								</Hyperlink>
+							</ui:TextBlock>
+						</StackPanel>
+					</ui:CardControl.Header>
+					<Button
+						x:Name="ButtonBrowsePathETS2"
+						Width="150"
+						Content="{DynamicResource ButtonBrowse}"
+						Padding="0,5,0,5"
+						Click="ButtonClick" />
+				</ui:CardControl>
+				<ui:CardControl>
+					<ui:CardControl.Header>
+						<StackPanel
+							Orientation="Horizontal"
+							Height="40">
+							<Viewbox>
+								<Image
+									Source="/Images/Icon_ATS.png" />
+							</Viewbox>
+							<ui:TextBlock
+								FontTypography="BodyStrong"
+								VerticalAlignment="Center"
+								Margin="10,0,0,0">
+								<Run
+									Text="{DynamicResource ATS}" />
+								<Run
+									Text="{DynamicResource ExternalToolsPath}" />
+								<Run
+									Text=" " />
+								<Hyperlink
+									Click="FilePathClick"
+									Tag="{Binding ATSGamePath}">
+									<Run
+										Text="{Binding ATSGamePath}"
+										FontWeight="Bold"
+										d:Text="ATS Path" />
+								</Hyperlink>
+							</ui:TextBlock>
+						</StackPanel>
+					</ui:CardControl.Header>
+					<Button
+						x:Name="ButtonBrowsePathATS"
+						Width="150"
+						Content="{DynamicResource ButtonBrowse}"
+						Padding="0,5,0,5"
+						Click="ButtonClick"
+						Margin="0,5,0,0" />
+				</ui:CardControl>
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition
+							Width="*" />
+						<ColumnDefinition
+							Width="Auto" />
+					</Grid.ColumnDefinitions>
+					<ui:InfoBar
+						Message="{DynamicResource TipsAutoDetect}"
+						IsOpen="True"
+						FontSize="12"
+						IsClosable="False"
+						VerticalAlignment="Center" />
+					<Button
+						x:Name="ButtonCheckPath"
+						Grid.Column="1"
+						Width="150"
+						Padding="0,5,0,5"
+						Click="ButtonClick"
+						Margin="15,0,15,0"
+						Content="{DynamicResource ButtonAutoDetect}" />
+				</Grid>
+
+				<ui:CardControl>
+					<ui:CardControl.Header>
+						<StackPanel
+							Orientation="Horizontal"
+							Height="40">
+							<Viewbox>
+								<ui:SymbolIcon
+									Symbol="BoxSearch20" />
+							</Viewbox>
+							<ui:TextBlock
+								FontTypography="BodyStrong"
+								VerticalAlignment="Center"
+								Margin="10,0,0,0">
+								<Hyperlink
+									NavigateUri="https://github.com/mwl4/ConverterPIX"
+									RequestNavigate="HyperlinkClick">Converter PIX</Hyperlink>
+								<Run
+									Text="{DynamicResource ExternalToolsPath}" />
+								<Run
+									Text="{Binding ConverterPixPath}"
+									Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+									d:Text="Converter Pix Path" />
+							</ui:TextBlock>
+						</StackPanel>
+					</ui:CardControl.Header>
+					<Button
+						x:Name="ButtonConverterPix"
+						Width="150"
+						Content="{DynamicResource ButtonBrowse}"
+						Padding="0,5,0,5"
+						Click="ButtonClick" />
+				</ui:CardControl>
+				<ui:CardControl>
+					<ui:CardControl.Header>
+						<StackPanel
+							Orientation="Horizontal"
+							Height="40">
+							<Viewbox>
+								<ui:SymbolIcon
+									Symbol="BoxEdit20" />
+							</Viewbox>
+							<ui:TextBlock
+								FontTypography="BodyStrong"
+								VerticalAlignment="Center"
+								Margin="10,0,0,0">
+								<Hyperlink
+									NavigateUri="https://modding.scssoft.com/wiki/Documentation/Tools/Conversion_Tools"
+									RequestNavigate="HyperlinkClick">Conversion Tools</Hyperlink>
+								<Run
+									Text="{DynamicResource ExternalToolsPath}" />
+								<Run
+									Text="{Binding ConversionToolsPath}"
+									Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+									d:Text="Conversion Tools Path" />
+							</ui:TextBlock>
+						</StackPanel>
+					</ui:CardControl.Header>
+					<Button
+						x:Name="ButtonConversionTools"
+						Width="150"
+						Content="{DynamicResource ButtonBrowse}"
+						Padding="0,5,0,5"
+						Click="ButtonClick" />
+				</ui:CardControl>
+			</StackPanel>
+		</ui:CardExpander>
 	</StackPanel>
 </base:BasePage>

@@ -68,6 +68,14 @@ public static partial class Instances {
 		}
 	}
 
+	public static int StoredExceptionCount {
+		get => Settings.Default.StoredExcpCount;
+		set {
+			Settings.Default.StoredExcpCount = value;
+			Settings.Default.Save();
+		}
+	}
+
 	private static string mConverterPixPath = Settings.Default.ConverterPixPath;
 	public static string ConverterPixPath {
 		get {

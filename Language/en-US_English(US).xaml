@@ -493,9 +493,11 @@
 
 	<!--Settings-->
 	<s:String x:Key="TitleSettings">Settings</s:String>
+	<s:String x:Key="TitlePaths">Paths</s:String>
 	<s:String x:Key="AppLanguage">App Language</s:String>
 	<s:String x:Key="TipsCustomLanguage">Find the Language directory in the app's location, place a translated xaml file and rename in the specific format, then you can find the new language here.</s:String>
 	<s:String x:Key="ButtonLanguageDir">Language folder</s:String>
+	<s:String x:Key="ButtonGenerateSample">Generate Sample File</s:String>
 	<s:String x:Key="ColorMode">Color Mode</s:String>
 	<s:String x:Key="TitleUpdateCheckFrequency">Auto Update Check Frequency on Startup</s:String>
 	<s:String x:Key="MessageUpdateCheckFrequency">Select how often to check for updates on startup. (Will use history as check result)</s:String>
@@ -504,6 +506,7 @@
 	<s:String x:Key="ItemWeekly">Every Week</s:String>
 	<s:String x:Key="ItemNever">Never</s:String>
 	<s:String x:Key="TitleShowUpdateNotification">Show Update Notification</s:String>
+	<s:String x:Key="TitleMaxStoreExcpCount">Max Stored Exception Count</s:String>
 	<s:String x:Key="ButtonAutoDetect">Auto Detect</s:String>
 	<s:String x:Key="TipsAutoDetect">Use Auto Detect to automaticaly find the game path for ETS2 and ATS</s:String>
 	<s:String x:Key="MessageAutoDetectNoSteamRegistry">Can't find registry data for steam</s:String>

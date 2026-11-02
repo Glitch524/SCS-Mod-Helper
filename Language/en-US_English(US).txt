@@ -4,7 +4,6 @@
 	xmlns:s="clr-namespace:System;assembly=mscorlib"
 	xml:space="preserve">
 	
-	<!--Return	&#x000D;	&#13;-->
 	<!--Return	&#x000A;	&#10;-->
 	<!--Space	&#x0020;	&#32;-->
 	<!--Tab		&#x0009;	&#9;-->
@@ -18,6 +17,38 @@
 	<s:String x:Key="ThemeLight">Light</s:String>
 	<s:String x:Key="ThemeDark">Dark</s:String>
 	<s:String x:Key="MessagePixNotSet">ConverterPix.exe not found, please set the path in settings.</s:String>
+	
+	<s:String x:Key="VehicleTypeTruck">Truck</s:String>
+	<s:String x:Key="VehicleTypeTrailer">Trailer</s:String>
+	<s:String x:Key="VehicleTypeCar">Car</s:String>
+	<s:String x:Key="VehicleTypeCoach">Coach</s:String>
+	
+	<s:String x:Key="VehicleID">Vehicle ID</s:String>
+	<s:String x:Key="VehicleProdYear">Production Year</s:String>
+	<s:String x:Key="VehicleType">Vehicle Type</s:String>
+	<s:String x:Key="VehicleName">Vehicle Name</s:String>
+	<s:String x:Key="VehicleManufacturer">Manufacturer</s:String>
+	<s:String x:Key="VehicleDescription">Vehicle Description</s:String>
+	<s:String x:Key="VehicleCabin">Cabins</s:String>
+	<s:String x:Key="VehicleAccessory">Accessories</s:String>
+	
+	<s:String x:Key="SubtitleFolder">Folder</s:String>
+	<s:String x:Key="SubtitleFile">{0} File</s:String>
+	
+	<s:String x:Key="MessageFileTypeNotSupported">This file type is not supported for mods</s:String>
+	<s:String x:Key="TipsTabDoubleClickEdit">Double click to edit</s:String>
+	
+	<!--About-->
+	<s:String x:Key="TitleAbout">About</s:String>
+	<s:String x:Key="HeaderVersion">Version: </s:String>
+	<s:String x:Key="ToolTipNewestVersion">Github newest version: {0}</s:String>
+	<s:String x:Key="ToolTipUpdateCheckFailed">Update check failed</s:String>
+	<s:String x:Key="TipsUpdateCheckSettings">You can set Update Check Frequency at Settings</s:String>
+	<s:String x:Key="TipsNewVersion">New Version!</s:String>
+	<s:String x:Key="HeaderPersonalHomepage">Personal Homepage: </s:String>
+	<s:String x:Key="HeaderSupport">Support: </s:String>
+	<s:String x:Key="Desc">The ConverterPIX and paintjob features is added&#10;&#9;Next I might work on:&#10;&#9;Vehicle UV maps&#10;&#9;Model preview&#10;&#9;Tree view for the model list&#10;update might happen if someone cares</s:String>
+	
 	
 	<!--MOD Manifest-->
 	<s:String x:Key="TitleModManifest">MOD Manifest</s:String>
@@ -82,6 +113,7 @@
 	<s:String x:Key="ModelFilePathUKTip">File with _uk suffix will be auto filled</s:String>
 	<s:String x:Key="ExtModelFilePath">Exterior Model Path</s:String>
 	<s:String x:Key="ExtModelFilePathUK">Exterior Model Path for UK</s:String>
+	<s:String x:Key="ExtModelTip">Interior model will be used if not set.</s:String>
 	<s:String x:Key="ModelCollPath">Model Collision File Path</s:String>
 	<s:String x:Key="ModelSetExterior">Set Exterior Model</s:String>
 	<s:String x:Key="ModelNameTip">Might be invisible when over 12 characters</s:String>
@@ -108,11 +140,7 @@
 	<s:String x:Key="ButtonInitializeVehicles">Initialize Vehicles</s:String>
 	<s:String x:Key="ExpanderETS2">Euro Truck Simulator 2(Expand to apply/export to ETS2)</s:String>
 	<s:String x:Key="ExpanderATS">American Truck Simulator(Expand to apply/export to ATS)</s:String>
-	<s:String x:Key="VehicleID">Vehicle ID</s:String>
-	<s:String x:Key="VehicleProdYear">Production Year</s:String>
-	<s:String x:Key="VehicleName">Vehicle Name</s:String>
-	<s:String x:Key="VehicleManufacturer">Manufacturer</s:String>
-	<s:String x:Key="VehicleDescription">Vehicle Description</s:String>
+	<s:String x:Key="VehicleCodeName">Vehicle Codename</s:String>
 		<!--Side Button-->
 	<s:String x:Key="ButtonDeleteVehicle">Delete Vehicle</s:String>
 	<s:String x:Key="CheckBoxDeleteUnchecked">Delete Existing Unchecked Sii</s:String>
@@ -127,6 +155,11 @@
 	<s:String x:Key="PartTypeAftermarket">Aftermarket</s:String>
 	<s:String x:Key="PartTypeFactory">Factory</s:String>
 	<s:String x:Key="PartTypeLicensed">Licensed</s:String>
+	
+		<!--Electric Type-->
+	<s:String x:Key="ElectricTypeVehicle">vehicle</s:String>
+	<s:String x:Key="ElectricTypeAuxLight">aux_light</s:String>
+	<s:String x:Key="ElectricTypeVehicleInterior">vehicle_interior</s:String>
 	
 	
 		<!--AccAddonWindow.CS-->
@@ -192,7 +225,6 @@
 	<s:String x:Key="TitleAccessoryHookup">Create Accessory Hookup</s:String>
 	<s:String x:Key="DescAccessoryHookup">Hookup is used to set models(such as dashboard or windshield). "suitable_for" is reqiure to work</s:String>
 	<s:String x:Key="TitleAddonStorageStorage">Hookup Storage Name</s:String>
-	<s:String x:Key="HeaderHookupName">Hookup File</s:String>
 	<s:String x:Key="HeaderAccessoryName">Acc. Name</s:String>
 	<!--Suitable For-->
 	<s:String x:Key="SuitableForSetDashbrd">Dashboard Sets（set__dashbrd）</s:String>
@@ -341,6 +373,8 @@
 	<s:String x:Key="MaskGShort">Mask G</s:String>
 	<s:String x:Key="MaskBShort">Mask B</s:String>
 	
+	<s:String x:Key="MessageAskCreateTobj">Tobj file is not exist, create tobj file for this texture file?&#10;You can choose not to generate the file just for browsing, but making a mod still requires a tobj file.</s:String>
+	
 	<s:String x:Key="DialogFilterTextureFile">Texture File|*.tobj;*.dds;*.tga;*.jpg;*.jpeg;*.png</s:String>
 	<s:String x:Key="DialogResultFileOutsideProject">Please put the image into the project location first</s:String>
 	
@@ -416,14 +450,14 @@
 	<s:String x:Key="MessageExtractedFile">Extracted file successfully to:</s:String>
 	<s:String x:Key="MessageExtractFail">Failed to extract the file.&#10;Error:</s:String>
 	<s:String x:Key="MessageReadFileFailed">Unable to read this file</s:String>
+	<s:String x:Key="MessageLinkFileNotExist">This file seems not exist in this pack, you should find it in other packs</s:String>
 	
 
 
 
 	<!--Localization-->
 	<s:String x:Key="TitleSetupLocalization">Localization</s:String>
-	<s:String x:Key="TextUsageTips">Key-Value pair defined in here can be use by inputing "@@key@@", and the localized value will be shown in game&#10;Universal list will be the default value of all unset language(English will be set as the first priority default language)</s:String>
-	<s:String x:Key="TextLocaleName">Localization Filename(normally will use mod name):</s:String>
+	<s:String x:Key="TextUsageTips">Key-Value pair defined in here can be use by inputing "@@key@@", and the localized value will be shown in game&#10;Universal list will be the default value of all unset language(English will be set as the first priority default language)&#10;Locale file name needs to be unique enough, otherwise it might conflict with other local files.</s:String>
 	<s:String x:Key="ButtonCleanUpSame">Cleanup same language as Uni.</s:String>
 	<s:String x:Key="ButtonCleanUpSameTip">Because it will only work properly when creating localization files for each language</s:String>
 	<s:String x:Key="ButtonSyncWithUni">Sync with Universal</s:String>
@@ -444,34 +478,37 @@
 	
 	
 	
-	<!--卡车数据库迁移-->
+	<!--DB Migration-->
+	<s:String x:Key="TitleVehicleMigration">Vehicle Migration</s:String>
 	<s:String x:Key="TextOldVersion">Old Version</s:String>
 	<s:String x:Key="TextNewVersion">New Version</s:String>
-	<s:String x:Key="HeaderVehicleID">Vehicle ID</s:String>
-	<s:String x:Key="HeaderVehicleType">Vehicle Type</s:String>
-	<s:String x:Key="HeaderVehicleName">Vehicle Name</s:String>
-	<s:String x:Key="HeaderProdYear">Production Year</s:String>
-	<s:String x:Key="HeaderDescription">Description</s:String>
-	<s:String x:Key="HeaderCabins">Cabins</s:String>
-	<s:String x:Key="HeaderAccessories">Accessories</s:String>
 	<s:String x:Key="TitleUpdateMigrationCount">Update migration count</s:String>
-	<s:String x:Key="ButtonFinish">Finish</s:String>
-	
-	
-	
-	<!--About-->
-	<s:String x:Key="TitleAbout">About</s:String>
-	<s:String x:Key="HeaderVersion">Version: </s:String>
-	<s:String x:Key="HeaderPersonalHomepage">Personal Homepage: </s:String>
-	<s:String x:Key="HeaderSupport">Support: </s:String>
-	<s:String x:Key="Desc">I'm planning to make paint job definition and something aboout ConverterPIX&#10;update might happen if someone cares</s:String>
+	<s:String x:Key="MessageDBMigration">New Vehicle Data found, migrate old vehicles?</s:String>
+	<s:String x:Key="MessageDBMigrationResultSuccess">Migration Success!</s:String>
+	<s:String x:Key="MessageDBMigrationResultFailed">Migration Failed!</s:String>
+	<s:String x:Key="MessageDBClose">All unsaved data will be discarded, Are you sure to close?</s:String>
+	<s:String x:Key="MessageDBFinish1">Are you sure to continue?</s:String>
+	<s:String x:Key="MessageDBFinishWithUnselected">Unselected data will be discarded</s:String>
 
 
 	<!--Settings-->
+	<s:String x:Key="TitleSettings">Settings</s:String>
 	<s:String x:Key="AppLanguage">App Language</s:String>
 	<s:String x:Key="TipsCustomLanguage">Find the Language directory in the app's location, place a translated xaml file and rename in the specific format, then you can find the new language here.</s:String>
 	<s:String x:Key="ButtonLanguageDir">Language folder</s:String>
+	<s:String x:Key="ButtonGenerateSample">Generate Sample File</s:String>
 	<s:String x:Key="ColorMode">Color Mode</s:String>
+	<s:String x:Key="TitleUpdateCheckFrequency">Auto Update Check Frequency on Startup</s:String>
+	<s:String x:Key="MessageUpdateCheckFrequency">Select how often to check for updates on startup. (Will use history as check result)</s:String>
+	<s:String x:Key="ItemHourly">Every Hour</s:String>
+	<s:String x:Key="ItemDaily">Every Day</s:String>
+	<s:String x:Key="ItemWeekly">Every Week</s:String>
+	<s:String x:Key="ItemNever">Never</s:String>
+	<s:String x:Key="TitleShowUpdateNotification">Show Update Notification</s:String>
+	<s:String x:Key="ButtonAutoDetect">Auto Detect</s:String>
+	<s:String x:Key="TipsAutoDetect">Use Auto Detect to automaticaly find the game path for ETS2 and ATS</s:String>
+	<s:String x:Key="MessageAutoDetectNoSteamRegistry">Can't find registry data for steam</s:String>
+	<s:String x:Key="MessageAutoDetectResultFail">Can't find the path of the game:</s:String>
 	<s:String x:Key="ExternalToolsPath"> Path</s:String>
 	<s:String x:Key="FilterCPix">App|converter_pix.exe</s:String>
 	<s:String x:Key="MessageErrNotCPix">Selected file is not ConverterPix.exe</s:String>
@@ -481,9 +518,12 @@
 
 
 	<s:String x:Key="MessageTitleNotice">Notice</s:String>
+	<s:String x:Key="MessageTitleWarning">Warning</s:String>
 	<s:String x:Key="MessageTitleErr">Error</s:String>
 	<s:String x:Key="MessageTitleResult">Result</s:String>
 	<s:String x:Key="StatusEmpty">Empty</s:String>
+	
+	<s:String x:Key="ButtonFinish">Finish</s:String>
 	<s:String x:Key="ButtonOK">OK</s:String>
 	<s:String x:Key="ButtonCancel">Cancel</s:String>
 	<s:String x:Key="ButtonYes">Yes</s:String>
@@ -496,6 +536,7 @@
 	<s:String x:Key="ButtonSelect">Select</s:String>
 	<s:String x:Key="ButtonBrowse">Browse</s:String>
 	<s:String x:Key="ButtonDontShowAgain">Don't show again</s:String>
+	<s:String x:Key="ButtonRetry">Retry</s:String>
 	<s:String x:Key="CheckBoxSelectAll">Select All</s:String>
 
 	<s:String x:Key="FilterAllFiles">All Files|*.*</s:String>

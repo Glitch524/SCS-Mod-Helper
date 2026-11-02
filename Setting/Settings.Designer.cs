@@ -154,5 +154,17 @@ namespace SCS_Mod_Helper.Setting {
                 this["ShowUpdateAvailable"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int StoredExcpCount {
+            get {
+                return ((int)(this["StoredExcpCount"]));
+            }
+            set {
+                this["StoredExcpCount"] = value;
+            }
+        }
     }
 }

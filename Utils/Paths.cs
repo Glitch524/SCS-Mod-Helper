@@ -23,5 +23,9 @@ partial class Paths {
 	public static string VehiclesLanguageDir() => "Vehicles";
 
 
-	public static string ExcpPath() => $"Excp_{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.txt";
+	public static string SampleEnglishPath() => @"Language\en-US_English(US).txt";
+	public static string SampleExamplePath() => @"Language\example.txt";
+
+	public static string ExcpDir() => "Exceptions";
+	public static string ExcpPath() => @$"Exceptions\Excp_{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.txt";
 }

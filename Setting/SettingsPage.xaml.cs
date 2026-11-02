@@ -1,12 +1,15 @@
-﻿using Microsoft.Win32;
+﻿using CommunityToolkit.Mvvm.Input;
+using Microsoft.Win32;
 using SCS_Mod_Helper.Class.Base;
 using SCS_Mod_Helper.Utils;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Navigation;
 
 namespace SCS_Mod_Helper.Setting;
@@ -29,10 +32,7 @@ public partial class SettingsPage: BasePage {
 	}
 
 	private void ButtonClick(object sender, RoutedEventArgs e) {
-		if (sender == ButtonDirLanguage) {
-			var psi = new ProcessStartInfo(Paths.LanguageDir()) { UseShellExecute = true };
-			Process.Start(psi);
-		} else if (sender == ButtonCheckPath) {
+		if (sender == ButtonCheckPath) {
 			Binding.AutoDetectGamePath();
 		} else if (sender == ButtonBrowsePathETS2) {
 			Binding.ChooseGamePath(true);
@@ -81,6 +81,36 @@ public class SettingsBinding(Func<IBaseVisual> windowFunc): WindowBinding(window
 		}
 	}
 
+	public static ICommand OpenLanguageCommand => new RelayCommand<object>((o) => {
+		var psi = new ProcessStartInfo(Paths.LanguageDir()) { UseShellExecute = true };
+		Process.Start(psi);
+	});
+
+	public ICommand GenerateSampleCommand => new RelayCommand<object>((o) => GenerateSample());
+
+	private const string sampleEnglish = "SCS_Mod_Helper.Language.en-US_English(US).txt";
+	private const string sampleExample = "SCS_Mod_Helper.Language.example.txt";
+	private void GenerateSample() {
+		DirectoryInfo di = new(Paths.LanguageDir());
+		di.Create();
+
+		var englishPath = Paths.SampleEnglishPath();
+		var examplePath = Paths.SampleExamplePath();
+		File.Delete(englishPath);
+		File.Delete(examplePath);
+
+
+		var assembly = Assembly.GetExecutingAssembly();
+		using (Stream? stream = assembly.GetManifestResourceStream(sampleEnglish) ?? throw new FileNotFoundException("Default not found")) {
+			using FileStream fs = new(englishPath, FileMode.Create);
+			stream.CopyTo(fs);
+		}
+		using (Stream? stream = assembly.GetManifestResourceStream(sampleExample) ?? throw new FileNotFoundException("Default not found")) {
+			using FileStream fs = new(examplePath, FileMode.Create);
+			stream.CopyTo(fs);
+		}
+	}
+
 	public delegate void SetThemeWatcher(bool watch);
 	public SetThemeWatcher? ISetThemeWatcher = null;
 	public string CurrentTheme {
@@ -105,6 +135,14 @@ public class SettingsBinding(Func<IBaseVisual> windowFunc): WindowBinding(window
 		get => Instances.ShowUpdateAvailable;
 		set {
 			Instances.ShowUpdateAvailable = value;
+			InvokeChange();
+		}
+	}
+
+	public int StoredExceptionCount {
+		get => Instances.StoredExceptionCount;
+		set {
+			Instances.StoredExceptionCount = value;
 			InvokeChange();
 		}
 	}

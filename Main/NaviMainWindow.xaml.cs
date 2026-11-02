@@ -73,7 +73,7 @@ public partial class NaviMainWindow: BaseWindow {
 	}
 
 	private void Test(string? value) {
-		Debug.WriteLine(Paths.AccAddonFile("project", "id", "type", "name"));
+		throw new Exception("test");
 	}
 
 	private void NaviMainWindowLoaded(object sender, RoutedEventArgs e) => Navigation.Navigate("ModManifest");
