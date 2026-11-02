@@ -50,6 +50,7 @@
 			x:Name="TextDisplayName"
 			Grid.Row="1"
 			MinHeight="25.78"
+			AllowDrop="True"
 			Text="{Binding AccessoryData.DisplayName, UpdateSourceTrigger=PropertyChanged}"
 			TextChanged="TextDisplayNameChanged"
 			Padding="5,3"

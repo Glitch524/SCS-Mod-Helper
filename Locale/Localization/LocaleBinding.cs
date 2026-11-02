@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using SCS_Mod_Helper.Class.Base;
-using SCS_Mod_Helper.Utils;
 using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows;

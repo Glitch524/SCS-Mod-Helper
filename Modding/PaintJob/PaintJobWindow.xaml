@@ -245,6 +245,7 @@
 						Grid.ColumnSpan="2"
 						TextWrapping="Wrap"
 						MaxLines="1"
+						AllowDrop="True"
 						ClearButtonEnabled="False"
 						Text="{Binding PaintJobData.ModelName, UpdateSourceTrigger=PropertyChanged}"
 						VerticalAlignment="Top">
@@ -556,7 +557,9 @@
 							MaxLines="1"
 							TextWrapping="Wrap"
 							AllowDrop="True"
-							Drop="FileDrop">
+							PreviewDragOver="PreviewFileBoxDragOver"
+							Drop="FileDrop"
+							Tag="IconName">
 							<ui:TextBox.Style>
 								<Style
 									TargetType="ui:TextBox"
@@ -578,7 +581,9 @@
 							Grid.Column="1"
 							Click="ButtonChooseIcon"
 							AllowDrop="True"
+							PreviewDragOver="PreviewFileButtonDragOver"
 							Drop="FileDrop"
+							Tag="IconName"
 							Style="{StaticResource ButtonBorderless}">
 							<Viewbox>
 								<ui:SymbolIcon
@@ -1371,14 +1376,18 @@
 							TextWrapping="Wrap"
 							Style="{StaticResource TextBoxBorderless}"
 							AllowDrop="True"
-							Drop="FileDrop" />
+							PreviewDragOver="PreviewFileBoxDragOver"
+							Drop="FileDrop"
+							Tag="PaintJobTex"/>
 						<Button
 							x:Name="ButtonPaintJob"
 							Grid.Column="1"
 							Style="{StaticResource ButtonBorderless}"
 							Click="ButtonChooseTextureClick"
 							AllowDrop="True"
-							Drop="FileDrop">
+							PreviewDragOver="PreviewFileButtonDragOver"
+							Drop="FileDrop"
+							Tag="PaintJobTex">
 							<Viewbox>
 								<ui:SymbolIcon
 									Symbol="Folder16" />
@@ -1429,7 +1438,9 @@
 							TextWrapping="Wrap"
 							Style="{StaticResource TextBoxBorderless}"
 							AllowDrop="True"
-							Drop="FileDrop">
+							PreviewDragOver="PreviewFileBoxDragOver"
+							Drop="FileDrop"
+							Tag="BaseTexOverride">
 						</ui:TextBox>
 						<Button
 							x:Name="ButtonBaseTexOverride"
@@ -1437,7 +1448,9 @@
 							Style="{StaticResource ButtonBorderless}"
 							Click="ButtonChooseTextureClick"
 							AllowDrop="True"
-							Drop="FileDrop">
+							PreviewDragOver="PreviewFileButtonDragOver"
+							Drop="FileDrop"
+							Tag="BaseTexOverride">
 							<Viewbox>
 								<ui:SymbolIcon
 									Symbol="Folder16" />
@@ -1861,19 +1874,24 @@
 										Width="Auto" />
 								</Grid.ColumnDefinitions>
 								<ui:TextBox
+									Name="TextFlakeNoise"
 									Text="{Binding PaintJobData.FlakeNoise}"
 									PlaceholderText="/material/custom/flake_noise.tobj"
 									MaxLines="1"
 									TextWrapping="Wrap"
 									AllowDrop="True"
-									Drop="FileDrop" />
+									PreviewDragOver="PreviewFileBoxDragOver"
+									Drop="FileDrop"
+									Tag="FlakeNoise" />
 								<Button
 									x:Name="ButtonChooseFlakeNoise"
 									Grid.Column="2"
 									Style="{StaticResource ButtonBorderless}"
 									Click="ButtonChooseTextureClick"
 									AllowDrop="True"
-									Drop="FileDrop">
+									PreviewDragOver="PreviewFileButtonDragOver"
+									Drop="FileDrop"
+									Tag="FlakeNoise">
 									<Viewbox>
 										<ui:SymbolIcon
 											Symbol="Folder16" />
@@ -2602,7 +2620,9 @@
 								TextWrapping="WrapWithOverflow"
 								Style="{StaticResource TextBoxBorderless}"
 								AllowDrop="True"
-								Drop="FileDrop">
+								PreviewDragOver="PreviewFileBoxDragOver"
+								Drop="FileDrop"
+								Tag="AccTex">
 							</ui:TextBox>
 							<Button
 								x:Name="ButtonChooseAccTex"
@@ -2610,7 +2630,9 @@
 								Style="{StaticResource ButtonBorderless}"
 								Click="ButtonChooseTextureClick"
 								AllowDrop="True"
-								Drop="FileDrop">
+								PreviewDragOver="PreviewFileButtonDragOver"
+								Drop="FileDrop"
+								Tag="AccTex">
 								<Viewbox>
 									<ui:SymbolIcon
 										Symbol="Folder16" />

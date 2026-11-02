@@ -1,7 +1,11 @@
 ﻿using ColorPicker;
 using SCS_Mod_Helper.Class.Base;
+using SCS_Mod_Helper.Modding.Accessories;
 using SCS_Mod_Helper.Utils;
 using SCS_Mod_Helper.Vehicles;
+using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -75,21 +79,36 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 		private void ButtonChooseIcon(object sender, RoutedEventArgs e) => Binding.ChooseIcon();
 
 		private void ButtonChooseTextureClick(object sender, RoutedEventArgs e) {
-			int type;
-			if (sender == ButtonPaintJob) {
-				type = PaintJobBinding.TEX_PAINT_JOB;
-			} else if (sender == ButtonBaseTexOverride) {
-				type = PaintJobBinding.TEX_BASE_TEX_OVR;
-			} else if (sender == ButtonChooseFlakeNoise) {
-				type = PaintJobBinding.TEX_FLAKE_NOISE;
-			} else if (sender == ButtonChooseAccTex) {
-				type = PaintJobBinding.TEX_ACC_TEX;
-			} else { return; }
-			Binding.ChooseTex(type);
+			Binding.ChooseTex((string)((Control)sender).Tag);
 		}
 
-		private void FileDrop(object sender, DragEventArgs e) => Binding.FileDrop();
+		private void PreviewFileBoxDragOver(object sender, DragEventArgs e) {
+			if (e.Data.GetDataPresent(DataFormats.FileDrop)) {
+				AccessoryDataUtil.CheckDragFileType(e);
+			} else if (e.Data.GetDataPresent(DataFormats.Text)) {
+				e.Effects = DragDropEffects.Copy;
+			} else
+				e.Effects = DragDropEffects.None;
+			e.Handled = true;
+		}
 
+		private void PreviewFileButtonDragOver(object sender, DragEventArgs e) {
+			if (e.Data.GetDataPresent(DataFormats.FileDrop)) {
+				AccessoryDataUtil.CheckDragFileType(e);
+			} else
+				e.Effects = DragDropEffects.None;
+			e.Handled = true;
+		}
+
+		private void FileDrop(object sender, DragEventArgs e) {
+			if (e.Data.GetDataPresent(DataFormats.FileDrop)) {
+				var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+				if (files.Length > 0) {
+					string Tag = (string)((Control)sender).Tag;
+					Binding.FileDrop(Tag, files[0]);
+				}
+			}
+		}
 
 		private void ButtonChooseColor(object sender, RoutedEventArgs e) {
 			PopupColorPicker.PlacementTarget = (UIElement)sender;
@@ -158,6 +177,7 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 
 
 		private void AccListCheckBoxRequestBringIntoView(object sender, RequestBringIntoViewEventArgs e) => e.Handled = true;//用来避免点击acc listbox在点击checkbox时的自动滑动
+
 	}
 }
 

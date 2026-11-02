@@ -6,6 +6,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Xml.Linq;
+using Windows.UI;
 
 namespace SCS_Mod_Helper.Modding.Accessories;
 public static class AccessoryDataUtil {
@@ -41,6 +42,26 @@ public static class AccessoryDataUtil {
 		return Path.Combine(projectLocation, "vehicle");
 	}
 
+	public static void CheckDragFileType(DragEventArgs e) {
+		var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+		if (files.Length == 1) {
+			var file = new FileInfo(files[0]);
+			switch (file.Extension) {
+				case ".tobj":
+				case ".dds":
+				case ".tga":
+				case ".jpg":
+				case ".jpeg":
+				case ".png":
+					e.Effects = DragDropEffects.Copy;
+					return;
+				default:
+					break;
+			}
+		}
+		e.Effects = DragDropEffects.None;
+	}
+
 	//图标
 	public static string? ChooseIcon(Window window, out string? iconPath) {
 		iconPath = null;
@@ -62,26 +83,31 @@ public static class AccessoryDataUtil {
 				throw new(Util.GetString("MessageCreateAccessoryFail"));
 			if (fileDialog.ShowDialog() != true)
 				return null;
-			var path = fileDialog.FileName;
-			if (!path.StartsWith(projectLocation) || path.Length == projectLocation.Length) //必须在项目内
-				throw new(Util.GetString("MessageIconOutsideProject"));
-			var iconFile = new DirectoryInfo(path);
-			string pathCheck = path;
-			pathCheck = pathCheck.Replace(projectLocation, "");
-			if (pathCheck.Split(' ', '(', ')').Length > 1) //路径或文件名不能有空格或括号
-				throw new(Util.GetString("MessageIconInvalidChar"));
-			var siiIconLocation = CheckIconFileExistence(window, pathAcc, iconFile);
-			if (siiIconLocation == null)
-				return null;
-			siiIconLocation = siiIconLocation.Replace(pathAcc, "");
-			siiIconLocation = siiIconLocation.Replace('\\', '/');
-			siiIconLocation = siiIconLocation[..^4];
-			iconPath = iconFile.FullName;
-			return siiIconLocation;
+			CheckIconPath(window, fileDialog.FileName, out iconPath);
 		} catch (Exception ex) {
 			MessageBox.Show(window, ex.Message);
 		}
 		return null;
+	}
+	public static string? CheckIconPath(Window window, string path, out string? iconPath) {
+		iconPath = null;
+		string projectLocation = Instances.ProjectLocation;
+		var pathAcc = Paths.AccessoryIconDir();
+		if (!path.StartsWith(projectLocation) || path.Length == projectLocation.Length) //必须在项目内
+			throw new(Util.GetString("MessageIconOutsideProject"));
+		var iconFile = new DirectoryInfo(path);
+		string pathCheck = path;
+		pathCheck = pathCheck.Replace(projectLocation, "");
+		if (pathCheck.Split(' ', '(', ')').Length > 1) //路径或文件名不能有空格或括号
+			throw new(Util.GetString("MessageIconInvalidChar"));
+		var siiIconLocation = CheckIconFileExistence(window, pathAcc, iconFile);
+		if (siiIconLocation == null)
+			return null;
+		siiIconLocation = siiIconLocation.Replace(pathAcc, "");
+		siiIconLocation = siiIconLocation.Replace('\\', '/');
+		siiIconLocation = siiIconLocation[..^4];
+		iconPath = iconFile.FullName;
+		return siiIconLocation;
 	}
 
 	/// <summary>

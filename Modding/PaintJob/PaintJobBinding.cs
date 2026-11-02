@@ -6,6 +6,7 @@ using SCS_Mod_Helper.Modding.PaintJob.ColorMask;
 using SCS_Mod_Helper.Utils;
 using SCS_Mod_Helper.Vehicles;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -84,15 +85,28 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 		}
 
 
-		public void FileDrop() {
+		public void FileDrop(string tag, string filePath) {
+			Debug.WriteLine(tag + " " + filePath);
+			if (tag == "IconName") {
+				PaintJobData.CheckIcon(BindingWindow, filePath);
+			} else {
+				CheckTexPath(tag, filePath);
+			}
 
+			//icon是从material ui accessory开始
+			//首先，先确定文件处于项目文件夹内。
+			//TextIconName
+			//TextPaintJobTex
+			//TextBaseTexOverride
+			//ButtonChooseFlakeNoise
+			//TextAccTex
 		}
 
-		public const int TEX_PAINT_JOB = 0;
-		public const int TEX_BASE_TEX_OVR = 1;
-		public const int TEX_FLAKE_NOISE = 2;
-		public const int TEX_ACC_TEX = 3;
-		public void ChooseTex(int type) {
+		public const string TEX_PAINT_JOB = "PaintJobTex";
+		public const string TEX_BASE_TEX_OVR = "BaseTexOverride";
+		public const string TEX_FLAKE_NOISE = "FlakeNoise";
+		public const string TEX_ACC_TEX = "AccTex";
+		public void ChooseTex(string type) {
 			string title;
 			string filter = GetFilter("DialogFilterTextureFile");
 			switch (type) {
@@ -123,7 +137,7 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 			CheckTexPath(type, path);
 		}
 
-		public void CheckTexPath(int type, string path) {
+		public void CheckTexPath(string type, string path) {//先确定path的类型是否为指定类型，因为filedrop放的不一定
 			string projectLocation = Instances.ProjectLocation;
 			if (path.StartsWith(projectLocation)) {
 				string? imagePath;
