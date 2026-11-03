@@ -452,7 +452,8 @@
 							x:Name="ButtonBaseColor"
 							Grid.Column="1"
 							Style="{StaticResource ButtonBorderless}"
-							Click="ButtonChooseColor">
+							Click="ButtonChooseColor"
+							Tag="BaseColor">
 							<Viewbox>
 								<ui:SymbolIcon
 									Symbol="Color20" />
@@ -747,6 +748,7 @@
 										Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}"
 										VerticalAlignment="Stretch"
 										Click="ButtonChooseColor"
+										Tag="VariantColorBase"
 										d:Background="Black"
 										Background="{Binding PaintJobData.VariantColorBaseBrush, Mode=OneWay}"
 										Style="{StaticResource ColorButtonStyle}"/>
@@ -814,6 +816,7 @@
 										Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}"
 										VerticalAlignment="Stretch"
 										Click="ButtonChooseColor"
+										Tag="VariantColor1"
 										d:Background="Blue"
 										Background="{Binding PaintJobData.VariantColor1Brush, Mode=OneWay}"
 										Style="{StaticResource ColorButtonStyle}" />
@@ -881,6 +884,7 @@
 										Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}"
 										VerticalAlignment="Stretch"
 										Click="ButtonChooseColor"
+										Tag="VariantColor2"
 										d:Background="Lime"
 										Background="{Binding PaintJobData.VariantColor2Brush, Mode=OneWay}"
 										Style="{StaticResource ColorButtonStyle}">
@@ -925,6 +929,7 @@
 										Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}"
 										VerticalAlignment="Stretch"
 										Click="ButtonChooseColor"
+										Tag="VariantColor3"
 										d:Background="Red"
 										Background="{Binding PaintJobData.VariantColor3Brush, Mode=OneWay}"
 										Style="{StaticResource ColorButtonStyle}" />
@@ -1609,6 +1614,7 @@
 									x:Name="ButtonFlipColor"
 									Grid.Column="1"
 									Click="ButtonChooseColor"
+									Tag="FlipColor"
 									Style="{StaticResource ButtonBorderless}">
 									<Viewbox>
 										<ui:SymbolIcon
@@ -1712,6 +1718,7 @@
 									x:Name="ButtonFlakeColor"
 									Grid.Column="1"
 									Click="ButtonChooseColor"
+									Tag="FlakeColor"
 									Style="{StaticResource ButtonBorderless}">
 									<Viewbox>
 										<ui:SymbolIcon
@@ -2096,6 +2103,7 @@
 								x:Name="ButtonMaskR"
 								Grid.Column="1"
 								Click="ButtonChooseColor"
+								Tag="MaskRColor"
 								Style="{StaticResource ButtonBorderless}">
 								<Viewbox>
 									<ui:SymbolIcon
@@ -2232,6 +2240,7 @@
 								x:Name="ButtonMaskG"
 								Grid.Column="1"
 								Click="ButtonChooseColor"
+								Tag="MaskGColor"
 								Style="{StaticResource ButtonBorderless}">
 								<Viewbox>
 									<ui:SymbolIcon
@@ -2367,6 +2376,7 @@
 								x:Name="ButtonMaskB"
 								Grid.Column="1"
 								Click="ButtonChooseColor"
+								Tag="MaskBColor"
 								Style="{StaticResource ButtonBorderless}">
 								<Viewbox>
 									<ui:SymbolIcon

@@ -5,16 +5,13 @@ using SCS_Mod_Helper.Modding.Accessories;
 using SCS_Mod_Helper.Modding.PaintJob.ColorMask;
 using SCS_Mod_Helper.Utils;
 using SCS_Mod_Helper.Vehicles;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Wpf.Ui.Extensions;
 
 namespace SCS_Mod_Helper.Modding.PaintJob {
 	public partial class PaintJobBinding: WindowBinding {

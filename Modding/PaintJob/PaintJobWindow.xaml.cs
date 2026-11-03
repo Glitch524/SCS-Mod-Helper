@@ -111,37 +111,17 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 		}
 
 		private void ButtonChooseColor(object sender, RoutedEventArgs e) {
-			PopupColorPicker.PlacementTarget = (UIElement)sender;
-			PopupColorPicker.IsOpen = true;
-			string property;
-			if (sender == ButtonBaseColor) {
-				property = nameof(Binding.PaintJobData.BaseColor);
-			} else if (sender == ButtonVariantBase) {
-				property = nameof(Binding.PaintJobData.VariantColorBase);
-			} else if (sender == ButtonVariant1) {
-				property = nameof(Binding.PaintJobData.VariantColor1);
-			} else if (sender == ButtonVariant2) {
-				property = nameof(Binding.PaintJobData.VariantColor2);
-			} else if (sender == ButtonVariant3) {
-				property = nameof(Binding.PaintJobData.VariantColor3);
-			} else if (sender == ButtonFlipColor) {
-				property = nameof(Binding.PaintJobData.FlipColor);
-			} else if (sender == ButtonFlakeColor) {
-				property = nameof(Binding.PaintJobData.FlakeColor);
-			} else if (sender == ButtonMaskR) {
-				property = nameof(Binding.PaintJobData.MaskRColor);
-			} else if (sender == ButtonMaskG) {
-				property = nameof(Binding.PaintJobData.MaskGColor);
-			} else if (sender == ButtonMaskB) {
-				property = nameof(Binding.PaintJobData.MaskBColor);
-			} else
-				throw new ArgumentException("");
-			Binding colorBinding = new() {
-				Source = Binding.PaintJobData,
-				Path = new PropertyPath(property.ToString()),
-				Mode = BindingMode.TwoWay
-			};
-			VehicleColorPicker.SetBinding(PickerControlBase.SelectedColorProperty, colorBinding);
+			if (sender is Button button) {
+				PopupColorPicker.PlacementTarget = button;
+				PopupColorPicker.IsOpen = true;
+				string property = (string) button.Tag;
+				Binding colorBinding = new() {
+					Source = Binding.PaintJobData,
+					Path = new PropertyPath(property.ToString()),
+					Mode = BindingMode.TwoWay
+				};
+				VehicleColorPicker.SetBinding(PickerControlBase.SelectedColorProperty, colorBinding);
+			}
 		}
 
 		private void ColorVariantClick(object sender, RoutedEventArgs e) {

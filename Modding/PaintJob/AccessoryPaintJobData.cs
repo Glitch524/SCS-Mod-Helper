@@ -590,7 +590,7 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 			}
 		}
 
-		private float? mFlipStrength = 0.27f;
+		private float? mFlipStrength = null;
 		public float? FlipStrength {//金属漆效果强度
 			get => mFlipStrength;
 			set {
@@ -629,7 +629,7 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 			}
 		}
 
-		private float? mFlakeShininess = 50f;
+		private float? mFlakeShininess = null;
 		public float? FlakeShininess {//鳞片漆光泽度
 			get => mFlakeShininess;
 			set {
@@ -638,7 +638,7 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 			}
 		}
 
-		private float? mFlakeDensity = 1f;
+		private float? mFlakeDensity = null;
 		public float? FlakeDensity {//鳞片密度
 			get => mFlakeDensity;
 			set {
@@ -647,7 +647,7 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 			}
 		}
 
-		private float? mFlakeClearcoatRolloff = 2.2f;
+		private float? mFlakeClearcoatRolloff = null;
 		public float? FlakeClearcoatRolloff {//鳞片漆清漆层滚落效应		调整透明涂层镜面反射高光的锐度。值越高，边缘越清晰。
 			get => mFlakeClearcoatRolloff;
 			set {
@@ -656,7 +656,7 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 			}
 		}
 
-		private float? mFlakeUVScale = 32f;
+		private float? mFlakeUVScale = null;
 		public float? FlakeUVScale {//UV比率
 			get => mFlakeUVScale;
 			set {
@@ -665,7 +665,7 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 			}
 		}
 
-		private float? mFlakeVRatio = 1f;
+		private float? mFlakeVRatio = null;
 		public float? FlakeVRatio {//UV比率
 			get => mFlakeVRatio;
 			set {
@@ -675,7 +675,7 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 		}
 
 		public const string DefaultFlakeNoise = "/material/custom/flake_noise.tobj";
-		private string mFlakeNoise = "/material/custom/flake_noise.tobj";
+		private string mFlakeNoise = string.Empty;
 		public string FlakeNoise {//珠光噪声图
 			get => mFlakeNoise;
 			set {
