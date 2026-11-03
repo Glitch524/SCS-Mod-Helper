@@ -82,6 +82,7 @@ public static partial class Instances {
 		get => mConverterPixPath;
 		set {
 			mConverterPixPath = value;
+			mConverterPixExe = null;
 			Settings.Default.ConverterPixPath = value;
 			Settings.Default.Save();
 		}
