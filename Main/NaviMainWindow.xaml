@@ -68,6 +68,13 @@
 					CommandParameter="ConverterPIX"
 					Cursor="Hand" />
 				<ui:NavigationViewItem
+					Content="{DynamicResource TitleShortcut}"
+					Icon="{ui:SymbolIcon Send20}"
+					Command="{Binding WindowCommand}"
+					Cursor="Hand"
+					TargetPageType="{x:Type local:ShortcutPage}"
+					TargetPageTag="Shortcuts" />
+				<ui:NavigationViewItem
 					Content="Test"
 					Icon="{ui:SymbolIcon Lightbulb20}"
 					Command="{Binding TestCommand}"

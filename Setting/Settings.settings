@@ -38,5 +38,8 @@
     <Setting Name="StoredExcpCount" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">10</Value>
     </Setting>
+    <Setting Name="CommonModPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

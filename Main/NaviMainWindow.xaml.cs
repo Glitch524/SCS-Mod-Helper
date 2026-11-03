@@ -28,7 +28,7 @@ public partial class NaviMainWindow: BaseWindow {
 		VehiclesIO.CheckDBMigration(this);
 		_ = Task.Delay(100).ContinueWith(_ => SystemVerification.StorageAsync());
 
-		Binding.CheckUpdate();
+		Binding.AutoCheckUpdate();
 	}
 
 	private void OpenWindow(string? type) {

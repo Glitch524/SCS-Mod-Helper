@@ -79,12 +79,7 @@ public static partial class Instances {
 
 	private static string mConverterPixPath = Settings.Default.ConverterPixPath;
 	public static string ConverterPixPath {
-		get {
-			if (mConverterPixPath.Length == 0)
-				return Util.GetString("StatusEmpty");
-			return mConverterPixPath;
-		}
-
+		get => mConverterPixPath;
 		set {
 			mConverterPixPath = value;
 			Settings.Default.ConverterPixPath = value;
@@ -107,14 +102,22 @@ public static partial class Instances {
 	private static string mConversionToolsPath = Settings.Default.ConversionToolsPath;
 	public static string ConversionToolsPath {
 		get {
-			if (mConversionToolsPath.Length == 0)
-				return Util.GetString("StatusEmpty");
 			return mConversionToolsPath;
 		}
 
 		set {
 			mConversionToolsPath = value;
 			Settings.Default.ConversionToolsPath = value;
+			Settings.Default.Save();
+		}
+	}
+
+	private static string mCommonModPath = Settings.Default.CommonModPath;
+	public static string CommonModPath {
+		get => mCommonModPath;
+		set {
+			mCommonModPath = value;
+			Settings.Default.CommonModPath = value;
 			Settings.Default.Save();
 		}
 	}

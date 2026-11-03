@@ -289,14 +289,11 @@
 									Text="{DynamicResource ExternalToolsPath}" />
 								<Run
 									Text=" " />
-								<Hyperlink
-									Click="FilePathClick"
-									Tag="{Binding ETS2GamePath}">
-									<Run
-										Text="{Binding ETS2GamePath}"
-										FontWeight="Bold"
-										d:Text="ETS2 Path" />
-								</Hyperlink>
+								<Run
+									FontWeight="Bold"
+									Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+									Text="{Binding ETS2GamePath}"
+									d:Text="ETS2 Path" />
 							</ui:TextBlock>
 						</StackPanel>
 					</ui:CardControl.Header>
@@ -324,14 +321,11 @@
 									Text="{DynamicResource ExternalToolsPath}" />
 								<Run
 									Text=" " />
-								<Hyperlink
-									Click="FilePathClick"
-									Tag="{Binding ATSGamePath}">
-									<Run
-										Text="{Binding ATSGamePath}"
-										FontWeight="Bold"
-										d:Text="ATS Path" />
-								</Hyperlink>
+								<Run
+									FontWeight="Bold"
+									Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+									Text="{Binding ATSGamePath}"
+									d:Text="ATS Path" />
 							</ui:TextBlock>
 						</StackPanel>
 					</ui:CardControl.Header>
@@ -418,6 +412,35 @@
 					</ui:CardControl.Header>
 					<Button
 						x:Name="ButtonConversionTools"
+						Width="150"
+						Content="{DynamicResource ButtonBrowse}"
+						Padding="0,5,0,5"
+						Click="ButtonClick" />
+				</ui:CardControl>
+				<ui:CardControl>
+					<ui:CardControl.Header>
+						<StackPanel
+							Style="{StaticResource CardPanelStyle}">
+							<Viewbox
+								Style="{StaticResource CardControlIconStyle}">
+								<ui:SymbolIcon
+									Symbol="FolderZip20" />
+							</Viewbox>
+							<ui:TextBlock
+								Style="{StaticResource CardTitleStyle}">
+								<Run
+									Text="{DynamicResource TitleCommonModFolder}" />
+								<Run
+									Text="{DynamicResource ExternalToolsPath}" />
+								<Run
+									Text="{Binding CommonModPath}"
+									Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+									d:Text="Common Mod Folder Path" />
+							</ui:TextBlock>
+						</StackPanel>
+					</ui:CardControl.Header>
+					<Button
+						x:Name="ButtonModFolder"
 						Width="150"
 						Content="{DynamicResource ButtonBrowse}"
 						Padding="0,5,0,5"

@@ -1,0 +1,191 @@
+﻿<base:BasePage
+	x:Class="SCS_Mod_Helper.Main.ShortcutPage"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+	xmlns:base="clr-namespace:SCS_Mod_Helper.Class.Base"
+	xmlns:local="clr-namespace:SCS_Mod_Helper.Main"
+	mc:Ignorable="d"
+	Title="ShortcutPage"
+	d:DesignWidth="991"
+	d:Background="White">
+	<base:BasePage.Resources>
+		<Style
+			x:Key="ButtonStyle"
+			TargetType="Button"
+			BasedOn="{StaticResource {x:Type Button}}">
+			<Setter
+				Property="Width"
+				Value="130" />
+			<Setter
+				Property="Background"
+				Value="{x:Null}" />
+			<Setter
+				Property="BorderThickness"
+				Value="0" />
+			<Setter
+				Property="Padding"
+				Value="5" />
+			<Setter
+				Property="Cursor"
+				Value="Hand" />
+			<Setter
+				Property="VerticalContentAlignment"
+				Value="Top" />
+			<Setter
+				Property="VerticalAlignment"
+				Value="Stretch" />
+			<EventSetter
+				Event="Click"
+				Handler="ButtonClick" />
+		</Style>
+	</base:BasePage.Resources>
+	<StackPanel>
+		<Expander
+			Header="{DynamicResource ETS2}"
+			IsExpanded="True">
+			<WrapPanel>
+				<Button
+					x:Name="ButtonGameETS2"
+					Style="{StaticResource ButtonStyle}"
+					Tag="Game|ETS2">
+					<StackPanel>
+						<Viewbox
+							Width="120"
+							Height="120">
+							<Image
+								Source="/Images/Icon_ETS2.png" />
+						</Viewbox>
+						<TextBlock
+							Text="{DynamicResource TitleGameLocation}"
+							TextWrapping="Wrap"
+							Margin="5,0"
+							TextAlignment="Center" />
+					</StackPanel>
+				</Button>
+				<Button
+					x:Name="ButtonDocumentPathETS2"
+					Style="{StaticResource ButtonStyle}"
+					Tag="Document|ETS2">
+					<StackPanel>
+						<Viewbox
+							Width="120"
+							Height="120">
+							<ui:SymbolIcon
+								Symbol="DocumentTextToolbox20" />
+						</Viewbox>
+						<TextBlock
+							Text="{DynamicResource TitleDocumentFolder}"
+							TextWrapping="Wrap"
+							Margin="5,0"
+							TextAlignment="Center" />
+					</StackPanel>
+				</Button>
+				<Button
+					x:Name="ButtonWorkshopPathETS2"
+					Style="{StaticResource ButtonStyle}"
+					Tag="Workshop|ETS2">
+					<StackPanel>
+						<Viewbox
+							Width="120"
+							Height="120">
+							<ui:SymbolIcon
+								Symbol="Wrench20" />
+						</Viewbox>
+						<TextBlock
+							Text="{DynamicResource TitleWorkshopFolder}"
+							TextWrapping="Wrap"
+							Margin="5,0"
+							TextAlignment="Center" />
+					</StackPanel>
+				</Button>
+			</WrapPanel>
+		</Expander>
+		<Expander
+			Header="{DynamicResource ATS}"
+			IsExpanded="True">
+			<WrapPanel>
+				<Button
+					x:Name="ButtonGameATS"
+					Style="{StaticResource ButtonStyle}"
+					Tag="Game|ATS">
+					<StackPanel>
+						<Viewbox
+							Width="120"
+							Height="120">
+							<Image
+								Source="/Images/Icon_ATS.png" />
+						</Viewbox>
+						<TextBlock
+							Text="{DynamicResource TitleGameLocation}"
+							TextWrapping="Wrap"
+							Margin="5,0"
+							TextAlignment="Center" />
+					</StackPanel>
+				</Button>
+				<Button
+					x:Name="ButtonDocumentPathATS"
+					Style="{StaticResource ButtonStyle}"
+					Tag="Document|ATS">
+					<StackPanel>
+						<Viewbox
+							Width="120"
+							Height="120">
+							<ui:SymbolIcon
+								Symbol="DocumentTextToolbox20" />
+						</Viewbox>
+						<TextBlock
+							Text="{DynamicResource TitleDocumentFolder}"
+							TextWrapping="Wrap"
+							Margin="5,0"
+							TextAlignment="Center" />
+					</StackPanel>
+				</Button>
+				<Button
+					x:Name="ButtonWorkshopPathATS"
+					Style="{StaticResource ButtonStyle}"
+					Tag="Workshop|ATS">
+					<StackPanel>
+						<Viewbox
+							Width="120"
+							Height="120">
+							<ui:SymbolIcon
+								Symbol="Wrench20" />
+						</Viewbox>
+						<TextBlock
+							Text="{DynamicResource TitleWorkshopFolder}"
+							TextWrapping="Wrap"
+							Margin="5,0"
+							TextAlignment="Center" />
+					</StackPanel>
+				</Button>
+			</WrapPanel>
+		</Expander>
+		<Expander
+			Header="{DynamicResource TitleOthers}"
+			IsExpanded="True">
+			<WrapPanel>
+				<Button
+					x:Name="ButtonCommonModPath"
+					Style="{StaticResource ButtonStyle}"
+					Tag="CommonMod|">
+					<StackPanel>
+						<Viewbox
+							Width="120"
+							Height="120">
+							<ui:SymbolIcon
+								Symbol="FolderZip20" />
+						</Viewbox>
+						<TextBlock
+							Text="{DynamicResource TitleCommonModFolder}"
+							TextWrapping="Wrap"
+							Margin="5,0"
+							TextAlignment="Center" />
+					</StackPanel>
+				</Button>
+			</WrapPanel>
+		</Expander>
+	</StackPanel>
+</base:BasePage>

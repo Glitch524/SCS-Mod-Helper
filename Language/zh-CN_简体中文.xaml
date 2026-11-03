@@ -493,6 +493,18 @@
 	<s:String x:Key="MessageDBFinishWithUnselected">未选择的数据将被丢弃</s:String>
 	
 	
+	
+	<!--快捷方式-->
+	<s:String x:Key="TitleShortcut">快捷方式</s:String>
+	<s:String x:Key="TitleGameLocation">游戏文件夹</s:String>
+	<s:String x:Key="TitleDocumentFolder">文档文件夹</s:String>
+	<s:String x:Key="TitleWorkshopFolder">创意工坊文件夹</s:String>
+	<s:String x:Key="TitleOthers">其他</s:String>
+	<s:String x:Key="MessageSetPathFirst">请先在设置内设定好文件夹路径</s:String>
+	<s:String x:Key="MessageFolderNotExist">选择的文件夹不存在</s:String>
+	
+	
+	
 	<!--设置-->
 	<s:String x:Key="TitleSettings">设置</s:String>
 	<s:String x:Key="TitlePaths">路径</s:String>
@@ -514,9 +526,8 @@
 	<s:String x:Key="MessageAutoDetectNoSteamRegistry">无法找到Steam的注册表</s:String>
 	<s:String x:Key="MessageAutoDetectResultFail">无法找到以下游戏的路径：</s:String>
 	<s:String x:Key="ExternalToolsPath">路径</s:String>
-	<s:String x:Key="FilterCPix">应用程序|converter_pix.exe</s:String>
-	<s:String x:Key="MessageErrNotCPix">选择的文件不是ConverterPix.exe</s:String>
 	<s:String x:Key="MessageErrDifferentStructure">选择的文件路径结构似乎有所不同，是否继续使用？</s:String>
+	<s:String x:Key="TitleCommonModFolder">常用Mod文件夹</s:String>
 	
 	
 	

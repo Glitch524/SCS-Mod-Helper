@@ -492,6 +492,18 @@
 	<s:String x:Key="MessageDBFinish1">Are you sure to continue?</s:String>
 	<s:String x:Key="MessageDBFinishWithUnselected">Unselected data will be discarded</s:String>
 
+	
+	
+	<!--Shortcut-->
+	<s:String x:Key="TitleShortcut">Shortcut</s:String>
+	<s:String x:Key="TitleGameLocation">Game Location</s:String>
+	<s:String x:Key="TitleDocumentFolder">Document Folder</s:String>
+	<s:String x:Key="TitleWorkshopFolder">Workshop Folder</s:String>
+	<s:String x:Key="TitleOthers">Others</s:String>
+	<s:String x:Key="MessageSetPathFirst">Please set the Folder path in Settings first</s:String>
+	<s:String x:Key="MessageFolderNotExist">The chosen folder is not exist</s:String>
+	
+	
 
 	<!--Settings-->
 	<s:String x:Key="TitleSettings">Settings</s:String>
@@ -514,9 +526,8 @@
 	<s:String x:Key="MessageAutoDetectNoSteamRegistry">Can't find registry data for steam</s:String>
 	<s:String x:Key="MessageAutoDetectResultFail">Can't find the path of the game:</s:String>
 	<s:String x:Key="ExternalToolsPath"> Path</s:String>
-	<s:String x:Key="FilterCPix">App|converter_pix.exe</s:String>
-	<s:String x:Key="MessageErrNotCPix">Selected file is not ConverterPix.exe</s:String>
 	<s:String x:Key="MessageErrDifferentStructure">Selected file's directory seems different, continue?</s:String>
+	<s:String x:Key="TitleCommonModFolder">Common Mod Folder</s:String>
 
 
 

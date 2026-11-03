@@ -42,6 +42,8 @@ public partial class SettingsPage: BasePage {
 			Binding.ChooseConverterPixPath();
 		} else if (sender == ButtonConversionTools) {
 			Binding.ChooseConversionToolsPath();
+		} else if (sender == ButtonModFolder) {
+			Binding.ChooseCommonModPath();
 		}
 	}
 
@@ -51,13 +53,6 @@ public partial class SettingsPage: BasePage {
 			UseShellExecute = true
 		});
 		e.Handled = true;
-	}
-
-	private void FilePathClick(object sender, RoutedEventArgs e) {
-		if (sender is Hyperlink hyperlink) {
-			var path = hyperlink.Tag as string;
-			Process.Start("explorer.exe", $"/select,\"{path}\"");
-		}
 	}
 }
 
@@ -90,7 +85,7 @@ public class SettingsBinding(Func<IBaseVisual> windowFunc): WindowBinding(window
 
 	private const string sampleEnglish = "SCS_Mod_Helper.Language.en-US_English(US).txt";
 	private const string sampleExample = "SCS_Mod_Helper.Language.example.txt";
-	private void GenerateSample() {
+	private static void GenerateSample() {
 		DirectoryInfo di = new(Paths.LanguageDir());
 		di.Create();
 
@@ -284,7 +279,11 @@ public class SettingsBinding(Func<IBaseVisual> windowFunc): WindowBinding(window
 	}
 
 	public string ConverterPixPath {
-		get => Instances.ConverterPixPath;
+		get {
+			if (Instances.ConverterPixPath.Length == 0)
+				return Util.GetString("StatusEmpty");
+			return Instances.ConverterPixPath;
+		}
 		set {
 			Instances.ConverterPixPath = value;
 			InvokeChange();
@@ -315,7 +314,11 @@ public class SettingsBinding(Func<IBaseVisual> windowFunc): WindowBinding(window
 	}
 
 	public string ConversionToolsPath {
-		get => Instances.ConversionToolsPath;
+		get {
+			if (Instances.ConversionToolsPath.Length == 0)
+				return Util.GetString("StatusEmpty");
+			return Instances.ConversionToolsPath;
+		}
 		set {
 			Instances.ConversionToolsPath = value;
 			InvokeChange();
@@ -331,6 +334,30 @@ public class SettingsBinding(Func<IBaseVisual> windowFunc): WindowBinding(window
 		if (folderDialog.ShowDialog() == true) {
 			var path = folderDialog.FolderName;
 			ConversionToolsPath = path;
+		}
+	}
+
+	public string CommonModPath {
+		get {
+			if (Instances.CommonModPath.Length == 0)
+				return Util.GetString("StatusEmpty");
+			return Instances.CommonModPath;
+		}
+		set {
+			Instances.CommonModPath = value;
+			InvokeChange();
+		}
+	}
+	public void ChooseCommonModPath() {
+		string start = ConversionToolsPath;
+		var folderDialog = new OpenFolderDialog {
+			Multiselect = false,
+			InitialDirectory = start,
+			Title = "Common Mod Path" + GetString("ExternalToolsPath"),
+		};
+		if (folderDialog.ShowDialog() == true) {
+			var path = folderDialog.FolderName;
+			CommonModPath = path;
 		}
 	}
 }

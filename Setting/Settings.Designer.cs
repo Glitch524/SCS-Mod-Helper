@@ -166,5 +166,17 @@ namespace SCS_Mod_Helper.Setting {
                 this["StoredExcpCount"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string CommonModPath {
+            get {
+                return ((string)(this["CommonModPath"]));
+            }
+            set {
+                this["CommonModPath"] = value;
+            }
+        }
     }
 }
