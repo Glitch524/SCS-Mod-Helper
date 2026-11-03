@@ -74,7 +74,7 @@ namespace SCS_Mod_Helper.Main {
 		public ICommand RetryUpdateCheckCommand => new RelayCommand<object>((o) => CheckUpdate());
 
 		public void CheckUpdate() {
-			if (Settings.Default.UpdateCheckFrequency == "never")
+			if (Checking)
 				return;
 			Task.Run(async () => {
 				Checking = true;
@@ -94,6 +94,12 @@ namespace SCS_Mod_Helper.Main {
 				}
 				Checking = false;
 			});
+		}
+
+		public void AutoCheckUpdate() {
+			if (Settings.Default.UpdateCheckFrequency == "never")
+				return;
+			CheckUpdate();
 		}
 
 		public static bool IsCN => Instances.CurrentLanguage == "zh-CN";

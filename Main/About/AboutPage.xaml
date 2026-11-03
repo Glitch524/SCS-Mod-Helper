@@ -204,16 +204,13 @@
 												<Style
 													TargetType="Button"
 													BasedOn="{StaticResource {x:Type Button}}">
-													<Setter
-														Property="Visibility"
-														Value="Collapsed" />
 													<Style.Triggers>
 														<DataTrigger
-															Binding="{Binding UpdateCheckFailed}"
+															Binding="{Binding Checking}"
 															Value="True">
 															<Setter
 																Property="Visibility"
-																Value="Visible" />
+																Value="Collapsed" />
 														</DataTrigger>
 													</Style.Triggers>
 												</Style>
