@@ -11,7 +11,7 @@
 	d:DataContext="{d:DesignInstance Type=local:ConverterPixBinding}"
 	mc:Ignorable="d"
 	WindowStartupLocation="CenterOwner"
-	Title="TextReaderWindow" 
+	Title="{DynamicResource TitleTextReader}" 
 	Height="450" 
 	Width="800">
     <Grid
@@ -41,8 +41,9 @@
 		</Grid.ColumnDefinitions>
 		<ui:TitleBar
 			x:Name="TitleBar"
+			Icon="{ui:SymbolIcon BookOpen20, FontSize=20}"
 			Grid.ColumnSpan="3"
-			Title="TextReaderWindow">
+			Title="{DynamicResource TitleTextReader}">
 		</ui:TitleBar>
 		<TextBlock
 			Grid.Row="1"

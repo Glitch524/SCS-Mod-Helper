@@ -22,7 +22,8 @@
 				Height="*" />
 		</Grid.RowDefinitions>
 		<ui:TitleBar
-			Title="{DynamicResource TitlePhysicsToyData}" />
+			Title="{DynamicResource TitlePhysicsToyData}"
+			Icon="{ui:SymbolIcon PersonRunning20, FontSize=20}"/>
 		<Grid
 			x:Name="GridMain"
 			Grid.Row="1"

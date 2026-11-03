@@ -232,7 +232,8 @@
 				Height="*" />
 		</Grid.RowDefinitions>
 		<ui:TitleBar
-			Title="{DynamicResource TitleAccessoryAddon}" />
+			Title="{DynamicResource TitleAccessoryAddon}"
+			Icon="{ui:SymbolIcon Chess20, FontSize=20}"/>
 		<Grid
 			Grid.Row="1"
 			Margin="10,0,10,10">

@@ -116,7 +116,8 @@
 				Height="*" />
 		</Grid.RowDefinitions>
 		<ui:TitleBar
-			Title="{DynamicResource TitleAccessoryHookup}" />
+			Title="{DynamicResource TitleAccessoryHookup}"
+			Icon="{ui:SymbolIcon BoardGames20, FontSize=20}" />
 		<Grid
 			x:Name="GridMain"
 			Margin="10,0,0,10"

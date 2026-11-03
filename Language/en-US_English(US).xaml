@@ -422,6 +422,7 @@
 
 	<!--Converter PIX-->
 	<s:String x:Key="TitleConverterPIX">Converter PIX</s:String>
+	<s:String x:Key="TitleTextReader">Text Reader</s:String>
 	<s:String x:Key="TitleModPath">Mod Path:</s:String>
 	<s:String x:Key="TitleCustomExportPath">Custom Export Path:</s:String>
 	<s:String x:Key="DialogFilterMod">"SCS Mod File|*.scs;*.zip|All Files|*.*"</s:String>

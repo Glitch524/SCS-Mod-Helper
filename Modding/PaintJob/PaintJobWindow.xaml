@@ -117,6 +117,7 @@
 		</Grid.RowDefinitions>
 		<ui:TitleBar
 			Title="{DynamicResource TitleSetupPaintJob}"
+			Icon="{ui:SymbolIcon PaintBrush20, FontSize=20}"
 			VerticalAlignment="Center" />
 		<Popup
 			x:Name="PopupColorPicker"

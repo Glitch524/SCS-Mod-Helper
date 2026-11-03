@@ -422,6 +422,7 @@
 
 	<!--Converter PIX-->
 	<s:String x:Key="TitleConverterPIX">Converter PIX</s:String>
+	<s:String x:Key="TitleTextReader">文本查看器</s:String>
 	<s:String x:Key="TitleModPath">Mod路径：</s:String>
 	<s:String x:Key="TitleCustomExportPath">自定义导出路径：</s:String>
 	<s:String x:Key="DialogFilterMod">"SCS Mod文件|*.scs;*.zip|所有文件|*.*"</s:String>

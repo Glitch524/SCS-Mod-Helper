@@ -168,8 +168,7 @@ public class PaintJobSCSIO(): SCSIO {
 		if (data.OverrideList.Count == 0)
 			return;
 		var vehicleID = data.CurrentVehicle!.VehicleID;
-		var paintJobName = data.ModelName;
-		var siiFile = Paths.SimplePaintJobFile(vehicleID, paintJobName);
+		var siiFile = Paths.SimplePaintJobFile(vehicleID, data.ModelName);
 		using StreamWriter sw = new(siiFile);
 		WriteFileStructure(sw, () => {
 			for (int i = 0; i < data.OverrideList.Count; i++) {

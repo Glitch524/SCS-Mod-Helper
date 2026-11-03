@@ -25,7 +25,8 @@
 				Height="*" />
 		</Grid.RowDefinitions>
 		<ui:TitleBar
-			Title="{DynamicResource TitleCreateHookupSii}" />
+			Title="{DynamicResource TitleCreateHookupSii}"
+			Icon="{ui:SymbolIcon Wrench20, FontSize=20}" />
 		<StackPanel
 			x:Name="PanelMain"
 			Grid.Row="1"
