@@ -32,13 +32,17 @@ public class Vehicle(
 		}
 	}
 
+	public const string VEHICLE_TYPE_TRUCK = "truck";
+	public const string VEHICLE_TYPE_TRAILER = "trailer";
+	public const string VEHICLE_TYPE_CAR = "car";
+	public const string VEHICLE_TYPE_COACH = "coach";
 	private readonly string mVehicleType = vehicleType;
 	public string VehicleType => mVehicleType;
 	public string VehicleTypeName => VehicleType.ToLower() switch {
-		"truck" => GetString("VehicleTypeTruck"),
-		"trailer" => GetString("VehicleTypeTrailer"),
-		"car" => GetString("VehicleTypeCar"),
-		"coach" => GetString("VehicleTypeCoach"),
+		VEHICLE_TYPE_TRUCK => GetString("VehicleTypeTruck"),
+		VEHICLE_TYPE_TRAILER => GetString("VehicleTypeTrailer"),
+		VEHICLE_TYPE_CAR => GetString("VehicleTypeCar"),
+		VEHICLE_TYPE_COACH => GetString("VehicleTypeCoach"),
 		_ => VehicleType
 	};
 
@@ -104,6 +108,28 @@ public class Vehicle(
 		} else {
 			throw new ArgumentException("Object is not a Vehicle");
 		}
+	}
+
+	public VehiclePackage? VehiclePackage {
+		get {
+			if (field == null)
+				GetCabinUV();
+			return field;
+		}
+		set {
+			field = value;
+			InvokeChange();
+		}
+	} = null;
+
+
+	bool UVLoaded = false;
+	public void GetCabinUV() {
+		if (UVLoaded)
+			return;
+		Action recycle = () => VehiclePackage = null;
+		VehiclePackage = new VehiclePackageIO().ReadVehiclePackage(VehicleID, recycle);
+		UVLoaded = true;
 	}
 
 	private List<Cabin>? mCabins = null;
@@ -181,34 +207,6 @@ public class Cabin(string vehicleID, string cabinID, string cabinName, bool defa
 			mDefaultCabin = value;
 			InvokeChange();
 		}
-	}
-
-	private BitmapImage? mCabinUV = null;
-	public BitmapImage? CabinUV {
-		get {
-			if (mCabinUV == null)
-				GetCabinUV();
-			return mCabinUV;
-		}
-	}
-
-	bool UVLoaded = false;
-	private void GetCabinUV() {
-		if (UVLoaded) 
-			return;
-		try {
-			var uri = new Uri($"pack://application:,,,/Vehicles/UV/{CabinID}.png", UriKind.RelativeOrAbsolute);
-			var bitmap = new BitmapImage();
-			bitmap.BeginInit();
-			bitmap.CacheOption = BitmapCacheOption.OnLoad;
-			bitmap.UriSource = uri;
-			bitmap.EndInit();
-			bitmap.Freeze();
-			mCabinUV = bitmap;
-		} catch {
-			mCabinUV = null;
-		}
-		UVLoaded = true;
 	}
 }
 

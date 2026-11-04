@@ -3,11 +3,106 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:s="clr-namespace:System;assembly=mscorlib"
 	xml:space="preserve">
+	<!--Parts-->
+	<s:String
+		x:Key="part.cabin">Cabin</s:String>
+	<s:String
+		x:Key="part.r_deflector">Roof Deflector</s:String>
+	<s:String
+		x:Key="part.s_deflector">Side Deflectors</s:String>
+	<s:String
+		x:Key="part.cabdefl">Cabin Deflectors</s:String>
+	<s:String
+		x:Key="part.filter">Air Filter</s:String>
+	<s:String
+		x:Key="part.sunshield">Sun Visor</s:String>
+	<s:String
+		x:Key="part.sunshld">Sun Visor</s:String>
+	<s:String
+		x:Key="part.s_guard">Stoneguard</s:String>
+	<s:String
+		x:Key="part.cor_def">Corner Deflectors</s:String>
+	<s:String
+		x:Key="part.deflector">Bug Deflector</s:String>
+	<s:String
+		x:Key="part.f_light">Front Light</s:String>
+	<s:String
+		x:Key="part.mirror">Main Mirrors</s:String>
+	<s:String
+		x:Key="part.f_mirror">Front Mirror</s:String>
+	<s:String
+		x:Key="part.s_mirror">Side Mirror</s:String>
+	<s:String
+		x:Key="part.fl_mirror">Front Mirrors (L)</s:String>
+	<s:String
+		x:Key="part.fr_mirror">Front Mirrors (R)</s:String>
+	<s:String
+		x:Key="part.f_equip">Front Equipment</s:String>
+	<s:String
+		x:Key="part.f_logo">Front Logo</s:String>
+	<s:String
+		x:Key="part.hl_guard">Headlight Guard</s:String>
+	<s:String
+		x:Key="part.hood">Hood</s:String>
+	<s:String
+		x:Key="part.f_bumper">Front Bumper</s:String>
+	<s:String
+		x:Key="part.bumper">Bumper</s:String>
+	<s:String
+		x:Key="part.airdam">Air Dam</s:String>
+	<s:String
+		x:Key="part.f_grill">Bull Bar</s:String>
+	<s:String
+		x:Key="part.b_grill">Lower Grille Guard</s:String>
+	<s:String
+		x:Key="part.r_grill">Light Bar</s:String>
+	<s:String
+		x:Key="part.grill">Grille</s:String>
+	<s:String
+		x:Key="part.f_fender_chs">Front Fender</s:String>
+	<s:String
+		x:Key="part.f_fender">Front Fender</s:String>
+	<s:String
+		x:Key="part.fenders">Fenders</s:String>
+	<s:String
+		x:Key="part.f_mudflap">Front Mudflaps</s:String>
+	<s:String
+		x:Key="part.doorhndl">Door Handles</s:String>
+	<s:String
+		x:Key="part.exhaust_m">Rear Exhaust</s:String>
+	<s:String
+		x:Key="part.exhaust">Exhaust</s:String>
+	<s:String
+		x:Key="part.doorstep">Door Steps</s:String>
+	<s:String
+		x:Key="part.s_strip">Side Stripe</s:String>
+	<s:String
+		x:Key="part.sideskirt">Sideskirts</s:String>
+	<s:String
+		x:Key="part.sideskrt_bar">Sideskirts Bars</s:String>
+	<s:String
+		x:Key="part.tank">Tank</s:String>
+	<s:String
+		x:Key="part.r_chs_cover">Chassis Cover</s:String>
+	<s:String
+		x:Key="part.r_panel">Panel</s:String>
+	<s:String
+		x:Key="part.r_fender">Rear Fender</s:String>
+	<s:String
+		x:Key="part.r_fendr_top">Rear Fender Top</s:String>
+	<s:String
+		x:Key="part.r_light">Rear Light</s:String>
+	<s:String
+		x:Key="part.r_bumper">Rear Bumper</s:String>
+	<s:String
+		x:Key="part.r_mudflap">Rear Mudflaps</s:String>
+	<s:String
+		x:Key="part.mudflaps">Mudflaps</s:String>
+
+	
 	<!--Truck Description ETS2-->
 	<s:String
 		x:Key="name.daf.xf">DAF XF105</s:String>
-	<s:Int32
-		x:Key="prodYear.daf.xf">2005</s:Int32>
 	<s:String
 		x:Key="desc.daf.xf">EOL</s:String>
 	<!--Cabin-->
@@ -36,8 +131,6 @@
 	
 	<s:String
 		x:Key="name.daf.xf_euro6">DAF XF</s:String>
-	<s:Int32
-		x:Key="prodYear.daf.xf_euro6">2013</s:Int32>
 	<x:Static
 		x:Key="desc.daf.xf_euro6"
 		Member="s:String.Empty" />
@@ -69,8 +162,6 @@
 	
 	<s:String
 		x:Key="name.daf.2021">DAF NGD</s:String>
-	<s:Int32
-		x:Key="prodYear.daf.2021">2021</s:Int32>
 	<x:Static
 		x:Key="desc.daf.2021"
 		Member="s:String.Empty" />
@@ -111,8 +202,6 @@
 	
 	<s:String
 		x:Key="name.daf.xd">DAF XD</s:String>
-	<s:Int32
-		x:Key="prodYear.daf.xd">2022</s:Int32>
 	<s:String
 		x:Key="desc.daf.xd">Toybed is too high, sitting model may clip through the higher bed</s:String>
 	<!--Cabin-->
@@ -140,8 +229,6 @@
 	
 	<s:String
 		x:Key="name.daf.xf_electric">DAF XF Electric</s:String>
-	<s:Int32
-		x:Key="prodYear.daf.xf_electric">2025</s:Int32>
 	<s:String
 		x:Key="desc.daf.xf_electric">Currently no interior accessory locator</s:String>
 	<!--Cabin-->
@@ -153,8 +240,6 @@
 	
 	<s:String
 		x:Key="name.iveco.stralis">Iveco Stralis</s:String>
-	<s:Int32
-		x:Key="prodYear.iveco.stralis">2002</s:Int32>
 	<s:String
 		x:Key="desc.iveco.stralis">EOL</s:String>
 	<!--Cabin-->
@@ -170,8 +255,6 @@
 	
 	<s:String
 		x:Key="name.iveco.hiway">Iveco Stralis Hi-Way</s:String>
-	<s:Int32
-		x:Key="prodYear.iveco.hiway">2012</s:Int32>
 	<s:String
 		x:Key="desc.iveco.hiway">EOL</s:String>
 	<!--Cabin-->
@@ -183,8 +266,6 @@
 	
 	<s:String
 		x:Key="name.iveco.sway">Iveco S-Way</s:String>
-	<s:Int32
-		x:Key="prodYear.iveco.sway">2019</s:Int32>
 	<x:Static
 		x:Key="desc.iveco.sway"
 		Member="s:String.Empty" />
@@ -202,8 +283,6 @@
 	
 	<s:String
 		x:Key="name.man.tgx">MAN TGX Euro 5</s:String>
-	<s:Int32
-		x:Key="prodYear.man.tgx">2008</s:Int32>
 	<s:String
 		x:Key="desc.man.tgx">EOL</s:String>
 	<!--Cabin-->
@@ -219,8 +298,6 @@
 	
 	<s:String
 		x:Key="name.man.tgx_euro6">MAN TGX Euro 6</s:String>
-	<s:Int32
-		x:Key="prodYear.man.tgx_euro6">2015</s:Int32>
 	<x:Static
 		x:Key="desc.man.tgx_euro6"
 		Member="s:String.Empty" />
@@ -287,8 +364,6 @@
 	
 	<s:String
 		x:Key="name.man.tgx_2020">MAN TGX</s:String>
-	<s:Int32
-		x:Key="prodYear.man.tgx_2020">2020</s:Int32>
 	<x:Static
 		x:Key="desc.man.tgx_2020"
 		Member="s:String.Empty" />
@@ -358,8 +433,6 @@
 	
 	<s:String
 		x:Key="name.mercedes.actros">Mercedes-Benz Actros</s:String>
-	<s:Int32
-		x:Key="prodYear.mercedes.actros">2009</s:Int32>
 	<s:String
 		x:Key="desc.mercedes.actros">EOL</s:String>
 	<!--Cabin-->
@@ -442,8 +515,6 @@
 	
 	<s:String
 		x:Key="name.mercedes.actros2014">Mercedes-Benz New Actros</s:String>
-	<s:Int32
-		x:Key="prodYear.mercedes.actros2014">2014</s:Int32>
 	<x:Static
 		x:Key="desc.mercedes.actros2014"
 		Member="s:String.Empty" />
@@ -509,8 +580,6 @@
 	
 	<s:String
 		x:Key="name.renault.magnum">Renault Magnum</s:String>
-	<s:Int32
-		x:Key="prodYear.renault.magnum">1990</s:Int32>
 	<s:String
 		x:Key="desc.renault.magnum">EOL, toybed is a seat, clipping may happen when sleeping</s:String>
 	<!--Cabin-->
@@ -522,8 +591,6 @@
 	
 	<s:String
 		x:Key="name.renault.premium">Renault Premium</s:String>
-	<s:Int32
-		x:Key="prodYear.renault.premium">1996</s:Int32>
 	<s:String
 		x:Key="desc.renault.premium">EOL</s:String>
 	<!--Cabin-->
@@ -537,8 +604,6 @@
 	
 	<s:String
 		x:Key="name.renault.t">Renault T</s:String>
-	<s:Int32
-		x:Key="prodYear.renault.t">2013</s:Int32>
 	<x:Static
 		x:Key="desc.renault.t"
 		Member="s:String.Empty" />
@@ -684,8 +749,6 @@
 	
 	<s:String
 		x:Key="name.renault.etech_t">Renault E-Tech T</s:String>
-	<s:Int32
-		x:Key="prodYear.renault.etech_t">2023</s:Int32>
 	<s:String
 		x:Key="desc.renault.etech_t">Currently no accessory locator</s:String>
 	<!--Cabin-->
@@ -697,8 +760,6 @@
 	
 	<s:String
 		x:Key="name.scania.r">Scania R 2009</s:String>
-	<s:Int32
-		x:Key="prodYear.scania.r">2009</s:Int32>
 	<s:String
 		x:Key="desc.scania.r">EOL</s:String>
 	<!--Cabin-->
@@ -725,8 +786,6 @@
 	
 	<s:String
 		x:Key="name.scania.streamline">Scania Streamline</s:String>
-	<s:Int32
-		x:Key="prodYear.scania.streamline">2013</s:Int32>
 	<s:String
 		x:Key="desc.scania.streamline">EOL</s:String>
 	<!--Cabin-->
@@ -753,8 +812,6 @@
 	
 	<s:String
 		x:Key="name.scania.r_2016">Scania R</s:String>
-	<s:Int32
-		x:Key="prodYear.scania.r_2016">2016</s:Int32>
 	<x:Static
 		x:Key="desc.scania.r_2016"
 		Member="s:String.Empty" />
@@ -890,8 +947,6 @@
 	
 	<s:String
 		x:Key="name.scania.s_2016">Scania S</s:String>
-	<s:Int32
-		x:Key="prodYear.scania.s_2016">2016</s:Int32>
 	<x:Static
 		x:Key="desc.scania.s_2016"
 		Member="s:String.Empty" />
@@ -1027,8 +1082,6 @@
 	
 	<s:String
 		x:Key="name.scania.s_2024e">Scania S BEV</s:String>
-	<s:Int32
-		x:Key="prodYear.scania.s_2024e">2024</s:Int32>
 	<x:Static
 		x:Key="desc.scania.s_2024e"
 		Member="s:String.Empty" />
@@ -1041,8 +1094,6 @@
 	
 	<s:String
 		x:Key="name.volvo.fh16">Volvo FH3</s:String>
-	<s:Int32
-		x:Key="prodYear.volvo.fh16">2009</s:Int32>
 	<s:String
 		x:Key="desc.volvo.fh16">EOL</s:String>
 	<!--Cabin-->
@@ -1113,8 +1164,6 @@
 	
 	<s:String
 		x:Key="name.volvo.fh16_2012">Volvo FH4</s:String>
-	<s:Int32
-		x:Key="prodYear.volvo.fh16_2012">2012</s:Int32>
 	<s:String
 		x:Key="desc.volvo.fh16_2012">EOL, UK seat locator rotates counter-clockwise about 50°</s:String>
 	<!--Cabin-->
@@ -1213,8 +1262,6 @@
 	
 	<s:String
 		x:Key="name.volvo.fh_2021">Volvo FH5</s:String>
-	<s:Int32
-		x:Key="prodYear.volvo.fh_2021">2021</s:Int32>
 	<x:Static
 		x:Key="desc.volvo.fh_2021"
 		Member="s:String.Empty" />
@@ -1322,8 +1369,6 @@
 	
 	<s:String
 		x:Key="name.volvo.fh_2024">Volvo FH6</s:String>
-	<s:Int32
-		x:Key="prodYear.volvo.fh_2024">2024</s:Int32>
 	<x:Static
 		x:Key="desc.volvo.fh_2024"
 		Member="s:String.Empty" />
@@ -1458,8 +1503,6 @@
 	<!--卡车备注 ATS-->
 	<s:String
 		x:Key="name.freightliner.cascadia2019">Freightliner Cascadia 2019</s:String>
-	<s:Int32
-		x:Key="prodYear.freightliner.cascadia2019">2019</s:Int32>
 	<x:Static
 		x:Key="desc.freightliner.cascadia2019"
 		Member="s:String.Empty" />
@@ -1549,8 +1592,6 @@
 	
 	<s:String
 		x:Key="name.freightliner.cascadia2024">Freightliner Cascadia</s:String>
-	<s:Int32
-		x:Key="prodYear.freightliner.cascadia2024">2024</s:Int32>
 	<x:Static
 		x:Key="desc.freightliner.cascadia2024"
 		Member="s:String.Empty" />
@@ -1610,8 +1651,6 @@
 	
 	<s:String
 		x:Key="name.freightliner.ecascadia">Freightliner ECascadia</s:String>
-	<s:Int32
-		x:Key="prodYear.freightliner.ecascadia">2022</s:Int32>
 	<x:Static
 		x:Key="desc.freightliner.ecascadia"
 		Member="s:String.Empty" />
@@ -1622,8 +1661,6 @@
 	
 	<s:String
 		x:Key="name.intnational.9900i">International 9900i</s:String>
-	<s:Int32
-		x:Key="prodYear.intnational.9900i">2000</s:Int32>
 	<s:String
 		x:Key="desc.intnational.9900i">EOL</s:String>
 	<!--Cabin-->
@@ -1644,8 +1681,6 @@
 	
 	<s:String
 		x:Key="name.intnational.lonestar">International LoneStar</s:String>
-	<s:Int32
-		x:Key="prodYear.intnational.lonestar">2008</s:Int32>
 	<x:Static
 		x:Key="desc.intnational.lonestar"
 		Member="s:String.Empty" />
@@ -1669,8 +1704,6 @@
 	
 	<s:String
 		x:Key="name.intnational.lt">International LT</s:String>
-	<s:Int32
-		x:Key="prodYear.intnational.lt">2017</s:Int32>
 	<x:Static
 		x:Key="desc.intnational.lt"
 		Member="s:String.Empty" />
@@ -1718,8 +1751,6 @@
 	
 	<s:String
 		x:Key="name.kenworth.t680">Kenworth T680 2014</s:String>
-	<s:Int32
-		x:Key="prodYear.kenworth.t680">2014</s:Int32>
 	<x:Static
 		x:Key="desc.kenworth.t680"
 		Member="s:String.Empty" />
@@ -1736,8 +1767,6 @@
 	
 	<s:String
 		x:Key="name.kenworth.t680_2022">Kenworth T680</s:String>
-	<s:Int32
-		x:Key="prodYear.kenworth.t680_2022">2022</s:Int32>
 	<s:String
 		x:Key="desc.kenworth.t680_2022">Toybed is too behind, clipping may happen on the sitting model</s:String>
 	<!--Cabin-->
@@ -1776,8 +1805,6 @@
 	
 	<s:String
 		x:Key="name.kenworth.w900">Kenworth W900</s:String>
-	<s:Int32
-		x:Key="prodYear.kenworth.w900">2023</s:Int32>
 	<s:String
 		x:Key="desc.kenworth.w900">Toybed is too behind, clipping may happen on the sitting model</s:String>
 	<!--Cabin-->
@@ -2022,8 +2049,6 @@
 	
 	<s:String
 		x:Key="name.kenworth.w990">Kenworth W990</s:String>
-	<s:Int32
-		x:Key="prodYear.kenworth.w990">2018</s:Int32>
 	<x:Static
 		x:Key="desc.kenworth.w990"
 		Member="s:String.Empty" />
@@ -2034,8 +2059,6 @@
 	
 	<s:String
 		x:Key="name.mack.pinnacle">Mack Pinnacle</s:String>
-	<s:Int32
-		x:Key="prodYear.mack.pinnacle">2006</s:Int32>
 	<x:Static
 		x:Key="desc.mack.pinnacle"
 		Member="s:String.Empty" />
@@ -2057,8 +2080,6 @@
 	
 	<s:String
 		x:Key="name.mack.anthem">Mack Anthem</s:String>
-	<s:Int32
-		x:Key="prodYear.mack.anthem">2018</s:Int32>
 	<x:Static
 		x:Key="desc.mack.anthem"
 		Member="s:String.Empty" />
@@ -2165,8 +2186,6 @@
 	
 	<s:String
 		x:Key="name.mack.anthem2026">Mack Anthem</s:String>
-	<s:Int32
-		x:Key="prodYear.mack.anthem2026">2026</s:Int32>
 	<x:Static
 		x:Key="desc.mack.anthem2026"
 		Member="s:String.Empty" />
@@ -2176,8 +2195,6 @@
 	
 	<s:String
 		x:Key="name.mack.pioneer">Mack Pioneer</s:String>
-	<s:Int32
-		x:Key="prodYear.mack.pioneer">2025</s:Int32>
 	<x:Static
 		x:Key="desc.mack.pioneer"
 		Member="s:String.Empty" />
@@ -2188,8 +2205,6 @@
 	
 	<s:String
 		x:Key="name.peterbilt.389">Peterbilt 389</s:String>
-	<s:Int32
-		x:Key="prodYear.peterbilt.389">2007</s:Int32>
 	<x:Static
 		x:Key="desc.peterbilt.389"
 		Member="s:String.Empty" />
@@ -2206,8 +2221,6 @@
 	
 	<s:String
 		x:Key="name.peterbilt.579">Peterbilt 579</s:String>
-	<s:Int32
-		x:Key="prodYear.peterbilt.579">2012</s:Int32>
 	<x:Static
 		x:Key="desc.peterbilt.579"
 		Member="s:String.Empty" />
@@ -2224,8 +2237,6 @@
 	
 	<s:String
 		x:Key="name.peterbilt.579_2022">Peterbilt 579</s:String>
-	<s:Int32
-		x:Key="prodYear.peterbilt.579_2022">2022</s:Int32>
 	<x:Static
 		x:Key="desc.peterbilt.579_2022"
 		Member="s:String.Empty" />
@@ -2236,8 +2247,6 @@
 	
 	<s:String
 		x:Key="name.peterbilt.589">Peterbilt 589</s:String>
-	<s:Int32
-		x:Key="prodYear.peterbilt.589">2025</s:Int32>
 	<x:Static
 		x:Key="desc.peterbilt.589"
 		Member="s:String.Empty" />
@@ -2248,8 +2257,6 @@
 	
 	<s:String
 		x:Key="name.volvo.vnl">Volvo VNL 2014</s:String>
-	<s:Int32
-		x:Key="prodYear.volvo.vnl">2014</s:Int32>
 	<x:Static
 		x:Key="desc.volvo.vnl"
 		Member="s:String.Empty" />
@@ -2266,8 +2273,6 @@
 	
 	<s:String
 		x:Key="name.volvo.vnl2018">Volvo VNL 2018</s:String>
-	<s:Int32
-		x:Key="prodYear.volvo.vnl2018">2018</s:Int32>
 	<x:Static
 		x:Key="desc.volvo.vnl2018"
 		Member="s:String.Empty" />
@@ -2309,8 +2314,6 @@
 	
 	<s:String
 		x:Key="name.volvo.vnr_e">Volvo VNR Electric</s:String>
-	<s:Int32
-		x:Key="prodYear.volvo.vnr_e">2021</s:Int32>
 	<x:Static
 		x:Key="desc.volvo.vnr_e"
 		Member="s:String.Empty" />
@@ -2324,8 +2327,6 @@
 	
 	<s:String
 		x:Key="name.volvo.vnl2025">Volvo VNL</s:String>
-	<s:Int32
-		x:Key="prodYear.volvo.vnl2025">2025</s:Int32>
 	<x:Static
 		x:Key="desc.volvo.vnl2025"
 		Member="s:String.Empty" />
@@ -2354,8 +2355,6 @@
 	
 	<s:String
 		x:Key="name.westernstar.5700xe">Western Star 5700XE</s:String>
-	<s:Int32
-		x:Key="prodYear.westernstar.5700xe">2015</s:Int32>
 	<s:String
 		x:Key="desc.westernstar.5700xe">EOL,Toybed is too behind, clipping may happen on the sitting model</s:String>
 	<!--Cabin-->
@@ -2394,8 +2393,6 @@
 	
 	<s:String
 		x:Key="name.westernstar.49x">Western Star 49X</s:String>
-	<s:Int32
-		x:Key="prodYear.westernstar.49x">2020</s:Int32>
 	<x:Static
 		x:Key="desc.westernstar.49x"
 		Member="s:String.Empty" />
@@ -2435,8 +2432,6 @@
 	
 	<s:String
 		x:Key="name.westernstar.57x">Western Star 57X</s:String>
-	<s:Int32
-		x:Key="prodYear.westernstar.57x">2022</s:Int32>
 	<x:Static
 		x:Key="desc.westernstar.57x"
 		Member="s:String.Empty" />
@@ -2475,8 +2470,6 @@
 	<!--Cars ATS-->
 	<s:String
 		x:Key="name.ford.bronco_24">Ford Bronco 2024</s:String>
-	<s:Int32
-		x:Key="prodYear.ford.bronco_24">2024</s:Int32>
 	<x:Static
 		x:Key="desc.ford.bronco_24"
 		Member="s:String.Empty" />
@@ -2486,6 +2479,8 @@
 	<!--Accessory-->
 	<s:String
 		x:Key="ford.bronco_24.grill.bad_pnt">Grille-Badlands, Painted</s:String>
+	<s:String
+		x:Key="ford.bronco_24.hood.std_pnt">Hood-Standard, Painted</s:String>
 	<s:String
 		x:Key="ford.bronco_24.fenders.std_pnt">Fenders-Standard, Painted</s:String>
 	<s:String
@@ -2499,8 +2494,6 @@
 	
 	<s:String
 		x:Key="name.ford.f150_23">Ford F150 2023</s:String>
-	<s:Int32
-		x:Key="prodYear.ford.f150_23">2023</s:Int32>
 	<x:Static
 		x:Key="desc.ford.f150_23"
 		Member="s:String.Empty" />
@@ -2510,6 +2503,8 @@
 	<!--Accessory-->
 	<s:String
 		x:Key="ford.f150_23.f_bumper.std_pnt">Front Bumper-Standard, Painted</s:String>
+	<s:String
+		x:Key="ford.f150_23.hood.std_pnt">Hood-Standard, Painted</s:String>
 	<s:String
 		x:Key="ford.f150_23.mirror.std_pnt">Main Mirror-Standard, Painted</s:String>
 	<s:String
@@ -2525,8 +2520,6 @@
 	
 	<s:String
 		x:Key="name.ford.mustang_67">Ford Mustang 1967</s:String>
-	<s:Int32
-		x:Key="prodYear.ford.mustang_67">1967</s:Int32>
 	<x:Static
 		x:Key="desc.ford.mustang_67"
 		Member="s:String.Empty" />
@@ -2534,13 +2527,21 @@
 	<s:String
 		x:Key="fastb.ford.mustang_67.cabin">Sedan</s:String>
 	<!--Accessory-->
+	<s:String
+		x:Key="ford.mustang_67.f_light.std">Front Light-Standard</s:String>
+	<s:String
+		x:Key="ford.mustang_67.hood.std_pnt">Hood-Standard, Painted</s:String>
+	<s:String
+		x:Key="ford.mustang_67.hood.dec_pnt">Hood-Décor Group, Painted</s:String>
+	<s:String
+		x:Key="ford.mustang_67.exhaust.std">Exhaust-Standard</s:String>
+	<s:String
+		x:Key="ford.mustang_67.exhaust.gt">Exhaust-GT</s:String>
 	
 	
 	
 	<s:String
 		x:Key="name.ford.victoria_06">Ford Crown Victoria 2006</s:String>
-	<s:Int32
-		x:Key="prodYear.ford.victoria_06">2006</s:Int32>
 	<x:Static
 		x:Key="desc.ford.victoria_06"
 		Member="s:String.Empty" />
@@ -2559,11 +2560,13 @@
 	<s:String
 		x:Key="ford.victoria_06.grill.lx_pnt">Grille-LX, Painted</s:String>
 	<s:String
+		x:Key="ford.victoria_06.hood.std_pnt">Hood-Standard, Painted</s:String>
+	<s:String
 		x:Key="ford.victoria_06.mirror.std_pnt">Main Mirrors-Standard, Painted</s:String>
 	<s:String
 		x:Key="ford.victoria_06.doorhndl.std_pnt">Door Handles-Standard, Fully Painted</s:String>
 	<s:String
-		x:Key="ford.victoria_06.s_strip.std_pnt">Side Stripe-Standard, Fully Painted</s:String>
+		x:Key="ford.victoria_06.s_strip.std_pnf">Side Stripe-Standard, Fully Painted</s:String>
 	<s:String
 		x:Key="ford.victoria_06.s_strip.std_pnc">Side Stripe-Standard, Painted &#38; Chromed</s:String>
 	<s:String
@@ -2582,4 +2585,5 @@
 	
 	<!--Coaches ETS2-->
 	<!--Coaches ATS-->
+	
 </ResourceDictionary>

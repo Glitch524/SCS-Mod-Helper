@@ -386,6 +386,7 @@
 	<s:String x:Key="TitlePaintJobPreview">喷漆预览</s:String>
 	<s:String x:Key="ButtonPreviewPaintJob">预览喷漆贴图</s:String>
 	<s:String x:Key="CheckBoxShowCabinUV">显示车辆UV展开图</s:String>
+	<s:String x:Key="HeaderUVLayers">UV图层</s:String>
 
 
 	<!--浏览已创建模型定义文件-->

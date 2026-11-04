@@ -96,8 +96,7 @@ public static partial class VehiclesIO {
 		}
 	}
 	public static void ClearVehicleDict() => mVehicleDictionary = null;
-
-	public static int GetProdYear(string vehicleID) => (int)(VehicleDictionary[$"prodYear.{vehicleID}"] ?? 0);
+	public static string GetPartName(string partName) => (string)(VehicleDictionary[$"part.{partName}"] ?? partName);
 	public static string GetVehicleName(string vehicleID) => (string)(VehicleDictionary[$"name.{vehicleID}"] ?? vehicleID);
 	public static string GetVehicleDesc(string vehicleID) => (string)(VehicleDictionary[$"desc.{vehicleID}"] ?? "");
 
@@ -292,7 +291,7 @@ public static partial class VehiclesIO {
 		string table = TableNameCabin(isETS2);
 		StringBuilder command = new();
 		command.Append($"Select * from {table}");
-		command.Append($" where {COLUMN_VEHICLE_ID} = $vId");
+		command.Append($" where {COLUMN_VEHICLE_ID} = $vID");
 		cmd.CommandText = command.ToString();
 		cmd.Parameters.AddWithValue("$vID", vehicleID);
 		using var reader = cmd.ExecuteReader();
@@ -315,7 +314,7 @@ public static partial class VehiclesIO {
 		string table = TableNameAcc(isETS2);
 		StringBuilder command = new();
 		command.Append($"Select * from {table}");
-		command.Append($" where {COLUMN_VEHICLE_ID} = $vId");
+		command.Append($" where {COLUMN_VEHICLE_ID} = $vID");
 		cmd.CommandText = command.ToString();
 		cmd.Parameters.AddWithValue("$vID", vehicleID);
 		using var reader = cmd.ExecuteReader();

@@ -7,13 +7,15 @@
 	xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:local="clr-namespace:SCS_Mod_Helper.Modding.PaintJob"
+	xmlns:pack="clr-namespace:SCS_Mod_Helper.Vehicles.Packages"
 	xmlns:colormask="clr-namespace:SCS_Mod_Helper.Modding.PaintJob.ColorMask"
 	d:DataContext="{d:DesignInstance Type=local:PaintJobBinding}"
 	mc:Ignorable="d"
-	MinWidth="256"
+	MinWidth="576"
 	MinHeight="256"
-	Width="532"
+	Width="832"
 	Height="624"
+	SizeChanged="OnSizeChanged"
 	ExtendsContentIntoTitleBar="True"
 	WindowStartupLocation="CenterOwner"
 	Title="{DynamicResource TitlePaintJobPreview}">
@@ -38,105 +40,220 @@
 			<RowDefinition
 				Height="Auto" />
 			<RowDefinition
-				Height="*" />
+				Height="*"/>
 			<RowDefinition
 				Height="Auto" />
 		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition
+				Width="*" />
+			<ColumnDefinition
+				Width="Auto" />
+		</Grid.ColumnDefinitions>
 		<ui:TitleBar
-			Title="{DynamicResource TitlePaintJobPreview}" />
+			x:Name="TitleBar"
+			Title="{DynamicResource TitlePaintJobPreview}"
+			Grid.ColumnSpan="2" />
+
+		<Grid
+			x:Name="GridTree"
+			Grid.Row="1"
+			MinWidth="300">
+			<Grid
+				Margin="10">
+				<Grid.RowDefinitions>
+					<RowDefinition
+						Height="Auto" />
+					<RowDefinition
+						Height="*" />
+				</Grid.RowDefinitions>
+				<Border
+					Grid.RowSpan="2"
+					BorderBrush="LightGray"
+					BorderThickness="1" />
+				
+				<TextBlock
+					Text="{DynamicResource HeaderUVLayers}"
+					Margin="10,5"
+					FontSize="16" />
+				<Border
+					BorderBrush="LightGray"
+					BorderThickness="0,0,0,1" />
+				<TextBlock
+					Grid.Row="1"
+					Margin="10"
+					FontSize="16"
+					Text="{DynamicResource StatusEmpty}">
+					<TextBlock.Style>
+						<Style
+							TargetType="TextBlock"
+							BasedOn="{StaticResource {x:Type TextBlock}}">
+							<Setter
+								Property="Visibility"
+								Value="Collapsed" />
+							<Style.Triggers>
+								<DataTrigger
+									Binding="{Binding ElementName=TreeLayers, Path=Items.Count}"
+									Value="0">
+									<Setter
+										Property="Visibility"
+										Value="Visible" />
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</TextBlock.Style>
+				</TextBlock>
+				<TreeView
+					x:Name="TreeLayers"
+					Grid.Row="1"
+					Margin="0,5"
+					ItemsSource="{Binding PaintJobData.CurrentVehicle.VehiclePackage.LayerGroups}">
+					<TreeView.Resources>
+						<HierarchicalDataTemplate
+							DataType="{x:Type pack:LayerGroup}"
+							ItemsSource="{Binding UVLayers}">
+							<StackPanel
+								Orientation="Horizontal">
+								<TextBlock
+									Text="{Binding GroupTypeLocalized}"
+									FontSize="14"/>
+							</StackPanel>
+							<HierarchicalDataTemplate.ItemTemplate>
+								<DataTemplate
+									DataType="{x:Type pack:VehicleUV}">
+									<StackPanel
+										Orientation="Horizontal"
+										VerticalAlignment="Center">
+										<CheckBox
+											IsChecked="{Binding Visible}"
+											Margin="0,2" 
+											Content="{Binding LayerNameLocalized}" />
+									</StackPanel>
+								</DataTemplate>
+							</HierarchicalDataTemplate.ItemTemplate>
+						</HierarchicalDataTemplate>
+					</TreeView.Resources>
+					<TreeView.ItemContainerStyle>
+						<Style
+							TargetType="{x:Type TreeViewItem}">
+							<Setter
+								Property="IsExpanded"
+								Value="True" />
+						</Style>
+					</TreeView.ItemContainerStyle>
+				</TreeView>
+			</Grid>
+		</Grid>
 		<Grid
 			x:Name="GridPaintJob"
 			Grid.Row="1"
-			Margin="10,0,10,10">
-			<Viewbox>
-				<Grid
-					Width="{Binding ElementName=GridPaintJob, Path=ActualWidth}"
-					Height="{Binding ElementName=GridPaintJob, Path=ActualHeight}">
-					<Viewbox
-						Stretch="Uniform">
-						<Border
-							x:Name="ImageBaseColor"
-							Width="100"
-							Height="100"
-							Background="{Binding PaintJobData.BaseColorVisual}" />
-					</Viewbox>
-					<Image
-						x:Name="ImageTex"
-						Source="{Binding PaintJobTexImage}">
-						<Image.Style>
-							<Style
-								TargetType="Image">
-								<Style.Triggers>
-									<DataTrigger
-										Binding="{Binding PaintJobData.Airbrush}"
-										Value="False">
-										<Setter
-											Property="Visibility"
-											Value="Collapsed" />
-									</DataTrigger>
-								</Style.Triggers>
-							</Style>
-						</Image.Style>
-					</Image>
-					<Image
-						x:Name="ImageMaskB"
-						Source="{Binding PaintJobData.MaskChannelB}"
-						Style="{DynamicResource ImageColorMask}">
-						<Image.Effect>
-							<colormask:ChannelColorizeEffect
-								TargetColor="{Binding PaintJobData.MaskBColor}" />
-						</Image.Effect>
-					</Image>
-					<Image
-						x:Name="ImageMaskG"
-						Source="{Binding PaintJobData.MaskChannelG}"
-						Style="{DynamicResource ImageColorMask}">
-						<Image.Effect>
-							<colormask:ChannelColorizeEffect
-								TargetColor="{Binding PaintJobData.MaskGColor}" />
-						</Image.Effect>
-					</Image>
-					<Image
-						x:Name="ImageMaskR"
-						Source="{Binding PaintJobData.MaskChannelR}"
-						Style="{DynamicResource ImageColorMask}">
-						<Image.Effect>
-							<colormask:ChannelColorizeEffect
-								TargetColor="{Binding PaintJobData.MaskRColor}" />
-						</Image.Effect>
-					</Image>
-					<Image
-						x:Name="ImageUV"
-						Opacity="{Binding UVOpacity}"
-						Source="{Binding PaintJobData.CurrentCabin.CabinUV}">
-						<Image.Style>
-							<Style
-								TargetType="Image">
-								<Style.Triggers>
-									<DataTrigger
-										Binding="{Binding ShowCabinUV}"
-										Value="False">
-										<Setter
-											Property="Visibility"
-											Value="Collapsed" />
-									</DataTrigger>
-								</Style.Triggers>
-							</Style>
-						</Image.Style>
-					</Image>
-				</Grid>
-			</Viewbox>
+			Grid.Column="1"
+			Width="512"
+			Height="512"
+			HorizontalAlignment="Left"
+			VerticalAlignment="Center">
+			<Grid
+				Margin="10">
+				<Viewbox
+					Stretch="Uniform">
+					<Border
+						x:Name="ImageBaseColor"
+						Width="100"
+						Height="100"
+						Background="{Binding PaintJobData.BaseColorVisual}" />
+				</Viewbox>
+				<Image
+					x:Name="ImageTex"
+					Source="{Binding PaintJobTexImage}">
+					<Image.Style>
+						<Style
+							TargetType="Image">
+							<Style.Triggers>
+								<DataTrigger
+									Binding="{Binding PaintJobData.Airbrush}"
+									Value="False">
+									<Setter
+										Property="Visibility"
+										Value="Collapsed" />
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</Image.Style>
+				</Image>
+				<Image
+					x:Name="ImageMaskB"
+					Source="{Binding PaintJobData.MaskChannelB}"
+					Style="{DynamicResource ImageColorMask}">
+					<Image.Effect>
+						<colormask:ChannelColorizeEffect
+							TargetColor="{Binding PaintJobData.MaskBColor}" />
+					</Image.Effect>
+				</Image>
+				<Image
+					x:Name="ImageMaskG"
+					Source="{Binding PaintJobData.MaskChannelG}"
+					Style="{DynamicResource ImageColorMask}">
+					<Image.Effect>
+						<colormask:ChannelColorizeEffect
+							TargetColor="{Binding PaintJobData.MaskGColor}" />
+					</Image.Effect>
+				</Image>
+				<Image
+					x:Name="ImageMaskR"
+					Source="{Binding PaintJobData.MaskChannelR}"
+					Style="{DynamicResource ImageColorMask}">
+					<Image.Effect>
+						<colormask:ChannelColorizeEffect
+							TargetColor="{Binding PaintJobData.MaskRColor}" />
+					</Image.Effect>
+				</Image>
+				<ItemsControl
+					x:Name="UVLayers"
+					ItemsSource="{Binding PaintJobData.CurrentVehicle.VehiclePackage.AllUVs}"
+					Opacity="{Binding UVOpacity, Mode=OneWay}">
+					<ItemsControl.Style>
+						<Style
+							TargetType="ItemsControl"
+							BasedOn="{StaticResource {x:Type ItemsControl}}">
+							<Style.Triggers>
+								<DataTrigger
+									Binding="{Binding ShowCabinUV}"
+									Value="False">
+									<Setter
+										Property="Visibility"
+										Value="Collapsed" />
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</ItemsControl.Style>
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<Grid />
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<Image
+								Source="{Binding Layer}"
+								Visibility="{Binding UVVisibility}" />
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</Grid>
 		</Grid>
+		
 		<StackPanel
+			x:Name="PanelBottom"
 			Grid.Row="2"
+			Grid.ColumnSpan="2"
 			d:Visibility="Visible">
 			<StackPanel.Style>
 				<Style
 					TargetType="StackPanel">
 					<Style.Triggers>
 						<DataTrigger
-							Binding="{Binding ElementName=ImageUV, Path=Source}"
-							Value="{x:Null}">
+							Binding="{Binding ElementName=UVLayers, Path=Items.Count}"
+							Value="0">
 							<Setter
 								Property="Visibility"
 								Value="Hidden" />
@@ -147,7 +264,7 @@
 			<Border
 				Height="1"
 				Margin="0,3"
-				Background="Gray" />
+				Background="LightGray" />
 			<StackPanel
 				Margin="5"
 				Orientation="Horizontal">

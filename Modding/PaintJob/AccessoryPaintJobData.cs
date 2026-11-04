@@ -11,7 +11,7 @@ using System.Windows.Media.Imaging;
 using Wpf.Ui.Extensions;
 
 namespace SCS_Mod_Helper.Modding.PaintJob {
-	public class AccPaintJobData(Func<bool> isPreviewOpen): AccessoryData() {
+	public class AccPaintJobData(Func<bool> isUVOpen): AccessoryData() {
 		//https://dariowouters.gitlab.io/scs-updates/unit/accessory_paint_job_data/
 		//name 从accessoryData继承的变量
 		//icon
@@ -19,7 +19,9 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 		//unlock
 		//part_type
 
-		private readonly Func<bool> IsPreviewOpen = isPreviewOpen;
+		private readonly Func<bool> IsUVOpen = isUVOpen;
+
+		private bool IsPreviewOpen() => Application.Current.Windows.OfType<PaintJobTexPreviewWindow>().Any();
 
 		private ObservableCollection<Vehicle>? mVehicles = null;
 		public ObservableCollection<Vehicle> Vehicles {
@@ -38,13 +40,21 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 			set {
 				mCurrentVehicle = value;
 				InvokeChange();
+				if (IsPreviewOpen() && IsUVOpen())
+					value?.GetCabinUV();
 				InvokeChange(nameof(CabinList));
-				CurrentCabin = CabinList?.FirstOrDefault();
 				InvokeChange(nameof(AccessoryList));
 			}
 		}
 
-		public List<Cabin>? CabinList => CurrentVehicle?.Cabins;
+		public List<Cabin>? CabinList {
+			get {
+				var cabins = CurrentVehicle?.Cabins;
+				if (cabins != null)
+					CurrentCabin = cabins.FirstOrDefault();
+				return cabins;
+			}
+		}
 
 		private Cabin? mCurrentCabin = null;
 		public Cabin? CurrentCabin {

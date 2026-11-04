@@ -558,26 +558,11 @@
 							Text="{Binding PaintJobData.IconName}"
 							MaxLines="1"
 							TextWrapping="Wrap"
+							Style="{StaticResource TextBoxBorderless}"
 							AllowDrop="True"
 							PreviewDragOver="PreviewFileBoxDragOver"
 							Drop="FileDrop"
-							Tag="IconName">
-							<ui:TextBox.Style>
-								<Style
-									TargetType="ui:TextBox"
-									BasedOn="{StaticResource TextBoxBorderless}">
-									<Style.Triggers>
-										<Trigger
-											Property="Text"
-											Value="">
-											<Setter
-												Property="Background"
-												Value="Yellow" />
-										</Trigger>
-									</Style.Triggers>
-								</Style>
-							</ui:TextBox.Style>
-						</ui:TextBox>
+							Tag="IconName" />
 						<Button
 							x:Name="ButtonIconName"
 							Grid.Column="1"
@@ -2952,27 +2937,6 @@
 							</DataTrigger>
 							<DataTrigger
 								Binding="{Binding PaintJobData.DisplayName.Length}"
-								Value="0">
-								<Setter
-									Property="IsEnabled"
-									Value="False" />
-							</DataTrigger>
-							<DataTrigger
-								Binding="{Binding PaintJobData.PriceString.Length}"
-								Value="0">
-								<Setter
-									Property="IsEnabled"
-									Value="False" />
-							</DataTrigger>
-							<DataTrigger
-								Binding="{Binding PaintJobData.UnlockLevelString.Length}"
-								Value="0">
-								<Setter
-									Property="IsEnabled"
-									Value="False" />
-							</DataTrigger>
-							<DataTrigger
-								Binding="{Binding PaintJobData.IconName.Length}"
 								Value="0">
 								<Setter
 									Property="IsEnabled"

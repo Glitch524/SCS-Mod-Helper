@@ -20,7 +20,8 @@ partial class Paths {
 	public static string StorageDBPath() => "Storage.dll";
 
 	public static string LanguageDir() => "Language";
-	public static string VehiclesLanguageDir() => "Vehicles";
+	public static string VehiclesLanguageDir() => @"Vehicles\Language";
+	public static string VehiclesPackageDir() => @"Vehicles\Package";
 
 
 	public static string SampleEnglishPath() => @"Language\en-US_English(US).txt";

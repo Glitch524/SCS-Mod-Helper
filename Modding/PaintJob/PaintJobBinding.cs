@@ -26,13 +26,14 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 				PreviewWindow.Show();
 			} else
 				PreviewWindow.Focus();
+			PaintJobData.CurrentVehicle?.GetCabinUV();
 		}
 
 
 		private readonly AccPaintJobData mPaintJobData;
 		public AccPaintJobData PaintJobData => mPaintJobData;
 		public PaintJobBinding(Func<IBaseVisual> visualFunc): base(visualFunc) {
-			mPaintJobData = new(() => IsPreviewOpen);
+			mPaintJobData = new(() => ShowCabinUV);
 		}
 
 		public bool SyncOverNetwork {
@@ -72,10 +73,7 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 		public void CreatePaintJobSii() {
 			if (ModelName.Length == 0
 				|| PaintJobData.CurrentVehicle == null
-				|| PaintJobData.DisplayName.Length == 0
-				|| PaintJobData.Price == null
-				|| PaintJobData.UnlockLevel == null
-				|| PaintJobData.IconName.Length == 0)
+				|| PaintJobData.DisplayName.Length == 0)
 				return;
 			new PaintJobSCSIO().WritePaintJobData(this);
 			MessageBox.Show(BindingWindow, GetString("MessagePaintJobCreateSuccess"));
@@ -246,59 +244,5 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 
 		[GeneratedRegex(@"map[\s\t]2d")]
 		private static partial Regex deMap2D();
-
-
-		public string PaintJobTexRealPath => PaintJobData.PaintJobTexRealPath;
-		public BitmapSource? PaintJobTexImage {
-			get => PaintJobData.PaintJobTexImage;
-			set {
-				PaintJobData.PaintJobTexImage = value;
-				InvokeChange();
-			}
-		}
-		public BitmapSource? MaskChannelR {
-			get => PaintJobData.MaskChannelR;
-			set {
-				PaintJobData.MaskChannelR = value;
-				InvokeChange();
-			}
-		}
-		public BitmapSource? MaskChannelG {
-			get => PaintJobData.MaskChannelG;
-			set {
-				PaintJobData.MaskChannelG = value;
-				InvokeChange();
-			}
-		}
-		public BitmapSource? MaskChannelB {
-			get => PaintJobData.MaskChannelB;
-			set {
-				PaintJobData.MaskChannelB = value;
-				InvokeChange();
-			}
-		}
-
-		private bool mShowCabinUV = true;
-
-		public bool ShowCabinUV {
-			get => mShowCabinUV;
-			set {
-				mShowCabinUV = value;
-				InvokeChange();
-			}
-		}
-
-		private int mUVOpacityValue = 50;
-
-		public int UVOpacityValue {
-			get => mUVOpacityValue;
-			set {
-				mUVOpacityValue = value;
-				InvokeChange();
-				InvokeChange(nameof(UVOpacity));
-			}
-		}
-
-		public float UVOpacity => ((float)UVOpacityValue) / 100;
 	}
 }

@@ -386,6 +386,7 @@
 	<s:String x:Key="TitlePaintJobPreview">Paint Job Preview</s:String>
 	<s:String x:Key="ButtonPreviewPaintJob">Preview Paint Job Texture</s:String>
 	<s:String x:Key="CheckBoxShowCabinUV">Show Cabin UV</s:String>
+	<s:String x:Key="HeaderUVLayers">UV Layers</s:String>
 	
 
 	<!--Created Sii Files-->
