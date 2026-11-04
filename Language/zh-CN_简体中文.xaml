@@ -448,6 +448,7 @@
 	<s:String x:Key="CurrentFileMAT">MAT文件：</s:String>
 	<s:String x:Key="CurrentFileOther">其他文件：</s:String>
 	<s:String x:Key="CurrentFileDir">文件夹：</s:String>
+	<s:String x:Key="MessageResultExtractAllFinished">提取完成</s:String>
 	<s:String x:Key="MessageExtractedModel">成功提取并解密模型至：</s:String>
 	<s:String x:Key="MessageExtractedTobj">成功提取并解密Tobj及贴图至：</s:String>
 	<s:String x:Key="MessageExtractedFile">成功提取文件至：</s:String>

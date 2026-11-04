@@ -47,7 +47,7 @@ namespace SCS_Mod_Helper.ConverterPix {
 					TextCurrentFile.Text = CurrentFile;
 					break;
 				case "Finish":
-					MessageBox.Show(this, "Task Finished");
+					MessageBox.Show(this, GetString("MessageResultExtractAllFinished"));
 					Close();
 					break;
 			}
@@ -383,7 +383,7 @@ namespace SCS_Mod_Helper.ConverterPix {
 
 		private static Process CallPix(string args) {
 			Process p = new();
-			p.StartInfo.FileName = Instances.ConverterPixPath;
+			p.StartInfo.FileName = Instances.ConverterPixExe;
 			p.StartInfo.Arguments = args;
 			p.StartInfo.UseShellExecute = false;
 			p.StartInfo.RedirectStandardInput = true;

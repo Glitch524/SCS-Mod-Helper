@@ -65,7 +65,7 @@ namespace SCS_Mod_Helper.Class.Base {
 		protected void WriteLine(StreamWriter sw, string name, long? value) {
 			if (value == null)
 				return;
-			Write(sw, name, FloatToString(value));
+			Write(sw, name, value.ToString()!);
 		}
 
 		protected void WriteLine(StreamWriter sw, string name, long? value, long defaultValue) {
@@ -77,7 +77,7 @@ namespace SCS_Mod_Helper.Class.Base {
 		protected void WriteLine(StreamWriter sw, string name, uint? value) {
 			if (value == null)
 				return;
-			Write(sw, name, FloatToString(value));
+			Write(sw, name, value.ToString()!);
 		}
 
 		protected void WriteLine(StreamWriter sw, string name, uint? value, uint defaultValue) {

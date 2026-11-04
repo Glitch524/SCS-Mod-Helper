@@ -608,13 +608,6 @@
 										<Style.Triggers>
 											<Trigger
 												Property="Text"
-												Value="">
-												<Setter
-													Property="Background"
-													Value="Yellow" />
-											</Trigger>
-											<Trigger
-												Property="Text"
 												Value="0">
 												<Setter
 													Property="Background"
@@ -642,23 +635,7 @@
 								ClearButtonEnabled="False"
 								PlaceholderText="0"
 								PreviewTextInput="NumberOnly"
-								TextWrapping="Wrap">
-								<ui:TextBox.Style>
-									<Style
-										TargetType="ui:TextBox"
-										BasedOn="{StaticResource {x:Type ui:TextBox}}">
-										<Style.Triggers>
-											<Trigger
-												Property="Text"
-												Value="">
-												<Setter
-													Property="Background"
-													Value="Yellow" />
-											</Trigger>
-										</Style.Triggers>
-									</Style>
-								</ui:TextBox.Style>
-							</ui:TextBox>
+								TextWrapping="Wrap" />
 						</StackPanel>
 						<StackPanel
 							x:Name="PanelIconName"

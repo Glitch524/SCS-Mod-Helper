@@ -448,6 +448,7 @@
 	<s:String x:Key="CurrentFileMAT">MAT File:</s:String>
 	<s:String x:Key="CurrentFileOther">Other File:</s:String>
 	<s:String x:Key="CurrentFileDir">Folder:</s:String>
+	<s:String x:Key="MessageResultExtractAllFinished">Task Finished</s:String>
 	<s:String x:Key="MessageExtractedModel">Extracted and decrypted model successfully to:</s:String>
 	<s:String x:Key="MessageExtractedTobj">Extracted and decrypted tobj file and its image successfully to:</s:String>
 	<s:String x:Key="MessageExtractedFile">Extracted file successfully to:</s:String>

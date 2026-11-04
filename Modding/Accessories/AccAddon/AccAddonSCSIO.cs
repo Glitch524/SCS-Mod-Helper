@@ -58,7 +58,7 @@ namespace SCS_Mod_Helper.Modding.Accessories.AccAddon {
 		private int CreateSii(AccAddonBinding binding, bool isETS2) {
 			int numberCreated = 0;
 			foreach (var vehicle in isETS2 ? binding.VehiclesETS2 : binding.VehiclesATS) {
-				var siiFile = Paths.AccAddonFile(vehicle.VehicleID, vehicle.ModelType, binding.ModelName);
+				var siiFile = Paths.AccAddonFile(vehicle.VehicleType, vehicle.VehicleID, vehicle.ModelType, binding.ModelName);
 				if (vehicle.Check) {
 					if (vehicle.ModelType.Length == 0 || vehicle.VehicleID.Length == 0 || vehicle.Look.Length == 0 || vehicle.Variant.Length == 0)//确保modeltype look variant 都有值，否则跳过
 						continue;
@@ -75,8 +75,8 @@ namespace SCS_Mod_Helper.Modding.Accessories.AccAddon {
 				WriteFileStructure(sw, () => {
 					WriteData(sw, isPatch, binding.ModelName, vehicle.VehicleID, vehicle.ModelType, () => {
 						WriteLine(sw, NameDisplayName, binding.DisplayName);
-						WriteLine(sw, NamePrice, binding.Price);
-						WriteLine(sw, NameUnlock, binding.UnlockLevel);
+						WriteLine(sw, NamePrice, binding.Price ?? 1);
+						WriteLine(sw, NameUnlock, binding.UnlockLevel ?? 0);
 						WriteLine(sw, NamePartType, binding.PartType, "unknown");
 						WriteLine(sw, NameIconName, binding.IconName);
 						WriteLine(sw, NameAAIntModel, binding.ModelPath);

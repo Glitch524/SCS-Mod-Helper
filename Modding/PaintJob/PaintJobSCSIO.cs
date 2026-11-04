@@ -74,7 +74,8 @@ public class PaintJobSCSIO(): SCSIO {
 		NameDefaults or
 		NameOverrides or
 		NameRequire or
-		NameColorVariant => true,
+		NameColorVariant or
+		NameAccList => true,
 		_ => false
 	};
 
@@ -84,17 +85,18 @@ public class PaintJobSCSIO(): SCSIO {
 
 	public void WritePaintJobData(PaintJobBinding binding) {
 		var data = binding.PaintJobData;
+		var vehicleType = data.CurrentVehicle!.VehicleType;
 		var vehicleID = data.CurrentVehicle!.VehicleID;
 		var paintJobName = data.ModelName;
-		var siiFile = Paths.AccPaintJobFile(vehicleID, paintJobName);
+		var siiFile = Paths.AccPaintJobFile(vehicleType, vehicleID, paintJobName);
 		using StreamWriter sw = new(siiFile);
 		WriteFileStructure(sw, () => {
 			WriteAccPaintJobData(sw, paintJobName, vehicleID, () => {
 				bool customBase, custom1, custom2, custom3;
 
 				WriteLine(sw, NameDisplayName, data.DisplayName);
-				WriteLine(sw, NamePrice, data.Price);
-				WriteLine(sw, NameUnlock, data.UnlockLevel);
+				WriteLine(sw, NamePrice, data.Price ?? 1);
+				WriteLine(sw, NameUnlock, data.UnlockLevel ?? 0);
 				WriteLine(sw, NameIcon, data.IconName);
 				WriteLine(sw, NamePartType, data.PartType, "unknown");
 				WriteLine(sw, NameSyncOverNetwork, data.SyncOverNetwork, false);
@@ -167,8 +169,9 @@ public class PaintJobSCSIO(): SCSIO {
 	private void WriteOvrPaintJobData(AccPaintJobData data) {
 		if (data.OverrideList.Count == 0)
 			return;
+		var vehicleType = data.CurrentVehicle!.VehicleType;
 		var vehicleID = data.CurrentVehicle!.VehicleID;
-		var siiFile = Paths.SimplePaintJobFile(vehicleID, data.ModelName);
+		var siiFile = Paths.SimplePaintJobFile(vehicleType, vehicleID, data.ModelName);
 		using StreamWriter sw = new(siiFile);
 		WriteFileStructure(sw, () => {
 			for (int i = 0; i < data.OverrideList.Count; i++) {

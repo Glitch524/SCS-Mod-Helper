@@ -906,8 +906,6 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 				throw new(Util.GetString("MessageCreateSiiNoExpanded"));
 			if (ProjectLocation.Length == 0 ||
 				DisplayName.Length == 0 ||
-				Price == null ||
-				UnlockLevel == null ||
 				ModelPath.Length == 0 ||
 				ModelName.Length == 0 ||
 				IconName.Length == 0) {

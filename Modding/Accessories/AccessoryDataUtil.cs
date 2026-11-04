@@ -83,7 +83,7 @@ public static class AccessoryDataUtil {
 				throw new(Util.GetString("MessageCreateAccessoryFail"));
 			if (fileDialog.ShowDialog() != true)
 				return null;
-			CheckIconPath(window, fileDialog.FileName, out iconPath);
+			return CheckIconPath(window, fileDialog.FileName, out iconPath);
 		} catch (Exception ex) {
 			MessageBox.Show(window, ex.Message);
 		}
@@ -106,6 +106,8 @@ public static class AccessoryDataUtil {
 		siiIconLocation = siiIconLocation.Replace(pathAcc, "");
 		siiIconLocation = siiIconLocation.Replace('\\', '/');
 		siiIconLocation = siiIconLocation[..^4];
+		if (siiIconLocation.StartsWith('/'))
+			siiIconLocation = siiIconLocation[1..];
 		iconPath = iconFile.FullName;
 		return siiIconLocation;
 	}

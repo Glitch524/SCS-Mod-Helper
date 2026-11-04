@@ -29,8 +29,6 @@ partial class Paths {
 	}
 	public static string AccAddonFile(string vehicleType, string vehicleID, string modelType, string modelName) =>
 		AccAddonFile(Instances.ProjectLocation, vehicleType, vehicleID, modelType, modelName);
-	public static string AccAddonFile(string vehicleID, string modelType, string modelName) =>
-		AccAddonFile(Instances.ProjectLocation, "truck", vehicleID, modelType, modelName);
 
 
 
@@ -52,8 +50,6 @@ partial class Paths {
 	}
 	public static string AccPaintJobFile(string vehicleType, string vehicleID, string paintJobName) =>
 		AccPaintJobFile(Instances.ProjectLocation, vehicleType, vehicleID, paintJobName);
-	public static string AccPaintJobFile(string vehicleID, string paintJobName) =>
-		AccPaintJobFile(Instances.ProjectLocation, "truck", vehicleID, paintJobName);
 
 
 	public static string SimplePaintJobFile(string projectLocation, string vehicleType, string vehicleID, string paintJobName) {
@@ -63,8 +59,6 @@ partial class Paths {
 	}
 	public static string SimplePaintJobFile(string vehicleType, string vehicleID, string paintJobName) =>
 		SimplePaintJobFile(Instances.ProjectLocation, vehicleType, vehicleID, paintJobName);
-	public static string SimplePaintJobFile(string vehicleID, string paintJobName) =>
-		SimplePaintJobFile(Instances.ProjectLocation, "truck", vehicleID, paintJobName);
 
 
 	public static string HookupFile(string projectLocation, string hookupName) {

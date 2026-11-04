@@ -43,7 +43,7 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 			}
 		}
 
-		private float? mAccFlakeUVScale = 32f;
+		private float? mAccFlakeUVScale = null;
 
 		public float? AccFlakeUVScale {
 			get => mAccFlakeUVScale;
@@ -53,8 +53,8 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 			}
 		}
 
-		private float mAccFlakeVRatio = 1f;
-		public float AccFlakeVRatio {
+		private float? mAccFlakeVRatio = null;
+		public float? AccFlakeVRatio {
 			get => mAccFlakeVRatio;
 			set {
 				mAccFlakeVRatio = value;

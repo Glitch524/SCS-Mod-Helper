@@ -38,7 +38,8 @@ namespace SCS_Mod_Helper.ConverterPix {
 
 		private void ButtonChooseDestClick(object sender, RoutedEventArgs e) {
 			OpenFolderDialog openFolderDialog = new() {
-				Multiselect = false
+				Multiselect = false,
+				InitialDirectory = Binding.DestPath
 			};
 			if (openFolderDialog.ShowDialog() == true) {
 				Binding.DestPath = openFolderDialog.FolderName;

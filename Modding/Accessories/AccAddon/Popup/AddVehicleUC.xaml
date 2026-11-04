@@ -140,16 +140,16 @@
 					<ComboBox.Items>
 						<ComboBoxItem
 							Content="{DynamicResource VehicleTypeTruck}"
-							Tag="Truck" />
+							Tag="truck" />
 						<ComboBoxItem
 							Content="{DynamicResource VehicleTypeTrailer}"
-							Tag="Trailer" />
+							Tag="trailer" />
 						<ComboBoxItem
 							Content="{DynamicResource VehicleTypeCar}"
-							Tag="Car" />
+							Tag="car" />
 						<ComboBoxItem
 							Content="{DynamicResource VehicleTypeCoach}"
-							Tag="Coach" />
+							Tag="coach" />
 					</ComboBox.Items>
 				</ComboBox>
 

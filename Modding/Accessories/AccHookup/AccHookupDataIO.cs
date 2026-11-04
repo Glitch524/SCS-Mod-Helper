@@ -81,8 +81,8 @@ namespace SCS_Mod_Helper.Modding.Accessories.AccHookup {
 			foreach (var hookup in sui.HookupItems) {
 				WriteData(sw, hookup.ModelName, () => {
 					WriteLine(sw, NameDisplayName, hookup.DisplayName);
-					WriteLine(sw, NamePrice, hookup.Price);
-					WriteLine(sw, NameUnlock, hookup.UnlockLevel);
+					WriteLine(sw, NamePrice, hookup.Price ?? 1);
+					WriteLine(sw, NameUnlock, hookup.UnlockLevel ?? 0);
 					WriteLine(sw, NameIconName, hookup.IconName);
 					WriteLine(sw, NamePartType, hookup.PartType, "unknown");
 					WriteLine(sw, NameAHModel, hookup.ModelPath);
