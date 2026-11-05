@@ -189,6 +189,8 @@ namespace SCS_Mod_Helper.Locale.Localization {
 		private static void DeleteLocaleSii(LocaleModule module) {
 			var moduleName = module.ModuleName;
 			foreach (var locale in module.LocaleList) {
+				if (locale.IsUniversal)
+					continue;
 				var localeFile = Paths.LocaleFile(Instances.ProjectLocation, locale.LocaleValue, moduleName, false);
 				File.Delete(localeFile);
 				var parent = Directory.GetParent(localeFile)!;

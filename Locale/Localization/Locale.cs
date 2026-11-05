@@ -5,6 +5,8 @@ namespace SCS_Mod_Helper.Locale.Localization;
 public abstract class Locale(string localeValue, string localeDisplay): BaseBinding {
 	public static readonly string LocaleValueUni = "universal";
 
+	public bool IsUniversal => LocaleValue == LocaleValueUni;
+
 	private string mLocaleValue = localeValue;
 	public string LocaleValue {
 		get => mLocaleValue;

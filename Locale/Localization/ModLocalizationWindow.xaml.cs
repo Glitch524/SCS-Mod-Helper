@@ -94,13 +94,14 @@ public partial class ModLocalizationWindow: BaseWindow {
 		if (sender == ButtonCancel) {
 			Close();
 		} else if (sender == ButtonSave) {
-			if (UniversalDict.Count > 0)
-				RunSave();
-			else {
+			if (Modules.Count > 0 && Binding.HasEmptyUni) {
 				var result = MessageBox.Show(this, GetString("MessageUniEmpty"), GetString("MessageTitleNotice"), MessageBoxButton.YesNo);
 				if (result == MessageBoxResult.Yes)
 					RunSave();
+				else
+					return;
 			}
+			RunSave();
 		}
 	}
 	private void RunSave() {

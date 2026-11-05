@@ -55,6 +55,16 @@ public class LocaleBinding(Func<IBaseVisual> visualFunc): WindowBinding(visualFu
 	public ObservableCollection<LocalePair>? CurrentDict => CurrentLocale?.Dictionary;
 	public ObservableCollection<LocalePair> UniversalDict => CurrentModule!.UniversalDict;
 
+	public bool HasEmptyUni {
+		get {
+			foreach (var module in LocaleModules) {
+				if (module.UniversalDict.Count == 0)
+					return true;
+			}
+			return false;
+		}
+	}
+
 	public ICommand SyncCommand => new RelayCommand(SyncWithUniversal);
 	public void SyncWithUniversal() {
 		var currentList = new List<LocalePair>(CurrentDict!);
