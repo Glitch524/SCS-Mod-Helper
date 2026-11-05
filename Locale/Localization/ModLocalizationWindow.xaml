@@ -57,8 +57,8 @@
 								<StackPanel
 									Orientation="Horizontal">
 									<c:EditableTextBlock
-										Content="{Binding ModuleName}"
-										d:Content="ModuleName" />
+										Text="{Binding ModuleName}"
+										d:Text="ModuleName" />
 									<Button
 										Margin="5,0,0,0"
 										BorderThickness="0"

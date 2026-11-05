@@ -18,7 +18,6 @@
 					<Grid>
 						<TextBlock
 							x:Name="PART_TextBlock"
-							Text="{TemplateBinding Content}"
 							ToolTip="{DynamicResource TipsTabDoubleClickEdit}"
 							ToolTipService.InitialShowDelay="100"
 							Margin="8,0,0,0"
@@ -26,7 +25,6 @@
 						<TextBox
 							x:Name="PART_TextBox"
 							FontSize="12"
-							Text="{Binding Content, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
 							Visibility="Hidden"
 							VerticalAlignment="Center" />
 					</Grid>
