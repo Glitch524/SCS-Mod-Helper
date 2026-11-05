@@ -6,14 +6,7 @@ using System.Windows.Threading;
 
 namespace SCS_Mod_Helper.Modding.Accessories.AccAddon.CreatedSii;
 internal class CreatedModelBinding(Func<IBaseVisual> visualFunc): WindowBinding(visualFunc) {
-	private string mCurrentProjectLocation = "";
-	public string CurrentProjectLocation {
-		get => mCurrentProjectLocation;
-		set {
-			mCurrentProjectLocation = GetString("TextProjectLocation") + value;
-			InvokeChange();
-		}
-	}
+	public static string CurrentProjectLocation => Instances.ProjectLocation;
 
 	private Visibility mProgressRingVisibility = Visibility.Visible;
 	public Visibility ProgressRingVisibility {

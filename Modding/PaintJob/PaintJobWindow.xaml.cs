@@ -76,7 +76,9 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 		private void ButtonChooseIcon(object sender, RoutedEventArgs e) => Binding.ChooseIcon();
 
 		private void ButtonChooseTextureClick(object sender, RoutedEventArgs e) {
-			Binding.ChooseTex((string)((Control)sender).Tag);
+			if (sender is Button button) {
+				Binding.ChooseTex((ChooseTexType)button.Tag);
+			}
 		}
 
 		private void PreviewFileBoxDragOver(object sender, DragEventArgs e) {
@@ -97,12 +99,24 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 			e.Handled = true;
 		}
 
+
+
+		private void IconFileDrop(object sender, DragEventArgs e) {
+			if (e.Data.GetDataPresent(DataFormats.FileDrop)) {
+				var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+				if (files.Length > 0) {
+					Binding.IconFileDrop(files[0]);
+				}
+			}
+		}
 		private void FileDrop(object sender, DragEventArgs e) {
 			if (e.Data.GetDataPresent(DataFormats.FileDrop)) {
 				var files = (string[])e.Data.GetData(DataFormats.FileDrop);
 				if (files.Length > 0) {
-					string Tag = (string)((Control)sender).Tag;
-					Binding.FileDrop(Tag, files[0]);
+					if (sender is Button button) {
+						ChooseTexType Tag = (ChooseTexType)button.Tag;
+						Binding.FileDrop(Tag, files[0]);
+					}
 				}
 			}
 		}

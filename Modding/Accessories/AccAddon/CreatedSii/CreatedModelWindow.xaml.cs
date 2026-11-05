@@ -14,8 +14,6 @@ namespace SCS_Mod_Helper.Modding.Accessories.AccAddon.CreatedSii;
 public partial class CreatedModelWindow: BaseWindow {
 	private readonly CreatedModelBinding Binding;
 
-	readonly string ProjectLocation = Instances.ProjectLocation;
-
 	public ObservableCollection<CreatedModel> CreatedModelList {
 		get => Binding.CreatedModelList; set => Binding.CreatedModelList = value;
 	}
@@ -31,8 +29,6 @@ public partial class CreatedModelWindow: BaseWindow {
 		Binding = new(() => this);
 		GridMain.DataContext = Binding;
 
-		Binding.CurrentProjectLocation = ProjectLocation;
-
 		Loaded += OnLoaded;
 		Closed += OnClosed;
 	}
@@ -43,7 +39,7 @@ public partial class CreatedModelWindow: BaseWindow {
 
 	private void OnClosed(object? sender, EventArgs e) => source.Cancel();
 
-	private readonly DirectoryInfo defDir = new(Paths.DefTruckDir(Instances.ProjectLocation));
+	private readonly DirectoryInfo defDir = new(Paths.DefTruckDir());
 	readonly Dictionary<string, CreatedModel> ModelPair = [];
 
 	private void LoadCreatedSii() {
@@ -79,7 +75,7 @@ public partial class CreatedModelWindow: BaseWindow {
 			if (file.Extension.Equals(".sii")) {
 				var filePath = file.FullName;
 
-				var pathShort = filePath.Replace(Paths.DefTruckDir(ProjectLocation), "");
+				var pathShort = filePath.Replace(Paths.DefTruckDir(), "");
 
 				var modelName = "";
 				var vehicleID = "";

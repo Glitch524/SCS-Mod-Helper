@@ -14,6 +14,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using static SCS_Mod_Helper.Modding.Accessories.AccessoryDataUtil;
 
 namespace SCS_Mod_Helper.Modding.Accessories.AccAddon;
 public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBinding(visualFunc), IListDataInterface {
@@ -927,61 +928,36 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 	public void ChooseIcon() => AddonItem.ChooseIcon(BindingWindow);
 
 
-	public const int MODEL = 0;
-	public const int MODEL_UK = 1;
-	public const int EXT_MODEL = 2;
-	public const int EXT_MODEL_UK = 3;
-	public const int MODEL_COLL = 4;
 	//模型、模型UK、碰撞体
-	public void ChooseModel(int type) {
-		if (ProjectLocation.Length == 0)
-			throw new(Util.GetString("MessageProjectLocationFirst"));
-		string title, filter, defaultExt;
-		switch (type) {
-			case MODEL:
-			case EXT_MODEL:
-				title = Util.GetString("DialogTitleChooseModel");
-				filter = Util.GetFilter("DialogFilterChooseModel");
-				defaultExt = "pmd";
+	public void ChooseModel(ChooseModelType chooseType) {
+		string currentPath;
+		switch (chooseType) {
+			case ChooseModelType.Model:
+				currentPath = AddonItem.ModelPath;
 				break;
-			case MODEL_UK:
-			case EXT_MODEL_UK:
-				title = Util.GetString("DialogTitleChooseModelUK");
-				filter = Util.GetFilter("DialogFilterChooseModel");
-				defaultExt = "pmd";
+			case ChooseModelType.ExtModel:
+				currentPath = AddonItem.ExtModelPath;
 				break;
-			case MODEL_COLL:
-				title = Util.GetString("DialogTitleChooseColl");
-				filter = Util.GetFilter("DialogFilterChooseColl");
-				defaultExt = "pmc";
+			case ChooseModelType.ModelUK:
+				currentPath = AddonItem.ModelPathUK;
+				break;
+			case ChooseModelType.ExtModelUK:
+				currentPath = AddonItem.ExtModelPathUK;
+				break;
+			case ChooseModelType.Coll:
+				currentPath = AddonItem.CollPath;
 				break;
 			default:
 				return;
 		}
-		var fileDialog = new OpenFileDialog {
-			Multiselect = false,
-			DefaultDirectory = ProjectLocation,
-			DefaultExt = defaultExt,
-			Title = title,
-			Filter = filter,
-			InitialDirectory = AccessoryDataUtil.GetInitialPath([ModelPath, ModelPathUK, CollPath])
-		};
-		if (fileDialog.ShowDialog() != true)
+
+		var path = ChooseModelPath(chooseType, currentPath);
+		if (path == null)
 			return;
-		string path = fileDialog.FileName;
-		if (!path.StartsWith(ProjectLocation) || path.Length == ProjectLocation.Length)
-			throw new(Util.GetString("MessageModelOutsideProject"));
-		if (type == MODEL_COLL) {
-			if (!path.EndsWith(".pic") && !path.EndsWith(".pmc"))
-				throw new(Util.GetString("MessageInvalidExtColl"));
-		} else if (!path.EndsWith(".pim") && !path.EndsWith(".pmd")) {
-			throw new(Util.GetString("MessageInvalidExt"));
-		}
-		AccAddonHistory.Default.ChooseModelHistory = new DirectoryInfo(fileDialog.FileName).Parent!.FullName;
-		AccAddonHistory.Default.Save();
+
 		LoadLooksAndVariants(path);//修改模型路径后，look和variant都不同，需要重新读取
 		string inProjectPath = path.Replace(ProjectLocation, "");
-		var s = inProjectPath.Split('\\');
+		var parentDirs = inProjectPath.Split('\\');
 
 		string?
 			modelName = null,
@@ -990,92 +966,98 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 			modelPathUK = null,
 			collPath = null;
 
-		for (int i = s.Length - 2; i > 0; i--) {
+		for (int i = parentDirs.Length - 2; i > 0; i--) {
 			foreach (var info in ModelTypes) {//根据路径猜测模型的类型
-				if (s[i] == info.AccessoryETS2 || s[i] == info.AccessoryATS)
+				if (parentDirs[i] == info.AccessoryETS2 || parentDirs[i] == info.AccessoryATS)
 					modelType = info.Accessory;
 			}
 		}
-		if (type == MODEL || type == EXT_MODEL) {
-			modelPath = inProjectPath.Replace('\\', '/');
-			modelPath = modelPath[..^4];
-			modelName = modelPath[(modelPath.LastIndexOf('/') + 1)..];
-			if (File.Exists(path[..^4] + "_uk.pim") || File.Exists(path[..^4] + "_uk.pmd"))
-				modelPathUK = modelPath + "_uk.pmd";
-			if (File.Exists(path[..^4] + ".pic") || File.Exists(path[..^4] + ".pmc"))
-				collPath = modelPath + ".pmc";
-			modelPath += ".pmd";
-		} else if (type == MODEL_UK || type == EXT_MODEL_UK) {
-			modelPathUK = inProjectPath.Replace('\\', '/');
-			modelPathUK = modelPathUK[..^4];
-			if (modelPathUK.EndsWith("_uk")) {
-				modelName = modelPathUK[(modelPathUK.LastIndexOf('/') + 1)..^3];
-				if (File.Exists(path[..^7] + ".pim") || File.Exists(path[..^7] + ".pmd"))
-					modelPath = modelPathUK[..^3] + ".pmd";
-				if (File.Exists(path[..^7] + ".pic") || File.Exists(path[..^7] + ".pmc"))
-					collPath = modelPathUK[..^3] + ".pmc";
-			}
-			modelPathUK += ".pmd";
-		} else if (type == MODEL_COLL) {
-			collPath = inProjectPath.Replace('\\', '/');
-			collPath = collPath[..^4];
-			modelName = collPath[(collPath.LastIndexOf('/') + 1)..];
-			if (File.Exists(path[..^4] + "_uk.pim") || File.Exists(path[..^4] + "_uk.pmd"))
-				modelPathUK = modelPath + "_uk.pmd";
-			if (File.Exists(path[..^4] + ".pim") || File.Exists(path[..^4] + ".pmd"))
-				modelPath = collPath + ".pmd";
-			collPath += ".pmc";
-		}
-		bool showAR;
-
-
+		bool showAR = false;
 		if (ModelName == modelName)
 			modelName = null;
 		if (ModelType == modelType)
 			modelType = null;
-		if (type == MODEL) {
-			ModelPath = modelPath!;
-			if (ModelPathUK == modelPathUK)
-				modelPathUK = null;
+		switch (chooseType) {
+			case ChooseModelType.Model:
+			case ChooseModelType.ExtModel:
+				modelPath = inProjectPath.Replace('\\', '/');
+				modelPath = modelPath[..^4];
+				modelName = modelPath[(modelPath.LastIndexOf('/') + 1)..];
+				if (File.Exists(path[..^4] + "_uk.pim") || File.Exists(path[..^4] + "_uk.pmd"))
+					modelPathUK = modelPath + "_uk.pmd";
+				if (File.Exists(path[..^4] + ".pic") || File.Exists(path[..^4] + ".pmc"))
+					collPath = modelPath + ".pmc";
+				modelPath += ".pmd";
 
-			if (CollPath == collPath)
-				collPath = null;
-			showAR = modelName != null || modelType != null || modelPathUK != null || collPath != null;
-		} else if (type == EXT_MODEL) {
-			ExtModelPath = modelPath!;
-			if (ExtModelPathUK == modelPathUK)
-				modelPathUK = null;
+				if (chooseType == ChooseModelType.Model) {
+					ModelPath = modelPath!;
+					if (ModelPathUK == modelPathUK)
+						modelPathUK = null;
 
-			if (CollPath == collPath)
-				collPath = null;
-			showAR = modelName != null || modelType != null || modelPathUK != null || collPath != null;
-		} else if (type == MODEL_UK) {
-			ModelPathUK = modelPathUK!;
-			if (ModelPath == modelPath)
-				modelPath = null;
+					if (CollPath == collPath)
+						collPath = null;
+					showAR = modelName != null || modelType != null || modelPathUK != null || collPath != null;
+				} else {
+					ExtModelPath = modelPath!;
+					if (ExtModelPathUK == modelPathUK)
+						modelPathUK = null;
 
-			if (CollPath == collPath)
-				collPath = null;
-			showAR = modelName != null || modelType != null || modelPath != null || collPath != null;
-		} else if (type == EXT_MODEL_UK) {
-			ExtModelPathUK = modelPathUK!;
-			if (ExtModelPath == modelPath)
-				modelPath = null;
+					if (CollPath == collPath)
+						collPath = null;
+					showAR = modelName != null || modelType != null || modelPathUK != null || collPath != null;
+				}
+				break;
+			case ChooseModelType.ModelUK:
+			case ChooseModelType.ExtModelUK:
+				modelPathUK = inProjectPath.Replace('\\', '/');
+				modelPathUK = modelPathUK[..^4];
+				if (modelPathUK.EndsWith("_uk")) {
+					modelName = modelPathUK[(modelPathUK.LastIndexOf('/') + 1)..^3];
+					if (File.Exists(path[..^7] + ".pim") || File.Exists(path[..^7] + ".pmd"))
+						modelPath = modelPathUK[..^3] + ".pmd";
+					if (File.Exists(path[..^7] + ".pic") || File.Exists(path[..^7] + ".pmc"))
+						collPath = modelPathUK[..^3] + ".pmc";
+				}
+				modelPathUK += ".pmd";
 
-			if (CollPath == collPath)
-				collPath = null;
-			showAR = modelName != null || modelType != null || modelPath != null || collPath != null;
-		} else if (type == MODEL_COLL) {
-			CollPath = collPath!;
-			if (ModelPath == modelPath)
-				modelPath = null;
-			if (ModelPathUK == modelPathUK)
-				modelPathUK = null;
-			showAR = modelName != null || modelType != null || modelPath != null || modelPathUK != null;
-		} else
-			return;
+				if (chooseType == ChooseModelType.ModelUK) {
+					ModelPathUK = modelPathUK!;
+					if (ModelPath == modelPath)
+						modelPath = null;
+
+					if (CollPath == collPath)
+						collPath = null;
+					showAR = modelName != null || modelType != null || modelPath != null || collPath != null;
+				} else {
+					ExtModelPathUK = modelPathUK!;
+					if (ExtModelPath == modelPath)
+						modelPath = null;
+
+					if (CollPath == collPath)
+						collPath = null;
+					showAR = modelName != null || modelType != null || modelPath != null || collPath != null;
+				}
+				break;
+			case ChooseModelType.Coll:
+				collPath = inProjectPath.Replace('\\', '/');
+				collPath = collPath[..^4];
+				modelName = collPath[(collPath.LastIndexOf('/') + 1)..];
+				if (File.Exists(path[..^4] + "_uk.pim") || File.Exists(path[..^4] + "_uk.pmd"))
+					modelPathUK = modelPath + "_uk.pmd";
+				if (File.Exists(path[..^4] + ".pim") || File.Exists(path[..^4] + ".pmd"))
+					modelPath = collPath + ".pmd";
+				collPath += ".pmc";
+
+				CollPath = collPath!;
+				if (ModelPath == modelPath)
+					modelPath = null;
+				if (ModelPathUK == modelPathUK)
+					modelPathUK = null;
+				showAR = modelName != null || modelType != null || modelPath != null || modelPathUK != null;
+				break;
+		}
 		if (showAR) {
-			AutoFillSelectionWindow arWindow = new(type, modelName, modelType, modelPath, modelPathUK, collPath) { Owner = BindingWindow };
+			AutoFillSelectionWindow arWindow = new(chooseType, modelName, modelType, modelPath, modelPathUK, collPath) { Owner = BindingWindow };
 			var result = arWindow.ShowDialog();
 			if (result == true) {
 				if (modelName != null && arWindow.CheckModelName)
@@ -1085,13 +1067,13 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 					ModelType = modelType;
 				}
 				if (modelPath != null && arWindow.CheckModelPath) {
-					if (type == EXT_MODEL || type == EXT_MODEL_UK)
+					if (chooseType == ChooseModelType.ExtModel || chooseType == ChooseModelType.ExtModelUK)
 						ExtModelPath = modelPath;
 					else
 						ModelPath = modelPath;
 				}
 				if (modelPathUK != null && arWindow.CheckModelPathUK) {
-					if (type == EXT_MODEL || type == EXT_MODEL_UK)
+					if (chooseType == ChooseModelType.ExtModel || chooseType == ChooseModelType.ExtModelUK)
 						ExtModelPathUK = modelPathUK;
 					else
 						ModelPathUK = modelPathUK;

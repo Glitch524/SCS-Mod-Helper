@@ -85,7 +85,16 @@ public partial class AccHookupWindow: BaseWindow {
 
 	private void ButtonChooseIcon(object sender, RoutedEventArgs e) => Binding.ChooseIcon();
 
-	private void ButtonChooseModelClick(object sender, RoutedEventArgs e) => Binding.ChooseModel(sender == ButtonChooseColl);
+	private void ButtonChooseModelClick(object sender, RoutedEventArgs e) {
+		try {
+			if (sender is Button button) {
+				ChooseModelType chooseType = (ChooseModelType)button.Tag;
+				Binding.ChooseModel(chooseType);
+			}
+		} catch (Exception ex) {
+			MessageBox.Show(this, ex.Message);
+		}
+	}
 
 	private void NumberOnly(object sender, TextCompositionEventArgs e) => TextControl.NumberOnly(sender, e);
 	private void ButtonListClick(object sender, RoutedEventArgs e) {

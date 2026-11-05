@@ -1,5 +1,6 @@
 ﻿using SCS_Mod_Helper.Class.Base;
 using System.Windows;
+using static SCS_Mod_Helper.Modding.Accessories.AccessoryDataUtil;
 
 namespace SCS_Mod_Helper.Modding.Accessories.AccAddon;
 
@@ -29,14 +30,14 @@ public partial class AutoFillSelectionWindow: BaseWindow {
 		set => binding.CheckCollPath = value;
 	}
 	public AutoFillSelectionWindow(
-		int type,
+		ChooseModelType chooseType,
 		string? modelName,
 		string? modelType,
 		string? modelPath,
 		string? modelPathUK,
 		string? collPath) {
 		InitializeComponent();
-		binding = new(() => this, type, modelName, modelType, modelPath, modelPathUK, collPath);
+		binding = new(() => this, chooseType, modelName, modelType, modelPath, modelPathUK, collPath);
 		StackMain.DataContext = binding;
 	}
 
@@ -50,7 +51,7 @@ public class AutoFillBinding: WindowBinding {
 
 	public AutoFillBinding(
 		Func<IBaseVisual> visualFunc,
-		int chooseType,
+		ChooseModelType chooseType,
 		string? modelName,
 		string? modelType,
 		string? modelPath,
@@ -82,8 +83,8 @@ public class AutoFillBinding: WindowBinding {
 		CheckCount = mVisibleCount;
 	}
 
-	private int mchooseType;
-	public int ChooseType {
+	private ChooseModelType mchooseType;
+	public ChooseModelType ChooseType {
 		get => mchooseType;
 		set {
 			mchooseType = value;
@@ -198,7 +199,9 @@ public class AutoFillBinding: WindowBinding {
 		}
 	}
 
-	public bool VisibleModelPath => ChooseType == AccAddonBinding.MODEL || ChooseType == AccAddonBinding.EXT_MODEL || !string.IsNullOrEmpty(TextModelPath);
+	public bool VisibleModelPath => ChooseType == ChooseModelType.Model
+								 || ChooseType == ChooseModelType.ExtModel
+								 || !string.IsNullOrEmpty(TextModelPath);
 	public Visibility VisiblilityModelPath => VisibleModelPath ? Visibility.Visible : Visibility.Collapsed;
 
 
@@ -222,7 +225,9 @@ public class AutoFillBinding: WindowBinding {
 			InvokeChange(nameof(VisiblilityModelPathUK));
 		}
 	}
-	public bool VisibleModelPathUK => ChooseType == AccAddonBinding.MODEL_UK || ChooseType == AccAddonBinding.EXT_MODEL_UK || !string.IsNullOrEmpty(TextModelPathUK);
+	public bool VisibleModelPathUK => ChooseType == ChooseModelType.ModelUK
+								   || ChooseType == ChooseModelType.ExtModelUK
+								   || !string.IsNullOrEmpty(TextModelPathUK);
 	public Visibility VisiblilityModelPathUK => VisibleModelPathUK ? Visibility.Visible : Visibility.Collapsed;
 
 
@@ -249,6 +254,7 @@ public class AutoFillBinding: WindowBinding {
 		}
 	}
 
-	public bool VisibleCollPath => ChooseType == AccAddonBinding.MODEL_COLL || !string.IsNullOrEmpty(TextCollPath);
+	public bool VisibleCollPath => ChooseType == ChooseModelType.Coll
+								|| !string.IsNullOrEmpty(TextCollPath);
 	public Visibility VisiblilityCollPath => VisibleCollPath ? Visibility.Visible : Visibility.Collapsed;
 }

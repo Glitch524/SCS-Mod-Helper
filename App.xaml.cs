@@ -27,12 +27,13 @@ public partial class App: Application {
 			} catch (Exception ex) {
 				Debug.WriteLine($"Error during settings upgrade: {ex.Message}");
 			}
-		}
-		if (AccAddonHistory.Default.NeedToUpgrade) {
+			try {
+				History.Default.Upgrade();
+			} catch (Exception ex) {
+				Debug.WriteLine($"Error during History upgrade: {ex.Message}");
+			}
 			try {
 				AccAddonHistory.Default.Upgrade();
-				AccAddonHistory.Default.NeedToUpgrade = false;
-				AccAddonHistory.Default.Save();
 			} catch (Exception ex) {
 				Debug.WriteLine($"Error during AccAddonHistory upgrade: {ex.Message}");
 			}
@@ -60,7 +61,7 @@ public partial class App: Application {
 		sw.WriteLine($"Exception");
 		sw.WriteLine($"Type={ex.GetType().FullName} Message={ex.Message}");
 		sw.WriteLine(ex);
-		MessageBox.Show($"File save to:\n{new FileInfo(exceptionPath).FullName}\n\n{ex}", "Error occurs");
+		MessageBox.Show($"Exception={ex.Message}\nFile save to:\n{new FileInfo(exceptionPath).FullName}", "Error occurs");
 	}
 
 	private static void CheckExceptionCounts() {

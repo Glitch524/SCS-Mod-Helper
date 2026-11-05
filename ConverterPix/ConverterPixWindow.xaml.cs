@@ -1,9 +1,5 @@
-﻿using Microsoft.Win32;
-using SCS_Mod_Helper.Class.Base;
-using SCS_Mod_Helper.Utils;
-using System.Collections.ObjectModel;
+﻿using SCS_Mod_Helper.Class.Base;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace SCS_Mod_Helper.ConverterPix {
@@ -23,35 +19,6 @@ namespace SCS_Mod_Helper.ConverterPix {
 		public string PackPath {
 			get => Binding.PackPath;
 			set => Binding.PackPath = value;
-		}
-
-		private void ButtonChoosePack(object sender, RoutedEventArgs e) {
-			OpenFileDialog openFileDialog = new() {
-				Filter = Util.GetFilter("DialogFilterMod"),
-				Multiselect = false
-			};
-			if (openFileDialog.ShowDialog() == true) {
-				PackPath = openFileDialog.FileName;
-				Binding.DirStart(openFileDialog.SafeFileName);
-			}
-		}
-
-		private void ButtonChooseDestClick(object sender, RoutedEventArgs e) {
-			OpenFolderDialog openFolderDialog = new() {
-				Multiselect = false,
-				InitialDirectory = Binding.DestPath
-			};
-			if (openFolderDialog.ShowDialog() == true) {
-				Binding.DestPath = openFolderDialog.FolderName;
-			}
-		}
-
-		private void ButtonClick(object sender, RoutedEventArgs e) {
-			if (sender == ButtonBack) {
-				Binding.Undo();
-			} else if (sender == ButtonReturn) {
-				Binding.FolderBack();
-			}
 		}
 
 		private void BreadcrumbBarItemClicked(Wpf.Ui.Controls.BreadcrumbBar _, Wpf.Ui.Controls.BreadcrumbBarItemClickedEventArgs args) {

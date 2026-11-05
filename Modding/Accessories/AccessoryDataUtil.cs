@@ -1,70 +1,86 @@
 ﻿using Microsoft.Win32;
-using SCS_Mod_Helper.Class.Base;
-using SCS_Mod_Helper.Modding.Accessories.AccAddon;
 using SCS_Mod_Helper.Utils;
+using SCS_Mod_Helper.Vehicles;
 using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using System.Xml.Linq;
-using Windows.UI;
 
 namespace SCS_Mod_Helper.Modding.Accessories;
 public static class AccessoryDataUtil {
 
-	public static string GetInitialPath(params string[] paths) {
-		string? currentPath = null;
-		foreach (var path in paths) {
-			if (string.IsNullOrEmpty(path))
-				continue;
-			currentPath = path;
-			break;
-		}
+	public static string? ChooseModelPath(ChooseModelType chooseType, string? currentPath, string vehicleType = Vehicle.VEHICLE_TYPE_TRUCK) {
 		var projectLocation = Instances.ProjectLocation;
-		if (currentPath != null) {
+		if (projectLocation.Length == 0)
+			throw new(Util.GetString("MessageProjectLocationFirst"));
+		string title, filter, defaultExt;
+		switch (chooseType) {
+			case ChooseModelType.Model:
+			case ChooseModelType.ExtModel:
+				title = Util.GetString("DialogTitleChooseModel");
+				filter = Util.GetFilter("DialogFilterChooseModel");
+				defaultExt = "pmd";
+				break;
+			case ChooseModelType.ModelUK:
+			case ChooseModelType.ExtModelUK:
+				title = Util.GetString("DialogTitleChooseModelUK");
+				filter = Util.GetFilter("DialogFilterChooseModel");
+				defaultExt = "pmd";
+				break;
+			case ChooseModelType.Coll:
+				title = Util.GetString("DialogTitleChooseColl");
+				filter = Util.GetFilter("DialogFilterChooseColl");
+				defaultExt = "pmc";
+				break;
+			default:
+				throw new ArgumentException("wrong type");
+		}
+
+		if (string.IsNullOrEmpty(Instances.HistoryModelPath) || !Instances.HistoryModelPath.StartsWith(Instances.ProjectLocation)) {
+			Instances.HistoryModelPath = Paths.VehicleUpgradePath(vehicleType);
+		}
+		var defaultDir = Instances.HistoryModelPath;
+
+		string initialPath;
+		if (string.IsNullOrEmpty(currentPath)) {
+			initialPath = defaultDir;
+		} else {
 			currentPath = currentPath.Replace('/', '\\');
 			if (!currentPath.StartsWith('\\'))
 				currentPath = '\\' + currentPath;
 			currentPath = projectLocation + currentPath;
-			while (currentPath.StartsWith(projectLocation) && currentPath.Length > projectLocation.Length) {
-				var parent = new DirectoryInfo(currentPath).Parent;
-				if (parent != null && parent.Exists) {
-					return parent.FullName;
-				}
-				currentPath = parent!.FullName;
+			DirectoryInfo currentDir = new(currentPath);
+			currentDir = currentDir.Parent!;
+			while (!currentDir.Exists && currentDir.FullName != projectLocation) {
+				currentDir = currentDir.Parent!;
 			}
+			initialPath = currentDir.FullName;
 		}
-		var historyModel = AccAddonHistory.Default.ChooseModelHistory;
-		if (!string.IsNullOrEmpty(historyModel) && historyModel.StartsWith(projectLocation)) {
-			if (Directory.Exists(historyModel)) {
-				return historyModel;
-			}
-		}
-		return Path.Combine(projectLocation, "vehicle");
-	}
 
-	public static void CheckDragFileType(DragEventArgs e) {
-		var files = (string[])e.Data.GetData(DataFormats.FileDrop);
-		if (files.Length == 1) {
-			var file = new FileInfo(files[0]);
-			switch (file.Extension) {
-				case ".tobj":
-				case ".dds":
-				case ".tga":
-				case ".jpg":
-				case ".jpeg":
-				case ".png":
-					e.Effects = DragDropEffects.Copy;
-					return;
-				default:
-					break;
-			}
+		var fileDialog = new OpenFileDialog {
+			Multiselect = false,
+			DefaultDirectory = defaultDir,
+			DefaultExt = defaultExt,
+			Title = title,
+			Filter = filter,
+			InitialDirectory = initialPath
+		};
+		if (fileDialog.ShowDialog() != true)
+			return null;
+		string path = fileDialog.FileName;
+		if (!path.StartsWith(projectLocation))
+			throw new(Util.GetString("MessageModelOutsideProject"));
+		if (chooseType == ChooseModelType.Coll) {
+			if (!path.EndsWith(".pic") && !path.EndsWith(".pmc"))
+				throw new(Util.GetString("MessageInvalidExtColl"));
+		} else if (!path.EndsWith(".pim") && !path.EndsWith(".pmd")) {
+			throw new(Util.GetString("MessageInvalidExt"));
 		}
-		e.Effects = DragDropEffects.None;
+		Instances.HistoryModelPath = Directory.GetParent(path)!.FullName;
+		return path;
 	}
 
 	//图标
-	public static string? ChooseIcon(Window window, out string? iconPath) {
-		iconPath = null;
+	public static string? ChooseIconPath(Window window) {
 		try {
 			string projectLocation = Instances.ProjectLocation;
 			if (projectLocation.Length == 0)
@@ -83,7 +99,7 @@ public static class AccessoryDataUtil {
 				throw new(Util.GetString("MessageCreateAccessoryFail"));
 			if (fileDialog.ShowDialog() != true)
 				return null;
-			return CheckIconPath(window, fileDialog.FileName, out iconPath);
+			return fileDialog.FileName;
 		} catch (Exception ex) {
 			MessageBox.Show(window, ex.Message);
 		}
@@ -91,25 +107,30 @@ public static class AccessoryDataUtil {
 	}
 	public static string? CheckIconPath(Window window, string path, out string? iconPath) {
 		iconPath = null;
-		string projectLocation = Instances.ProjectLocation;
-		var pathAcc = Paths.AccessoryIconDir();
-		if (!path.StartsWith(projectLocation) || path.Length == projectLocation.Length) //必须在项目内
-			throw new(Util.GetString("MessageIconOutsideProject"));
-		var iconFile = new DirectoryInfo(path);
-		string pathCheck = path;
-		pathCheck = pathCheck.Replace(projectLocation, "");
-		if (pathCheck.Split(' ', '(', ')').Length > 1) //路径或文件名不能有空格或括号
-			throw new(Util.GetString("MessageIconInvalidChar"));
-		var siiIconLocation = CheckIconFileExistence(window, pathAcc, iconFile);
-		if (siiIconLocation == null)
-			return null;
-		siiIconLocation = siiIconLocation.Replace(pathAcc, "");
-		siiIconLocation = siiIconLocation.Replace('\\', '/');
-		siiIconLocation = siiIconLocation[..^4];
-		if (siiIconLocation.StartsWith('/'))
-			siiIconLocation = siiIconLocation[1..];
-		iconPath = iconFile.FullName;
-		return siiIconLocation;
+		try {
+			string projectLocation = Instances.ProjectLocation;
+			var pathAcc = Paths.AccessoryIconDir();
+			if (!path.StartsWith(projectLocation) || path.Length == projectLocation.Length) //必须在项目内
+				throw new(Util.GetString("MessageIconOutsideProject"));
+			var iconFile = new DirectoryInfo(path);
+			string pathCheck = path;
+			pathCheck = pathCheck.Replace(projectLocation, "");
+			if (pathCheck.Split(' ', '(', ')').Length > 1) //路径或文件名不能有空格或括号
+				throw new(Util.GetString("MessageIconInvalidChar"));
+			var siiIconLocation = CheckIconFileExistence(window, pathAcc, iconFile);
+			if (siiIconLocation == null)
+				return null;
+			siiIconLocation = siiIconLocation.Replace(pathAcc, "");
+			siiIconLocation = siiIconLocation.Replace('\\', '/');
+			siiIconLocation = siiIconLocation[..^4];
+			if (siiIconLocation.StartsWith('/'))
+				siiIconLocation = siiIconLocation[1..];
+			iconPath = iconFile.FullName;
+			return siiIconLocation;
+		} catch (Exception e) {
+			MessageBox.Show(window, e.Message);
+		}
+		return null;
 	}
 
 	/// <summary>
@@ -117,7 +138,7 @@ public static class AccessoryDataUtil {
 	/// 会从图标所在位置以及Accessory文件夹检查
 	/// </summary>
 	/// <returns>mat文件的绝对路径</returns>
-	public static string? CheckIconFileExistence(Window window, string pathAcc, DirectoryInfo iconFile) {//如果图标不在accessory文件夹内，就只能选择accessory文件夹生成
+	private static string? CheckIconFileExistence(Window window, string pathAcc, DirectoryInfo iconFile) {//如果图标不在accessory文件夹内，就只能选择accessory文件夹生成
 		string projectLocation = Instances.ProjectLocation;
 
 		var iconParent = iconFile.Parent!.FullName;
@@ -192,7 +213,7 @@ public static class AccessoryDataUtil {
 			return null;
 		var projectLocation = Instances.ProjectLocation;
 		iconName = iconName.Replace('/', '\\');
-		var iconPath = Paths.AccessoryIconDir(projectLocation, iconName);
+		var iconPath = Paths.AccessoryIconDir(iconName);
 		var iconFile = iconPath + ".tga";
 		if (File.Exists(iconFile))
 			return LoadModelIcon(iconFile);
@@ -226,9 +247,87 @@ public static class AccessoryDataUtil {
 		return Util.LoadPfimImage(iconPath);
 	}
 
+
+	public static string? ChooseTexPath(Window window, ChooseTexType texType, string currentPath, string vehicleType = Vehicle.VEHICLE_TYPE_TRUCK) {//可选普通格式的图片，但是提示仅用于预览，后期需要自己转换
+		try {
+			var projectLocation = Instances.ProjectLocation;
+			if (projectLocation.Length == 0)
+				throw new(Util.GetString("MessageProjectLocationFirst"));
+			string title;
+			switch(texType) {
+				case ChooseTexType.Rope:
+					title = Util.GetString("DialogTitleChooseRope");
+					break;
+				case ChooseTexType.Patch:
+					title = Util.GetString("DialogTitleChoosePatch");
+					break;
+				case ChooseTexType.Paintjob:
+				case ChooseTexType.AccTex:
+					title = Util.GetString("TitlePaintJobTexture");
+					break;
+				case ChooseTexType.BaseTexOvr:
+					title = Util.GetString("TitleBaseTextureOverride");
+					break;
+				case ChooseTexType.FlakeNoise:
+					title = Util.GetString("TitleFlakeNoise");
+					break;
+				default:
+					return null;
+			}
+			string defaultDir, initialDir;
+			if (texType == ChooseTexType.Rope) {
+				defaultDir = projectLocation;
+				initialDir = Paths.RopeDir();
+			} else if (texType == ChooseTexType.FlakeNoise) {
+				defaultDir = projectLocation;
+				initialDir = projectLocation;
+			} else {
+				if (string.IsNullOrEmpty(Instances.HistoryTexturePath) || !Instances.HistoryTexturePath.StartsWith(Instances.ProjectLocation)) {
+					Instances.HistoryTexturePath = Paths.VehicleUpgradePath(vehicleType);
+				}
+				defaultDir = Instances.HistoryTexturePath;
+
+				if (string.IsNullOrEmpty(currentPath)) {
+					initialDir = defaultDir;
+				} else {
+					currentPath = currentPath.Replace('/', '\\');
+					if (!currentPath.StartsWith('\\'))
+						currentPath = '\\' + currentPath;
+					currentPath = projectLocation + currentPath;
+					DirectoryInfo currentDir = new(currentPath);
+					currentDir = currentDir.Parent!;
+					while (!currentDir.Exists && currentDir.FullName != projectLocation) {
+						currentDir = currentDir.Parent!;
+					}
+					initialDir = currentDir.FullName;
+				}
+			}
+			var fileDialog = new OpenFileDialog {
+				Multiselect = false,
+				Title = title,
+				DefaultDirectory = defaultDir,
+				InitialDirectory = initialDir,
+				DefaultExt = "tobj",
+				Filter = Util.GetFilter("DialogFilterTextureFile"),
+			};
+			if (fileDialog.ShowDialog() != true)
+				return null;
+			if (texType == ChooseTexType.Paintjob
+				|| texType == ChooseTexType.Patch
+				|| texType == ChooseTexType.BaseTexOvr
+				|| texType == ChooseTexType.AccTex) {
+				Instances.HistoryTexturePath = fileDialog.FileName;
+			}
+			return fileDialog.FileName;
+		} catch (Exception e) {
+			MessageBox.Show(window, e.Message);
+		}
+		return null;
+	}
+
 	public static string? ChooseRope() => ChooseMaterial(Util.GetString("DialogTitleChooseRope"));
 	public static string? ChoosePatch() => ChooseMaterial(Util.GetString("DialogTitleChoosePatch"));
-	private static string? ChooseMaterial(string title) {
+	private static string? ChooseMaterial(string title) {//rope需要保留mat扩展名
 		string projectLocation = Instances.ProjectLocation;
 		if (projectLocation.Length == 0)
 			throw new(Util.GetString("MessageProjectLocationFirst"));
@@ -252,7 +351,7 @@ public static class AccessoryDataUtil {
 			pathCheck = pathCheck.Replace(projectLocation, "");
 			if (pathCheck.Split(' ', '(', ')').Length > 1) //路径或文件名不能有空格或括号
 				throw new(Util.GetString("MessageIconInvalidChar"));
-			var matLocation = CheckRopeMatExistence(iconFile);
+			var matLocation = CheckMatExistence(iconFile);
 			if (matLocation == null)
 				return null;
 			matLocation = matLocation.Replace(projectLocation, "");
@@ -264,7 +363,7 @@ public static class AccessoryDataUtil {
 			throw new(Util.GetString("MessageErrorChooseMaterial"));
 	}
 
-	private static string? CheckRopeMatExistence(DirectoryInfo iconFile) {
+	private static string? CheckMatExistence(DirectoryInfo iconFile) {
 		var deExt = iconFile.FullName[..^4];
 		var matPath = deExt + ".mat";
 		var tobjPath = deExt + ".tobj";
@@ -288,73 +387,28 @@ public static class AccessoryDataUtil {
 			}
 		}
 		return matPath;
+	}
 
+	public static void CheckDragFileType(DragEventArgs e) {
+		var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+		if (files.Length == 1) {
+			var file = new FileInfo(files[0]);
+			switch (file.Extension) {
+				case ".tobj":
+				case ".dds":
+				case ".tga":
+				case ".jpg":
+				case ".jpeg":
+				case ".png":
+					e.Effects = DragDropEffects.Copy;
+					return;
+				default:
+					break;
+			}
+		}
+		e.Effects = DragDropEffects.None;
 	}
 }
 
-public class StringResItem: BaseBinding {
-
-	public StringResItem(string header, string tag, string? tooltip = null) {
-		IsSeparator = false;
-		mHeader = header;
-		mTag = tag;
-		mTooltip = tooltip;
-	}
-
-	public static StringResItem Head() => new(Util.GetString("MenuResTip"), "head") { IsEnabled = false };
-
-	public static StringResItem Separator() => new();
-
-	public static StringResItem Empty() => new(Util.GetString("StatusEmpty"), "empty") { IsEnabled = false };
-
-	public static StringResItem OpenLocalization() => new(Util.GetString("MenuResOption"), "openLocalization");
-
-	private StringResItem() {
-		IsSeparator = true;
-		mHeader = "";
-		mTag = "";
-	}
-
-	private readonly bool IsSeparator;
-
-	public Visibility TextBlockVisibility => IsSeparator ? Visibility.Collapsed : Visibility.Visible;
-	public Visibility SeparatorVisibility => IsSeparator ? Visibility.Visible : Visibility.Collapsed;
-
-	private bool mIsEnabled = true;
-	public bool IsEnabled {
-		get => mIsEnabled;
-		set {
-			mIsEnabled = value;
-			InvokeChange();
-		}
-	}
-
-	private string mHeader;
-
-	public string Header {
-		get => mHeader;
-		set {
-			mHeader = value;
-			InvokeChange();
-		}
-	}
-
-	private string mTag;
-	public string Tag {
-		get => mTag;
-		set {
-			mTag = value;
-			InvokeChange();
-		}
-	}
-
-	private string? mTooltip;
-
-	public string? Tooltip {
-		get => mTooltip;
-		set {
-			mTooltip = value;
-			InvokeChange();
-		}
-	}
-}
+public enum ChooseModelType { Model, ExtModel, ModelUK, ExtModelUK, Coll }
+public enum ChooseTexType { Rope, Patch, Paintjob, BaseTexOvr, FlakeNoise, AccTex }

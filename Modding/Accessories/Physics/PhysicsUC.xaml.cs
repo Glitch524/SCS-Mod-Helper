@@ -123,7 +123,9 @@ public partial class PhysicsUC: BaseUserControl {
 
 	private void ButtonChooseModelClick(object sender, RoutedEventArgs e) {
 		try {
-			Binding.ChooseModel(sender == ButtonChoosePhysicsColl);
+			if (sender is Button button) {
+				Binding.ChooseModel((ChooseModelType)button.Tag);
+			}
 		} catch (Exception ex) {
 			MessageBox.Show(Window.GetWindow(this), ex.Message);
 		}

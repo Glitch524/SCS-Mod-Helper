@@ -311,7 +311,6 @@
 	<s:String x:Key="MessageResultPhysSaved">物理定义已保存</s:String>
 	<s:String x:Key="DialogTitleChooseRope">选择绳子材质文件（mat文件或贴图文件）</s:String>
 	<s:String x:Key="DialogTitleChoosePatch">选择布料材质文件（mat文件或贴图文件）</s:String>
-	<s:String x:Key="DialogFilterChooseMaterial">材质文件或绳子贴图文件|*.tga;*.dds;*.mat;*.tobj</s:String>
 	<s:String x:Key="MessageErrorChooseMaterial">选择的文件必须是mat文件或其贴图，否则这么写也没用的哦</s:String>
 	
 	
@@ -378,7 +377,7 @@
 	<s:String x:Key="MessageAskCreateTobj">Tobj文件不存在，是否为材质文件创建Tobj文件？&#10;你可以仅为了浏览选择不生成文件，但制作mod依旧需要tobj文件</s:String>
 	
 	<s:String x:Key="DialogFilterTextureFile">贴图文件|*.tobj;*.dds;*.tga;*.jpg;*.jpeg;*.png</s:String>
-	<s:String x:Key="DialogResultFileOutsideProject">Please put the image into the project location first</s:String>
+	<s:String x:Key="DialogResultFileOutsideProject">请先将图片放在项目目录内</s:String>
 	
 	<s:String x:Key="MessagePaintJobCreateSuccess">创建喷漆Sii成功</s:String>
 	
@@ -423,6 +422,7 @@
 
 	<!--Converter PIX-->
 	<s:String x:Key="TitleConverterPIX">Converter PIX</s:String>
+	<s:String x:Key="TooltipGoBack">返回</s:String>
 	<s:String x:Key="TitleTextReader">文本查看器</s:String>
 	<s:String x:Key="TitleModPath">Mod路径：</s:String>
 	<s:String x:Key="TitleCustomExportPath">自定义导出路径：</s:String>

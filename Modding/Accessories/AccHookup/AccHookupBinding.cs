@@ -293,66 +293,49 @@ public class AccHookupBinding(Func<IBaseVisual> visualFunc): WindowBinding(visua
 	public void SaveFiles() => AccHookupDataIO.SaveAddonHookup(BindingWindow, this);
 
 	//模型、碰撞体
-	public void ChooseModel(bool isColl) {
-		try {
-			if (ProjectLocation.Length == 0)
-				throw new(Util.GetString("MessageProjectLocationFirst"));
-			string title, fileter, defaultExt;
-			if (isColl) {
-				title = Util.GetString("DialogTitleChooseColl");
-				fileter = Util.GetFilter("DialogFilterChooseColl");
-				defaultExt = "pmc";
-			} else {
-				title = Util.GetString("DialogTitleChooseModel");
-				fileter = Util.GetFilter("DialogFilterChooseModel");
-				defaultExt = "pmd";
-			}
-			var fileDialog = new OpenFileDialog {
-				Multiselect = false,
-				DefaultDirectory = ProjectLocation,
-				DefaultExt = defaultExt,
-				Title = title,
-				Filter = fileter,
-				InitialDirectory = AccessoryDataUtil.GetInitialPath(ModelPath, CollPath)
-			};
-			if (fileDialog.ShowDialog() != true)
+	public void ChooseModel(ChooseModelType chooseType) {
+		string currentPath;
+		switch (chooseType) {
+			case ChooseModelType.Model:
+				currentPath = ModelPath;
+				break;
+			case ChooseModelType.Coll:
+				currentPath = CollPath;
+				break;
+			default:
 				return;
-			string path = fileDialog.FileName;
-			if (!path.StartsWith(ProjectLocation) || path.Length == ProjectLocation.Length)
-				throw new(Util.GetString("MessageModelOutsideProject"));
-			if (isColl) {
-				if (!path.EndsWith(".pic") && !path.EndsWith(".pmc"))
-					throw new(Util.GetString("MessageInvalidExtColl"));
-			} else if (!path.EndsWith(".pim") && !path.EndsWith(".pmd")) {
-				throw new(Util.GetString("MessageInvalidExt"));
-			}
-			AccAddonHistory.Default.ChooseModelHistory = new DirectoryInfo(fileDialog.FileName).Parent!.FullName;
-			AccAddonHistory.Default.Save();
-			string inProjectPath = path.Replace(ProjectLocation, "");
-			string?
-				modelPath = null,
-				modelColl = null;
-			if (isColl) {
+		}
+		var path = AccessoryDataUtil.ChooseModelPath(chooseType, currentPath);
+		if (path == null)
+			return;
+
+		string inProjectPath = path.Replace(ProjectLocation, "");
+		string?
+			modelPath = null,
+			modelColl = null;
+		switch (chooseType) {
+			case ChooseModelType.Model:
 				modelColl = inProjectPath.Replace('\\', '/');
 				modelColl = modelColl[..^4];
 				if (File.Exists(path[..^4] + ".pic") || File.Exists(path[..^4] + ".pmc"))
 					modelPath = modelColl + ".pmd";
 				modelColl += ".pmc";
-			} else {
+				break;
+			case ChooseModelType.Coll:
 				modelPath = inProjectPath.Replace('\\', '/');
 				modelPath = modelPath[..^4];
 				if (File.Exists(path[..^4] + ".pic") || File.Exists(path[..^4] + ".pmc"))
 					modelColl = modelPath + ".pmc";
 				modelPath += ".pmd";
-			}
-
-			if (modelPath != null)
-				ModelPath = modelPath;
-			if (modelColl != null)
-				CollPath = modelColl;
-		} catch (Exception ex) {
-			MessageBox.Show(BindingWindow, ex.Message);
+				break;
+			default:
+				return;
 		}
+
+		if (modelPath != null)
+			ModelPath = modelPath;
+		if (modelColl != null)
+			CollPath = modelColl;
 	}
 
 	public void ChooseIcon() => CurrentHookupItem?.ChooseIcon(BindingWindow);

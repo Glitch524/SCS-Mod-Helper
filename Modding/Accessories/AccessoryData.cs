@@ -117,25 +117,16 @@ namespace SCS_Mod_Helper.Modding.Accessories {
 		}
 
 		public void ChooseIcon(Window window) {
-			try {
-				var icon = AccessoryDataUtil.ChooseIcon(window, out string? iconPath);
-				if (icon != null) {
-					IconName = icon;
-					ModelIcon = AccessoryDataUtil.LoadModelIcon(iconPath);
-				}
-			} catch (Exception e) {
-				MessageBox.Show(e.Message);
-			}
+			var iconPath = AccessoryDataUtil.ChooseIconPath(window);
+			if (iconPath != null)
+				CheckIcon(window, iconPath);
 		}
+
 		public void CheckIcon(Window window, string path) {
-			try {
-				var icon = AccessoryDataUtil.CheckIconPath(window, path, out string? iconPath);
-				if (icon != null) {
-					IconName = icon;
-					ModelIcon = AccessoryDataUtil.LoadModelIcon(iconPath);
-				}
-			} catch (Exception e) {
-				MessageBox.Show(e.Message);
+			var icon = AccessoryDataUtil.CheckIconPath(window, path, out string? iconPath);
+			if (icon != null) {
+				IconName = icon;
+				ModelIcon = AccessoryDataUtil.LoadModelIcon(iconPath);
 			}
 		}
 

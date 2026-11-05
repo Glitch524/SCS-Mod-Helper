@@ -127,9 +127,9 @@ public class Vehicle(
 	public void GetCabinUV() {
 		if (UVLoaded)
 			return;
-		Action recycle = () => VehiclePackage = null;
+		UVLoaded = true;//不要放在readvehiclepackage后面，方法赋值给vehiclepackage后，会到getter，然后如果为空就会再次调用getuv导致无限循环
+		void recycle() => VehiclePackage = null;
 		VehiclePackage = new VehiclePackageIO().ReadVehiclePackage(VehicleID, recycle);
-		UVLoaded = true;
 	}
 
 	private List<Cabin>? mCabins = null;

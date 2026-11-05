@@ -5,12 +5,6 @@
     <Setting Name="DEDLocation" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="ChooseModelHistory" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="IconDefCreateOnAccessory" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
     <Setting Name="DisplayName" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
@@ -79,9 +73,6 @@
     </Setting>
     <Setting Name="ElectricType" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="NeedToUpgrade" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

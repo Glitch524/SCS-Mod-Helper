@@ -4,11 +4,13 @@ using SCS_Mod_Helper.Modding.Accessories.Physics;
 using SCS_Mod_Helper.Vehicles;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
+using static SCS_Mod_Helper.Modding.Accessories.AccessoryDataUtil;
 
 namespace SCS_Mod_Helper.Modding.Accessories.AccAddon;
 
@@ -91,20 +93,10 @@ public partial class AccAddonWindow: BaseWindow {
 
 	private void ButtonChooseModelClick(object sender, RoutedEventArgs e) {
 		try {
-			int type;
-			if (sender == ButtonChooseModel)
-				type = AccAddonBinding.MODEL;
-			else if (sender == ButtonChooseModelUK)
-				type = AccAddonBinding.MODEL_UK;
-			else if (sender == ButtonChooseExtModel)
-				type = AccAddonBinding.EXT_MODEL;
-			else if (sender == ButtonChooseExtModelUK)
-				type = AccAddonBinding.EXT_MODEL_UK;
-			else if (sender == ButtonChooseColl)
-				type = AccAddonBinding.MODEL_COLL;
-			else
-				return;
-			Binding.ChooseModel(type);
+			if (sender is Button button) {
+				ChooseModelType chooseType = (ChooseModelType)button.Tag;
+				Binding.ChooseModel(chooseType);
+			}
 		} catch (Exception ex) {
 			MessageBox.Show(this, ex.Message);
 		}

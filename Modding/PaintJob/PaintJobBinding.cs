@@ -80,53 +80,40 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 		}
 
 
-		public void FileDrop(string tag, string filePath) {
-			Debug.WriteLine(tag + " " + filePath);
-			if (tag == "IconName") {
-				PaintJobData.CheckIcon(BindingWindow, filePath);
-			} else {
-				CheckTexPath(tag, filePath);
-			}
-		}
+		public void IconFileDrop(string filePath) => PaintJobData.CheckIcon(BindingWindow, filePath);
 
-		public const string TEX_PAINT_JOB = "PaintJobTex";
-		public const string TEX_BASE_TEX_OVR = "BaseTexOverride";
-		public const string TEX_FLAKE_NOISE = "FlakeNoise";
-		public const string TEX_ACC_TEX = "AccTex";
-		public void ChooseTex(string type) {
-			string title;
-			string filter = GetFilter("DialogFilterTextureFile");
-			switch (type) {
-				case TEX_PAINT_JOB:
-				case TEX_ACC_TEX:
-					title = GetString("TitlePaintJobTexture");
+		public void FileDrop(ChooseTexType texType, string filePath) => CheckTexPath(texType, filePath);
+
+		public void ChooseTex(ChooseTexType texType) {//tex最终以tobj结尾
+			string currentPath;
+			switch(texType) {
+				case ChooseTexType.Paintjob:
+					currentPath = PaintJobData.PaintJobTex;
 					break;
-				case TEX_BASE_TEX_OVR:
-					title = GetString("TitleBaseTexOverride");
+				case ChooseTexType.BaseTexOvr:
+					currentPath = PaintJobData.BaseTexOverride;
 					break;
-				case TEX_FLAKE_NOISE:
-					title = GetString("TitleFlakeNoise");
+				case ChooseTexType.FlakeNoise:
+					currentPath = PaintJobData.FlakeNoise;
+					break;
+				case ChooseTexType.AccTex:
+					currentPath = PaintJobData.AccTex;
 					break;
 				default:
 					return;
 			}
-
-			var textureDialog = new OpenFileDialog {
-				Title = title,
-				Multiselect = false,
-				DefaultDirectory = Instances.ProjectLocation,
-				DefaultExt = "tobj",
-				Filter = filter,
-			};
-			if (textureDialog.ShowDialog() != true)
+			var path = AccessoryDataUtil.ChooseTexPath(BindingWindow, texType, currentPath, PaintJobData.CurrentVehicle?.VehicleType ?? Vehicle.VEHICLE_TYPE_TRUCK);
+			if (path == null)
 				return;
-			string path = textureDialog.FileName;
-			CheckTexPath(type, path);
+			CheckTexPath(texType, path);
 		}
 
-		public void CheckTexPath(string type, string path) {//先确定path的类型是否为指定类型，因为filedrop放的不一定
-			string projectLocation = Instances.ProjectLocation;
-			if (path.StartsWith(projectLocation)) {
+		public void CheckTexPath(ChooseTexType texType, string path) {//先确定path的类型是否为指定类型，因为filedrop放的不一定
+			try {
+				string projectLocation = Instances.ProjectLocation;
+				if (!path.StartsWith(projectLocation)) 
+					throw new ArgumentException(GetString("DialogResultFileOutsideProject"));
+
 				string? imagePath;
 				string tobjPath;
 				if (path.EndsWith(".tobj")) {
@@ -137,7 +124,7 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 					tobjPath = path[..^4] + ".tobj";
 					if (!File.Exists(tobjPath)) {
 						var result = MessageBox.Show(BindingWindow, GetString("MessageAskCreateTobj"), GetString("MessageTitleNotice"), MessageBoxButton.YesNoCancel);
-						switch(result) {
+						switch (result) {
 							case MessageBoxResult.Yes:
 								AccessoryDataUtil.CreateTobjFile(path);
 								break;
@@ -147,49 +134,45 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 								return;
 						}
 					}
-				} else {
-					MessageBox.Show(BindingWindow, GetString("MessageFileTypeNotSupported"));
-					return;
-				}
+				} else
+					throw new ArgumentException(GetString("MessageFileTypeNotSupported"));
 				string inProjectpath = tobjPath[projectLocation.Length..];
 				inProjectpath = inProjectpath.Replace("\\", "/");
 				if (!inProjectpath.StartsWith('/'))
 					inProjectpath = "/" + inProjectpath;
-				switch (type) {
-					case TEX_PAINT_JOB:
+				switch (texType) {
+					case ChooseTexType.Paintjob:
 						PaintJobData.PaintJobTex = inProjectpath;
 						PaintJobData.PaintJobTexRealPath = path;
 						break;
-					case TEX_BASE_TEX_OVR:
+					case ChooseTexType.BaseTexOvr:
 						PaintJobData.BaseTexOverride = inProjectpath;
 						break;
-					case TEX_FLAKE_NOISE:
+					case ChooseTexType.FlakeNoise:
 						PaintJobData.FlakeNoise = inProjectpath;
 						break;
-					case TEX_ACC_TEX:
+					case ChooseTexType.AccTex:
 						PaintJobData.AccTex = inProjectpath;
 						break;
 					default:
 						return;
 				}
 				if (imagePath != null) {
-					if (type == TEX_PAINT_JOB || type == TEX_ACC_TEX) {
+					if (texType == ChooseTexType.Paintjob) {
+						imagePath = imagePath.ToLower();
+						LoadTexImage(imagePath);
+					}
+					if (texType == ChooseTexType.AccTex) {
 						imagePath = imagePath.ToLower();
 						if (imagePath.EndsWith(".dds") || imagePath.EndsWith(".tga")) {
-							if (type == TEX_PAINT_JOB) {
-								LoadTexImage(imagePath);
-							} else
-								PaintJobData.AccTexImage = Util.LoadPfimImage(imagePath);
+							PaintJobData.AccTexImage = Util.LoadPfimImage(imagePath);
 						} else {
-							if (type == TEX_PAINT_JOB) {
-								LoadTexImage(imagePath);
-							} else
-								PaintJobData.AccTexImage = Util.LoadImage(imagePath);
+							PaintJobData.AccTexImage = Util.LoadImage(imagePath);
 						}
 					}
 				}
-			} else {
-				MessageBox.Show(BindingWindow, GetString("DialogResultFileOutsideProject"));
+			} catch (Exception e) {
+				MessageBox.Show(BindingWindow, e.Message);
 			}
 		}
 
@@ -199,7 +182,10 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 			MaskChannelG = null;
 			MaskChannelB = null;
 			if (IsPreviewOpen) {
-				PaintJobTexImage = Util.LoadPfimImage(imagePath);
+				if (imagePath.EndsWith(".dds") || imagePath.EndsWith(".tga")) {
+					PaintJobTexImage = Util.LoadPfimImage(imagePath);
+				} else
+					PaintJobTexImage = Util.LoadImage(imagePath);
 				LoadColorChannel();
 			}
 		}

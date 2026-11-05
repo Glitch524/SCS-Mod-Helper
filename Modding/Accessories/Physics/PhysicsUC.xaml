@@ -9,6 +9,7 @@
 	xmlns:cls="clr-namespace:SCS_Mod_Helper.Class"
 	xmlns:utils="clr-namespace:SCS_Mod_Helper.Utils"
 	xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+	xmlns:acc="clr-namespace:SCS_Mod_Helper.Modding.Accessories"
 	d:DataContext="{d:DesignInstance Type=local:PhysicsBinding}"
 	mc:Ignorable="d"
 	d:Background="White"
@@ -536,6 +537,7 @@
 							Grid.Row="1"
 							Grid.Column="1"
 							Click="ButtonChooseModelClick"
+							Tag="{x:Static acc:ChooseModelType.Model}"
 							Style="{StaticResource ButtonBorderless}">
 							<Viewbox>
 								<ui:SymbolIcon
@@ -610,6 +612,7 @@
 							Grid.Row="1"
 							Grid.Column="1"
 							Click="ButtonChooseModelClick"
+							Tag="{x:Static acc:ChooseModelType.Coll}"
 							Style="{StaticResource ButtonBorderless}">
 							<Viewbox>
 								<ui:SymbolIcon

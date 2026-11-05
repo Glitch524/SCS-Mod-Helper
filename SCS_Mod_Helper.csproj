@@ -99,6 +99,11 @@
 			<AutoGen>True</AutoGen>
 			<DependentUpon>AccAddonHistory.settings</DependentUpon>
 		</Compile>
+		<Compile Update="Setting\History.Designer.cs">
+		  <DesignTimeSharedInput>True</DesignTimeSharedInput>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>History.settings</DependentUpon>
+		</Compile>
 		<Compile Update="Setting\Settings.Designer.cs">
 			<DesignTimeSharedInput>True</DesignTimeSharedInput>
 			<AutoGen>True</AutoGen>
@@ -110,6 +115,10 @@
 		<None Update="Modding\Accessories\AccAddon\AccAddonHistory.settings">
 			<Generator>SettingsSingleFileGenerator</Generator>
 			<LastGenOutput>AccAddonHistory.Designer.cs</LastGenOutput>
+		</None>
+		<None Update="Setting\History.settings">
+		  <Generator>SettingsSingleFileGenerator</Generator>
+		  <LastGenOutput>History.Designer.cs</LastGenOutput>
 		</None>
 		<None Update="Setting\Settings.settings">
 			<Generator>SettingsSingleFileGenerator</Generator>

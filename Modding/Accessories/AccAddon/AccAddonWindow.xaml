@@ -6,11 +6,11 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:local="clr-namespace:SCS_Mod_Helper.Modding.Accessories.AccAddon"
 	xmlns:main="clr-namespace:SCS_Mod_Helper.Main"
-	xmlns:utils="clr-namespace:SCS_Mod_Helper.Utils"
 	xmlns:base="clr-namespace:SCS_Mod_Helper.Class.Base"
 	xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
 	xmlns:res="clr-namespace:SCS_Mod_Helper.Locale.StringRes"
 	xmlns:cls="clr-namespace:SCS_Mod_Helper.Class"
+	xmlns:acc="clr-namespace:SCS_Mod_Helper.Modding.Accessories"
 	xmlns:popup="clr-namespace:SCS_Mod_Helper.Modding.Accessories.AccAddon.Popup"
 	d:DataContext="{d:DesignInstance Type=local:AccAddonBinding}"
 	mc:Ignorable="d"
@@ -649,7 +649,7 @@
 						Content="{DynamicResource ModelSetExterior}"
 						VerticalContentAlignment="Center"
 						HorizontalAlignment="Stretch"
-						d:IsChecked="False">
+						d:IsChecked="True">
 						<ui:ToggleSwitch.Style>
 							<Style
 								TargetType="ui:ToggleSwitch"
@@ -732,6 +732,7 @@
 								Grid.Row="1"
 								Grid.Column="1"
 								Click="ButtonChooseModelClick"
+								Tag="{x:Static acc:ChooseModelType.Model}"
 								Style="{StaticResource ButtonBorderless}">
 								<Viewbox>
 									<ui:SymbolIcon
@@ -789,6 +790,7 @@
 								Grid.Row="1"
 								Grid.Column="1"
 								Click="ButtonChooseModelClick"
+								Tag="{x:Static acc:ChooseModelType.ModelUK}"
 								Style="{StaticResource ButtonBorderless}">
 								<Viewbox>
 									<ui:SymbolIcon
@@ -856,6 +858,7 @@
 								Grid.Row="1"
 								Grid.Column="2"
 								Click="ButtonChooseModelClick"
+								Tag="{x:Static acc:ChooseModelType.ExtModel}"
 								Style="{StaticResource ButtonBorderless}">
 								<Viewbox>
 									<ui:SymbolIcon
@@ -904,6 +907,7 @@
 								Grid.Row="1"
 								Grid.Column="2"
 								Click="ButtonChooseModelClick"
+								Tag="{x:Static acc:ChooseModelType.ExtModelUK}"
 								Style="{StaticResource ButtonBorderless}">
 								<Viewbox>
 									<ui:SymbolIcon

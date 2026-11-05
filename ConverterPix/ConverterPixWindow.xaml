@@ -64,7 +64,7 @@
 					x:Name="ButtonChooseFile"
 					Content="{DynamicResource ButtonBrowse}"
 					Grid.Column="2"
-					Click="ButtonChoosePack"
+					Command="{Binding ChoosePackCommand}"
 					Padding="10,5"
 					Margin="5,0,0,0" />
 			</Grid>
@@ -109,7 +109,7 @@
 					x:Name="ButtonChooseDest"
 					Content="{DynamicResource ButtonBrowse}"
 					Grid.Column="2"
-					Click="ButtonChooseDestClick"
+					Command="{Binding ChooseExportPathCommand}"
 					Padding="10,5"
 					Margin="5,0,0,0"
 					Cursor="">
@@ -151,8 +151,8 @@
 					Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" />
 				<Button
 					x:Name="ButtonBack"
-					Click="ButtonClick"
-					ToolTip="Go Back"
+					ToolTip="{DynamicResource TooltipGoBack}"
+					Command="{Binding UndoCommand}"
 					Background="{x:Null}"
 					BorderBrush="{x:Null}"
 					VerticalAlignment="Stretch"
@@ -202,9 +202,8 @@
 					Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" />
 				<Button
 					x:Name="ButtonReturn"
-					Click="ButtonClick"
+					Command="{Binding FolderBackCommand}"
 					Grid.Column="1"
-					ToolTip="Go Back"
 					Background="{x:Null}"
 					BorderBrush="{x:Null}"
 					VerticalAlignment="Stretch"

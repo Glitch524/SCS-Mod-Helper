@@ -1,7 +1,6 @@
 ﻿using SCS_Mod_Helper.Locale.StringRes;
 using SCS_Mod_Helper.Setting;
 using System.IO;
-using System.Net.Http;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
@@ -125,12 +124,7 @@ public static partial class Instances {
 
 	private static string mETS2GamePath = Settings.Default.ETS2GamePath;
 	public static string ETS2GamePath {
-		get {
-			if (mETS2GamePath.Length == 0)
-				return Util.GetString("StatusEmpty");
-			return mETS2GamePath;
-		}
-
+		get => mETS2GamePath;
 		set {
 			mETS2GamePath = value;
 			Settings.Default.ETS2GamePath = value;
@@ -140,12 +134,7 @@ public static partial class Instances {
 
 	private static string mATSGamePath = Settings.Default.ATSGamePath;
 	public static string ATSGamePath {
-		get {
-			if (mATSGamePath.Length == 0)
-				return Util.GetString("StatusEmpty");
-			return mATSGamePath;
-		}
-
+		get => mATSGamePath;
 		set {
 			mATSGamePath = value;
 			Settings.Default.ATSGamePath = value;
@@ -165,4 +154,48 @@ public static partial class Instances {
 			localeModules = null;
 		}
 	}
+
+	private static string mHistoryModelPath = string.Empty;
+	public static string HistoryModelPath {
+		get {
+			if (mHistoryModelPath == string.Empty) {
+				mHistoryModelPath = History.Default.ModelPath;
+			}
+			return mHistoryModelPath;
+		}
+		set {
+			mHistoryModelPath = value;
+			History.Default.ModelPath = value;
+			History.Default.Save();
+		}
+	}
+
+	private static string mHistoryTexturePath = string.Empty;
+	public static string HistoryTexturePath {
+		get {
+			if (mHistoryTexturePath == string.Empty) {
+				mHistoryTexturePath = History.Default.TexturePath;
+			}
+			return mHistoryTexturePath;
+		}
+		set {
+			mHistoryTexturePath = value;
+			History.Default.TexturePath = value;
+			History.Default.Save();
+		}
+	}
+
+	public static string HistoryPixExportPath {
+		get {
+			if (field == string.Empty) {
+				field = History.Default.PixExportPath;
+			}
+			return field;
+		}
+		set {
+			field = value;
+			History.Default.PixExportPath = value;
+			History.Default.Save();
+		}
+	} = string.Empty;
 }

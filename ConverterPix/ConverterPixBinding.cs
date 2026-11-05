@@ -1,12 +1,15 @@
 ﻿using Microsoft.Win32;
 using SCS_Mod_Helper.Class.Base;
+using SCS_Mod_Helper.Setting;
 using SCS_Mod_Helper.Utils;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
+using Windows.Web.AtomPub;
 using Wpf.Ui.Input;
 
 namespace SCS_Mod_Helper.ConverterPix; 
@@ -24,23 +27,72 @@ public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PI
 		}
 	}
 
+	public ICommand ChoosePackCommand => new RelayCommand<object>(_ => ChoosePack());
+
+	private void ChoosePack() {
+		string defaultDir;
+		if (!string.IsNullOrEmpty(Instances.ETS2GamePath))
+			defaultDir = Instances.ETS2GamePath;
+		else if (!string.IsNullOrEmpty(Instances.ATSGamePath))
+			defaultDir = Instances.ATSGamePath;
+		else
+			defaultDir = Instances.CommonModPath;
+
+		string initialDir;
+		if (string.IsNullOrEmpty(History.Default.PixPackPath))
+			initialDir = defaultDir;
+		else
+			initialDir = History.Default.PixPackPath;
+		OpenFileDialog openFileDialog = new() {
+			Filter = Util.GetFilter("DialogFilterMod"),
+			Multiselect = false,
+			DefaultDirectory = defaultDir,
+			InitialDirectory = initialDir
+		};
+		if (openFileDialog.ShowDialog() == true) {
+			PackPath = openFileDialog.FileName;
+			History.Default.PixPackPath = PackPath;
+			History.Default.Save();
+			DirStart(openFileDialog.SafeFileName);
+		}
+	}
+
 	private bool mCustomDestPath = false;
 	public bool CustomDestPath {
 		get => mCustomDestPath;
 		set {
 			mCustomDestPath = value;
-			if (!CustomDestPath)
-				DestPath = Instances.ProjectLocation;
 			InvokeChange();
 		}
 	}
 
-	private string mDestPath = Instances.ProjectLocation;
+	private string? mDestPath = null;
 	public string DestPath {
-		get => mDestPath;
+		get {
+			if (mDestPath == null) {
+				if (string.IsNullOrEmpty(Instances.HistoryPixExportPath))
+					mDestPath = Instances.ProjectLocation;
+				else
+					mDestPath = Instances.HistoryPixExportPath;
+			}
+			return mDestPath;
+		}
 		set {
 			mDestPath = value;
+			Instances.HistoryPixExportPath = value;
 			InvokeChange();
+		}
+	}
+
+	public ICommand ChooseExportPathCommand => new RelayCommand<object>(_ => ChooseExportPath());
+	private void ChooseExportPath() {
+		OpenFolderDialog openFolderDialog = new() {
+			Multiselect = false,
+			InitialDirectory = DestPath,
+
+		};
+		if (openFolderDialog.ShowDialog() == true) {
+			DestPath = openFolderDialog.FolderName;
 		}
 	}
 
@@ -57,6 +109,8 @@ public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PI
 		InvokeChange(nameof(UndoCount));
 	}
 
+
+	public ICommand UndoCommand => new RelayCommand<object>(_ => Undo());
 	public void Undo() {//返回时直接将dir放进dirlist里，然后readdir
 		var last = HistoryUndoList.Last();
 		HistoryUndoList.RemoveAt(HistoryUndoList.Count - 1);
@@ -95,6 +149,7 @@ public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PI
 		}
 	}
 
+	public ICommand FolderBackCommand => new RelayCommand<object>(_ => FolderBack());
 	public void FolderBack() {
 		if (DirList.Count > 1) {
 			DirBack(DirList.Count - 2);

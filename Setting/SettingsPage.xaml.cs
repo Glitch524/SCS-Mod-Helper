@@ -142,7 +142,11 @@ public class SettingsBinding(Func<IBaseVisual> windowFunc): WindowBinding(window
 
 
 	public string ETS2GamePath {
-		get => Instances.ETS2GamePath;
+		get {
+			if (Instances.ETS2GamePath.Length == 0)
+				return Util.GetString("StatusEmpty");
+			return Instances.ETS2GamePath;
+		}
 		set {
 			Instances.ETS2GamePath = value;
 			InvokeChange();
@@ -150,7 +154,11 @@ public class SettingsBinding(Func<IBaseVisual> windowFunc): WindowBinding(window
 	}
 
 	public string ATSGamePath {
-		get => Instances.ATSGamePath;
+		get {
+			if (Instances.ATSGamePath.Length == 0)
+				return Util.GetString("StatusEmpty");
+			return Instances.ATSGamePath;
+		}
 		set {
 			Instances.ATSGamePath = value;
 			InvokeChange();

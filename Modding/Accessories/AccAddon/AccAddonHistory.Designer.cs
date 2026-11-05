@@ -38,30 +38,6 @@ namespace SCS_Mod_Helper.Modding.Accessories.AccAddon {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string ChooseModelHistory {
-            get {
-                return ((string)(this["ChooseModelHistory"]));
-            }
-            set {
-                this["ChooseModelHistory"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool IconDefCreateOnAccessory {
-            get {
-                return ((bool)(this["IconDefCreateOnAccessory"]));
-            }
-            set {
-                this["IconDefCreateOnAccessory"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string DisplayName {
             get {
                 return ((string)(this["DisplayName"]));
@@ -324,18 +300,6 @@ namespace SCS_Mod_Helper.Modding.Accessories.AccAddon {
             }
             set {
                 this["ElectricType"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool NeedToUpgrade {
-            get {
-                return ((bool)(this["NeedToUpgrade"]));
-            }
-            set {
-                this["NeedToUpgrade"] = value;
             }
         }
     }

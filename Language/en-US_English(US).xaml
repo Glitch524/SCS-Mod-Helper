@@ -311,7 +311,6 @@
 	<s:String x:Key="MessageResultPhysSaved">Physics definition saved.</s:String>
 	<s:String x:Key="DialogTitleChooseRope">Choose Rope Material File(mat file or its image file)</s:String>
 	<s:String x:Key="DialogTitleChoosePatch">Choose Patch Material File(mat file or its image file)</s:String>
-	<s:String x:Key="DialogFilterChooseMaterial">Rope Material or Rope Image File|*.tga;*.dds;*.mat;*.tobj</s:String>
 	<s:String x:Key="MessageErrorChooseMaterial">Chosen file must be mat file or its image file</s:String>
 	
 	
@@ -423,6 +422,7 @@
 
 	<!--Converter PIX-->
 	<s:String x:Key="TitleConverterPIX">Converter PIX</s:String>
+	<s:String x:Key="TooltipGoBack">Go Back</s:String>
 	<s:String x:Key="TitleTextReader">Text Reader</s:String>
 	<s:String x:Key="TitleModPath">Mod Path:</s:String>
 	<s:String x:Key="TitleCustomExportPath">Custom Export Path:</s:String>

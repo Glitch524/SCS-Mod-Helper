@@ -10,6 +10,7 @@
 	xmlns:utils="clr-namespace:SCS_Mod_Helper.Utils"
 	xmlns:h="http://helix-toolkit.org/wpf"
 	xmlns:dnb="clr-namespace:SCS_Mod_Helper.Locale.StringRes"
+	xmlns:acc="clr-namespace:SCS_Mod_Helper.Modding.Accessories"
 	xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker"
 	d:DataContext="{d:DesignInstance Type=local:PaintJobBinding}"
 	ExtendsContentIntoTitleBar="True"
@@ -561,7 +562,7 @@
 							Style="{StaticResource TextBoxBorderless}"
 							AllowDrop="True"
 							PreviewDragOver="PreviewFileBoxDragOver"
-							Drop="FileDrop"
+							Drop="IconFileDrop"
 							Tag="IconName" />
 						<Button
 							x:Name="ButtonIconName"
@@ -569,7 +570,7 @@
 							Click="ButtonChooseIcon"
 							AllowDrop="True"
 							PreviewDragOver="PreviewFileButtonDragOver"
-							Drop="FileDrop"
+							Drop="IconFileDrop"
 							Tag="IconName"
 							Style="{StaticResource ButtonBorderless}">
 							<Viewbox>
@@ -1340,8 +1341,7 @@
 							TextWrapping="Wrap"
 							VerticalAlignment="Top">
 							<Run
-								Text="{DynamicResource TitlePaintJobTexture}" />
-							<Run
+								Text="{DynamicResource TitlePaintJobTexture}" /><Run
 								Text="{DynamicResource TextureRequire}" />
 						</TextBlock>
 						<Border
@@ -1369,7 +1369,7 @@
 							AllowDrop="True"
 							PreviewDragOver="PreviewFileBoxDragOver"
 							Drop="FileDrop"
-							Tag="PaintJobTex"/>
+							Tag="{x:Static acc:ChooseTexType.Paintjob}"/>
 						<Button
 							x:Name="ButtonPaintJob"
 							Grid.Column="1"
@@ -1378,7 +1378,7 @@
 							AllowDrop="True"
 							PreviewDragOver="PreviewFileButtonDragOver"
 							Drop="FileDrop"
-							Tag="PaintJobTex">
+							Tag="{x:Static acc:ChooseTexType.Paintjob}">
 							<Viewbox>
 								<ui:SymbolIcon
 									Symbol="Folder16" />
@@ -1401,8 +1401,7 @@
 							VerticalAlignment="Top"
 							ToolTip="{DynamicResource TooltipBaseTextureOverride}">
 							<Run
-								Text="{DynamicResource TitleBaseTextureOverride}" />
-							<Run
+								Text="{DynamicResource TitleBaseTextureOverride}" /><Run
 								Text="{DynamicResource TextureRequire}" />
 						</TextBlock>
 						<Border
@@ -1431,7 +1430,7 @@
 							AllowDrop="True"
 							PreviewDragOver="PreviewFileBoxDragOver"
 							Drop="FileDrop"
-							Tag="BaseTexOverride">
+							Tag="{x:Static acc:ChooseTexType.BaseTexOvr}">
 						</ui:TextBox>
 						<Button
 							x:Name="ButtonBaseTexOverride"
@@ -1441,7 +1440,7 @@
 							AllowDrop="True"
 							PreviewDragOver="PreviewFileButtonDragOver"
 							Drop="FileDrop"
-							Tag="BaseTexOverride">
+							Tag="{x:Static acc:ChooseTexType.BaseTexOvr}">
 							<Viewbox>
 								<ui:SymbolIcon
 									Symbol="Folder16" />
@@ -1875,7 +1874,7 @@
 									AllowDrop="True"
 									PreviewDragOver="PreviewFileBoxDragOver"
 									Drop="FileDrop"
-									Tag="FlakeNoise" />
+									Tag="{x:Static acc:ChooseTexType.FlakeNoise}" />
 								<Button
 									x:Name="ButtonChooseFlakeNoise"
 									Grid.Column="2"
@@ -1884,7 +1883,7 @@
 									AllowDrop="True"
 									PreviewDragOver="PreviewFileButtonDragOver"
 									Drop="FileDrop"
-									Tag="FlakeNoise">
+									Tag="{x:Static acc:ChooseTexType.FlakeNoise}" >
 									<Viewbox>
 										<ui:SymbolIcon
 											Symbol="Folder16" />
@@ -2588,8 +2587,7 @@
 								TextWrapping="Wrap"
 								VerticalAlignment="Top">
 								<Run
-									Text="{DynamicResource TitlePaintJobTexture}" />
-								<Run
+									Text="{DynamicResource TitlePaintJobTexture}" /><Run
 									Text="{DynamicResource TextureRequire}" />
 							</TextBlock>
 							<Border
@@ -2618,7 +2616,7 @@
 								AllowDrop="True"
 								PreviewDragOver="PreviewFileBoxDragOver"
 								Drop="FileDrop"
-								Tag="AccTex">
+								Tag="{x:Static acc:ChooseTexType.AccTex}" >
 							</ui:TextBox>
 							<Button
 								x:Name="ButtonChooseAccTex"
@@ -2628,7 +2626,7 @@
 								AllowDrop="True"
 								PreviewDragOver="PreviewFileButtonDragOver"
 								Drop="FileDrop"
-								Tag="AccTex">
+								Tag="{x:Static acc:ChooseTexType.AccTex}" >
 								<Viewbox>
 									<ui:SymbolIcon
 										Symbol="Folder16" />

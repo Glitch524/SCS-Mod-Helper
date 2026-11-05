@@ -1,23 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
+﻿using System.IO;
 
 namespace SCS_Mod_Helper.Utils;
 
 partial class Paths {
 	public static string IntDecorsDir(string projectLocation) => Path.Combine(projectLocation, @"vehicle\truck\upgrade\interior_decors");
 
-	public static string AccessoryIconDir(string projectLocation, string sub = "") {
-		var p = Path.Combine(projectLocation, @"material\ui\accessory");
+	public static string AccessoryIconDir(string sub = "") {
+		var p = Path.Combine(Instances.ProjectLocation, @"material\ui\accessory");
 		if (sub.Length > 0)
 			p = Path.Combine(p, sub);
 		return p;
 	}
-	public static string AccessoryIconDir(string sub = "") => AccessoryIconDir(Instances.ProjectLocation, sub);
+
+	public static string RopeDir(string sub = "") {
+		var p = Path.Combine(Instances.ProjectLocation, @"material\ropes");
+		if (sub.Length > 0)
+			p = Path.Combine(p, sub);
+		return p;
+	}
 
 
-	public static string DefTruckDir(string projectLocation) => Path.Combine(projectLocation, @"def\vehicle\truck");
 	public static string DefTruckDir() => Path.Combine(Instances.ProjectLocation, @"def\vehicle\truck");
 	private static string DefVehicleDir(string projectLocation, string vehicleType, string vehicleID) =>
 		Path.Combine(projectLocation, @"def\vehicle", vehicleType, vehicleID);
@@ -68,6 +70,17 @@ partial class Paths {
 	}
 	public static string HookupFile(string hookupName) => HookupFile(Instances.ProjectLocation, hookupName);
 
+	public static string VehiclePath() {
+		string dir = Path.Combine(Instances.ProjectLocation, @$"vehicle");
+		Directory.CreateDirectory(dir);
+		return dir;
+	}
+
+	public static string VehicleUpgradePath(string vehicleType) {
+		string dir = Path.Combine(Instances.ProjectLocation, @$"vehicle\{vehicleType}\upgrade");
+		Directory.CreateDirectory(dir);
+		return dir;
+	}
 
 
 	public static string SavedPhysicsFile() => "Physics.DEP";

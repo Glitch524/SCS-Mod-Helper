@@ -1,6 +1,4 @@
-﻿using Microsoft.Win32;
-using SCS_Mod_Helper.Class.Base;
-using SCS_Mod_Helper.Modding.Accessories.AccAddon;
+﻿using SCS_Mod_Helper.Class.Base;
 using SCS_Mod_Helper.Modding.Accessories.AccHookup;
 using SCS_Mod_Helper.Utils;
 using System.Collections.ObjectModel;
@@ -154,60 +152,45 @@ class PhysicsBinding(Func<IBaseVisual> visualFunc): WindowBinding(visualFunc) {
 		}
 	}
 
-
 	//模型、碰撞体
-	public void ChooseModel(bool isColl) {
-		if (ProjectLocation.Length == 0)
-			throw new(GetString("MessageProjectLocationFirst"));
-		string title, fileter, defaultExt;
-		if (isColl) {
-			title = GetString("DialogTitleChooseColl");
-			fileter = GetFilter("DialogFilterChooseColl");
-			defaultExt = "pmc";
-		} else {
-			title = GetString("DialogTitleChooseModel");
-			fileter = GetFilter("DialogFilterChooseModel");
-			defaultExt = "pmd";
+	public void ChooseModel(ChooseModelType chooseType) {
+		string currentPath;
+		switch (chooseType) {
+			case ChooseModelType.Model:
+				currentPath = ModelPath;
+				break;
+			case ChooseModelType.Coll:
+				currentPath = CollPath;
+				break;
+			default:
+				return;
 		}
-		var fileDialog = new OpenFileDialog {
-			Multiselect = false,
-			DefaultDirectory = ProjectLocation,
-			DefaultExt = defaultExt,
-			Title = title,
-			Filter = fileter,
-			InitialDirectory = AccessoryDataUtil.GetInitialPath(ModelPath, CollPath)
-		};
-		if (fileDialog.ShowDialog() != true)
+		var path = AccessoryDataUtil.ChooseModelPath(chooseType, currentPath);
+		if (path == null)
 			return;
-		string path = fileDialog.FileName;
-		if (!path.StartsWith(ProjectLocation) || path.Length == ProjectLocation.Length)
-			throw new(GetString("MessageModelOutsideProject"));
-		if (isColl) {
-			if (!path.EndsWith(".pic") && !path.EndsWith(".pmc"))
-				throw new(GetString("MessageInvalidExtColl"));
-		} else if (!path.EndsWith(".pim") && !path.EndsWith(".pmd")) {
-			throw new(GetString("MessageInvalidExt"));
-		}
-		AccAddonHistory.Default.ChooseModelHistory = new DirectoryInfo(fileDialog.FileName).Parent!.FullName;
-		AccAddonHistory.Default.Save();
+
 		string inProjectPath = path.Replace(ProjectLocation, "");
 		string?
 			modelPath = null,
 			modelColl = null;
-		if (isColl) {
-			modelColl = inProjectPath.Replace('\\', '/');
-			modelColl = modelColl[..^4];
-			if (File.Exists(path[..^4] + ".pic") || File.Exists(path[..^4] + ".pmc"))
-				modelPath = modelColl + ".pmd";
-			modelColl += ".pmc";
-		} else {
-			modelPath = inProjectPath.Replace('\\', '/');
-			modelPath = modelPath[..^4];
-			if (File.Exists(path[..^4] + ".pic") || File.Exists(path[..^4] + ".pmc"))
-				modelColl = modelPath + ".pmc";
-			modelPath += ".pmd";
+		switch (chooseType) {
+			case ChooseModelType.Model:
+				modelColl = inProjectPath.Replace('\\', '/');
+				modelColl = modelColl[..^4];
+				if (File.Exists(path[..^4] + ".pic") || File.Exists(path[..^4] + ".pmc"))
+					modelPath = modelColl + ".pmd";
+				modelColl += ".pmc";
+				break;
+			case ChooseModelType.Coll:
+				modelPath = inProjectPath.Replace('\\', '/');
+				modelPath = modelPath[..^4];
+				if (File.Exists(path[..^4] + ".pic") || File.Exists(path[..^4] + ".pmc"))
+					modelColl = modelPath + ".pmc";
+				modelPath += ".pmd";
+				break;
+			default:
+				return;
 		}
-
 		if (modelPath != null)
 			ModelPath = modelPath;
 		if (modelColl != null)

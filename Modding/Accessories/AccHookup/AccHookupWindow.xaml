@@ -11,6 +11,7 @@
 	xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
 	xmlns:c ="clr-namespace:SCS_Mod_Helper.Class"
 	xmlns:dnb="clr-namespace:SCS_Mod_Helper.Locale.StringRes"
+	xmlns:acc="clr-namespace:SCS_Mod_Helper.Modding.Accessories"
 	d:DataContext="{d:DesignInstance Type=local:AccHookupBinding}"
 	ExtendsContentIntoTitleBar="True"
 	Title="{DynamicResource TitleAccessoryHookup}"
@@ -796,6 +797,7 @@
 								Grid.Row="1"
 								Grid.Column="1"
 								Click="ButtonChooseModelClick"
+								Tag="{x:Static acc:ChooseModelType.Model}"
 								Style="{StaticResource ButtonBorderless}">
 								<Viewbox>
 									<ui:SymbolIcon
@@ -859,6 +861,7 @@
 								Grid.Row="1"
 								Grid.Column="1"
 								Click="ButtonChooseModelClick"
+								Tag="{x:Static acc:ChooseModelType.Coll}"
 								Style="{StaticResource ButtonBorderless}">
 								<Viewbox>
 									<ui:SymbolIcon

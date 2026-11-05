@@ -1,7 +1,8 @@
 ﻿using SCS_Mod_Helper.Class.Base;
+using SCS_Mod_Helper.Setting;
 using System.Windows;
 
-namespace SCS_Mod_Helper.Modding.Accessories.AccAddon;
+namespace SCS_Mod_Helper.Modding;
 /// <summary>
 /// CreateIconFiles.xaml 的交互逻辑
 /// </summary>
@@ -16,15 +17,15 @@ public partial class IconDefWIndow: BaseWindow {
 			BoxCreateOnAccessory.Visibility = Visibility.Collapsed;
 		else {
 			BoxCreateOnAccessory.Visibility = Visibility.Visible;
-			BoxCreateOnAccessory.IsChecked = AccAddonHistory.Default.IconDefCreateOnAccessory;
+			BoxCreateOnAccessory.IsChecked = History.Default.IconDefCreateOnAccessory;
 		}
 	}
 
 	public bool CreateOnAccessory => BoxCreateOnAccessory.IsChecked == true || NotInAcc;
 
 	private void Button_Click(object sender, RoutedEventArgs e) {
-		AccAddonHistory.Default.IconDefCreateOnAccessory = BoxCreateOnAccessory.IsChecked == true;
-		AccAddonHistory.Default.Save();
+		History.Default.IconDefCreateOnAccessory = BoxCreateOnAccessory.IsChecked == true;
+		History.Default.Save();
 		DialogResult = sender == ButtonYes;
 	}
 }
