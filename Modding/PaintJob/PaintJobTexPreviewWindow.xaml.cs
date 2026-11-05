@@ -1,5 +1,4 @@
 ﻿using SCS_Mod_Helper.Class.Base;
-using SCS_Mod_Helper.Vehicles.Packages;
 using System.Windows.Media.Imaging;
 
 namespace SCS_Mod_Helper.Modding.PaintJob; 

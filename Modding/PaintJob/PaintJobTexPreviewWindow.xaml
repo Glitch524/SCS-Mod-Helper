@@ -7,7 +7,6 @@
 	xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:local="clr-namespace:SCS_Mod_Helper.Modding.PaintJob"
-	xmlns:pack="clr-namespace:SCS_Mod_Helper.Vehicles.Packages"
 	xmlns:colormask="clr-namespace:SCS_Mod_Helper.Modding.PaintJob.ColorMask"
 	d:DataContext="{d:DesignInstance Type=local:PaintJobBinding}"
 	mc:Ignorable="d"
@@ -110,7 +109,7 @@
 					ItemsSource="{Binding PaintJobData.CurrentVehicle.VehiclePackage.LayerGroups}">
 					<TreeView.Resources>
 						<HierarchicalDataTemplate
-							DataType="{x:Type pack:LayerGroup}"
+							DataType="{x:Type local:LayerGroup}"
 							ItemsSource="{Binding UVLayers}">
 							<StackPanel
 								Orientation="Horizontal">
@@ -120,7 +119,7 @@
 							</StackPanel>
 							<HierarchicalDataTemplate.ItemTemplate>
 								<DataTemplate
-									DataType="{x:Type pack:VehicleUV}">
+									DataType="{x:Type local:VehicleUV}">
 									<StackPanel
 										Orientation="Horizontal"
 										VerticalAlignment="Center">
