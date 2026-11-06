@@ -8,7 +8,7 @@ using System.Windows.Media.Imaging;
 namespace SCS_Mod_Helper.Modding.Accessories;
 public static class AccessoryDataUtil {
 
-	public static string? ChooseModelPath(ChooseModelType chooseType, string? currentPath, string vehicleType = Vehicle.VEHICLE_TYPE_TRUCK) {
+	public static string? ChooseModelPath(ChooseModelType chooseType, string? currentPath, VehicleType vehicleType = VehicleType.Truck) {
 		var projectLocation = Instances.ProjectLocation;
 		if (projectLocation.Length == 0)
 			throw new(Util.GetString("MessageProjectLocationFirst"));
@@ -248,7 +248,7 @@ public static class AccessoryDataUtil {
 	}
 
 
-	public static string? ChooseTexPath(Window window, ChooseTexType texType, string currentPath, string vehicleType = Vehicle.VEHICLE_TYPE_TRUCK) {//可选普通格式的图片，但是提示仅用于预览，后期需要自己转换
+	public static string? ChooseTexPath(Window window, ChooseTexType texType, string currentPath, VehicleType vehicleType = VehicleType.Truck) {//可选普通格式的图片，但是提示仅用于预览，后期需要自己转换
 		try {
 			var projectLocation = Instances.ProjectLocation;
 			if (projectLocation.Length == 0)

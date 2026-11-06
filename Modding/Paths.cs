@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using SCS_Mod_Helper.Vehicles;
+using System.IO;
 
 namespace SCS_Mod_Helper.Utils;
 
@@ -21,16 +22,15 @@ partial class Paths {
 
 
 	public static string DefTruckDir() => Path.Combine(Instances.ProjectLocation, @"def\vehicle\truck");
-	private static string DefVehicleDir(string projectLocation, string vehicleType, string vehicleID) =>
-		Path.Combine(projectLocation, @"def\vehicle", vehicleType, vehicleID);
 
-	private static string AccAddonFile(string projectLocation, string vehicleType, string vehicleID, string modelType, string modelName) {
-		string dir = Path.Combine(DefVehicleDir(projectLocation, vehicleType, vehicleID), "accessory", modelType);
+	private static string DefVehicleDir(VehicleType vehicleType, string vehicleID) =>//trailer的文件夹是否不一样，好像有owned
+		Path.Combine(Instances.ProjectLocation, @"def\vehicle", vehicleType.GetTypeValue(), vehicleID);
+
+	public static string AccAddonFile(VehicleType vehicleType, string vehicleID, string modelType, string modelName) {
+		string dir = Path.Combine(DefVehicleDir(vehicleType, vehicleID), "accessory", modelType);
 		Directory.CreateDirectory(dir);
 		return Path.Combine(dir, $"{modelName}.sii");
 	}
-	public static string AccAddonFile(string vehicleType, string vehicleID, string modelType, string modelName) =>
-		AccAddonFile(Instances.ProjectLocation, vehicleType, vehicleID, modelType, modelName);
 
 
 
@@ -45,22 +45,18 @@ partial class Paths {
 
 
 
-	public static string AccPaintJobFile(string projectLocation, string vehicleType, string vehicleID, string paintJobName) {
-		string dir = Path.Combine(DefVehicleDir(projectLocation, vehicleType, vehicleID), "paint_job");
+	public static string AccPaintJobFile(VehicleType vehicleType, string vehicleID, string paintJobName) {
+		string dir = Path.Combine(DefVehicleDir(vehicleType, vehicleID), "paint_job");
 		Directory.CreateDirectory(dir);
 		return Path.Combine(dir, $"{paintJobName}.sii");
 	}
-	public static string AccPaintJobFile(string vehicleType, string vehicleID, string paintJobName) =>
-		AccPaintJobFile(Instances.ProjectLocation, vehicleType, vehicleID, paintJobName);
 
 
-	public static string SimplePaintJobFile(string projectLocation, string vehicleType, string vehicleID, string paintJobName) {
-		string dir = Path.Combine(DefVehicleDir(projectLocation, vehicleType, vehicleID), @"paint_job\accessory");
+	public static string SimplePaintJobFile(VehicleType vehicleType, string vehicleID, string paintJobName) {
+		string dir = Path.Combine(DefVehicleDir(vehicleType, vehicleID), @"paint_job\accessory");
 		Directory.CreateDirectory(dir);
 		return Path.Combine(dir, $"{paintJobName}.sii");
 	}
-	public static string SimplePaintJobFile(string vehicleType, string vehicleID, string paintJobName) =>
-		SimplePaintJobFile(Instances.ProjectLocation, vehicleType, vehicleID, paintJobName);
 
 
 	public static string HookupFile(string projectLocation, string hookupName) {
@@ -76,8 +72,8 @@ partial class Paths {
 		return dir;
 	}
 
-	public static string VehicleUpgradePath(string vehicleType) {
-		string dir = Path.Combine(Instances.ProjectLocation, @$"vehicle\{vehicleType}\upgrade");
+	public static string VehicleUpgradePath(VehicleType vehicleType) {
+		string dir = Path.Combine(Instances.ProjectLocation, @$"vehicle\{vehicleType.GetTypeValue()}\upgrade");
 		Directory.CreateDirectory(dir);
 		return dir;
 	}

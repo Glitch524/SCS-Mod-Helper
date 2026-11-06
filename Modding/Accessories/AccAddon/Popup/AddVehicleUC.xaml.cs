@@ -25,14 +25,6 @@ public partial class AddVehicleUC: BaseUserControl {
 		InitializeComponent();
 	}
 
-	public void Clean() {
-		TextNewVehicleType.SelectedValue = "Truck";
-		TextNewDisplayName.Text = string.Empty;
-		TextNewManufacturer.Text = string.Empty;
-		TextNewVehicleProdYear.Text = null;
-		TextNewDescription.Text = string.Empty;
-	}
-
 	private void ButtonResultClick(object sender, RoutedEventArgs e) {
 		if (sender == ButtonOK) {
 			Binding.AddNewVehicleClick();
@@ -63,7 +55,7 @@ public partial class AccAddonBinding {
 			  prod,
 			  NewVehicleName,
 			  NewDescription ?? string.Empty,
-			  NewVehicleType,
+			  VehicleTypeExtension.GetTypeFromValue(NewVehicleType),
 			  NewManufacturer,
 			  AddVehicleETS2 == true,
 			  false);
@@ -113,7 +105,7 @@ public partial class AccAddonBinding {
 		NewManufacturer = string.Empty;
 		NewVehicleCodename = string.Empty;
 		NewProdYear = string.Empty;
-		NewVehicleType = "Truck";
+		NewVehicleType = "truck";
 		NewVehicleName = string.Empty;
 		NewDescription = string.Empty;
 	}

@@ -7,7 +7,7 @@ public class AccessoryVehicle(
 	int productionYear,
 	string vehicleName,
 	string description,
-	string vehicleType,
+	VehicleType vehicleType,
 	string manufacturer,
 	bool ets2 = false,
 	bool check = false,
