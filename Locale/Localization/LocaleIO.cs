@@ -123,7 +123,6 @@ namespace SCS_Mod_Helper.Locale.Localization {
 					return;
 				}
 			}
-			Instances.CleanLocaleModules();//mod localization更改并保存后，清理Instances内的locale字典，使用时重新加载
 			foreach (var module in moduleList) {
 				var moduleName = module.ModuleName;
 				var universal = module.UniversalDict;
@@ -140,6 +139,7 @@ namespace SCS_Mod_Helper.Locale.Localization {
 			foreach (var module in deletedModuleList) {
 				DeleteLocaleSii(module);
 			}
+			Instances.CleanLocaleModules();//mod localization更改并保存后，清理Instances内的locale字典，使用时重新加载
 		}
 
 		private void CreateLocaleSii(string moduleName, ModLocale locale, ObservableCollection<LocalePair> universal) {
