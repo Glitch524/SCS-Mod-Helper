@@ -55,6 +55,13 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 		}
 
 		public bool NameOver12 => ModelName.Length > 12;
+		public bool IsVehiclePopupOpen {
+			get;
+			set {
+				field = value;
+				InvokeChange();
+			}
+		} = false;
 
 		public void ChooseIcon() => PaintJobData.ChooseIcon(BindingWindow);
 
@@ -102,7 +109,7 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 				default:
 					return;
 			}
-			var path = AccessoryDataUtil.ChooseTexPath(BindingWindow, texType, currentPath, PaintJobData.CurrentVehicle?.VehicleType ?? Vehicle.VEHICLE_TYPE_TRUCK);
+			var path = AccessoryDataUtil.ChooseTexPath(BindingWindow, texType, currentPath, PaintJobData.CurrentVehicle?.VehicleType ?? VehicleType.Truck);
 			if (path == null)
 				return;
 			CheckTexPath(texType, path);

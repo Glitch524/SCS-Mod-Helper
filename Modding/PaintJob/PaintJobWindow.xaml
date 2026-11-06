@@ -12,6 +12,7 @@
 	xmlns:dnb="clr-namespace:SCS_Mod_Helper.Locale.StringRes"
 	xmlns:acc="clr-namespace:SCS_Mod_Helper.Modding.Accessories"
 	xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker"
+	xmlns:v="clr-namespace:SCS_Mod_Helper.Vehicles"
 	d:DataContext="{d:DesignInstance Type=local:PaintJobBinding}"
 	ExtendsContentIntoTitleBar="True"
 	mc:Ignorable="d"
@@ -250,6 +251,7 @@
 						AllowDrop="True"
 						ClearButtonEnabled="False"
 						Text="{Binding PaintJobData.ModelName, UpdateSourceTrigger=PropertyChanged}"
+						d:Text="ModelName"
 						VerticalAlignment="Top">
 						<ui:TextBox.Style>
 							<Style
@@ -325,34 +327,195 @@
 							Tag="licensed" />
 					</ComboBox>
 				</Grid>
-				<StackPanel
+				<Grid
 					Grid.Column="4">
+					<Grid.RowDefinitions>
+						<RowDefinition
+							Height="Auto" />
+						<RowDefinition
+							Height="Auto" />
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition
+							Width="*" />
+						<ColumnDefinition
+							Width="Auto" />
+					</Grid.ColumnDefinitions>
 					<TextBlock
 						TextWrapping="Wrap"
 						VerticalAlignment="Bottom"
 						Text="{DynamicResource TitleVehicle}" />
-					<ComboBox
-						DisplayMemberPath="VehicleName"
-						SelectedValuePath="VehicleID"
-						SelectedItem="{Binding PaintJobData.CurrentVehicle}"
-						ItemsSource="{Binding PaintJobData.Vehicles}">
-						<ComboBox.Style>
+					<ui:TextBox
+						x:Name="TextVehicleName"
+						Grid.Row="1"
+						Grid.ColumnSpan="2"
+						ClearButtonEnabled="False"
+						IsReadOnly="True"
+						Text="{Binding PaintJobData.CurrentVehicle.VehicleName, Mode=OneWay}"
+						d:Text="VehicleName"
+						Padding="5,3,26,3">
+						<ui:TextBox.Style>
 							<Style
-								TargetType="ComboBox"
-								BasedOn="{StaticResource {x:Type ComboBox}}">
+								TargetType="ui:TextBox"
+								BasedOn="{StaticResource {x:Type ui:TextBox}}">
 								<Style.Triggers>
 									<Trigger
-										Property="SelectedItem"
-										Value="{x:Null}">
+										Property="Text"
+										Value="">
 										<Setter
 											Property="Background"
 											Value="Yellow" />
 									</Trigger>
 								</Style.Triggers>
 							</Style>
-						</ComboBox.Style>
-					</ComboBox>
-				</StackPanel>
+						</ui:TextBox.Style>
+					</ui:TextBox>
+					<Button
+						Grid.Row="1"
+						Grid.Column="1"
+						Style="{StaticResource ButtonBorderless}"
+						Background="{x:Null}"
+						VerticalAlignment="Stretch"
+						HorizontalAlignment="Stretch"
+						Click="ButtonOpenVehicleTree">
+						<Viewbox
+							Margin="4">
+							<ui:SymbolIcon
+								Symbol="ChevronDown20"
+								Foreground="LightGray"/>
+						</Viewbox>
+					</Button>
+					<Popup
+						x:Name="PopupVehicles"
+						Width="{Binding ElementName=TextVehicleName, Path=ActualWidth}"
+						MinHeight="400"
+						MaxHeight="600"
+						PlacementTarget="{Binding ElementName=TextVehicleName}"
+						AllowsTransparency="True"
+						IsOpen="{Binding IsVehiclePopupOpen}">
+						<Grid>
+							<Border 
+								Style="{StaticResource PopupBorder}"/>
+							<TreeView
+								x:Name="TreeViewVehicle"
+								Margin="5"
+								ItemsSource="{Binding PaintJobData.VehiclesGroups.GroupList}"
+								SelectedItemChanged="VehicleTreeSelectedItemChanged">
+								<TreeView.Resources>
+									<HierarchicalDataTemplate
+										DataType="{x:Type v:VehicleGroup}"
+										ItemsSource="{Binding Vehicles}">
+										<StackPanel
+											Orientation="Horizontal"
+											Focusable="False">
+											<TextBlock
+												Text="{Binding GroupNameVisual}"
+												Padding="0,3" />
+										</StackPanel>
+										<HierarchicalDataTemplate.ItemTemplate>
+											<DataTemplate
+												DataType="{x:Type v:Vehicle}">
+												<StackPanel
+													Orientation="Horizontal"
+													VerticalAlignment="Center">
+													<TextBlock
+														Text="{Binding VehicleName}"
+														Padding="0,3,5,3">
+														<TextBlock.Style>
+															<Style
+																TargetType="TextBlock"
+																BasedOn="{StaticResource {x:Type TextBlock}}">
+																<Style.Triggers>
+																	<MultiDataTrigger>
+																		<MultiDataTrigger.Conditions>
+																			<Condition
+																				Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource Mode=FindAncestor,AncestorLevel=1, AncestorType=TreeViewItem}}"
+																				Value="True" />
+																			<Condition
+																				Binding="{Binding Path=IsFocused, RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType=TreeViewItem}}"
+																				Value="True" />
+																		</MultiDataTrigger.Conditions>
+																		<MultiDataTrigger.Setters>
+																			<Setter
+																				Property="Foreground"
+																				Value="White" />
+																		</MultiDataTrigger.Setters>
+																	</MultiDataTrigger>
+																</Style.Triggers>
+															</Style>
+														</TextBlock.Style>
+													</TextBlock>
+												</StackPanel>
+											</DataTemplate>
+										</HierarchicalDataTemplate.ItemTemplate>
+									</HierarchicalDataTemplate>
+								</TreeView.Resources>
+								<TreeView.ItemContainerStyle>
+									<Style
+										TargetType="{x:Type TreeViewItem}">
+										<Setter
+											Property="IsExpanded"
+											Value="{Binding Expanded, Mode=TwoWay}" />
+										<Setter
+											Property="Focusable"
+											Value="{Binding Focusable}" />
+									</Style>
+								</TreeView.ItemContainerStyle>
+								<TreeView.Template>
+									<ControlTemplate
+										TargetType="TreeView">
+										<ScrollViewer
+											VerticalScrollBarVisibility="Auto"
+											HorizontalScrollBarVisibility="Auto">
+											<ScrollViewer.Template>
+												<ControlTemplate
+													TargetType="ScrollViewer">
+													<Grid>
+														<Grid.ColumnDefinitions>
+															<ColumnDefinition
+																Width="*" />
+															<ColumnDefinition
+																Width="Auto" />
+														</Grid.ColumnDefinitions>
+														<Grid.RowDefinitions>
+															<RowDefinition
+																Height="*" />
+															<RowDefinition
+																Height="Auto" />
+														</Grid.RowDefinitions>
+														<ScrollContentPresenter
+															Grid.Column="0"
+															Grid.Row="0"
+															Margin="{TemplateBinding Padding}" />
+														<ScrollBar
+															x:Name="PART_VerticalScrollBar"
+															Grid.Column="1"
+															Grid.Row="0"
+															Orientation="Vertical"
+															Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+															Value="{TemplateBinding VerticalOffset}"
+															Maximum="{TemplateBinding ScrollableHeight}"
+															ViewportSize="{TemplateBinding ViewportHeight}" />
+														<ScrollBar
+															x:Name="PART_HorizontalScrollBar"
+															Grid.Column="0"
+															Grid.Row="1"
+															Orientation="Horizontal"
+															Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+															Value="{TemplateBinding HorizontalOffset}"
+															Maximum="{TemplateBinding ScrollableWidth}"
+															ViewportSize="{TemplateBinding ViewportWidth}" />
+													</Grid>
+												</ControlTemplate>
+											</ScrollViewer.Template>
+											<ItemsPresenter />
+										</ScrollViewer>
+									</ControlTemplate>
+								</TreeView.Template>
+							</TreeView>
+						</Grid>
+					</Popup>
+				</Grid>
 				<StackPanel
 					Grid.Column="6"
 					VerticalAlignment="Bottom">

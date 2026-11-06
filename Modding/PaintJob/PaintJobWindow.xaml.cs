@@ -3,6 +3,7 @@ using SCS_Mod_Helper.Class.Base;
 using SCS_Mod_Helper.Modding.Accessories;
 using SCS_Mod_Helper.Utils;
 using SCS_Mod_Helper.Vehicles;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -169,6 +170,19 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 
 		private void AccListCheckBoxRequestBringIntoView(object sender, RequestBringIntoViewEventArgs e) => e.Handled = true;//用来避免点击acc listbox在点击checkbox时的自动滑动
 
+		private void VehicleTreeSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
+			Debug.WriteLine(e);
+			if (e.NewValue is Vehicle vehicle) {
+				Binding.PaintJobData.CurrentVehicle = vehicle;
+				Binding.IsVehiclePopupOpen = false;
+				
+			}
+        }
+
+		private void ButtonOpenVehicleTree(object sender, RoutedEventArgs e) {
+			Binding.IsVehiclePopupOpen = true;
+			TreeViewVehicle.Focus();
+		}
 	}
 }
 
