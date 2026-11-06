@@ -1,10 +1,9 @@
-﻿using SCS_Mod_Helper.Utils;
+﻿using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Drawing;
-using System.IO.Compression;
 using System.Text;
 using System.Windows;
+using System.Windows.Input;
 
 namespace SCS_Mod_Helper.ConverterPix;
 public partial class ConverterPixBinding {
@@ -15,8 +14,9 @@ public partial class ConverterPixBinding {
 		TextLines.Clear();
 	}
 
-	public void ReadFile(PIXFile pixFile) {
-		if (pixFile.IsDir)
+	public ICommand ReadFileCommand => new RelayCommand<PIXFile>(pixFile => ReadFile(pixFile ?? SelectedFile));
+	public void ReadFile(PIXFile? pixFile) {
+		if (pixFile == null || pixFile.IsDir)
 			return;
 		if (TextReaderWindow == null) {
 			TextReaderWindow = new(this, pixFile) {

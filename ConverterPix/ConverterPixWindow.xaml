@@ -83,11 +83,11 @@
 					x:Name="CheckBoxCustomExportPath"
 					Grid.Column="0"
 					Content="{DynamicResource TitleCustomExportPath}"
-					IsChecked="{Binding CustomDestPath}"
+					IsChecked="{Binding UseCustomDestPath}"
 					FontSize="12" />
 				<ui:TextBox
 					Grid.Column="1"
-					Text="{Binding DestPath}"
+					Text="{Binding CustomExportPath}"
 					ClearButtonEnabled="False">
 					<ui:TextBox.Style>
 						<Style
@@ -415,7 +415,7 @@
 					Grid.Column="0"
 					Content="{DynamicResource TitleExtractFile}"
 					Padding="10,5"
-					Click="ButtonExtractFileClick" />
+					Command="{Binding ExtractCommand}"/>
 				<CheckBox
 					Grid.Column="1"
 					Content="{DynamicResource TitleOpenExtractedLocation}"
@@ -427,19 +427,52 @@
 					Content="{DynamicResource TitleFindAnim}"
 					IsChecked="{Binding SearchAnim}"
 					Padding="10,5"
-					Margin="5,0,0,0" />
+					Margin="5,0,0,0">
+					<CheckBox.Style>
+						<Style
+							TargetType="CheckBox"
+							BasedOn="{StaticResource {x:Type CheckBox}}">
+							<Setter
+								Property="IsEnabled"
+								Value="False" />
+							<Style.Triggers>
+								<DataTrigger
+									Binding="{Binding SelectedFile.Extension}"
+									Value="PMD">
+									<Setter
+										Property="IsEnabled"
+										Value="True" />
+								</DataTrigger>
+								<DataTrigger
+									Binding="{Binding SelectedFile.Extension}"
+									Value="PMG">
+									<Setter
+										Property="IsEnabled"
+										Value="True" />
+								</DataTrigger>
+								<DataTrigger
+									Binding="{Binding SelectedFile.Extension}"
+									Value="PMC">
+									<Setter
+										Property="IsEnabled"
+										Value="True" />
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</CheckBox.Style>
+				</CheckBox>
 				<Button
 					Grid.Column="3"
 					Content="{DynamicResource TitleGlanceFile}"
 					Padding="10,5"
-					Click="ButtonShowFileClick" />
+					Command="{Binding ReadFileCommand}"/>
 
 				<Button
 					Grid.Column="5"
 					Content="{DynamicResource TitleEDF}"
 					ToolTip="{DynamicResource TooltipEDF}"
 					Padding="10,5"
-					Click="ButtonEDF">
+					Command="{Binding ExtractAllCommand}">
 				</Button>
 			</Grid>
 		</Grid>

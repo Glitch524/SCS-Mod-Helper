@@ -18,14 +18,13 @@ public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PI
 
 	private void ScrollToTop() => ScrollToFile(FileList[0]);
 
-	public string mPackPath = "";
 	public string PackPath {
-		get => mPackPath;
+		get;
 		set {
-			mPackPath = value;
+			field = value;
 			InvokeChange();
 		}
-	}
+	} = string.Empty;
 
 	public ICommand ChoosePackCommand => new RelayCommand<object>(_ => ChoosePack());
 
@@ -57,42 +56,43 @@ public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PI
 		}
 	}
 
-	private bool mCustomDestPath = false;
-	public bool CustomDestPath {
-		get => mCustomDestPath;
+	public bool UseCustomDestPath {
+		get;
 		set {
-			mCustomDestPath = value;
+			field = value;
 			InvokeChange();
 		}
-	}
+	} = false;
 
-	private string? mDestPath = null;
-	public string DestPath {
+	private string? mCustomExportPath = null;
+	public string CustomExportPath {
 		get {
-			if (mDestPath == null) {
+			if (mCustomExportPath == null) {
 				if (string.IsNullOrEmpty(Instances.HistoryPixExportPath))
-					mDestPath = Instances.ProjectLocation;
+					mCustomExportPath = Instances.ProjectLocation;
 				else
-					mDestPath = Instances.HistoryPixExportPath;
+					mCustomExportPath = Instances.HistoryPixExportPath;
 			}
-			return mDestPath;
+			return mCustomExportPath;
 		}
 		set {
-			mDestPath = value;
+			mCustomExportPath = value;
 			Instances.HistoryPixExportPath = value;
 			InvokeChange();
 		}
 	}
 
-	public ICommand ChooseExportPathCommand => new RelayCommand<object>(_ => ChooseExportPath());
-	private void ChooseExportPath() {
+	public string ExportPath => UseCustomDestPath ? CustomExportPath : Instances.ProjectLocation;
+
+	public ICommand ChooseExportPathCommand => new RelayCommand<object>(_ => ChooseCustomExportPath());
+	private void ChooseCustomExportPath() {
 		OpenFolderDialog openFolderDialog = new() {
 			Multiselect = false,
-			InitialDirectory = DestPath,
+			InitialDirectory = CustomExportPath,
 
 		};
 		if (openFolderDialog.ShowDialog() == true) {
-			DestPath = openFolderDialog.FolderName;
+			CustomExportPath = openFolderDialog.FolderName;
 		}
 	}
 
@@ -174,7 +174,7 @@ public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PI
 		PIXFile? focusFile = null;
 		var batchList = new List<PIXFile>(50);
 
-		await Task.Run(() => {
+		await Task.Run(async () => {
 			using var p = new Process { StartInfo = startInfo };
 			p.Start();
 			try {
@@ -207,7 +207,7 @@ public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PI
 
 					}
 				}
-				p.WaitForExit();
+				await p.WaitForExitAsync();
 			}
 			tcs.TrySetResult((true, null));
 		});
@@ -267,8 +267,11 @@ public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PI
 		StandardErrorEncoding = Encoding.UTF8
 	};
 
-	public void ExtractFile(PIXFile pixFile) {
-		StringBuilder args = new($"-b \"{PackPath}\" -e \"{DestPath}\"");
+	public ICommand ExtractCommand => new RelayCommand<PIXFile>(pixFile => ExtractFile(pixFile ?? SelectedFile));
+	public void ExtractFile(PIXFile? pixFile) {
+		if (pixFile == null)
+			return;
+		StringBuilder args = new($"-b \"{PackPath}\" -e \"{ExportPath}\"");
 		int type = 0;
 		if (pixFile.IsDir) {
 			args.Append(" -extract_d \"").Append(pixFile.Filename).Append('"');
@@ -321,7 +324,7 @@ public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PI
 		p.Close();
 		if (success) {
 			string osFilename = pixFile.Filename.Replace('/', '\\');
-			string filePath = DestPath + osFilename;
+			string filePath = ExportPath + osFilename;
 			if (OpenExtracted) {
 				if (type == 1) {
 					filePath = filePath[..^4] + ".pim";
@@ -390,7 +393,7 @@ public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PI
 	}
 
 	public void TestExtractFD(PIXFile pixFile) {
-		StringBuilder args = new($"-b \"{PackPath}\" -e \"{DestPath}\"");
+		StringBuilder args = new($"-b \"{PackPath}\" -e \"{ExportPath}\"");
 		if (pixFile.IsDir) {
 			args.Append(" -extract_d \"").Append(pixFile.Filename).Append('"');
 		} else {
@@ -402,6 +405,15 @@ public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PI
 		Debug.WriteLine(p.StandardOutput.ReadToEnd());
 		p.WaitForExit();
 		p.Close();
+	}
+
+	public ICommand ExtractAllCommand => new RelayCommand<object>(_ => ExtractAll());
+
+	private void ExtractAll() {
+		var extractTask = new ExtractAllTask(PackPath, ExportPath) {
+			Owner = BindingWindow
+		};
+		extractTask.ShowDialog();
 	}
 }
 
