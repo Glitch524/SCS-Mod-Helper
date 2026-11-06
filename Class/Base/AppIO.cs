@@ -95,4 +95,13 @@ public abstract class AppIO {
 	protected static bool GetAttributeBool(XmlNode node, string attrProperty) => bool.Parse(GetAttribute(node, attrProperty));
 	protected static int GetAttributeInt(XmlNode node, string attrProperty) => int.Parse(GetAttribute(node, attrProperty));
 	protected static long GetAttributeLong(XmlNode node, string attrProperty) => long.Parse(GetAttribute(node, attrProperty));
+
+	protected static XmlNode? GetChildNode(XmlNode node, string childName) {
+		foreach (XmlNode values in node.ChildNodes) {
+			if (values.Name == childName) {
+				return values;
+			}
+		}
+		return null;
+	}
 }

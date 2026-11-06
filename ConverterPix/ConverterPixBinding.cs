@@ -51,7 +51,7 @@ public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PI
 		};
 		if (openFileDialog.ShowDialog() == true) {
 			PackPath = openFileDialog.FileName;
-			History.Default.PixPackPath = PackPath;
+			History.Default.PixPackPath = Directory.GetParent(PackPath)!.FullName;
 			History.Default.Save();
 			DirStart(openFileDialog.SafeFileName);
 		}
@@ -327,7 +327,11 @@ public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PI
 					filePath = filePath[..^4] + ".pim";
 				}
 				if (File.Exists(filePath)) {
-					Process.Start("explorer.exe", $"/select,\"{filePath}\"");
+					Process.Start(new ProcessStartInfo {
+						FileName = "explorer.exe",
+						Arguments = $"/select,\"{filePath}\"",
+						UseShellExecute = true
+					});
 					return;
 				}
 			}

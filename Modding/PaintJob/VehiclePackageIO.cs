@@ -25,8 +25,7 @@ class VehiclePackageIO: AppIO {
 
 	public VehiclePackage? ReadVehiclePackage(string vehicleID, Action recycleAction) {
 		try {
-			var packagePath = Paths.VehiclesPackageDir();
-			var packageFile = Path.Combine(packagePath, $"{vehicleID}.vep");
+			var packageFile = Paths.VehiclesPackageDir(vehicleID);
 			if (File.Exists(packageFile)) {
 				//读取zip 读取里面的manifest，然后获得对应的文件和名字
 				using FileStream fs = new(packageFile, FileMode.Open);
@@ -45,31 +44,20 @@ class VehiclePackageIO: AppIO {
 				VehiclePackage vehiclePackage = new(vehicleID);
 				foreach (XmlNode groupNode in pNode.ChildNodes) {
 					if (groupNode.Name == TITLE_GROUP) {
-						var type = GetAttribute(groupNode, ATTR_TYPE);
-						LayerGroup group = new(type);
-						var isCabin = type.Equals("cabin", StringComparison.CurrentCultureIgnoreCase);
-						vehiclePackage.Add(group);
+						var groupType = GetAttribute(groupNode, ATTR_TYPE);
+						var group = vehiclePackage.Add(groupType);
 						foreach (XmlNode layer in groupNode.ChildNodes) {
 							if (layer.Name == TITLE_LAYER) {
-								var id = GetAttribute(layer, ATTR_ID);
-								string? path = null;
-								foreach (XmlNode values in layer.ChildNodes) {
-									if (values.Name == TITLE_PATH) {
-										path = values.InnerText;
-									}
-								}
+								var layerID = GetAttribute(layer, ATTR_ID);
+								string? path = GetChildNode(layer, TITLE_PATH)?.InnerText;
 								if (path == null)
 									continue;
-								BitmapImage? image = GetUV(pFile, path);
-								if (image == null)
-									continue;
-								VehicleUV uv = new(vehicleID, isCabin, id, image);
-								vehiclePackage.AllUVs.Add(uv);
-								group.Add(uv);
+								group.Add(layerID, path);
 							}
 						}
 					}
 				}
+				vehiclePackage.SortGroups();
 				RecyclePackages(recycleAction);
 				return vehiclePackage;
 			} else
@@ -78,34 +66,6 @@ class VehiclePackageIO: AppIO {
 			Debug.WriteLine(e);
 		}
 		return null;
-	}
-
-	private static BitmapImage? GetUV(ZipArchive pFile, string path) {
-		var uvEntry = pFile.GetEntry(path);
-		if (uvEntry == null)
-			return null;
-		try {
-			byte[] data;
-			using (var uvStream = uvEntry.Open()) {
-				using var ms = new MemoryStream();
-				uvStream.CopyTo(ms);
-				data = ms.ToArray();
-			}
-			if (data.Length == 0) {
-				throw new NullReferenceException($"Zip entry {path} is empty");
-			}
-			var bitmap = new BitmapImage();
-			bitmap.BeginInit();
-			bitmap.CacheOption = BitmapCacheOption.OnLoad;
-			bitmap.StreamSource = new MemoryStream(data);
-			bitmap.EndInit();
-			if (bitmap.CanFreeze)
-				bitmap.Freeze();
-			return bitmap;
-		} catch (Exception e) {
-			Debug.WriteLine(e);
-			return null;
-		}
 	}
 
 	private static List<Action> recycleList = [];

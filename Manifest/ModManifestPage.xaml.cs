@@ -194,6 +194,14 @@ public partial class ModManifestPage: BasePage {
 			TextDescriptionName.SelectionStart = ss;
 		}
 	}
+
+	private void OpenLocationClick(object sender, RoutedEventArgs e) {
+		Process.Start(new ProcessStartInfo {
+			FileName = Instances.ProjectLocation,
+			UseShellExecute = true
+		});
+		e.Handled = true;
+	}
 }
 
 public class NavigationHeightConverter: IValueConverter {

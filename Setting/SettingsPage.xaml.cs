@@ -79,7 +79,7 @@ public class SettingsBinding(Func<IBaseVisual> windowFunc): WindowBinding(window
 		Process.Start(psi);
 	});
 
-	public ICommand GenerateSampleCommand => new RelayCommand<object>((o) => GenerateSample());
+	public static ICommand GenerateSampleCommand => new RelayCommand<object>((o) => GenerateSample());
 
 	private const string sampleEnglish = "SCS_Mod_Helper.Language.en-US_English(US).txt";
 	private const string sampleExample = "SCS_Mod_Helper.Language.example.txt";

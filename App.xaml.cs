@@ -61,7 +61,7 @@ public partial class App: Application {
 		sw.WriteLine($"Exception");
 		sw.WriteLine($"Type={ex.GetType().FullName} Message={ex.Message}");
 		sw.WriteLine(ex);
-		MessageBox.Show($"Exception={ex.Message}\nFile save to:\n{new FileInfo(exceptionPath).FullName}", "Error occurs");
+		MessageBox.Show($"Exception={e.Exception.GetType()}\tMessage={ex.Message}\nFile save to:\n{new FileInfo(exceptionPath).FullName}", "Error occurs");
 	}
 
 	private static void CheckExceptionCounts() {

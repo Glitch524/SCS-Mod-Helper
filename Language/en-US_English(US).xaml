@@ -429,7 +429,7 @@
 	<s:String x:Key="DialogFilterMod">"SCS Mod File|*.scs;*.zip|All Files|*.*"</s:String>
 	<s:String x:Key="TitleExtractFile">Extract File</s:String>
 	<s:String x:Key="TitleOpenExtractedLocation">Open Extracted Location</s:String>
-	<s:String x:Key="TitleFindAnim">Find Animation File</s:String>
+	<s:String x:Key="TitleFindAnim">Find and Export Animation File</s:String>
 	<s:String x:Key="TitleGlanceFile">Glance File</s:String>
 	<s:String x:Key="TitleEDF">Extract and decrypt all files</s:String>
 	<s:String x:Key="TooltipEDF">Except the auto-generated files</s:String>

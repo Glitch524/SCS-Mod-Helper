@@ -125,7 +125,7 @@
 										VerticalAlignment="Center">
 										<CheckBox
 											IsChecked="{Binding Visible}"
-											Margin="0,2" 
+											Margin="0,2"
 											Content="{Binding LayerNameLocalized}" />
 									</StackPanel>
 								</DataTemplate>
@@ -209,7 +209,7 @@
 				<ItemsControl
 					x:Name="UVLayers"
 					ItemsSource="{Binding PaintJobData.CurrentVehicle.VehiclePackage.AllUVs}"
-					Opacity="{Binding UVOpacity, Mode=OneWay}">
+					Opacity="{Binding UVOpacity}">
 					<ItemsControl.Style>
 						<Style
 							TargetType="ItemsControl"
@@ -232,9 +232,28 @@
 					</ItemsControl.ItemsPanel>
 					<ItemsControl.ItemTemplate>
 						<DataTemplate>
-							<Image
-								Source="{Binding Layer}"
-								Visibility="{Binding UVVisibility}" />
+							<Image>
+								<Image.Style>
+									<Style
+										TargetType="Image">
+										<Setter
+											Property="Visibility"
+											Value="Collapsed" />
+										<Style.Triggers>
+											<DataTrigger
+												Binding="{Binding Visible}"
+												Value="True">
+												<Setter
+													Property="Visibility"
+													Value="Visible" />
+												<Setter
+													Property="Source"
+													Value="{Binding UVLayer}" />
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</Image.Style>
+							</Image>
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>

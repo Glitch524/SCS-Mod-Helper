@@ -429,7 +429,7 @@
 	<s:String x:Key="DialogFilterMod">"SCS Mod文件|*.scs;*.zip|所有文件|*.*"</s:String>
 	<s:String x:Key="TitleExtractFile">提取文件</s:String>
 	<s:String x:Key="TitleOpenExtractedLocation">打开提取文件位置</s:String>
-	<s:String x:Key="TitleFindAnim">寻找动画文件</s:String>
+	<s:String x:Key="TitleFindAnim">寻找并输出动画文件</s:String>
 	<s:String x:Key="TitleGlanceFile">查看文件</s:String>
 	<s:String x:Key="TitleEDF">提取并解密所有文件</s:String>
 	<s:String x:Key="TooltipEDF">除了自动生成文件</s:String>

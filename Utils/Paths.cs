@@ -21,8 +21,10 @@ partial class Paths {
 
 	public static string LanguageDir() => "Language";
 	public static string VehiclesLanguageDir() => @"Vehicles\Language";
-	public static string VehiclesPackageDir() => @"Vehicles\Package";
-
+	public static string VehiclesPackageDir(string? vehicleID = null) {
+		var dir = @"Vehicles\Package";
+		return vehicleID == null ? dir : Path.Combine(dir, $"{vehicleID}.vep");
+	}
 
 	public static string SampleEnglishPath() => @"Language\en-US_English(US).txt";
 	public static string SampleExamplePath() => @"Language\example.txt";
