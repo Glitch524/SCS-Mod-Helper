@@ -3,6 +3,7 @@ using SCS_Mod_Helper.Utils;
 using SCS_Mod_Helper.Vehicles;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
 namespace SCS_Mod_Helper.Modding.Accessories;
@@ -422,7 +423,7 @@ public static class AccessoryDataUtil {
 				case ".jpeg":
 				case ".png":
 					if (fileType == ChooseFileType.Texture)
-					e.Effects = DragDropEffects.Copy;
+						e.Effects = DragDropEffects.Copy;
 					return;
 				case ".pmd":
 				case ".pim":

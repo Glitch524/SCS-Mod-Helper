@@ -3,7 +3,6 @@ using SCS_Mod_Helper.Utils;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
-using System.Windows.Media.Imaging;
 using System.Xml;
 
 namespace SCS_Mod_Helper.Modding.PaintJob;
@@ -68,7 +67,7 @@ class VehiclePackageIO: AppIO {
 		return null;
 	}
 
-	private static List<Action> recycleList = [];
+	private static readonly List<Action> recycleList = [];
 	public static void RecyclePackages(Action recycleAction) {
 		recycleList.Add(recycleAction);
 		while (recycleList.Count > 3) {

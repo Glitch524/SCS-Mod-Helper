@@ -1,15 +1,11 @@
 ﻿using SCS_Mod_Helper.Class.Base;
-using SCS_Mod_Helper.Locale;
 using SCS_Mod_Helper.Modding.Accessories.Physics;
-using SCS_Mod_Helper.Vehicles;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Navigation;
 using static SCS_Mod_Helper.Modding.Accessories.AccessoryDataUtil;
 
 namespace SCS_Mod_Helper.Modding.Accessories.AccAddon;
@@ -53,7 +49,7 @@ public partial class AccAddonWindow: BaseWindow {
 		var tLoad = Binding.LoadVehicles();
 		await tLoad;
 		Binding.LoadHistory();
-		Binding.ModelIcon = AccessoryDataUtil.LoadModelIconByIconName(Binding.IconName);
+		Binding.ModelIcon = LoadModelIconByIconName(Binding.IconName);
 
 		Binding.LoadLooksAndVariants();
 		Binding.UpdateOthersChecked();
@@ -117,8 +113,6 @@ public partial class AccAddonWindow: BaseWindow {
 					Binding.CheckModelPath(Tag, files[0]);
 				}
 			}
-		} catch (Exception ex) {
-			MessageBox.Show(this, ex.Message);
 		}
 	}
 

@@ -109,7 +109,8 @@
 	<s:String x:Key="ModelIcon">图标(TGA/DDS 256x64)</s:String>
 	<s:String x:Key="PartType">部件类型</s:String>
 	<s:String x:Key="PartTypeTip">游戏中会在模型图标右上角显示对应类型（默认为未知）</s:String>
-	<s:String x:Key="ModelFilePath">模型路径（选择pim会自动改成pmd）</s:String>
+	<s:String x:Key="ModelFilePath">模型路径</s:String>
+	<s:String x:Key="ModelFilePathTips">（选择pim会自动改成pmd）</s:String>
 	<s:String x:Key="ModelFilePathUK">模型路径(UK)</s:String>
 	<s:String x:Key="ModelFilePathUKTip">非必须 如果文件后缀是_uk会自动匹配</s:String>
 	<s:String x:Key="ExtModelFilePath">车外视角模型路径</s:String>

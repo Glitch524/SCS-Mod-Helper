@@ -460,6 +460,7 @@
 							Grid.ColumnSpan="2"
 							SelectedValuePath="Tag"
 							SelectedValue="{Binding AddonItem.PartType}"
+							d:SelectedValue="unknown"
 							IsEditable="True"
 							IsReadOnly="True">
 							<ComboBoxItem
@@ -688,8 +689,11 @@
 							<TextBlock
 								Grid.ColumnSpan="3"
 								TextWrapping="Wrap"
-								VerticalAlignment="Top"
-								Text="{DynamicResource ModelFilePath}" />
+								VerticalAlignment="Top">
+								<Run
+									Text="{DynamicResource ModelFilePath}" /><Run
+									Text="{DynamicResource ModelFilePathTips}" />
+							</TextBlock>
 							<Border
 								Grid.Row="1"
 								Grid.Column="0"
@@ -766,11 +770,6 @@
 									<Run
 										Text="{DynamicResource ModelFilePathUK}" />
 								</TextBlock>
-								<Viewbox
-									ToolTip="{DynamicResource ModelFilePathUKTip}">
-									<ui:SymbolIcon
-										Symbol="ChatWarning20" />
-								</Viewbox>
 							</StackPanel>
 							<Border
 								Grid.Row="1"
@@ -947,6 +946,7 @@
 						Grid.ColumnSpan="3"
 						Margin="0,5,0,0"
 						IsChecked="{Binding UseCollPath}"
+						d:IsChecked="True"
 						Content="{DynamicResource ModelCollPath}"
 						VerticalContentAlignment="Center"
 						HorizontalAlignment="Stretch" />

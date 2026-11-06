@@ -64,12 +64,12 @@ namespace SCS_Mod_Helper.Modding.Accessories.AccHookup {
 			foreach (var sui in viewModel.SuiItems) {
 				if (sui.SuiFilename.Length == 0 || sui.HookupItems.Count == 0 && sui.PhysicsItems.Count == 0)
 					continue;
-				sw.WriteLine(string.Format(includeFormat, sui.SuiFilename));
+				sw.WriteLine(string.Format(includeFormat, sui.SuiFilename));//@include的前面似乎不能有空格或制表符，否则会无法读取
 
-				var cTab = TabCount;//@include的前面不能有空格或制表符，否则会无法读取
-				TabCount = 0;
+				var cTab = TabCount;//因为这时候要把acchookup写入另一个文件内
+				TabCount = 0;//所以tabcount要从0开始
 				CreateAddonHookupSui(sui);
-				TabCount = cTab;
+				TabCount = cTab;//这里暂时记录目前文件的tabcount，过后读回来
 			}
 		}
 

@@ -109,7 +109,8 @@
 	<s:String x:Key="ModelIcon">Icon Name(TGA/DDS 256x64)</s:String>
 	<s:String x:Key="PartType">PartType</s:String>
 	<s:String x:Key="PartTypeTip">The part type will show up in the top-right corner of the icon in game(Unknown by default)</s:String>
-	<s:String x:Key="ModelFilePath">Model Path(.pim will be transformed to .pmd)</s:String>
+	<s:String x:Key="ModelFilePath">Model Path</s:String>
+	<s:String x:Key="ModelFilePathTips">(.pim will be transformed to .pmd)</s:String>
 	<s:String x:Key="ModelFilePathUK">Model Path for UK</s:String>
 	<s:String x:Key="ModelFilePathUKTip">File with _uk suffix will be auto filled</s:String>
 	<s:String x:Key="ExtModelFilePath">Exterior Model Path</s:String>

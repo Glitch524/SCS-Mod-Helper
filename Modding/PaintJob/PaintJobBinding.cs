@@ -63,7 +63,6 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 			}
 		} = false;
 
-		public void ChooseIcon() => PaintJobData.ChooseIcon(BindingWindow);
 
 		//todo suitablefor conflictwith
 
@@ -87,6 +86,7 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 		}
 
 
+		public void ChooseIcon() => PaintJobData.ChooseIcon(BindingWindow);
 		public void IconFileDrop(string filePath) => PaintJobData.CheckIcon(BindingWindow, filePath);
 
 		public void FileDrop(ChooseTexType texType, string filePath) => CheckTexPath(texType, filePath);

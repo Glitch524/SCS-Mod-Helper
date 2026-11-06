@@ -72,8 +72,8 @@
 				Property="VerticalAlignment"
 				Value="Stretch" />
 			<Setter
-				Property="BorderThickness"
-				Value="0" />
+				Property="BorderBrush"
+				Value="{x:Null}" />
 			<Setter
 				Property="Width"
 				Value="{Binding ActualHeight, ElementName=TextModelName}" />
@@ -673,24 +673,10 @@
 									x:Name="TextIconName"
 									Grid.Column="0"
 									Text="{Binding CurrentHookupItem.IconName}"
+									Style="{StaticResource TextBoxBorderless}"
 									d:Text="icon_name"
 									MaxLines="1"
-									TextWrapping="Wrap">
-									<ui:TextBox.Style>
-										<Style
-											TargetType="ui:TextBox"
-											BasedOn="{StaticResource TextBoxBorderless}">
-											<Style.Triggers>
-												<Trigger
-													Property="Text"
-													Value="">
-													<Setter
-														Property="Background"
-														Value="Yellow" />
-												</Trigger>
-											</Style.Triggers>
-										</Style>
-									</ui:TextBox.Style>
+									TextWrapping="NoWrap">
 								</ui:TextBox>
 								<Button
 									x:Name="ButtonIconName"
@@ -964,6 +950,7 @@
 								Grid.Column="1"
 								Click="ButtonListClick"
 								FocusManager.IsFocusScope="True"
+								BorderThickness="0,1"
 								Style="{StaticResource ButtonBorderless}">
 								<Viewbox>
 									<ui:SymbolIcon
@@ -975,6 +962,7 @@
 								Grid.Row="1"
 								Grid.Column="2"
 								Click="ButtonPhysicsClick"
+								BorderThickness="0,1,1,1"
 								Style="{StaticResource ButtonBorderless}">
 								<Viewbox>
 									<ui:SymbolIcon
@@ -1063,6 +1051,7 @@
 								Grid.Row="1"
 								Grid.Column="2"
 								Click="ButtonChooseSuitableFor"
+								BorderThickness="0"
 								Style="{StaticResource ButtonBorderless}">
 								<Viewbox>
 									<ui:SymbolIcon

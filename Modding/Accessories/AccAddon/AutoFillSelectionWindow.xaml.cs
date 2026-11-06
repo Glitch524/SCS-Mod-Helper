@@ -199,9 +199,7 @@ public class AutoFillBinding: WindowBinding {
 		}
 	}
 
-	public bool VisibleModelPath => ChooseType == ChooseModelType.Model
-								 || ChooseType == ChooseModelType.ExtModel
-								 || !string.IsNullOrEmpty(TextModelPath);
+	public bool VisibleModelPath => !string.IsNullOrEmpty(TextModelPath);
 	public Visibility VisiblilityModelPath => VisibleModelPath ? Visibility.Visible : Visibility.Collapsed;
 
 
@@ -225,9 +223,8 @@ public class AutoFillBinding: WindowBinding {
 			InvokeChange(nameof(VisiblilityModelPathUK));
 		}
 	}
-	public bool VisibleModelPathUK => ChooseType == ChooseModelType.ModelUK
-								   || ChooseType == ChooseModelType.ExtModelUK
-								   || !string.IsNullOrEmpty(TextModelPathUK);
+
+	public bool VisibleModelPathUK => !string.IsNullOrEmpty(TextModelPathUK);
 	public Visibility VisiblilityModelPathUK => VisibleModelPathUK ? Visibility.Visible : Visibility.Collapsed;
 
 
@@ -254,7 +251,6 @@ public class AutoFillBinding: WindowBinding {
 		}
 	}
 
-	public bool VisibleCollPath => ChooseType == ChooseModelType.Coll
-								|| !string.IsNullOrEmpty(TextCollPath);
+	public bool VisibleCollPath => !string.IsNullOrEmpty(TextCollPath);
 	public Visibility VisiblilityCollPath => VisibleCollPath ? Visibility.Visible : Visibility.Collapsed;
 }

@@ -106,7 +106,7 @@ public partial class ConverterPixBinding {
 			if (e.Data == null)
 				return;
 			var line = e.Data;
-			Debug.WriteLine(line);
+			//Debug.WriteLine(line);
 
 			if (line.Trim().StartsWith('*') || line.Length == 0)
 				return;
