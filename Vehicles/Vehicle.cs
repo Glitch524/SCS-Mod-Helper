@@ -10,7 +10,7 @@ public class Vehicle(
 	int productionYear,
 	string vehicleName,
 	string description,
-	string vehicleType,
+	VehicleType vehicleType,
 	string manufacturer,
 	bool ets2 = false): BaseBinding, IComparable {
 
@@ -32,19 +32,9 @@ public class Vehicle(
 		}
 	}
 
-	public const string VEHICLE_TYPE_TRUCK = "truck";
-	public const string VEHICLE_TYPE_TRAILER = "trailer";
-	public const string VEHICLE_TYPE_CAR = "car";
-	public const string VEHICLE_TYPE_COACH = "coach";
-	private readonly string mVehicleType = vehicleType;
-	public string VehicleType => mVehicleType;
-	public string VehicleTypeName => VehicleType.ToLower() switch {
-		VEHICLE_TYPE_TRUCK => GetString("VehicleTypeTruck"),
-		VEHICLE_TYPE_TRAILER => GetString("VehicleTypeTrailer"),
-		VEHICLE_TYPE_CAR => GetString("VehicleTypeCar"),
-		VEHICLE_TYPE_COACH => GetString("VehicleTypeCoach"),
-		_ => VehicleType
-	};
+	private readonly VehicleType mVehicleType = vehicleType;
+	public VehicleType VehicleType => mVehicleType;
+	public string VehicleTypeName => VehicleType.GetLocalizedName();
 
 
 	private string mManufacturer = manufacturer;
