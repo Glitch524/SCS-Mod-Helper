@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.Sqlite;
 using SCS_Mod_Helper.Modding.Accessories;
+using SCS_Mod_Helper.Modding.PaintJob;
 using SCS_Mod_Helper.Utils;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -82,7 +83,7 @@ public static partial class VehiclesIO {
 				Uri source;
 				if (lang.StartsWith(ResourceUtil.ExtLangPreffix)) {
 					lang = lang[ResourceUtil.ExtLangPreffix.Length..];
-					var path = Path.Combine(Paths.VehiclesLanguageDir(), $"{lang}.xaml");
+					var path = Paths.VehiclesLanguageDir(lang);
 					if (File.Exists(path))
 						source = new Uri(path);
 					else
@@ -169,7 +170,7 @@ public static partial class VehiclesIO {
 		cmd.CommandText = @$"Insert into {table} ({COLUMN_VEHICLE_ID}, {COLUMN_VEHICLE_TYPE}, {COLUMN_MANUFACTURER}, {COLUMN_PROD_YEAR}, {COLUMN_VEHICLE_NAME}, {COLUMN_DESCRIPTION})
 							values($id, $type, $mani, $prodYear, $vname, $desc)";
 		cmd.Parameters.AddWithValue("$id", vehicle.VehicleID);
-		cmd.Parameters.AddWithValue("$type", vehicle.VehicleType);
+		cmd.Parameters.AddWithValue("$type", vehicle.VehicleType.GetTypeValue());
 		cmd.Parameters.AddWithValue("$mani", vehicle.Manufacturer);
 		cmd.Parameters.AddWithValue("$prodYear", vehicle.ProductionYear);
 		cmd.Parameters.AddWithValue("$vname", vehicle.VehicleName);
@@ -217,7 +218,7 @@ public static partial class VehiclesIO {
 							set {COLUMN_VEHICLE_TYPE} = $type, {COLUMN_MANUFACTURER} = $mani, {COLUMN_PROD_YEAR} = $prodYear, {COLUMN_VEHICLE_NAME} = $vname, {COLUMN_DESCRIPTION} = $desc, {COLUMN_DEFAULT_VEHICLE} = $default 
 							where {COLUMN_VEHICLE_ID} = $id";
 		cmd.Parameters.AddWithValue("$id", vehicle.VehicleID);
-		cmd.Parameters.AddWithValue("$type", vehicle.VehicleType);
+		cmd.Parameters.AddWithValue("$type", vehicle.VehicleType.GetTypeValue());
 		cmd.Parameters.AddWithValue("$mani", vehicle.Manufacturer);
 		cmd.Parameters.AddWithValue("$prodYear", vehicle.ProductionYear);
 		cmd.Parameters.AddWithValue("$vname", vehicle.VehicleName);
@@ -242,7 +243,8 @@ public static partial class VehiclesIO {
 			int prodYear = reader.GetInt(COLUMN_PROD_YEAR);
 			string vehicleName = reader.TryGetString(COLUMN_VEHICLE_NAME, GetVehicleName(vehicleID));
 			string desc = reader.TryGetString(COLUMN_DESCRIPTION, GetVehicleDesc(vehicleID));
-			AccessoryVehicle vehicle = new(vehicleID, prodYear, vehicleName, desc, vehicleType, manufacturer, isETS2);
+			var enumVehicleType = VehicleTypeExtension.GetTypeFromValue(vehicleType);
+			AccessoryVehicle vehicle = new(vehicleID, prodYear, vehicleName, desc, enumVehicleType, manufacturer, isETS2);
 			loadedVehicles.Add(vehicle);
 		}
 		await Application.Current.Dispatcher.InvokeAsync(() => {
@@ -252,12 +254,12 @@ public static partial class VehiclesIO {
 		});
 	}
 
-	public static void LoadPaintJobVehicles(ObservableCollection<Vehicle> vehicles) {
-		LoadPaintJobVehicles(true, vehicles);
-		LoadPaintJobVehicles(false, vehicles);
+	public static void LoadPaintJobVehicles(VehicleGroups groups) {
+		LoadPaintJobVehicles(true, groups);
+		LoadPaintJobVehicles(false, groups);
 	}
 
-	private static void LoadPaintJobVehicles(bool isETS2, ObservableCollection<Vehicle> vehicles) {
+	private static void LoadPaintJobVehicles(bool isETS2, VehicleGroups groups) {
 		DBCheckBeforeUse();
 		string table = TableNameVehicle(isETS2);
 		using var conn = new SqliteConnection(VehicleDBSource);
@@ -266,7 +268,6 @@ public static partial class VehiclesIO {
 
 		cmd.CommandText = $"Select *  from {table} order by {COLUMN_MANUFACTURER}, {COLUMN_PROD_YEAR}, {COLUMN_VEHICLE_ID}";
 		using var reader = cmd.ExecuteReader();
-		List<Vehicle> loadedvehicle = [];
 		while (reader.Read()) {
 			string vehicleID = reader.GetString(COLUMN_VEHICLE_ID);
 			string vehicleType = reader.GetString(COLUMN_VEHICLE_TYPE);
@@ -274,11 +275,10 @@ public static partial class VehiclesIO {
 			int prodYear = reader.GetInt(COLUMN_PROD_YEAR);
 			string? vehicleName = reader.TryGetString(COLUMN_VEHICLE_NAME, GetVehicleName(vehicleID));
 			string? desc = reader.TryGetString(COLUMN_DESCRIPTION, GetVehicleDesc(vehicleID));
-			Vehicle vehicle = new(vehicleID, prodYear, vehicleName, desc, vehicleType, manufacturer, isETS2);
-			loadedvehicle.Add(vehicle);
-		}
-		foreach (var v in loadedvehicle) {
-			vehicles.Add(v);
+
+			VehicleType typeEnum = VehicleTypeExtension.GetTypeFromValue(vehicleType);
+			Vehicle vehicle = new(vehicleID, prodYear, vehicleName, desc, typeEnum, manufacturer, isETS2);
+			groups.Add(isETS2, typeEnum, vehicle);
 		}
 	}
 
