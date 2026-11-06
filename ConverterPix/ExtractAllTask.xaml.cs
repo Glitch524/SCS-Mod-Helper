@@ -10,23 +10,20 @@ namespace SCS_Mod_Helper.ConverterPix {
 	/// ExtractAllTask.xaml 的交互逻辑
 	/// </summary>
 	public partial class ExtractAllTask: BaseWindow {
-		Task ExtractTask;
 		private readonly string PackPath;
 		private readonly string DestPath;
 		public CancellationToken Token => TokenSource.Token;
 		public ExtractAllTask(string packPath, string destPath) {
 			InitializeComponent();
 
-			reporter = new Progress<string>(UpdateCall);
-
 			PackPath = packPath;
 			DestPath = destPath;
-
-			ExtractTask = new(Extraction(reporter), Token);
-			ExtractTask.Start();
 		}
 
-		readonly IProgress<string> reporter;
+		protected override void OnContentRendered(EventArgs e) {
+			base.OnContentRendered(e);
+			Task.Run(Extraction(new Progress<string>(UpdateCall)), Token);
+		}
 
 		private void UpdateCall(string call) {
 			switch (call) {
@@ -159,14 +156,15 @@ namespace SCS_Mod_Helper.ConverterPix {
 			reporter.Report("Finish");
 		};
 
-		public Action Extraction(IProgress<string> reporter) => () => {
-			ListFiles(out List<string> pmdFiles,
-			 out List<string> tobjFiles,
-			 out List<string> ddsFiles,
-			 out List<string> defFiles,
-			 out List<string> matFiles,
-			 out List<string> otherFiles,
-			 out List<string> dirs);
+		public Action Extraction(IProgress<string> reporter) => async () => {
+			var files = await ListFiles();
+			var pmdFiles = files.PmdFiles;
+			var tobjFiles = files.TobjFiles;
+			var ddsFiles = files.DdsFiles;
+			var defFiles = files.DefFiles;
+			var matFiles = files.MatFiles;
+			var otherFiles = files.OtherFiles;
+			var dirs = files.Dirs;
 			EnsureActive();
 
 			PrepareMode = false;
@@ -188,7 +186,7 @@ namespace SCS_Mod_Helper.ConverterPix {
 
 				if (IsFileExist(pmd))
 					continue;
-				ExtractPMDSimple(pmd);
+				await ExtractPMDSimple(pmd);
 			}
 
 			EnsureActive();
@@ -208,7 +206,7 @@ namespace SCS_Mod_Helper.ConverterPix {
 
 				if (IsFileExist(tobj))
 					continue;
-				ExtractTOBJSimple(tobj);
+				await ExtractTOBJSimple(tobj);
 			}
 
 			EnsureActive();
@@ -228,7 +226,7 @@ namespace SCS_Mod_Helper.ConverterPix {
 
 				if (IsFileExist(dds))
 					continue;
-				ExtractDDSSimple(dds);
+				await ExtractDDSSimple(dds);
 			}
 
 			EnsureActive();
@@ -248,7 +246,7 @@ namespace SCS_Mod_Helper.ConverterPix {
 
 				if (IsFileExist(def))
 					continue;
-				ExtractOtherSimple(def);
+				await ExtractOtherSimple(def);
 			}
 
 			EnsureActive();
@@ -268,7 +266,7 @@ namespace SCS_Mod_Helper.ConverterPix {
 
 				if (IsFileExist(mat))
 					continue;
-				ExtractOtherSimple(mat);
+				await ExtractOtherSimple(mat);
 			}
 
 			EnsureActive();
@@ -288,7 +286,7 @@ namespace SCS_Mod_Helper.ConverterPix {
 
 				if (IsFileExist(other))
 					continue;
-				ExtractOtherSimple(other);
+				await ExtractOtherSimple(other);
 			}
 
 			EnsureActive();
@@ -314,36 +312,36 @@ namespace SCS_Mod_Helper.ConverterPix {
 
 		private void EnsureActive() => TokenSource.Token.ThrowIfCancellationRequested();
 
-		public void ListFiles(
-						out List<string> pmdFiles,
-						out List<string> tobjFiles,
-						out List<string> ddsFiles,
-						out List<string> defFiles,
-						out List<string> matFiles,
-						out List<string> otherFiles,
-						out List<string> dirs) {
+		async Task<ExtractFiles> ListFiles() {
+			List<string> pmdFiles = [], tobjFiles = [], ddsFiles = [], defFiles = [], matFiles = [], otherFiles = [], dirs = [];
 			string args = $"-b \"{PackPath}\" --list-directory-recursive \"/\"";
 			Process p = CallPix(args);
+			p.ErrorDataReceived += (s, e) => {
+				if (e.Data != null)
+					Debug.WriteLine("[err] " + e.Data);
+			};
 			p.Start();
-			dirs = [];
-			pmdFiles = [];
-			tobjFiles = [];
-			ddsFiles = [];
-			defFiles = [];
-			matFiles = [];
-			otherFiles = [];
+			p.BeginErrorReadLine();
 
 			string? line;
-			while ((line = p.StandardOutput.ReadLine()) != null) {
-				EnsureActive();
-				Debug.WriteLine(line);
+			while ((line = await p.StandardOutput.ReadLineAsync()) != null) {
+				if (TokenSource.Token.IsCancellationRequested) {
+					try {
+						p.Kill(entireProcessTree: true);
+					} catch { }
+					EnsureActive();
+				}
+				//Debug.WriteLine(line);
 				if (line.StartsWith("<error>")) {
-					var reason = line[(line.IndexOf(':') + 1)..];
-					MessageBox.Show($"Unable to read the file: {reason}");
+					try {
+						p.Kill(entireProcessTree: true);
+					} catch { }
+					Application.Current.Dispatcher.Invoke(() => {
+						var reason = line[(line.IndexOf(':') + 1)..];
+						MessageBox.Show($"Unable to read the file: {reason}");
+					});
 					break;
 				}
-				if (line.Contains("Done"))
-					break;
 				if (line.StartsWith("[F]")) {
 					line = line[4..];
 					if (line.StartsWith("/automat"))
@@ -367,8 +365,9 @@ namespace SCS_Mod_Helper.ConverterPix {
 					dirs.Add(line);
 				}
 			}
-			p.WaitForExit();
+			await p.WaitForExitAsync();
 			p.Close();
+			return new ExtractFiles(pmdFiles, tobjFiles, ddsFiles, defFiles, matFiles, otherFiles, dirs);
 		}
 
 		private bool IsFileExist(string filename) {
@@ -392,12 +391,12 @@ namespace SCS_Mod_Helper.ConverterPix {
 			p.StartInfo.CreateNoWindow = true;
 			return p;
 		}
-		public void ExtractPMDSimple(string pmdFile) {
+		public async Task ExtractPMDSimple(string pmdFile) {
 			StringBuilder args = new($"-b \"{PackPath}\" -e \"{DestPath}\"");
 			var name = pmdFile;
 			name = name[..^4];
 			args.Append(" -m \"").Append(name).Append('"');
-			var anim = SearchAnimExe(name);
+			var anim = await SearchAnimExe(name);
 			if (anim.Count > 0) {
 				foreach (string a in anim) {
 					args.Append(" \"").Append(a).Append('"');
@@ -407,26 +406,25 @@ namespace SCS_Mod_Helper.ConverterPix {
 			Process p = CallPix(args.ToString());
 			p.Start();
 			string? line;
-			while ((line = p.StandardOutput.ReadLine()) != null) {
+			while ((line = await p.StandardOutput.ReadLineAsync()) != null) {
 				if (line.Trim().StartsWith('*') || line.Length == 0)
 					continue;
 				if (line.StartsWith("<error>")) {
 					//line = line[7..];
 				}
 			}
-			p.WaitForExit();
+			await p.WaitForExitAsync();
 			p.Close();
 		}
-		public List<string> SearchAnimExe(string modelPath) {
+		public async Task<List<string>> SearchAnimExe(string modelPath) {
 			string args = $"-b \"{PackPath}\" --find-model-animations \"{modelPath}\"";
 
 			Process p = CallPix(args);
 
 			p.Start();
-			p.WaitForExit();
 			List<string> anims = [];
 			string? line;
-			while ((line = p.StandardOutput.ReadLine()) != null) {
+			while ((line = await p.StandardOutput.ReadLineAsync()) != null) {
 				if (line.StartsWith('*') || line.Length == 0)
 					continue;
 				if (line.EndsWith(".pma")) {
@@ -434,17 +432,18 @@ namespace SCS_Mod_Helper.ConverterPix {
 				}
 			}
 			Debug.WriteLine(p.StandardOutput.ReadToEnd());
+			await p.WaitForExitAsync();
 			p.Close();
 			return anims;
 		}
 
-		public void ExtractTOBJSimple(string tobjFile) {
+		public async Task ExtractTOBJSimple(string tobjFile) {
 			string args = $"-b \"{PackPath}\" -e \"{DestPath}\" -t \"{tobjFile}\"";
 			Process p = CallPix(args.ToString());
 			p.Start();
 			string? line;
 			List<string> errors = [];
-			while ((line = p.StandardOutput.ReadLine()) != null) {
+			while ((line = await p.StandardOutput.ReadLineAsync()) != null) {
 				if (line.Trim().StartsWith('*') || line.Length == 0)
 					continue;
 				if (line.StartsWith("<error>")) {
@@ -452,17 +451,17 @@ namespace SCS_Mod_Helper.ConverterPix {
 					errors.Add(line);
 				}
 			}
-			p.WaitForExit();
+			await p.WaitForExitAsync();
 			p.Close();
 		}
 
-		public void ExtractDDSSimple(string ddsFile) {
+		public async Task ExtractDDSSimple(string ddsFile) {
 			string args = $"-b \"{PackPath}\" -e \"{DestPath}\" -d \"{ddsFile}\"";
 			Process p = CallPix(args.ToString());
 			p.Start();
 			string? line;
 			List<string> errors = [];
-			while ((line = p.StandardOutput.ReadLine()) != null) {
+			while ((line = await p.StandardOutput.ReadLineAsync()) != null) {
 				if (line.Trim().StartsWith('*') || line.Length == 0)
 					continue;
 				if (line.StartsWith("<error>")) {
@@ -470,17 +469,17 @@ namespace SCS_Mod_Helper.ConverterPix {
 					errors.Add(line);
 				}
 			}
-			p.WaitForExit();
+			await p.WaitForExitAsync();
 			p.Close();
 		}
 
-		public void ExtractOtherSimple(string otherFile) {
+		public async Task ExtractOtherSimple(string otherFile) {
 			string args = $"-b \"{PackPath}\" -e \"{DestPath}\" -extract_f \"{otherFile}\"";
 			Process p = CallPix(args.ToString());
 			p.Start();
 			string? line;
 			List<string> errors = [];
-			while ((line = p.StandardOutput.ReadLine()) != null) {
+			while ((line = await p.StandardOutput.ReadLineAsync()) != null) {
 				if (line.Trim().StartsWith('*') || line.Length == 0)
 					continue;
 				if (line.StartsWith("<error>")) {
@@ -488,7 +487,7 @@ namespace SCS_Mod_Helper.ConverterPix {
 					errors.Add(line);
 				}
 			}
-			p.WaitForExit();
+			await p.WaitForExitAsync();
 			p.Close();
 		}
 		private void CreateDirs(string dirName) {
@@ -497,6 +496,35 @@ namespace SCS_Mod_Helper.ConverterPix {
 			if (File.Exists(osFilename) || Directory.Exists(osFilename))
 				return;
 			Directory.CreateDirectory(osFilename);
+		}
+	}
+
+	internal record struct ExtractFiles(
+		List<string> PmdFiles,
+		List<string> TobjFiles,
+		List<string> DdsFiles,
+		List<string> DefFiles,
+		List<string> MatFiles,
+		List<string> OtherFiles,
+		List<string> Dirs) {
+		public static implicit operator (List<string> pmdFiles, 
+			List<string> tobjFiles,
+			List<string> ddsFiles,
+			List<string> defFiles,
+			List<string> matFiles,
+			List<string> otherFiles,
+			List<string> dirs)(ExtractFiles value) {
+			return (value.PmdFiles, value.TobjFiles, value.DdsFiles, value.DefFiles, value.MatFiles, value.OtherFiles, value.Dirs);
+		}
+
+		public static implicit operator ExtractFiles((List<string> pmdFiles,
+			List<string> tobjFiles,
+			List<string> ddsFiles,
+			List<string> defFiles,
+			List<string> matFiles,
+			List<string> otherFiles,
+			List<string> dirs) value) {
+			return new ExtractFiles(value.pmdFiles, value.tobjFiles, value.ddsFiles, value.defFiles, value.matFiles, value.otherFiles, value.dirs);
 		}
 	}
 }
