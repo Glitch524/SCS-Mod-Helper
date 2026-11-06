@@ -5,9 +5,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
-using System.Windows;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace SCS_Mod_Helper.Modding.PaintJob;
 
@@ -120,7 +118,8 @@ public class LayerGroup(string vehicleID, string groupType, Action<VehicleUV> ad
 
 	public void Add(string layerName, string uvPath) {
 		var vuv = new VehicleUV(VehicleID, IsCabin, layerName, uvPath) {
-			InvokeVisible = UVCheck
+			InvokeVisible = UVCheck,
+			Index = UVLayers.Count
 		};
 		if (IsCabin && UVLayers.Count == 0)
 			vuv.Visible = true;
@@ -150,7 +149,7 @@ public class LayerGroup(string vehicleID, string groupType, Action<VehicleUV> ad
 }
 
 public class VehicleUV(string vehicleID, bool isCabin, string layerName, string uvPath): BaseBinding {
-	public int index = -1;
+	public int Index = -1;
 	public readonly string VehicleID = vehicleID;
 	public bool IsCabin = isCabin;
 
@@ -161,13 +160,10 @@ public class VehicleUV(string vehicleID, bool isCabin, string layerName, string 
 		get;
 		set {
 			field = value;
-			InvokeVisible?.Invoke(index, value);
+			InvokeVisible?.Invoke(Index, value);
 			InvokeChange();
-			InvokeChange(nameof(UVVisibility));
 		}
 	} = false;
-
-	public Visibility UVVisibility => Visible ? Visibility.Visible : Visibility.Collapsed;
 
 	public string LayerName {
 		get;

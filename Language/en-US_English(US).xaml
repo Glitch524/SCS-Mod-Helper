@@ -105,7 +105,6 @@
 	<s:String x:Key="CheckResResultTips">The Result may be different in game.</s:String>
 	<s:String x:Key="ModelPrice">Price(ETS2 → EUR, ATS → USD)</s:String>
 	<s:String x:Key="ModelPriceErrNot0">Price cannot be 0, or the accessory will not be visible to the player.</s:String>
-	<s:String x:Key="ModelPriceErrNoNumber">Characters other than number is not allowed</s:String>
 	<s:String x:Key="ModelUnlockLevel">Unlock Level</s:String>
 	<s:String x:Key="ModelIcon">Icon Name(TGA/DDS 256x64)</s:String>
 	<s:String x:Key="PartType">PartType</s:String>
@@ -536,6 +535,7 @@
 
 
 	<s:String x:Key="MessageTitleNotice">Notice</s:String>
+	<s:String x:Key="MessageTitleTips">Tips</s:String>
 	<s:String x:Key="MessageTitleWarning">Warning</s:String>
 	<s:String x:Key="MessageTitleErr">Error</s:String>
 	<s:String x:Key="MessageTitleResult">Result</s:String>

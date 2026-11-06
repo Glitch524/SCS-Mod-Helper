@@ -20,7 +20,11 @@ partial class Paths {
 	public static string StorageDBPath() => "Storage.dll";
 
 	public static string LanguageDir() => "Language";
-	public static string VehiclesLanguageDir() => @"Vehicles\Language";
+	public static string VehiclesLanguageDir(string? language = null) {
+		var dir = @"Vehicles\Language";
+		return language == null ? dir : Path.Combine(dir, $"{language}.xaml");
+	}
+
 	public static string VehiclesPackageDir(string? vehicleID = null) {
 		var dir = @"Vehicles\Package";
 		return vehicleID == null ? dir : Path.Combine(dir, $"{vehicleID}.vep");

@@ -908,16 +908,11 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 			if (ProjectLocation.Length == 0 ||
 				DisplayName.Length == 0 ||
 				ModelPath.Length == 0 ||
-				ModelName.Length == 0 ||
-				IconName.Length == 0) {
+				ModelName.Length == 0) {
 				throw new(Util.GetString("MessageCreateSiiNotFilled"));
 			}
-			try {
-				if (Price == 0)
-					throw new(Util.GetString("ModelPriceErrNot0"));
-			} catch {
-				throw new(Util.GetString("ModelPriceErrNoNumber"));
-			}
+			if (Price == 0)
+				throw new(Util.GetString("ModelPriceErrNot0"));
 			var created = AccAddonSCSIO.CreateAccAddonSii(this);
 			MessageBox.Show(BindingWindow, Util.GetString(created == 0 ? "MessageCreateSiiZero" : "MessageCreateSiiResult"));
 		} catch (Exception ex) {

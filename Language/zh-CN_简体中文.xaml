@@ -105,7 +105,6 @@
 	<s:String x:Key="CheckResResultTips">结果可能与游戏不一致</s:String>
 	<s:String x:Key="ModelPrice">价格(以各自默认货币为单位)</s:String>
 	<s:String x:Key="ModelPriceErrNot0">价格不能为0，否则会不显示</s:String>
-	<s:String x:Key="ModelPriceErrNoNumber">输入的内容必须为数字</s:String>
 	<s:String x:Key="ModelUnlockLevel">解锁等级</s:String>
 	<s:String x:Key="ModelIcon">图标(TGA/DDS 256x64)</s:String>
 	<s:String x:Key="PartType">部件类型</s:String>
@@ -536,6 +535,7 @@
 	
 	
 	<s:String x:Key="MessageTitleNotice">注意</s:String>
+	<s:String x:Key="MessageTitleTips">提示</s:String>
 	<s:String x:Key="MessageTitleWarning">警告</s:String>
 	<s:String x:Key="MessageTitleErr">错误</s:String>
 	<s:String x:Key="MessageTitleResult">结果</s:String>
