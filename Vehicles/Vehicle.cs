@@ -1,5 +1,8 @@
 ﻿using SCS_Mod_Helper.Class.Base;
 using SCS_Mod_Helper.Modding.PaintJob;
+using SCS_Mod_Helper.Utils;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
@@ -13,6 +16,14 @@ public class Vehicle(
 	VehicleType vehicleType,
 	string manufacturer,
 	bool ets2 = false): BaseBinding, IComparable {
+	public bool Focusable { get; } = true;
+	public bool Expanded {
+		get;
+		set {
+			field = value;
+			InvokeChange();
+		}
+	} = false;
 
 	private string mVehicleID = vehicleID;
 	public string VehicleID {
@@ -336,5 +347,125 @@ public static class VehicleTypeExtension {
 		});
 	}
 }
+
+public class VehicleGroups {
+	private readonly VehicleGroup GroupTruckETS2 = new(VehicleType.Truck, true);
+	readonly VehicleGroup GroupTruckATS = new(VehicleType.Truck, false);
+	readonly VehicleGroup GroupTrailerETS2 = new(VehicleType.Trailer, true);
+	readonly VehicleGroup GroupTrailerATS = new(VehicleType.Trailer, false);
+	readonly VehicleGroup GroupCarETS2 = new(VehicleType.Car, true);
+	readonly VehicleGroup GroupCarATS = new(VehicleType.Car, false);
+	readonly VehicleGroup GroupCoachETS2 = new(VehicleType.Coach, true);
+	readonly VehicleGroup GroupCoachATS = new(VehicleType.Coach, false);
+	public ObservableCollection<VehicleGroup> GroupList { get; } = [];
+
+	public void Add(bool isETS2, VehicleType vehicleType, Vehicle vehicle) {
+		int index;
+		VehicleGroup group;
+		switch (vehicleType) {
+			case VehicleType.Truck:
+				if (isETS2) {
+					group = GroupTruckETS2;
+					index = 0;
+				} else {
+					group = GroupTruckATS;
+					index = 1;
+				}
+				break;
+			case VehicleType.Trailer:
+				if (isETS2) {
+					group = GroupTrailerETS2;
+					index = 2;
+				} else {
+					group = GroupTrailerATS;
+					index = 3;
+				}
+				break;
+			case VehicleType.Car:
+				if (isETS2) {
+					group = GroupCarETS2;
+					index = 4;
+				} else {
+					group = GroupCarATS;
+					index = 5;
+				}
+				break;
+			case VehicleType.Coach:
+				if (isETS2) {
+					group = GroupCoachETS2;
+					index = 6;
+				} else {
+					group = GroupCoachATS;
+					index = 7;
+				}
+				break;
+			default:
+				return;
+		}
+		group.Add(vehicle);
+		AddToList(index, group);
+	}
+
+	private readonly int[] Added = [0, 0, 0, 0, 0, 0, 0, 0];
+	private void AddToList(int index, VehicleGroup group) {
+		if (Added[index] == 1 || group.Vehicles.Count == 0)
+			return;
+		int insertIndex = 0;
+		for (int i = 0; i <= index; i++) {
+			if (Added[i] == 1) 
+				insertIndex++;
+		}
+		group.InvokeVisible = ExpandCheck;
+		group.Index = insertIndex;//将index记在变量内，方便展开收起时的计算
+		if (insertIndex == 0) {//确保永远是第一个被打开
+			group.Expanded = true;
+			GroupList.FirstOrDefault()?.Expanded = false;
+		}
+		GroupList.Insert(insertIndex, group);
+		for (int i = insertIndex + 1; i < GroupList.Count; i++) {//因为插入了新的值，这个值后面变量的index需要+1才能和列表的index同步
+			GroupList[i].Index++;
+		}
+		Added[index] = 1;
+	}
+
+	int OpeningIndex = -1;
+	private void ExpandCheck(int index, bool visible) {
+		if (visible) {
+			if (OpeningIndex == -1) {
+				OpeningIndex = index;
+			} else {
+				GroupList[OpeningIndex].Expanded = false;
+				OpeningIndex = index;
+			}
+		} else {
+			if(OpeningIndex == index)//因为新的展开会让旧的变量收起，expanded被设为false时也会触发一次expandcheck，避免直接把openingindex的赋值取消
+				OpeningIndex = -1;
+		}
+	}
+}
+
+public class VehicleGroup(VehicleType vehicleType, bool isETS2): BaseBinding {
+	public int Index = -1;
+	public bool Focusable { get; } = false;
+	private readonly VehicleType VehicleType = vehicleType;
+	private readonly bool IsETS2 = isETS2;
+
+	public Action<int, bool>? InvokeVisible = null;
+
+	public bool Expanded {
+		get;
+		set {
+			field = value;
+			InvokeVisible?.Invoke(Index, value);
+			InvokeChange();
+		}
+	} = false;
+
+	public string GroupNameVisual => $"{VehicleType.GetLocalizedName()}({Util.GetString(IsETS2 ? "ETS2Short" : "ATSShort")})";
+
+	public List<Vehicle> Vehicles { get; } = [];
+
+	public void Add(Vehicle vehicle) {
+		Vehicles.Add(vehicle);
 	}
 }
