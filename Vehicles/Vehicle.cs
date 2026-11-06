@@ -306,3 +306,45 @@ public class Accessory(string vehicleID, string accID, string accName, string ac
 		}
 	}
 }
+
+public enum VehicleType {
+	[Description("truck")]
+	Truck,
+	[Description("trailer_owned")]
+	Trailer,
+	[Description("car")]
+	Car,
+	[Description("coach")]
+	Coach
+}
+public static class VehicleTypeExtension {
+	public static string GetTypeValue(this VehicleType type) {
+		return type switch {
+			VehicleType.Truck => "truck",
+			VehicleType.Trailer => "trailer_owned",
+			VehicleType.Car => "car",
+			VehicleType.Coach => "coach",
+			_ => throw new ArgumentException("")
+		};
+	}
+	public static VehicleType GetTypeFromValue(string type) {
+		return type switch {
+			"truck" => VehicleType.Truck,
+			"trailer_owned" => VehicleType.Trailer,
+			"car" => VehicleType.Car,
+			"coach" => VehicleType.Coach,
+			_ => throw new ArgumentException("")
+		};
+	}
+	public static string GetLocalizedName(this VehicleType type) {
+		return Util.GetString(type switch {
+			VehicleType.Truck => "VehicleTypeTruck",
+			VehicleType.Trailer => "VehicleTypeTrailer",
+			VehicleType.Car => "VehicleTypeCar",
+			VehicleType.Coach => "VehicleTypeCoach",
+			_ => throw new ArgumentException("")
+		});
+	}
+}
+	}
+}

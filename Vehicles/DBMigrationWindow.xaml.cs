@@ -337,7 +337,7 @@ public partial class VehiclesIO {
 			int prodYear = reader.GetInt(COLUMN_PROD_YEAR);
 			string vehicleName = reader.TryGetString(COLUMN_VEHICLE_NAME, GetVehicleName(vehicleID));
 			string desc = reader.TryGetString(COLUMN_DESCRIPTION, GetVehicleDesc(vehicleID));
-			Vehicle vehicle = new(vehicleID, prodYear, vehicleName, desc, vehicleType, manufacturer, isETS2);
+			var enumVehicleType = VehicleTypeExtension.GetTypeFromValue(vehicleType);
 			vehicles.Add(vehicle);
 			if (cabinDict.TryGetValue(vehicleID, out var cabins)) {
 				vehicle.Cabins = cabins;
