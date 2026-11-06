@@ -389,18 +389,52 @@ public static class AccessoryDataUtil {
 		return matPath;
 	}
 
-	public static void CheckDragFileType(DragEventArgs e) {
+	public static void PreviewDragOver(object sender, DragEventArgs e, Func<ChooseFileType> fileDragOver) {
+		if (e.Data.GetDataPresent(DataFormats.Text) && sender is TextBox) {
+			e.Effects = DragDropEffects.Copy;
+			e.Handled = true;
+			return;
+		}
+		if (e.Data.GetDataPresent(DataFormats.FileDrop)) {
+			var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+			if (files.Length == 1) {
+				var file = new FileInfo(files[0]);
+				if (file.FullName.StartsWith(Instances.ProjectLocation)) {
+					CheckDragFileType(e, fileDragOver());
+					e.Handled = true;
+					return;
+				}
+			}
+		}
+		e.Effects = DragDropEffects.None;
+		e.Handled = true;
+	}
+
+	public static void CheckDragFileType(DragEventArgs e, ChooseFileType fileType) {
 		var files = (string[])e.Data.GetData(DataFormats.FileDrop);
 		if (files.Length == 1) {
 			var file = new FileInfo(files[0]);
-			switch (file.Extension) {
+			switch (file.Extension.ToLower()) {
 				case ".tobj":
 				case ".dds":
 				case ".tga":
 				case ".jpg":
 				case ".jpeg":
 				case ".png":
+					if (fileType == ChooseFileType.Texture)
 					e.Effects = DragDropEffects.Copy;
+					return;
+				case ".pmd":
+				case ".pim":
+				case ".pmg":
+				case ".pit":
+					if (fileType == ChooseFileType.ModelFile)
+						e.Effects = DragDropEffects.Copy;
+					return;
+				case ".pmc":
+				case ".pic":
+					if (fileType == ChooseFileType.CollisionFile)
+						e.Effects = DragDropEffects.Copy;
 					return;
 				default:
 					break;
@@ -412,3 +446,4 @@ public static class AccessoryDataUtil {
 
 public enum ChooseModelType { Model, ExtModel, ModelUK, ExtModelUK, Coll }
 public enum ChooseTexType { Rope, Patch, Paintjob, BaseTexOvr, FlakeNoise, AccTex }
+public enum ChooseFileType { Texture, ModelFile, CollisionFile }

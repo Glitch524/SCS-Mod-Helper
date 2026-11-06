@@ -82,25 +82,9 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
 			}
 		}
 
-		private void PreviewFileBoxDragOver(object sender, DragEventArgs e) {
-			if (e.Data.GetDataPresent(DataFormats.FileDrop)) {
-				AccessoryDataUtil.CheckDragFileType(e);
-			} else if (e.Data.GetDataPresent(DataFormats.Text)) {
-				e.Effects = DragDropEffects.Copy;
-			} else
-				e.Effects = DragDropEffects.None;
-			e.Handled = true;
+		private void PreviewFileDragOver(object sender, DragEventArgs e) {
+			AccessoryDataUtil.PreviewDragOver(sender, e, () => ChooseFileType.Texture);
 		}
-
-		private void PreviewFileButtonDragOver(object sender, DragEventArgs e) {
-			if (e.Data.GetDataPresent(DataFormats.FileDrop)) {
-				AccessoryDataUtil.CheckDragFileType(e);
-			} else
-				e.Effects = DragDropEffects.None;
-			e.Handled = true;
-		}
-
-
 
 		private void IconFileDrop(object sender, DragEventArgs e) {
 			if (e.Data.GetDataPresent(DataFormats.FileDrop)) {

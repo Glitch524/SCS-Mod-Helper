@@ -89,13 +89,33 @@ public partial class AccAddonWindow: BaseWindow {
 
 	private void SaveOnClosing(object? sender, CancelEventArgs e) => Binding.SaveHistory();
 
-	private void ButtonChooseIcon(object sender, RoutedEventArgs e) => Binding.ChooseIcon();
+	private void PreviewFileDragOver(object sender, DragEventArgs e) {
+		AccessoryDataUtil.PreviewDragOver(sender, e, () => {
+			if (sender == TextIconName)
+				return ChooseFileType.Texture;
+			else if (sender == TextCollPath)
+				return ChooseFileType.CollisionFile;
+			else
+				return ChooseFileType.ModelFile;
+		});
+	}
 
-	private void ButtonChooseModelClick(object sender, RoutedEventArgs e) {
-		try {
-			if (sender is Button button) {
-				ChooseModelType chooseType = (ChooseModelType)button.Tag;
-				Binding.ChooseModel(chooseType);
+	private void IconFileDrop(object sender, DragEventArgs e) {
+		if (e.Data.GetDataPresent(DataFormats.FileDrop)) {
+			var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+			if (files.Length > 0) {
+				Binding.IconFileDrop(files[0]);
+			}
+		}
+	}
+	private void FileDrop(object sender, DragEventArgs e) {
+		if (e.Data.GetDataPresent(DataFormats.FileDrop)) {
+			var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+			if (files.Length > 0) {
+				if (sender is Button || sender is TextBox) {
+					ChooseModelType Tag = (ChooseModelType)((Control)sender).Tag;
+					Binding.CheckModelPath(Tag, files[0]);
+				}
 			}
 		} catch (Exception ex) {
 			MessageBox.Show(this, ex.Message);

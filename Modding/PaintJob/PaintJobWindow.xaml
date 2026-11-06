@@ -724,7 +724,7 @@
 							TextWrapping="Wrap"
 							Style="{StaticResource TextBoxBorderless}"
 							AllowDrop="True"
-							PreviewDragOver="PreviewFileBoxDragOver"
+							PreviewDragOver="PreviewFileDragOver"
 							Drop="IconFileDrop"
 							Tag="IconName" />
 						<Button
@@ -732,7 +732,7 @@
 							Grid.Column="1"
 							Click="ButtonChooseIcon"
 							AllowDrop="True"
-							PreviewDragOver="PreviewFileButtonDragOver"
+							PreviewDragOver="PreviewFileDragOver"
 							Drop="IconFileDrop"
 							Tag="IconName"
 							Style="{StaticResource ButtonBorderless}">
@@ -1530,7 +1530,7 @@
 							TextWrapping="Wrap"
 							Style="{StaticResource TextBoxBorderless}"
 							AllowDrop="True"
-							PreviewDragOver="PreviewFileBoxDragOver"
+							PreviewDragOver="PreviewFileDragOver"
 							Drop="FileDrop"
 							Tag="{x:Static acc:ChooseTexType.Paintjob}"/>
 						<Button
@@ -1539,7 +1539,7 @@
 							Style="{StaticResource ButtonBorderless}"
 							Click="ButtonChooseTextureClick"
 							AllowDrop="True"
-							PreviewDragOver="PreviewFileButtonDragOver"
+							PreviewDragOver="PreviewFileDragOver"
 							Drop="FileDrop"
 							Tag="{x:Static acc:ChooseTexType.Paintjob}">
 							<Viewbox>
@@ -1591,7 +1591,7 @@
 							TextWrapping="Wrap"
 							Style="{StaticResource TextBoxBorderless}"
 							AllowDrop="True"
-							PreviewDragOver="PreviewFileBoxDragOver"
+							PreviewDragOver="PreviewFileDragOver"
 							Drop="FileDrop"
 							Tag="{x:Static acc:ChooseTexType.BaseTexOvr}">
 						</ui:TextBox>
@@ -1601,7 +1601,7 @@
 							Style="{StaticResource ButtonBorderless}"
 							Click="ButtonChooseTextureClick"
 							AllowDrop="True"
-							PreviewDragOver="PreviewFileButtonDragOver"
+							PreviewDragOver="PreviewFileDragOver"
 							Drop="FileDrop"
 							Tag="{x:Static acc:ChooseTexType.BaseTexOvr}">
 							<Viewbox>
@@ -2035,7 +2035,7 @@
 									MaxLines="1"
 									TextWrapping="Wrap"
 									AllowDrop="True"
-									PreviewDragOver="PreviewFileBoxDragOver"
+									PreviewDragOver="PreviewFileDragOver"
 									Drop="FileDrop"
 									Tag="{x:Static acc:ChooseTexType.FlakeNoise}" />
 								<Button
@@ -2044,7 +2044,7 @@
 									Style="{StaticResource ButtonBorderless}"
 									Click="ButtonChooseTextureClick"
 									AllowDrop="True"
-									PreviewDragOver="PreviewFileButtonDragOver"
+									PreviewDragOver="PreviewFileDragOver"
 									Drop="FileDrop"
 									Tag="{x:Static acc:ChooseTexType.FlakeNoise}" >
 									<Viewbox>
@@ -2777,7 +2777,7 @@
 								TextWrapping="WrapWithOverflow"
 								Style="{StaticResource TextBoxBorderless}"
 								AllowDrop="True"
-								PreviewDragOver="PreviewFileBoxDragOver"
+								PreviewDragOver="PreviewFileDragOver"
 								Drop="FileDrop"
 								Tag="{x:Static acc:ChooseTexType.AccTex}" >
 							</ui:TextBox>
@@ -2787,7 +2787,7 @@
 								Style="{StaticResource ButtonBorderless}"
 								Click="ButtonChooseTextureClick"
 								AllowDrop="True"
-								PreviewDragOver="PreviewFileButtonDragOver"
+								PreviewDragOver="PreviewFileDragOver"
 								Drop="FileDrop"
 								Tag="{x:Static acc:ChooseTexType.AccTex}" >
 								<Viewbox>

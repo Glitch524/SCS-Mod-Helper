@@ -570,27 +570,18 @@
 								x:Name="TextIconName"
 								Text="{Binding AddonItem.IconName}"
 								MaxLines="1"
-								TextWrapping="Wrap">
-								<ui:TextBox.Style>
-									<Style
-										TargetType="ui:TextBox"
-										BasedOn="{StaticResource TextBoxBorderless}">
-										<Style.Triggers>
-											<Trigger
-												Property="Text"
-												Value="">
-												<Setter
-													Property="Background"
-													Value="Yellow" />
-											</Trigger>
-										</Style.Triggers>
-									</Style>
-								</ui:TextBox.Style>
-							</ui:TextBox>
+								TextWrapping="NoWrap"
+								Style="{StaticResource TextBoxBorderless}"
+								AllowDrop="True"
+								PreviewDragOver="PreviewFileDragOver"
+								Drop="IconFileDrop" />
 							<Button
 								x:Name="ButtonIconName"
 								Grid.Column="1"
-								Click="ButtonChooseIcon"
+								AllowDrop="True"
+								PreviewDragOver="PreviewFileDragOver"
+								Drop="IconFileDrop"
+								Command="{Binding ChooseIconCommand}"
 								Style="{StaticResource ButtonBorderless}">
 								<Viewbox>
 									<ui:SymbolIcon
@@ -709,6 +700,10 @@
 								Grid.Row="1"
 								Grid.Column="0"
 								Text="{Binding AddonItem.ModelPath, UpdateSourceTrigger=PropertyChanged}"
+								AllowDrop="True"
+								PreviewDragOver="PreviewFileDragOver"
+								Drop="FileDrop"
+								Tag="{x:Static acc:ChooseModelType.Model}"
 								TextWrapping="Wrap"
 								MaxLines="2">
 								<ui:TextBox.Style>
@@ -731,7 +726,11 @@
 								x:Name="ButtonChooseModel"
 								Grid.Row="1"
 								Grid.Column="1"
-								Click="ButtonChooseModelClick"
+								Command="{Binding ChooseModelCommand}"
+								CommandParameter="{x:Static acc:ChooseModelType.Model}"
+								AllowDrop="True"
+								PreviewDragOver="PreviewFileDragOver"
+								Drop="FileDrop"
 								Tag="{x:Static acc:ChooseModelType.Model}"
 								Style="{StaticResource ButtonBorderless}">
 								<Viewbox>
@@ -782,6 +781,11 @@
 								Grid.Row="1"
 								Grid.Column="0"
 								Text="{Binding ModelPathUK}"
+								PlaceholderText="{DynamicResource ModelFilePathUKTip}"
+								AllowDrop="True"
+								PreviewDragOver="PreviewFileDragOver"
+								Drop="FileDrop"
+								Tag="{x:Static acc:ChooseModelType.ModelUK}"
 								TextWrapping="Wrap"
 								MaxLines="2"
 								Style="{StaticResource TextBoxBorderless}" />
@@ -789,7 +793,11 @@
 								x:Name="ButtonChooseModelUK"
 								Grid.Row="1"
 								Grid.Column="1"
-								Click="ButtonChooseModelClick"
+								Command="{Binding ChooseModelCommand}"
+								CommandParameter="{x:Static acc:ChooseModelType.ModelUK}"
+								AllowDrop="True"
+								PreviewDragOver="PreviewFileDragOver"
+								Drop="FileDrop"
 								Tag="{x:Static acc:ChooseModelType.ModelUK}"
 								Style="{StaticResource ButtonBorderless}">
 								<Viewbox>
@@ -850,6 +858,10 @@
 								Grid.Column="0"
 								Text="{Binding ExtModelPath, UpdateSourceTrigger=PropertyChanged}"
 								PlaceholderText="{DynamicResource ExtModelTip}"
+								AllowDrop="True"
+								PreviewDragOver="PreviewFileDragOver"
+								Drop="FileDrop"
+								Tag="{x:Static acc:ChooseModelType.ExtModel}"
 								TextWrapping="Wrap"
 								MaxLines="2"
 								Style="{StaticResource TextBoxBorderless}" />
@@ -857,7 +869,11 @@
 								x:Name="ButtonChooseExtModel"
 								Grid.Row="1"
 								Grid.Column="2"
-								Click="ButtonChooseModelClick"
+								Command="{Binding ChooseModelCommand}"
+								CommandParameter="{x:Static acc:ChooseModelType.ExtModel}"
+								AllowDrop="True"
+								PreviewDragOver="PreviewFileDragOver"
+								Drop="FileDrop"
 								Tag="{x:Static acc:ChooseModelType.ExtModel}"
 								Style="{StaticResource ButtonBorderless}">
 								<Viewbox>
@@ -899,6 +915,10 @@
 								Grid.Column="0"
 								Text="{Binding ExtModelPathUK}"
 								PlaceholderText="{DynamicResource ExtModelTip}"
+								AllowDrop="True"
+								PreviewDragOver="PreviewFileDragOver"
+								Drop="FileDrop"
+								Tag="{x:Static acc:ChooseModelType.ExtModelUK}"
 								TextWrapping="Wrap"
 								MaxLines="2"
 								Style="{StaticResource TextBoxBorderless}" />
@@ -906,7 +926,11 @@
 								x:Name="ButtonChooseExtModelUK"
 								Grid.Row="1"
 								Grid.Column="2"
-								Click="ButtonChooseModelClick"
+								Command="{Binding ChooseModelCommand}"
+								CommandParameter="{x:Static acc:ChooseModelType.ExtModelUK}"
+								AllowDrop="True"
+								PreviewDragOver="PreviewFileDragOver"
+								Drop="FileDrop"
 								Tag="{x:Static acc:ChooseModelType.ExtModelUK}"
 								Style="{StaticResource ButtonBorderless}">
 								<Viewbox>
@@ -959,13 +983,22 @@
 							x:Name="TextCollPath"
 							Grid.Column="0"
 							Text="{Binding CollPath}"
+							AllowDrop="True"
+							PreviewDragOver="PreviewFileDragOver"
+							Drop="FileDrop"
+							Tag="{x:Static acc:ChooseModelType.Coll}"
 							TextWrapping="Wrap"
 							MaxLines="2"
 							Style="{StaticResource TextBoxBorderless}" />
 						<Button
 							x:Name="ButtonChooseColl"
 							Grid.Column="2"
-							Click="ButtonChooseModelClick"
+							Command="{Binding ChooseModelCommand}"
+							CommandParameter="{x:Static acc:ChooseModelType.Coll}"
+							AllowDrop="True"
+							PreviewDragOver="PreviewFileDragOver"
+							Drop="FileDrop"
+							Tag="{x:Static acc:ChooseModelType.Coll}"
 							Style="{StaticResource ButtonBorderless}">
 							<Viewbox>
 								<ui:SymbolIcon

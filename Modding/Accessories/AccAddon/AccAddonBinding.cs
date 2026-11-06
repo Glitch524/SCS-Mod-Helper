@@ -949,7 +949,21 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 		var path = ChooseModelPath(chooseType, currentPath);
 		if (path == null)
 			return;
+		CheckModelPath(chooseType, path);
+	}
 
+	//模型、模型UK、碰撞体
+	public void CheckModelPath(ChooseModelType chooseType, string path) {
+		try {
+			string projectLocation = Instances.ProjectLocation;
+			if (!path.StartsWith(projectLocation))
+				throw new ArgumentException(GetString("DialogResultFileOutsideProject"));
+			if (path.EndsWith(".pmg"))
+				path = path[..^4] + ".pmd";
+			else if (path.EndsWith(".pit"))
+				path = path[..^4] + ".pim";
+			if (!File.Exists(path))
+				return;
 		LoadLooksAndVariants(path);//修改模型路径后，look和variant都不同，需要重新读取
 		string inProjectPath = path.Replace(ProjectLocation, "");
 		var parentDirs = inProjectPath.Split('\\');
