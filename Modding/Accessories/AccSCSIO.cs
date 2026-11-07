@@ -341,8 +341,7 @@ namespace SCS_Mod_Helper.Modding.Accessories {
 				do {
 					line = sr.ReadLine()?.Trim();
 				} while (string.IsNullOrEmpty(line));
-				line = line.Trim();
-				if (line.StartsWith('#')) {
+				if (line.StartsWith('#')) {//直接convert获得的pit里，文件头会有#开头，记录look和variant的内容
 					do {
 						line = line[1..].Trim();
 						if (line == "Look Names:")
@@ -352,7 +351,7 @@ namespace SCS_Mod_Helper.Modding.Accessories {
 					} while ((line = sr.ReadLine()?.Trim()) != null && line.Contains('#'));
 				} else {
 					int variantCount = -1;
-					int variantFound = 0;
+					int variantFound = 0;//读完look还是要读variant，记录了也没用，读完variant才可以直接退出
 					while ((line = sr.ReadLine()?.Trim()) != null) {
 						if (line.StartsWith("VariantCount:", StringComparison.OrdinalIgnoreCase)) {
 							variantCount = int.Parse(line["VariantCount:".Length..].Trim());
@@ -392,7 +391,7 @@ namespace SCS_Mod_Helper.Modding.Accessories {
 			if ((line = sr.ReadLine()?.Trim()) != null && line.Contains("Name:", StringComparison.OrdinalIgnoreCase)) {
 				int start = line.IndexOf('\"');
 				int end = line.LastIndexOf('\"');
-				var look = line.Substring(start + 1, end - start);
+				var look = line.Substring(start + 1, end - start - 1);
 				Application.Current.Dispatcher.Invoke(() => {
 					list.Add(look);
 				}, DispatcherPriority.Render);
