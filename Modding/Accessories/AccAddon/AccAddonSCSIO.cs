@@ -5,7 +5,8 @@ using System.IO;
 
 namespace SCS_Mod_Helper.Modding.Accessories.AccAddon {
 	public class AccAddonSCSIO(): AccSCSIO {
-		private const string NameIntHeader = "accessory_addon_int_data";
+		private const string NameAccIntHeader = "accessory_addon_int_data";
+		private const string NameAccHeader = "accessory_addon_int_data";
 		private const string NamePatchHeader = "accessory_addon_patch_data";
 		private const string NameAAExtModel = "exterior_model";
 		private const string NameAAIntModel = "interior_model";
@@ -15,9 +16,16 @@ namespace SCS_Mod_Helper.Modding.Accessories.AccAddon {
 
 		bool isPatch = false;
 
-		protected void WriteData(StreamWriter sw, bool isPatch, string modelName, string vehicleID, string modelType, Action data) {
+		protected void WriteData(StreamWriter sw, bool isPatch, AccAddonBinding binding, string vehicleID, string modelType, Action data) {
 			sw.Write(new string('\t', TabCount));
-			sw.WriteLine($"{(isPatch ? NamePatchHeader : NameIntHeader)} : {modelName}.{vehicleID}.{modelType}");
+			string header;
+			if (isPatch)
+				header = NamePatchHeader;
+			else if (binding.Data.Count == 0)
+				header = NameAccHeader;
+			else
+				header = NameAccIntHeader;
+			sw.WriteLine($"{header} : {binding.ModelName}.{vehicleID}.{modelType}");
 			BraceIn(sw);
 			data();
 			BraceOut(sw);
@@ -73,7 +81,7 @@ namespace SCS_Mod_Helper.Modding.Accessories.AccAddon {
 				};
 				using StreamWriter sw = new(siiFile);
 				WriteFileStructure(sw, () => {
-					WriteData(sw, isPatch, binding.ModelName, vehicle.VehicleID, vehicle.ModelType, () => {
+					WriteData(sw, isPatch, binding, vehicle.VehicleID, vehicle.ModelType, () => {
 						WriteLine(sw, NameDisplayName, binding.DisplayName);
 						WriteLine(sw, NamePrice, binding.Price ?? 1);
 						WriteLine(sw, NameUnlock, binding.UnlockLevel ?? 0);
@@ -88,7 +96,7 @@ namespace SCS_Mod_Helper.Modding.Accessories.AccAddon {
 						if (hasUK) {
 							WriteLine(sw, NameAAIntModelUK, binding.ModelPathUK);
 							if (string.IsNullOrEmpty(binding.ExtModelPathUK))
-								WriteLine(sw, NameAAExtModelUK, binding.ModelPath);
+								WriteLine(sw, NameAAExtModelUK, binding.ModelPathUK);
 							else
 								WriteLine(sw, NameAAExtModelUK, binding.ExtModelPathUK);
 						}
