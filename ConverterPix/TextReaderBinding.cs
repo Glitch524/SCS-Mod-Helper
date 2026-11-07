@@ -201,7 +201,10 @@ public partial class ConverterPixBinding {
 		string trim = line.Trim();
 		string path;
 		if (trim.StartsWith("@include")) {
-			path = PackDir + '/' + link;
+			if (link.StartsWith('/'))
+				path = link;
+			else
+				path = PackDir + '/' + link;
 			SubTextFilename = trim;
 			ReadSubFile(new PIXFile(path, false));
 			return;
@@ -226,7 +229,11 @@ public partial class ConverterPixBinding {
 			LoadingFile = false;
 		});
 	}
+
+
 	public async Task GotoLink(string linkPath) {
+		Application.Current.Dispatcher.Invoke(() => UpdateDirList(linkPath));
+
 		int lastS = linkPath.LastIndexOf('/');
 		if (lastS == -1)
 			return;
@@ -248,15 +255,12 @@ public partial class ConverterPixBinding {
 			if (line == null || line.Trim().StartsWith('*') || line.Length == 0)
 				return;
 			if (line.StartsWith("<error>")) {
-				var reason = line[(line.IndexOf(':') + 1)..];
+				var reason = line[(line.IndexOf(':') + 1)..].Trim();
 				await Application.Current.Dispatcher.InvokeAsync(() => {
-					if (reason == "readDir returned null!") {
-						MessageBox.Show(GetString("MessageLinkFileNotExist"));
-					} else
+					if (reason != "readDir returned null!") 
 						MessageBox.Show(GetString("MessageReadFileFailed") + ": " + reason);
 				});
 				error = true;
-				p.CancelOutputRead();
 				return;
 			}
 			if (line.Contains("Done")) 

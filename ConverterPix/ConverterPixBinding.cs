@@ -7,9 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Windows;
-using System.Windows.Data;
 using System.Windows.Input;
-using Windows.Web.AtomPub;
 using Wpf.Ui.Input;
 
 namespace SCS_Mod_Helper.ConverterPix; 
@@ -228,6 +226,17 @@ public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PI
 		}
 	}
 
+	private void UpdateDirList(string linkPath) {
+		if (DirList.Count > 1) {
+			var baseDir = DirList[0];
+			DirList.Clear();
+			DirList.Add(baseDir);
+		}
+		while ((linkPath = linkPath[..linkPath.LastIndexOf('/')]).Length > 0) {
+			DirList.Insert(1, new(linkPath));
+		}
+	}
+
 	private readonly ObservableCollection<PIXFile> mFileList = [];
 
 	public ObservableCollection<PIXFile> FileList => mFileList;
@@ -441,4 +450,6 @@ public class PackDir(string dirName, string? title): BaseBinding {
 			return mDirName;
 		}
 	}
+
+	public override string ToString() => $"PackDir Dir={DirName}";
 }
