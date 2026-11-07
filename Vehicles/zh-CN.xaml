@@ -3,7 +3,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:s="clr-namespace:System;assembly=mscorlib"
 	xml:space="preserve">
-	<!--部位-->
+	<!--饰品-->
 	<s:String
 		x:Key="part.cabin">驾驶室</s:String>
 	<s:String
@@ -98,6 +98,63 @@
 		x:Key="part.r_mudflap">后挡泥帘</s:String>
 	<s:String
 		x:Key="part.mudflaps">挡泥帘</s:String>
+	
+	<!--内部饰品-->
+	<s:String
+		x:Key="Acc.cup_holder">杯架套件</s:String>
+	<s:String
+		x:Key="Acc.curtain_f">窗帘（欧卡）</s:String>
+	<s:String
+		x:Key="Acc.drv_plate">驾驶员铭牌</s:String>
+	<s:String
+		x:Key="Acc.codrv_plate">副驾驶铭牌</s:String>
+	<s:String
+		x:Key="Acc.flag_l">左侧旗帜（ETS2）</s:String>
+	<s:String
+		x:Key="Acc.flag_r">右侧旗帜（ETS2）</s:String>
+	<s:String
+		x:Key="Acc.flag_f_l">左前方旗帜（ATS）</s:String>
+	<s:String
+		x:Key="Acc.flag_f_r">右前方旗帜（ATS）</s:String>
+	<s:String
+		x:Key="Acc.inlight_bck">灯板</s:String>
+	<s:String
+		x:Key="Acc.back_wall">后墙物品</s:String>
+	<s:String
+		x:Key="Acc.l_pillow">枕头</s:String>
+	<s:String
+		x:Key="Acc.set_cabinet">柜子组件（美卡）</s:String>
+	<s:String
+		x:Key="Acc.set_dashbrd">仪表盘套件</s:String>
+	<s:String
+		x:Key="Acc.set_glass">挡风玻璃套件</s:String>
+	<s:String
+		x:Key="Acc.set_lglass">挡风玻璃边角</s:String>
+	<s:String
+		x:Key="Acc.sterring_w">方向盘</s:String>
+	<s:String
+		x:Key="Acc.toyhang">挂件</s:String>
+	<s:String
+		x:Key="Acc.toyac">空调出风口</s:String>
+	<s:String
+		x:Key="Acc.toystand">中控台物品</s:String>
+	<s:String
+		x:Key="Acc.toydash">仪表盘储藏物品</s:String>
+	<s:String
+		x:Key="Acc.toyseat">座椅物品（副驾驶）</s:String>
+	<s:String
+		x:Key="Acc.toybed">卧铺物品</s:String>
+	<s:String
+		x:Key="Acc.toybig">地板物品</s:String>
+	<s:String
+		x:Key="Acc.toyback">卧铺地板物品（美卡）</s:String>
+	<s:String
+		x:Key="Acc.toysofa">后座的沙发（美卡）</s:String>
+	<s:String
+		x:Key="Acc.toytable">卧铺桌面物品（美卡）</s:String>
+	<s:String
+		x:Key="Acc.carpet">地毯</s:String>
+	<!--在Renault T里有-->
 	
 	
 	<!--卡车备注 ETS2-->

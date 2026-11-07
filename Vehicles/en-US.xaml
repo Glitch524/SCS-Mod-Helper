@@ -98,6 +98,62 @@
 		x:Key="part.r_mudflap">Rear Mudflaps</s:String>
 	<s:String
 		x:Key="part.mudflaps">Mudflaps</s:String>
+	
+	<!--内部饰品-->
+	<s:String
+		x:Key="Acc.cup_holder">Cup Holder</s:String>
+	<s:String
+		x:Key="Acc.curtain_f">Curtains(ETS2)</s:String>
+	<s:String
+		x:Key="Acc.drv_plate">Driver's Plate</s:String>
+	<s:String
+		x:Key="Acc.codrv_plate">Co-Driver's Plate</s:String>
+	<s:String
+		x:Key="Acc.flag_l">Truck Flag (Left, ETS2)</s:String>
+	<s:String
+		x:Key="Acc.flag_r">Truck Flag (Right, ETS2)</s:String>
+	<s:String
+		x:Key="Acc.flag_f_l">Truck Flag (Left, ATS)</s:String>
+	<s:String
+		x:Key="Acc.flag_f_r">Truck Flag (Right, ATS)</s:String>
+	<s:String
+		x:Key="Acc.inlight_bck">Light Board</s:String>
+	<s:String
+		x:Key="Acc.back_wall">Back Wall Items</s:String>
+	<s:String
+		x:Key="Acc.l_pillow">Pillow Items</s:String>
+	<s:String
+		x:Key="Acc.set_cabinet">Cabinet Sets(ATS)</s:String>
+	<s:String
+		x:Key="Acc.set_dashbrd">Dashboard Sets</s:String>
+	<s:String
+		x:Key="Acc.set_glass">Windshield Sets</s:String>
+	<s:String
+		x:Key="Acc.set_lglass">Windshield Corner</s:String>
+	<s:String
+		x:Key="Acc.sterring_w">Steering Wheel</s:String>
+	<s:String
+		x:Key="Acc.toyhang">Hanging Items</s:String>
+	<s:String
+		x:Key="Acc.toyac">Air Conditioner Items</s:String>
+	<s:String
+		x:Key="Acc.toystand">Console Items</s:String>
+	<s:String
+		x:Key="Acc.toydash">Dashboard Storage Items</s:String>
+	<s:String
+		x:Key="Acc.toyseat">Seat Items(Co-Driver's Seat)</s:String>
+	<s:String
+		x:Key="Acc.toybed">Bed Items</s:String>
+	<s:String
+		x:Key="Acc.toybig">Center Floor Items</s:String>
+	<s:String
+		x:Key="Acc.toyback">Sleeper Floor Items(ATS)</s:String>
+	<s:String
+		x:Key="Acc.toysofa">Sofa Items(ATS)</s:String>
+	<s:String
+		x:Key="Acc.toytable">Table Items(ATS)</s:String>
+	<s:String
+		x:Key="Acc.carpet">Carpet</s:String>
 
 	
 	<!--Truck Description ETS2-->

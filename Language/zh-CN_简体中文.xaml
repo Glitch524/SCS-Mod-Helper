@@ -560,54 +560,6 @@
 
 	<s:String x:Key="FilterAllFiles">所有文件|*.*</s:String>
 
-
-	
-	
-	<!--饰品位置-->
-	<s:String x:Key="Acc.cup_holder">杯架套件</s:String>
-	<s:String x:Key="Acc.curtain_f">窗帘（欧卡）</s:String>
-	<s:String x:Key="Acc.drv_plate">驾驶员铭牌</s:String>
-	<s:String x:Key="Acc.codrv_plate">副驾驶铭牌</s:String>
-	<s:String x:Key="Acc.flag_l">左侧旗帜</s:String>
-	<s:String x:Key="Acc.flag_r">右侧旗帜</s:String>
-	<s:String x:Key="Acc.back_wall">后墙物品</s:String>
-	<s:String x:Key="Acc.l_pillow">枕头</s:String>
-	<s:String x:Key="Acc.set_cabinet">柜子组件（美卡）</s:String>
-	<s:String x:Key="Acc.set_glass">挡风玻璃套件</s:String>
-	<s:String x:Key="Acc.set_lglass">挡风玻璃边角</s:String>
-	<s:String x:Key="Acc.sterring_w">方向盘</s:String>
-	<s:String x:Key="Acc.toyhang">挂件</s:String>
-	<s:String x:Key="Acc.toyac">空调出风口</s:String>
-	<s:String x:Key="Acc.toystand">中控台物品</s:String>
-	<s:String x:Key="Acc.toydash">仪表盘储藏物品</s:String>
-	<s:String x:Key="Acc.toyseat">座椅物品（副驾驶）</s:String>
-	<s:String x:Key="Acc.toybed">卧铺物品</s:String>
-	<s:String x:Key="Acc.toybig">地板物品</s:String>
-	<s:String x:Key="Acc.toyback">卧铺地板物品（美卡）</s:String>
-	<s:String x:Key="Acc.toysofa">后座的沙发（美卡）</s:String>
-	<s:String x:Key="Acc.toytable">卧铺桌面物品（美卡）</s:String>
-	
-	<s:String x:Key="MenuItem.cup_holder">cup_holder→杯架套件</s:String>
-	<s:String x:Key="MenuItem.curtain_f">curtain_f→窗帘（欧卡）</s:String>
-	<s:String x:Key="MenuItem.drv_plate">drv_plate→驾驶员铭牌</s:String>
-	<s:String x:Key="MenuItem.codrv_plate">codrv_plate→副驾驶铭牌</s:String>
-	<s:String x:Key="MenuItem.flag_l">flag_l/flag_f_l→左侧旗帜</s:String>
-	<s:String x:Key="MenuItem.flag_r">flag_r/flag_f_r→右侧旗帜</s:String>
-	<s:String x:Key="MenuItem.back_wall">inlight_bck/bckpanel→后墙物品</s:String>
-	<s:String x:Key="MenuItem.l_pillow">l_pillow→枕头</s:String>
-	<s:String x:Key="MenuItem.set_cabinet">set_cabinet→柜子组件（美卡）</s:String>
-	<s:String x:Key="MenuItem.set_glass">set_glass→挡风玻璃套件</s:String>
-	<s:String x:Key="MenuItem.set_lglass">set_lglass→挡风玻璃边角</s:String>
-	<s:String x:Key="MenuItem.sterring_w">sterring_w→方向盘</s:String>
-	<s:String x:Key="MenuItem.toyhang">toyhang→挂件</s:String>
-	<s:String x:Key="MenuItem.toyac">toyac→空调出风口</s:String>
-	<s:String x:Key="MenuItem.toystand">toystand→中控台物品</s:String>
-	<s:String x:Key="MenuItem.toyseat">toyseat→座椅物品（副驾驶）</s:String>
-	<s:String x:Key="MenuItem.toybed">toybed→卧铺物品</s:String>
-	<s:String x:Key="MenuItem.toybig">toybig→地板物品</s:String>
-	<s:String x:Key="MenuItem.toyback">toyback→卧铺地板物品（美卡）</s:String>
-	<s:String x:Key="MenuItem.toysofa">toysofa→后座的沙发（美卡）</s:String>
-	<s:String x:Key="MenuItem.toytable">toytable→卧铺桌面物品（美卡）</s:String>
 	
 	<!--locale中文名-->
 	<s:String x:Key="locale.universal">通用</s:String>

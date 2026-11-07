@@ -560,54 +560,6 @@
 
 	<s:String x:Key="FilterAllFiles">All Files|*.*</s:String>
 
-	
-
-
-	<!--accessory-->
-	<s:String x:Key="Acc.cup_holder">Cup Holder</s:String>
-	<s:String x:Key="Acc.curtain_f">Curtains(ETS2)</s:String>
-	<s:String x:Key="Acc.drv_plate">Driver's Plate</s:String>
-	<s:String x:Key="Acc.codrv_plate">Co-Driver's Plate</s:String>
-	<s:String x:Key="Acc.flag_l">Truck Flag (Left)</s:String>
-	<s:String x:Key="Acc.flag_r">Truck Flag (Right)</s:String>
-	<s:String x:Key="Acc.back_wall">Back Wall Items</s:String>
-	<s:String x:Key="Acc.l_pillow">Pillow Items</s:String>
-	<s:String x:Key="Acc.set_cabinet">Cabinet Sets(ATS)</s:String>
-	<s:String x:Key="Acc.set_glass">Windshield Sets</s:String>
-	<s:String x:Key="Acc.set_lglass">Windshield Corner</s:String>
-	<s:String x:Key="Acc.sterring_w">Steering Wheel</s:String>
-	<s:String x:Key="Acc.toyhang">Hanging Items</s:String>
-	<s:String x:Key="Acc.toyac">Air Conditioner Items</s:String>
-	<s:String x:Key="Acc.toystand">Console Items</s:String>
-	<s:String x:Key="Acc.toydash">Dashboard Storage Items</s:String>
-	<s:String x:Key="Acc.toyseat">Seat Items(Co-Driver's Seat)</s:String>
-	<s:String x:Key="Acc.toybed">Bed Items</s:String>
-	<s:String x:Key="Acc.toybig">Center Floor Items</s:String>
-	<s:String x:Key="Acc.toyback">Sleeper Floor Items(ATS)</s:String>
-	<s:String x:Key="Acc.toysofa">Sofa Items(ATS)</s:String>
-	<s:String x:Key="Acc.toytable">Table Items(ATS)</s:String>
-	
-	<s:String x:Key="MenuItem.cup_holder">cup_holder→Cup Holder</s:String>
-	<s:String x:Key="MenuItem.curtain_f">curtain_f→Curtains(ETS2)</s:String>
-	<s:String x:Key="MenuItem.drv_plate">drv_plate→Driver's Plate</s:String>
-	<s:String x:Key="MenuItem.codrv_plate">codrv_plate→Co-Driver's Plate</s:String>
-	<s:String x:Key="MenuItem.flag_l">flag_l/flag_f_l→Truck Flag (Left)</s:String>
-	<s:String x:Key="MenuItem.flag_r">flag_r/flag_f_r→Truck Flag (Right)</s:String>
-	<s:String x:Key="MenuItem.back_wall">inlight_bck/bckpanel→Back Wall Items</s:String>
-	<s:String x:Key="MenuItem.l_pillow">l_pillow→Pillow Items</s:String>
-	<s:String x:Key="MenuItem.set_cabinet">set_cabinet→Cabinet Sets(ATS)</s:String>
-	<s:String x:Key="MenuItem.set_glass">set_glass→Windshield Sets</s:String>
-	<s:String x:Key="MenuItem.set_lglass">set_lglass→Windshield Corner</s:String>
-	<s:String x:Key="MenuItem.sterring_w">sterring_w→Steering Wheel</s:String>
-	<s:String x:Key="MenuItem.toyhang">toyhang→Hanging Items</s:String>
-	<s:String x:Key="MenuItem.toyac">toyac→Air Conditioner Items</s:String>
-	<s:String x:Key="MenuItem.toystand">toystand→Console Items</s:String>
-	<s:String x:Key="MenuItem.toyseat">toyseat→Seat Items(Co-Driver's Seat)</s:String>
-	<s:String x:Key="MenuItem.toybed">toybed→Bed Items</s:String>
-	<s:String x:Key="MenuItem.toybig">toybig→Center Floor Items</s:String>
-	<s:String x:Key="MenuItem.toyback">toyback→Sleeper Floor Items(ATS)</s:String>
-	<s:String x:Key="MenuItem.toysofa">toysofa→Sofa Items(ATS)</s:String>
-	<s:String x:Key="MenuItem.toytable">toytable→Table Items(ATS)</s:String>
 
 	<!--locale Names-->
 	<s:String x:Key="locale.universal">Universal</s:String>
