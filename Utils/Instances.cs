@@ -1,5 +1,6 @@
 ﻿using SCS_Mod_Helper.Locale.StringRes;
 using SCS_Mod_Helper.Setting;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -7,6 +8,8 @@ using System.Text.RegularExpressions;
 namespace SCS_Mod_Helper.Utils;
 public static partial class Instances {
 	public static string GameVersion = "1.62";
+
+	public static bool IsDebug() => Debugger.IsAttached;
 
 	private static string? mAppVersionString = null;
 	public static string AppVersionString {

@@ -48,15 +48,26 @@ namespace SCS_Mod_Helper.Utils {
 		}
 
 		public static Window? MainWindow = null;
-		public static string GetString(string key, params object[] args) {
-			string res = Application.Current.FindResource(key).ToString()!;//"Object reference not set to an instance of an object." 如果字典的值为空就会出现这个报错
+
+		private static object? GetResource(string key, Window? window = null) {
+			if (window == null)
+				return Instances.IsDebug() ? Application.Current.FindResource(key) : Application.Current.TryFindResource(key);
+			else
+				return Instances.IsDebug() ? window.FindResource(key) : window.TryFindResource(key);
+		}
+
+		public static string GetString(string key, params object[] args) {//"Object reference not set to an instance of an object." 如果字典的值为空就会出现这个报错
+			var obj = GetResource(key);
+			if (obj == null)
+				return key;
+			string res = obj.ToString()!;
 			if (args.Length > 0) {
 				res = string.Format(res, args);
 			}
 			return res;
 		}
 
-		public static int GetInt(string key) => (int)Application.Current.FindResource(key);//"Object reference not set to an instance of an object." 如果字典的值为空就会出现这个报错
+		public static int GetInt(string key) => (int)(Application.Current.FindResource(key) ?? 0);//"Object reference not set to an instance of an object." 如果字典的值为空就会出现这个报错
 
 		public static string GetFilter(string key) {
 			var specificFilter = GetString(key);
@@ -65,7 +76,10 @@ namespace SCS_Mod_Helper.Utils {
 		}
 
 		public static string GetString(this Window window, string key, params object[] args) {
-			string res = window.FindResource(key).ToString()!;
+			var obj = GetResource(key, window);
+			if (obj == null)
+				return key;
+			string res = obj.ToString()!;
 			if (args.Length > 0) {
 				res = string.Format(res, args);
 			}
@@ -116,21 +130,14 @@ namespace SCS_Mod_Helper.Utils {
 		}
 
 		public static PixelFormat PfimGetPixelFormat(IImage image) {
-			switch (image.Format) {
-				case ImageFormat.Rgb24:
-					return PixelFormats.Bgr24;
-				case ImageFormat.Rgba32:
-					return PixelFormats.Bgra32;
-				case ImageFormat.Rgb8:
-					return PixelFormats.Gray8;
-				case ImageFormat.R5g5b5a1:
-				case ImageFormat.R5g5b5:
-					return PixelFormats.Bgr555;
-				case ImageFormat.R5g6b5:
-					return PixelFormats.Bgr565;
-				default:
-					throw new Exception($"Unable to convert {image.Format} to WPF PixelFormat");
-			}
+			return image.Format switch {
+				ImageFormat.Rgb24 => PixelFormats.Bgr24,
+				ImageFormat.Rgba32 => PixelFormats.Bgra32,
+				ImageFormat.Rgb8 => PixelFormats.Gray8,
+				ImageFormat.R5g5b5a1 or ImageFormat.R5g5b5 => PixelFormats.Bgr555,
+				ImageFormat.R5g6b5 => PixelFormats.Bgr565,
+				_ => throw new Exception($"Unable to convert {image.Format} to WPF PixelFormat"),
+			};
 		}
 	}
 

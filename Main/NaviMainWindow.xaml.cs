@@ -88,5 +88,5 @@ public partial class MainBinding(Func<IBaseVisual> visualFunc, Action<string?> w
 
 	public RelayCommand<string> TestCommand { get; } = new RelayCommand<string>(testAction);
 
-	public static Visibility TestVisibility => Debugger.IsAttached ? Visibility.Visible : Visibility.Collapsed;
+	public static Visibility TestVisibility => Instances.IsDebug() ? Visibility.Visible : Visibility.Collapsed;
 }
