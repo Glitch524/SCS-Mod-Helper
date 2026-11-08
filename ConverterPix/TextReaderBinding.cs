@@ -201,7 +201,7 @@ public partial class ConverterPixBinding {
 		string trim = line.Trim();
 		string path;
 		if (trim.StartsWith("@include")) {
-			if (link.StartsWith('/'))
+			if (link.StartsWith('/'))//如果以/开头，就表示路径为绝对路径，从projectlocation开始
 				path = link;
 			else
 				path = PackDir + '/' + link;
@@ -209,14 +209,15 @@ public partial class ConverterPixBinding {
 			ReadSubFile(new PIXFile(path, false));
 			return;
 		} else if (trim.StartsWith("icon")) {
-			path = "/material/ui/accessory/" + link;
+			path = $"/material/ui/accessory/{link}.tobj";
 		} else 
 			path = link;
 		int lastS = path.LastIndexOf('/');
 		if (lastS == -1)
 			return;
 		string dir = path[..lastS];
-		HistoryAdd();
+		if (PackDir != dir)
+			HistoryAdd();
 		Task.Run(() => {
 			_ = GotoLink(path);
 		});
@@ -232,7 +233,6 @@ public partial class ConverterPixBinding {
 
 
 	public async Task GotoLink(string linkPath) {
-		Application.Current.Dispatcher.Invoke(() => UpdateDirList(linkPath));
 
 		int lastS = linkPath.LastIndexOf('/');
 		if (lastS == -1)
@@ -257,7 +257,9 @@ public partial class ConverterPixBinding {
 			if (line.StartsWith("<error>")) {
 				var reason = line[(line.IndexOf(':') + 1)..].Trim();
 				await Application.Current.Dispatcher.InvokeAsync(() => {
-					if (reason != "readDir returned null!") 
+					if (reason == "readDir returned null!") {
+						MessageBox.Show(GetString("MessageLinkFileNotExist"));
+					} else 
 						MessageBox.Show(GetString("MessageReadFileFailed") + ": " + reason);
 				});
 				error = true;
@@ -288,6 +290,7 @@ public partial class ConverterPixBinding {
 				if (linkFile == null)//如果没有linkfile说明这个文件不在这个包里
 					MessageBox.Show(GetString("MessageLinkFileNotExist"));
 				else {
+					UpdateDirList(linkPath);
 					FileList.Clear();
 					foreach (var f in linkFiles) {
 						FileList.Add(f);
