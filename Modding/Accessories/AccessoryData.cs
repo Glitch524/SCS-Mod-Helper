@@ -215,8 +215,17 @@ namespace SCS_Mod_Helper.Modding.Accessories {
 			set {
 				mModelColl = value;
 				InvokeChange();
+				UseCollPath = value.Length > 0;
 			}
 		}
+
+		public bool UseCollPath {
+			get;
+			set {
+				field = value;
+				InvokeChange();
+			}
+		} = false;
 
 		protected string mLook = "";
 		public string Look {

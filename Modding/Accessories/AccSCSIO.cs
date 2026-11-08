@@ -366,6 +366,9 @@ namespace SCS_Mod_Helper.Modding.Accessories {
 						}
 					}
 				}
+			} else {
+				LookList.Add("default");//即使模型文件不存在，也至少留两个default
+				VariantList.Add("default");
 			}
 		}
 

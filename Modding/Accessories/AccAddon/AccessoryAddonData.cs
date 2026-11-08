@@ -9,7 +9,7 @@ public class AccessoryAddonData: AccessoryIntData {
 		get => mModelPath;
 		set {
 			mModelPath = value;
-			InvokeChange(nameof(ModelPath));
+			InvokeChange();
 		}
 	}
 
@@ -18,7 +18,7 @@ public class AccessoryAddonData: AccessoryIntData {
 		get => mModelPathUK;
 		set {
 			mModelPathUK = value;
-			InvokeChange(nameof(ModelPathUK));
+			InvokeChange();
 		}
 	}
 
@@ -27,7 +27,7 @@ public class AccessoryAddonData: AccessoryIntData {
 		get => mExtModelPath;
 		set {
 			mExtModelPath = value;
-			InvokeChange(nameof(ExtModelPath));
+			InvokeChange();
 		}
 	}
 
@@ -36,16 +36,16 @@ public class AccessoryAddonData: AccessoryIntData {
 		get => mExtModelPathUK;
 		set {
 			mExtModelPathUK = value;
-			InvokeChange(nameof(ExtModelPathUK));
+			InvokeChange();
 		}
 	}
 
 	private string mModelType = "";
-	public string ModelType {
+	public string AccType {
 		get => mModelType;
 		set {
 			mModelType = value;
-			InvokeChange(nameof(ModelType));
+			InvokeChange();
 		}
 	}
 
@@ -60,7 +60,7 @@ public class AccessoryAddonData: AccessoryIntData {
 		get => mHideIn;
 		set {
 			mHideIn = value;
-			InvokeChange(nameof(HideIn));
+			InvokeChange();
 		}
 	}
 

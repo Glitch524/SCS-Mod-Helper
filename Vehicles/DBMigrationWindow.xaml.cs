@@ -370,7 +370,7 @@ public partial class VehiclesIO {
 		while (reader.Read()) {
 			string vehicleID = reader.GetString(COLUMN_VEHICLE_ID);
 			string cabinID = reader.GetString(COLUMN_CABIN_ID);
-			string cabinName = reader.TryGetString(COLUMN_CABIN_NAME, GetCabinName(cabinID));
+			string cabinName = reader.TryGetString(COLUMN_CABIN_NAME, GetVehicleCabinName(cabinID));
 			bool defaultCabin = reader.GetBool(COLUMN_DEFAULT_CABIN);
 			List<Cabin>? cabins;
 			if (dict.TryGetValue(vehicleID, out List<Cabin>? value)) {
@@ -405,7 +405,7 @@ public partial class VehiclesIO {
 		while (reader.Read()) {
 			string vehicleID = reader.GetString(COLUMN_VEHICLE_ID);
 			string accID = reader.GetString(COLUMN_ACC_ID);
-			string accName = reader.TryGetString(COLUMN_ACC_NAME, GetAccessoryName(vehicleID, accID));
+			string accName = reader.TryGetString(COLUMN_ACC_NAME, GetVehicleAccName(vehicleID, accID));
 			string accType = reader.GetString(COLUMN_ACC_TYPE);
 			int unlockLevel = reader.GetInt(COLUMN_UNLOCK_LEVEL);
 			bool defaultAcc = reader.GetBool(COLUMN_DEFAULT_ACC);

@@ -134,10 +134,14 @@
 					</TreeView.Resources>
 					<TreeView.ItemContainerStyle>
 						<Style
-							TargetType="{x:Type TreeViewItem}">
+							TargetType="{x:Type TreeViewItem}"
+							BasedOn="{StaticResource {x:Type TreeViewItem}}">
 							<Setter
 								Property="IsExpanded"
 								Value="True" />
+							<Setter
+								Property="Focusable"
+								Value="False" />
 						</Style>
 					</TreeView.ItemContainerStyle>
 				</TreeView>
