@@ -26,14 +26,18 @@ namespace SCS_Mod_Helper.Modding.Accessories {
 		public const string NameOverrides = "overrides";
 		public const string NameRequire = "require";
 
-		protected override bool IsArray(string name) => name switch {
-			NameSuitableFor or
-			NameConflictWith or
-			NameDefaults or
-			NameOverrides or
-			NameRequire or
-			_ => false,
-		};
+		public AccSCSIO() {
+			ListIsArray.AddRange([
+				NameSuitableFor,
+				NameConflictWith,
+				NameDefaults,
+				NameOverrides,
+				NameRequire]);
+			ListHasQuote.AddRange([
+				NameDisplayName,
+				NameIconName,
+				NameCollPath]);
+		}
 
 		protected override bool HasQuote(string name) => name switch {
 			NameDisplayName or
