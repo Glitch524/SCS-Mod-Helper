@@ -3,107 +3,269 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:s="clr-namespace:System;assembly=mscorlib"
 	xml:space="preserve">
+	<s:String
+		x:Key="Part.cabin">驾驶室</s:String>
+	<s:String
+		x:Key="Group.Exterior">外部饰品</s:String>
+<!--驾驶室外部（顶部 / 侧部 / 后部 / 玻璃）-->
+	<s:String
+		x:Key="Group.cabin">驾驶室</s:String>
+	<s:String
+		x:Key="Acc.airdam">气坝</s:String>
+	<s:String
+		x:Key="Acc.roof_addon">车顶组件</s:String>
+	<s:String
+		x:Key="Acc.roof_window">天窗</s:String>
+	<s:String
+		x:Key="Acc.sunshield">遮阳板</s:String>
+	<s:String
+		x:Key="Acc.sunshld">遮阳板</s:String>
+	<s:String
+		x:Key="Acc.f_window">挡风玻璃</s:String>
+	<s:String
+		x:Key="Acc.frntglss_mid">挡风玻璃中央</s:String>
+	<s:String
+		x:Key="Acc.f_wnd_frame">挡风玻璃边框</s:String>
+	<s:String
+		x:Key="Acc.windows">车窗</s:String>
+	<s:String
+		x:Key="Acc.hood">引擎盖</s:String>
+	<s:String
+		x:Key="Acc.deflector">挡虫板</s:String>
+	<s:String
+		x:Key="Acc.cabdefl">驾驶室导流板</s:String>
+	<s:String
+		x:Key="Acc.cor_def">导流板</s:String>
+	<s:String
+		x:Key="Acc.r_deflector">车顶导流板</s:String>
+	<s:String
+		x:Key="Acc.s_deflector">侧导流板</s:String>
+	<s:String
+		x:Key="Acc.headache_r">驾驶室防撞栏板</s:String>
+	<s:String
+		x:Key="Acc.sideflares">驾驶室面板</s:String>
+	<s:String
+		x:Key="Acc.cabflares">驾驶室灯</s:String>
+	<s:String
+		x:Key="Acc.r_panel">面板</s:String>
+	<s:String
+		x:Key="Acc.s_panel">侧板</s:String>
+	<s:String
+		x:Key="Acc.rear_cab">驾驶室后部</s:String>
+	<s:String
+		x:Key="Acc.rear2_cab">驾驶室后部</s:String>
+	<s:String
+		x:Key="Acc.rear_window">后窗</s:String>
+	<s:String
+		x:Key="Acc.r_chs_cover">底盘保护罩</s:String>
+	<s:String
+		x:Key="Acc.s_vent">通风口</s:String>
+	<s:String
+		x:Key="Acc.slp_vent">通气口</s:String>
+	<!--车门与踏板-->
+	<s:String
+		x:Key="Group.door_step">车门、踏板</s:String>
+	<s:String
+		x:Key="Acc.cab_door">车门</s:String>
+	<s:String
+		x:Key="Acc.doorhndl">车门把手</s:String>
+	<s:String
+		x:Key="Acc.slp_hndl">门把手</s:String>
+	<s:String
+		x:Key="Acc.cab_doorstep">驾驶室门梯</s:String>
+	<s:String
+		x:Key="Acc.doorstep">登车踏板</s:String>
+	<s:String
+		x:Key="Acc.rearstep">后部踏板</s:String>
+	<s:String
+		x:Key="Acc.hndrail">扶手</s:String>
 	<!--饰品-->
 	<s:String
-		x:Key="part.cabin">驾驶室</s:String>
+		x:Key="Group.decors">装饰</s:String>
 	<s:String
-		x:Key="part.r_deflector">车顶导流板</s:String>
+		x:Key="Acc.f_cab_trim">驾驶室饰条</s:String>
 	<s:String
-		x:Key="part.s_deflector">侧导流板</s:String>
+		x:Key="Acc.windowtrim">车窗饰条</s:String>
 	<s:String
-		x:Key="part.cabdefl">驾驶室导流板</s:String>
+		x:Key="Acc.doortrim">车门饰条</s:String>
 	<s:String
-		x:Key="part.filter">空气过滤器</s:String>
+		x:Key="Acc.f_badge">前徽标</s:String>
 	<s:String
-		x:Key="part.sunshield">遮阳板</s:String>
+		x:Key="Acc.f_logo">前车标</s:String>
 	<s:String
-		x:Key="part.sunshld">遮阳板</s:String>
+		x:Key="Acc.f_banner">前条幅</s:String>
 	<s:String
-		x:Key="part.s_guard">防石击护栏</s:String>
+		x:Key="Acc.ornament">装饰</s:String>
 	<s:String
-		x:Key="part.cor_def">导流板</s:String>
+		x:Key="Acc.r_badge">后徽标</s:String>
 	<s:String
-		x:Key="part.deflector">挡虫板</s:String>
+		x:Key="Acc.r_logo">后徽标</s:String>
 	<s:String
-		x:Key="part.f_light">前灯</s:String>
+		x:Key="Acc.s_badge">侧徽标</s:String>
 	<s:String
-		x:Key="part.mirror">主后视镜</s:String>
+		x:Key="Acc.s_logo">侧徽标</s:String>
 	<s:String
-		x:Key="part.f_mirror">前反光镜</s:String>
+		x:Key="Acc.decals">贴花</s:String>
 	<s:String
-		x:Key="part.s_mirror">侧视镜</s:String>
+		x:Key="Acc.s_reflector">侧反光片</s:String>
 	<s:String
-		x:Key="part.fl_mirror">补盲镜（左）</s:String>
+		x:Key="Acc.s_strip">侧条带</s:String>
+<!--后视镜-->
 	<s:String
-		x:Key="part.fr_mirror">补盲镜（右）</s:String>
+		x:Key="Group.mirror">后视镜</s:String>
 	<s:String
-		x:Key="part.f_equip">前配设</s:String>
+		x:Key="Acc.mirror">主后视镜</s:String>
 	<s:String
-		x:Key="part.f_logo">前车标</s:String>
+		x:Key="Acc.rv_mirror">后视镜</s:String>
 	<s:String
-		x:Key="part.hl_guard">大灯护罩</s:String>
+		x:Key="Acc.s_mirror">侧视镜</s:String>
 	<s:String
-		x:Key="part.hood">引擎盖</s:String>
+		x:Key="Acc.f_mirror">前反光镜</s:String>
 	<s:String
-		x:Key="part.f_bumper">前保险杠</s:String>
+		x:Key="Acc.fl_mirror">补盲镜（左）</s:String>
 	<s:String
-		x:Key="part.bumper">保险杠</s:String>
+		x:Key="Acc.fr_mirror">补盲镜（右）</s:String>
+	<!--车头前部（格栅 → 面罩 → 防撞 → 保险杠）-->
 	<s:String
-		x:Key="part.airdam">气坝</s:String>
+		x:Key="Group.front">车头前部</s:String>
 	<s:String
-		x:Key="part.f_grill">防撞杠</s:String>
+		x:Key="Acc.grill">进气格栅</s:String>
 	<s:String
-		x:Key="part.b_grill">下格栅护栏</s:String>
+		x:Key="Acc.c_grill">前格栅护栏</s:String>
 	<s:String
-		x:Key="part.r_grill">灯架</s:String>
+		x:Key="Acc.b_grill">下格栅护栏</s:String>
 	<s:String
-		x:Key="part.grill">进气格栅</s:String>
+		x:Key="Acc.f_inlay_cab">前格栅</s:String>
 	<s:String
-		x:Key="part.f_fender_chs">前挡泥板</s:String>
+		x:Key="Acc.f_inlay_chs">前格栅底部</s:String>
 	<s:String
-		x:Key="part.f_fender">前挡泥板</s:String>
+		x:Key="Acc.f_intake_bar">前徽标面板</s:String>
 	<s:String
-		x:Key="part.fenders">挡泥板</s:String>
+		x:Key="Acc.f_intake_cab">前面罩</s:String>
 	<s:String
-		x:Key="part.f_mudflap">前挡泥帘</s:String>
+		x:Key="Acc.f_intake_chs">前面罩底部</s:String>
 	<s:String
-		x:Key="part.doorhndl">车门把手</s:String>
+		x:Key="Acc.f_intk_b_cab">前面罩饰条</s:String>
 	<s:String
-		x:Key="part.exhaust_m">后排气管</s:String>
+		x:Key="Acc.f_intk_b_chs">前面罩饰条底部</s:String>
 	<s:String
-		x:Key="part.exhaust">排气管</s:String>
+		x:Key="Acc.s_guard">防石击护栏</s:String>
 	<s:String
-		x:Key="part.doorstep">登车踏板</s:String>
+		x:Key="Acc.hl_guard">大灯护罩</s:String>
 	<s:String
-		x:Key="part.s_strip">侧条带</s:String>
+		x:Key="Acc.bullbar">防撞杠</s:String>
 	<s:String
-		x:Key="part.sideskirt">侧裙</s:String>
+		x:Key="Acc.f_grill">防撞杠</s:String>
 	<s:String
-		x:Key="part.sideskrt_bar">侧裙边条</s:String>
+		x:Key="Acc.f_equip">前配设</s:String>
 	<s:String
-		x:Key="part.tank">油箱</s:String>
+		x:Key="Acc.bumper">保险杠</s:String>
 	<s:String
-		x:Key="part.r_chs_cover">底盘保护罩</s:String>
+		x:Key="Acc.f_bumper">前保险杠</s:String>
 	<s:String
-		x:Key="part.r_panel">面板</s:String>
+		x:Key="Acc.r_bumper">后保险杠</s:String>
+<!--灯光-->
 	<s:String
-		x:Key="part.r_fender">后挡泥板</s:String>
+		x:Key="Group.lights">灯光</s:String>
 	<s:String
-		x:Key="part.r_fendr_top">后挡泥板顶盖</s:String>
+		x:Key="Acc.f_light">前大灯</s:String>
 	<s:String
-		x:Key="part.r_light">尾灯</s:String>
+		x:Key="Acc.f_light_chs">前大灯</s:String>
 	<s:String
-		x:Key="part.r_bumper">后保险杠</s:String>
+		x:Key="Acc.f_light_mid">附加灯光</s:String>
 	<s:String
-		x:Key="part.r_mudflap">后挡泥帘</s:String>
+		x:Key="Acc.f_light_top">车顶灯</s:String>
 	<s:String
-		x:Key="part.mudflaps">挡泥帘</s:String>
-	
-	<!--内部饰品-->
+		x:Key="Acc.r_grill">灯架</s:String>
 	<s:String
-		x:Key="Acc.cup_holder">杯架套件</s:String>
+		x:Key="Acc.f_turn_light">前转向灯</s:String>
 	<s:String
-		x:Key="Acc.curtain_f">窗帘（欧卡）</s:String>
+		x:Key="Acc.r_light">车尾灯</s:String>
+	<s:String
+		x:Key="Acc.beacon">警示灯</s:String>
+	<s:String
+		x:Key="Acc.chs_beacon">警示灯（底盘）</s:String>
+	<s:String
+		x:Key="Acc.f_light_bmp">保险杠灯</s:String>
+<!--底盘防护 挡泥板 / 挡泥帘 / 侧裙-->
+	<s:String
+		x:Key="Group.chs_protection">底盘防护</s:String>
+	<s:String
+		x:Key="Acc.fenders">挡泥板</s:String>
+	<s:String
+		x:Key="Acc.f_fender">前挡泥板</s:String>
+	<s:String
+		x:Key="Acc.r_fender">后挡泥板</s:String>
+	<s:String
+		x:Key="Acc.f_fender_cab">前挡泥板</s:String>
+	<s:String
+		x:Key="Acc.f_fender_chs">前挡泥板底部</s:String>
+	<s:String
+		x:Key="Acc.f_fendr_chs">前挡泥板底部</s:String>
+	<s:String
+		x:Key="Acc.r_fender_top">后挡泥板顶盖</s:String>
+	<s:String
+		x:Key="Acc.r_fendr_top">后挡泥板顶盖</s:String>
+	<s:String
+		x:Key="Acc.mudguard">挡泥板</s:String>
+	<s:String
+		x:Key="Acc.lghfender">挡泥板护罩</s:String>
+	<s:String
+		x:Key="Acc.mudflaps">挡泥帘</s:String>
+	<s:String
+		x:Key="Acc.b_mudflap">保险杠挡泥帘</s:String>
+	<s:String
+		x:Key="Acc.f_mudflap">前挡泥帘</s:String>
+	<s:String
+		x:Key="Acc.r_mudflap">后挡泥帘</s:String>
+	<s:String
+		x:Key="Acc.sideskirt">侧裙</s:String>
+	<s:String
+		x:Key="Acc.sideskirt_bar">侧裙边条</s:String>
+	<s:String
+		x:Key="Acc.sideskrt_bar">侧裙边条</s:String>
+<!--底盘 / 油箱 / 排气 / 尾舱-->
+	<s:String
+		x:Key="Group.chassis">底盘</s:String>
+	<s:String
+		x:Key="Acc.tank">油箱</s:String>
+	<s:String
+		x:Key="Acc.fuelcap">油箱盖</s:String>
+	<s:String
+		x:Key="Acc.exhaust">排气管</s:String>
+	<s:String
+		x:Key="Acc.cab_exhaust">排气管</s:String>
+	<s:String
+		x:Key="Acc.exhaust_l">左侧排气管</s:String>
+	<s:String
+		x:Key="Acc.exhaust_r">右侧排气管</s:String>
+	<s:String
+		x:Key="Acc.exhaust_m">后排气管</s:String>
+	<s:String
+		x:Key="Acc.spare_w">备用轮胎</s:String>
+	<s:String
+		x:Key="Acc.trunk">后备箱</s:String>
+	<s:String
+		x:Key="Acc.bed_addon">货箱组件</s:String>
+	<s:String
+		x:Key="Acc.wing">涡轮翼</s:String>
+<!--其他小件-->
+	<s:String
+		x:Key="Group.others">其他</s:String>
+	<s:String
+		x:Key="Acc.b_detector">盲区检测传感器</s:String>
+	<s:String
+		x:Key="Acc.filter">空气过滤器</s:String>
+	<s:String
+		x:Key="Acc.filters">空气过滤器</s:String>
+	<s:String
+		x:Key="Acc.filter_cover">过滤器盖</s:String>
+	<s:String
+		x:Key="Acc.horns">喇叭</s:String>
+	<s:String
+		x:Key="Acc.l_horn">左喇叭</s:String>
+	<s:String
+		x:Key="Acc.r_horn">右喇叭</s:String>
 	<s:String
 		x:Key="Acc.drv_plate">驾驶员铭牌</s:String>
 	<s:String
@@ -117,9 +279,24 @@
 	<s:String
 		x:Key="Acc.flag_f_r">右前方旗帜（ATS）</s:String>
 	<s:String
+		x:Key="Acc.flag_l_both">左侧/左前方旗帜</s:String>
+	<s:String
+		x:Key="Acc.flag_r_both">右侧/右前方旗帜</s:String>
+	
+	
+	
+	
+	<s:String
+		x:Key="Group.Interior">内部饰品</s:String>
+	<!--内部饰品-->
+	<s:String
+		x:Key="Acc.cup_holder">杯架套件</s:String>
+	<s:String
+		x:Key="Acc.curtain_f">窗帘（欧卡）</s:String>
+	<s:String
 		x:Key="Acc.inlight_bck">灯板</s:String>
 	<s:String
-		x:Key="Acc.back_wall">后墙物品</s:String>
+		x:Key="Acc.bckpanel">墙面物品</s:String>
 	<s:String
 		x:Key="Acc.l_pillow">枕头</s:String>
 	<s:String

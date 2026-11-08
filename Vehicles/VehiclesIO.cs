@@ -97,12 +97,22 @@ public static partial class VehiclesIO {
 		}
 	}
 	public static void ClearVehicleDict() => mVehicleDictionary = null;
-	public static string GetPartName(string partName) => (string)(VehicleDictionary[$"part.{partName}"] ?? partName);
-	public static string GetVehicleName(string vehicleID) => (string)(VehicleDictionary[$"name.{vehicleID}"] ?? vehicleID);
-	public static string GetVehicleDesc(string vehicleID) => (string)(VehicleDictionary[$"desc.{vehicleID}"] ?? "");
 
-	public static string GetCabinName(string cabinID) => (string)(VehicleDictionary[cabinID] ?? cabinID);
-	public static string GetAccessoryName(string vehicleID, string accID) => (string)(VehicleDictionary[$"{vehicleID}.{accID}"] ?? accID);
+	private static object GetVehicleDictValue(string key, string? defaultValue = null) {
+		return VehicleDictionary[key] ?? 
+			(Instances.IsDebug() ? 
+				throw new ResourceReferenceKeyNotFoundException($"Could not find resource from key={key}", key) : 
+				defaultValue ?? key);
+}
+
+	public static string GetPartName(string partName) => (string) GetVehicleDictValue($"part.{partName}");
+	public static string GetAccGroupName(string accGroupName) => (string) GetVehicleDictValue($"Group.{accGroupName}");
+	public static string GetAccPartName(string accPartName) => (string) GetVehicleDictValue($"Acc.{accPartName}");
+
+	public static string GetVehicleName(string vehicleID) => (string) GetVehicleDictValue($"name.{vehicleID}");
+	public static string GetVehicleDesc(string vehicleID) => (string) GetVehicleDictValue($"desc.{vehicleID}");
+	public static string GetVehicleCabinName(string cabinID) => (string) GetVehicleDictValue(cabinID);
+	public static string GetVehicleAccName(string vehicleID, string accID) => (string) GetVehicleDictValue($"{vehicleID}.{accID}", accID);
 
 	/// <summary>
 	/// 从项目中的数据库资源导出到临时文件夹内，判断导出时生成的hash来判断导出的文件是否相同
@@ -298,7 +308,7 @@ public static partial class VehiclesIO {
 		List<Cabin> cabins = [];
 		while (reader.Read()) {
 			string cabinID = reader.GetString(COLUMN_CABIN_ID);
-			string cabinName = reader.TryGetString(COLUMN_CABIN_NAME, GetCabinName(cabinID));
+			string cabinName = reader.TryGetString(COLUMN_CABIN_NAME, GetVehicleCabinName(cabinID));
 			bool defaultCabin = reader.GetBool(COLUMN_DEFAULT_CABIN);
 
 			cabins.Add(new(vehicleID, cabinID, cabinName, defaultCabin));
@@ -321,7 +331,7 @@ public static partial class VehiclesIO {
 		List<Accessory> accessories = [];
 		while (reader.Read()) {
 			string accID = reader.GetString(COLUMN_ACC_ID);
-			string accName = reader.TryGetString(COLUMN_ACC_NAME, GetAccessoryName(vehicleID, accID));
+			string accName = reader.TryGetString(COLUMN_ACC_NAME, GetVehicleAccName(vehicleID, accID));
 			string accType = reader.GetString(COLUMN_ACC_TYPE);
 			int unlockLevel = reader.GetInt(COLUMN_UNLOCK_LEVEL);
 			bool defaultAcc = reader.GetBool(COLUMN_DEFAULT_ACC);
@@ -393,7 +403,7 @@ public static partial class VehiclesIO {
 			string cabinID = reader.GetString(reader.GetOrdinal(COLUMN_CABIN_ID));
 			string cabinName;
 			if (reader.IsDBNull(reader.GetOrdinal(COLUMN_CABIN_NAME))) {
-				cabinName = GetCabinName(cabinID);
+				cabinName = GetVehicleCabinName(cabinID);
 			} else
 				cabinName = reader.GetString(reader.GetOrdinal(COLUMN_CABIN_NAME));
 			bool defaultCabin = reader.GetInt32(reader.GetOrdinal(COLUMN_DEFAULT_CABIN)) == 1;
@@ -468,7 +478,7 @@ public static partial class VehiclesIO {
 		using var reader = cmd.ExecuteReader();
 		while (reader.Read()) {
 			string accID = reader.GetString(COLUMN_ACC_ID);
-			string accName = reader.TryGetString(COLUMN_ACC_NAME, GetAccessoryName(vehicleID, accID));
+			string accName = reader.TryGetString(COLUMN_ACC_NAME, GetVehicleAccName(vehicleID, accID));
 			string accType = reader.GetString(COLUMN_ACC_TYPE);
 			int unlockLevel = reader.GetInt(COLUMN_UNLOCK_LEVEL);
 			bool defaultAcc = reader.GetBool(COLUMN_DEFAULT_ACC);

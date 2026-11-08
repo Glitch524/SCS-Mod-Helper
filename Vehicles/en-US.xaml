@@ -3,119 +3,296 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:s="clr-namespace:System;assembly=mscorlib"
 	xml:space="preserve">
-	<!--Parts-->
 	<s:String
-		x:Key="part.cabin">Cabin</s:String>
+		x:Key="Part.cabin">驾驶室</s:String>
 	<s:String
-		x:Key="part.r_deflector">Roof Deflector</s:String>
+		x:Key="Group.Exterior">Exterior Accessories</s:String>
+<!--驾驶室外部（顶部 / 侧部 / 后部 / 玻璃）-->
 	<s:String
-		x:Key="part.s_deflector">Side Deflectors</s:String>
+		x:Key="Group.cabin">Cabin</s:String>
 	<s:String
-		x:Key="part.cabdefl">Cabin Deflectors</s:String>
+		x:Key="Acc.airdam">Air Dam</s:String>
 	<s:String
-		x:Key="part.filter">Air Filter</s:String>
+		x:Key="Acc.roof_addon">Roof Addon</s:String>
 	<s:String
-		x:Key="part.sunshield">Sun Visor</s:String>
+		x:Key="Acc.roof_window">Roof Window</s:String>
 	<s:String
-		x:Key="part.sunshld">Sun Visor</s:String>
+		x:Key="Acc.sunshield">Sun Visor</s:String>
 	<s:String
-		x:Key="part.s_guard">Stoneguard</s:String>
+		x:Key="Acc.sunshld">Sun Visor</s:String>
 	<s:String
-		x:Key="part.cor_def">Corner Deflectors</s:String>
+		x:Key="Acc.f_window">Windshield</s:String>
 	<s:String
-		x:Key="part.deflector">Bug Deflector</s:String>
+		x:Key="Acc.frntglss_mid">Windshield Center</s:String>
 	<s:String
-		x:Key="part.f_light">Front Light</s:String>
+		x:Key="Acc.f_wnd_frame">Windshield Frame</s:String>
 	<s:String
-		x:Key="part.mirror">Main Mirrors</s:String>
+		x:Key="Acc.windows">Windows</s:String>
 	<s:String
-		x:Key="part.f_mirror">Front Mirror</s:String>
+		x:Key="Acc.hood">Hood</s:String>
 	<s:String
-		x:Key="part.s_mirror">Side Mirror</s:String>
+		x:Key="Acc.deflector">Bug Deflector</s:String>
 	<s:String
-		x:Key="part.fl_mirror">Front Mirrors (L)</s:String>
+		x:Key="Acc.cabdefl">Cabin Deflectors</s:String>
 	<s:String
-		x:Key="part.fr_mirror">Front Mirrors (R)</s:String>
+		x:Key="Acc.cor_def">Corner Deflectors</s:String>
 	<s:String
-		x:Key="part.f_equip">Front Equipment</s:String>
+		x:Key="Acc.r_deflector">Roof Deflectors</s:String>
 	<s:String
-		x:Key="part.f_logo">Front Logo</s:String>
+		x:Key="Acc.s_deflector">Side Deflectors</s:String>
 	<s:String
-		x:Key="part.hl_guard">Headlight Guard</s:String>
+		x:Key="Acc.headache_r">Headache Racks</s:String>
 	<s:String
-		x:Key="part.hood">Hood</s:String>
+		x:Key="Acc.sideflares">Cab Panels</s:String>
 	<s:String
-		x:Key="part.f_bumper">Front Bumper</s:String>
+		x:Key="Acc.cabflares">Cabin Lights</s:String>
 	<s:String
-		x:Key="part.bumper">Bumper</s:String>
+		x:Key="Acc.r_panel">Panel</s:String>
 	<s:String
-		x:Key="part.airdam">Air Dam</s:String>
+		x:Key="Acc.s_panel">Sidepanel</s:String>
 	<s:String
-		x:Key="part.f_grill">Bull Bar</s:String>
+		x:Key="Acc.rear_cab">Cabin Rear</s:String>
 	<s:String
-		x:Key="part.b_grill">Lower Grille Guard</s:String>
+		x:Key="Acc.rear2_cab">Cabin Rear</s:String>
 	<s:String
-		x:Key="part.r_grill">Light Bar</s:String>
+		x:Key="Acc.rear_window">Rear Window</s:String>
 	<s:String
-		x:Key="part.grill">Grille</s:String>
+		x:Key="Acc.r_chs_cover">Chassis Cover</s:String>
 	<s:String
-		x:Key="part.f_fender_chs">Front Fender</s:String>
+		x:Key="Acc.s_vent">Vent</s:String>
 	<s:String
-		x:Key="part.f_fender">Front Fender</s:String>
+		x:Key="Acc.slp_vent">Vent</s:String>
+	<!--车门与踏板-->
 	<s:String
-		x:Key="part.fenders">Fenders</s:String>
+		x:Key="Group.door_step">Doors and Step</s:String>
 	<s:String
-		x:Key="part.f_mudflap">Front Mudflaps</s:String>
+		x:Key="Acc.cab_door">Cab Doors</s:String>
 	<s:String
-		x:Key="part.doorhndl">Door Handles</s:String>
+		x:Key="Acc.doorhndl">Door Handles</s:String>
 	<s:String
-		x:Key="part.exhaust_m">Rear Exhaust</s:String>
+		x:Key="Acc.slp_hndl">Door Handles</s:String>
 	<s:String
-		x:Key="part.exhaust">Exhaust</s:String>
+		x:Key="Acc.cab_doorstep">Cab Doorsteps</s:String>
 	<s:String
-		x:Key="part.doorstep">Door Steps</s:String>
+		x:Key="Acc.doorstep">Door Steps</s:String>
 	<s:String
-		x:Key="part.s_strip">Side Stripe</s:String>
+		x:Key="Acc.rearstep">rearstep</s:String>
 	<s:String
-		x:Key="part.sideskirt">Sideskirts</s:String>
+		x:Key="Acc.hndrail">hand Rail</s:String>
+	<!--饰品-->
 	<s:String
-		x:Key="part.sideskrt_bar">Sideskirts Bars</s:String>
+		x:Key="Group.decors">Decoraction</s:String>
 	<s:String
-		x:Key="part.tank">Tank</s:String>
+		x:Key="Acc.f_cab_trim">Cab Trim</s:String>
 	<s:String
-		x:Key="part.r_chs_cover">Chassis Cover</s:String>
+		x:Key="Acc.windowtrim">Window Trim</s:String>
 	<s:String
-		x:Key="part.r_panel">Panel</s:String>
+		x:Key="Acc.doortrim">Door Trim</s:String>
 	<s:String
-		x:Key="part.r_fender">Rear Fender</s:String>
+		x:Key="Acc.f_badge">Front Badge</s:String>
 	<s:String
-		x:Key="part.r_fendr_top">Rear Fender Top</s:String>
+		x:Key="Acc.f_logo">Front Logo</s:String>
 	<s:String
-		x:Key="part.r_light">Rear Light</s:String>
+		x:Key="Acc.f_banner">Front Banner</s:String>
 	<s:String
-		x:Key="part.r_bumper">Rear Bumper</s:String>
+		x:Key="Acc.ornament">Ornament</s:String>
 	<s:String
-		x:Key="part.r_mudflap">Rear Mudflaps</s:String>
+		x:Key="Acc.r_badge">Rear Badge</s:String>
 	<s:String
-		x:Key="part.mudflaps">Mudflaps</s:String>
-	
-	<!--内部饰品-->
+		x:Key="Acc.r_logo">Rear Logo</s:String>
 	<s:String
-		x:Key="Acc.cup_holder">Cup Holder</s:String>
+		x:Key="Acc.s_badge">Side Badge</s:String>
 	<s:String
-		x:Key="Acc.curtain_f">Curtains(ETS2)</s:String>
+		x:Key="Acc.s_logo">Side Logo</s:String>
+	<s:String
+		x:Key="Acc.decals">Decal</s:String>
+	<s:String
+		x:Key="Acc.s_reflector">Side Reflector</s:String>
+	<s:String
+		x:Key="Acc.s_strip">Side Stripe</s:String>
+<!--后视镜-->
+	<s:String
+		x:Key="Group.mirror">Mirrors</s:String>
+	<s:String
+		x:Key="Acc.mirror">Main Mirrors</s:String>
+	<s:String
+		x:Key="Acc.rv_mirror">Rearview Mirror</s:String>
+	<s:String
+		x:Key="Acc.s_mirror">Side Mirror</s:String>
+	<s:String
+		x:Key="Acc.f_mirror">Front Mirror</s:String>
+	<s:String
+		x:Key="Acc.fl_mirror">Front Mirrors (L)</s:String>
+	<s:String
+		x:Key="Acc.fr_mirror">Front Mirrors (R)</s:String>
+<!--车头前部（徽标 → 格栅 → 面罩 → 防撞 → 保险杠）-->
+	<s:String
+		x:Key="Group.front">Vehicle Front</s:String>
+	<s:String
+		x:Key="Acc.grill">Grille</s:String>
+	<s:String
+		x:Key="Acc.c_grill">Front Grille Guard</s:String>
+	<s:String
+		x:Key="Acc.b_grill">Lower Grille Guard</s:String>
+	<s:String
+		x:Key="Acc.f_inlay_cab">Front Grille</s:String>
+	<s:String
+		x:Key="Acc.f_inlay_chs">Front Grille Bottom</s:String>
+	<s:String
+		x:Key="Acc.f_intake_bar">Front Badge Plate</s:String>
+	<s:String
+		x:Key="Acc.f_intake_cab">Front Mask</s:String>
+	<s:String
+		x:Key="Acc.f_intake_chs">Front Mask Bottom</s:String>
+	<s:String
+		x:Key="Acc.f_intk_b_cab">Front Mask Ribs</s:String>
+	<s:String
+		x:Key="Acc.f_intk_b_chs">Front Mask Ribs Bottom</s:String>
+	<s:String
+		x:Key="Acc.s_guard">Stoneguard</s:String>
+	<s:String
+		x:Key="Acc.hl_guard">Headlight Guard</s:String>
+	<s:String
+		x:Key="Acc.bullbar">Bull Bar</s:String>
+	<s:String
+		x:Key="Acc.f_grill">Bull Bar</s:String>
+	<s:String
+		x:Key="Acc.f_equip">Front Equipment</s:String>
+	<s:String
+		x:Key="Acc.bumper">Bumper</s:String>
+	<s:String
+		x:Key="Acc.f_bumper">Front Bumper</s:String>
+	<s:String
+		x:Key="Acc.r_bumper">Rear Bumper</s:String>
+<!--灯光-->
+	<s:String
+		x:Key="Group.lights">Lights</s:String>
+	<s:String
+		x:Key="Acc.f_light">Headlights</s:String>
+	<s:String
+		x:Key="Acc.f_light_chs">Headlights</s:String>
+	<s:String
+		x:Key="Acc.f_light_mid">Additional Lights</s:String>
+	<s:String
+		x:Key="Acc.f_light_top">Roof Lights</s:String>
+	<s:String
+		x:Key="Acc.r_grill">Light Bar</s:String>
+	<s:String
+		x:Key="Acc.f_turn_light">Front Turn Light</s:String>
+	<s:String
+		x:Key="Acc.r_light">Rear Light</s:String>
+	<s:String
+		x:Key="Acc.beacon">Beacon</s:String>
+	<s:String
+		x:Key="Acc.chs_beacon">Beacon Bottom</s:String>
+	<s:String
+		x:Key="Acc.f_light_bmp">Bumper Lights</s:String>
+<!--底盘防护 挡泥板 / 挡泥帘 / 侧裙-->
+	<s:String
+		x:Key="Group.chs_protection">Chassis Protection</s:String>
+	<s:String
+		x:Key="Acc.fenders">Fenders</s:String>
+	<s:String
+		x:Key="Acc.f_fender">Front Fender</s:String>
+	<s:String
+		x:Key="Acc.r_fender">Rear Fender</s:String>
+	<s:String
+		x:Key="Acc.f_fender_cab">Front Fender</s:String>
+	<s:String
+		x:Key="Acc.f_fender_chs">Front Fender Bottom</s:String>
+	<s:String
+		x:Key="Acc.f_fendr_chs">Front Fender Bottom</s:String>
+	<s:String
+		x:Key="Acc.r_fender_top">Rear Fender Top</s:String>
+	<s:String
+		x:Key="Acc.r_fendr_top">Rear Fender Top</s:String>
+	<s:String
+		x:Key="Acc.mudguard">Mudguards</s:String>
+	<s:String
+		x:Key="Acc.lghfender">Fender Guards</s:String>
+	<s:String
+		x:Key="Acc.mudflaps">Mudflaps</s:String>
+	<s:String
+		x:Key="Acc.b_mudflap">Bumper Mudflaps</s:String>
+	<s:String
+		x:Key="Acc.f_mudflap">Front Mudflap</s:String>
+	<s:String
+		x:Key="Acc.r_mudflap">Rear Mudflaps</s:String>
+	<s:String
+		x:Key="Acc.sideskirt">Sideskirts</s:String>
+	<s:String
+		x:Key="Acc.sideskirt_bar">Sideskirt Bars</s:String>
+	<s:String
+		x:Key="Acc.sideskrt_bar">Sideskirt Bars</s:String>
+<!--底盘 / 油箱 / 排气 / 尾舱-->
+	<s:String
+		x:Key="Group.chassis">Chassis</s:String>
+	<s:String
+		x:Key="Acc.tank">Tank</s:String>
+	<s:String
+		x:Key="Acc.fuelcap">Fuel Cap</s:String>
+	<s:String
+		x:Key="Acc.exhaust">Exhaust</s:String>
+	<s:String
+		x:Key="Acc.cab_exhaust">Exhaust</s:String>
+	<s:String
+		x:Key="Acc.exhaust_l">Left Exhaust</s:String>
+	<s:String
+		x:Key="Acc.exhaust_r">Right Exhaust</s:String>
+	<s:String
+		x:Key="Acc.exhaust_m">Rear Exhaust</s:String>
+	<s:String
+		x:Key="Acc.spare_w">Spare Wheel</s:String>
+	<s:String
+		x:Key="Acc.trunk">Trunk</s:String>
+	<s:String
+		x:Key="Acc.bed_addon">Bed Addon</s:String>
+	<s:String
+		x:Key="Acc.wing">Turbo Wing</s:String>
+<!--其他小件-->
+	<s:String
+		x:Key="Group.others">Others</s:String>
+	<s:String
+		x:Key="Acc.b_detector">Blind Spot Sensor</s:String>
+	<s:String
+		x:Key="Acc.filter">Air Filter</s:String>
+	<s:String
+		x:Key="Acc.filters">Air Filters</s:String>
+	<s:String
+		x:Key="Acc.filter_cover">Filter Cover</s:String>
+	<s:String
+		x:Key="Acc.horns">Horns</s:String>
+	<s:String
+		x:Key="Acc.l_horn">Left Horn</s:String>
+	<s:String
+		x:Key="Acc.r_horn">Right Horn</s:String>
 	<s:String
 		x:Key="Acc.drv_plate">Driver's Plate</s:String>
 	<s:String
 		x:Key="Acc.codrv_plate">Co-Driver's Plate</s:String>
 	<s:String
-		x:Key="Acc.flag_l">Truck Flag (Left, ETS2)</s:String>
+		x:Key="Acc.flag_l">Left Window Flag (ETS2)</s:String>
 	<s:String
-		x:Key="Acc.flag_r">Truck Flag (Right, ETS2)</s:String>
+		x:Key="Acc.flag_r">Right Window Flag (ETS2)</s:String>
 	<s:String
-		x:Key="Acc.flag_f_l">Truck Flag (Left, ATS)</s:String>
+		x:Key="Acc.flag_f_l">Front Flags (L, ATS)</s:String>
 	<s:String
-		x:Key="Acc.flag_f_r">Truck Flag (Right, ATS)</s:String>
+		x:Key="Acc.flag_f_r">Front Flags (R, ATS)</s:String>
+	<s:String
+		x:Key="Acc.flag_l_both">Left Window/Front Flag</s:String>
+	<s:String
+		x:Key="Acc.flag_r_both">Right Window/Front Flag</s:String>
+
+
+
+
+	<s:String
+		x:Key="Group.Interior">Interior Accessories</s:String>
+	<!--内部饰品-->
+	<s:String
+		x:Key="Acc.cup_holder">Cup Holder</s:String>
+	<s:String
+		x:Key="Acc.curtain_f">Curtains(ETS2)</s:String>
 	<s:String
 		x:Key="Acc.inlight_bck">Light Board</s:String>
 	<s:String

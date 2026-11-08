@@ -35,55 +35,20 @@ public class VehiclePackage(string vehicleID): BaseBinding {
 	}
 
 	readonly string[] GroupOrders = [
-		"Cabin",
-		"cabin",
-		"r_deflector",
-		"s_deflector",
-		"cabdefl",
-		"filter",
-		"sunshield",
-		"sunshld",
-		"s_guard",
-		"cor_def",
-		"deflector",
-		"f_light",
-		"mirror",
-		"f_mirror",
-		"s_mirror",
-		"fl_mirror",
-		"fr_mirror",
-		"f_equip",
-		"f_logo",
-		"hl_guard",
-		"hood",
-		"f_bumper",
-		"bumper",
-		"airdam",
-		"f_grill",
-		"b_grill",
-		"r_grill",
-		"grill",
-		"f_fender_chs",
-		"f_fender",
-		"fenders",
-		"f_mudflap",
-		"doorhndl",
-		"exhaust_m",
-		"exhaust",
-		"doorstep",
-		"s_strip",
-		"sideskirt",
-		"sideskrt_bar",
-		"tank",
-		"r_chs_cover",
-		"r_panel",
-		"r_fender",
-		"r_fendr_top",
-		"r_light",
-		"r_bumper",
-		"r_mudflap",
-		"mudflaps",
-	];
+		"Cabin", "cabin", "airdam", "roof_addon", "roof_window", "sunshield", "sunshld", "f_window", "frntglss_mid",
+		"f_wnd_frame", "windows", "hood", "deflector", "cabdefl", "cor_def", "r_deflector", "s_deflector", "headache_r",
+		"sideflares", "cabflares", "r_panel", "s_panel", "rear_cab", "rear2_cab", "rear_window", "r_chs_cover", "s_vent",
+		"slp_vent", "cab_door", "doorhndl", "slp_hndl", "cab_doorstep", "doorstep", "rearstep", "hndrail", "f_cab_trim",
+		"windowtrim", "doortrim", "f_badge", "f_logo", "f_banner", "ornament", "r_badge", "r_logo", "s_badge", "s_logo",
+		"decals", "s_reflector", "s_strip", "mirror", "rv_mirror", "s_mirror", "f_mirror", "fl_mirror", "fr_mirror", "grill",
+		"c_grill", "b_grill", "f_inlay_cab", "f_inlay_chs", "f_intake_bar", "f_intake_cab", "f_intake_chs", "f_intk_b_cab",
+		"f_intk_b_chs", "s_guard", "hl_guard", "bullbar", "f_grill", "f_equip", "bumper", "f_bumper", "r_bumper", "f_light",
+		"f_light_chs", "f_light_mid", "f_light_top", "r_grill", "f_turn_light", "r_light", "beacon", "chs_beacon",
+		"f_light_bmp", "fenders", "f_fender", "r_fender", "f_fender_cab", "f_fender_chs", "f_fendr_chs", "r_fender_top",
+		"r_fendr_top", "mudguard", "lghfender", "mudflaps", "b_mudflap", "f_mudflap", "r_mudflap", "sideskirt",
+		"sideskirt_bar", "sideskrt_bar", "tank", "fuelcap", "exhaust", "cab_exhaust", "exhaust_l", "exhaust_r", "exhaust_m",
+		"spare_w", "trunk", "bed_addon", "wing", "b_detector", "filter", "filters", "filter_cover", "horns", "l_horn",
+		"r_horn", "drv_plate", "codrv_plate", "flag_l", "flag_r", "flag_f_l", "flag_f_r"];
 
 	public void SortGroups() {
 		var sorted = LayerGroups.OrderBy(s => {
@@ -104,7 +69,19 @@ public class LayerGroup(string vehicleID, string groupType, Action<VehicleUV> ad
 	private readonly Action<VehicleUV> AddUVToAll = addUVToAll;
 
 	private readonly bool IsCabin = groupType.Equals("cabin", StringComparison.CurrentCultureIgnoreCase);
-	public string GroupTypeLocalized { get; } = VehiclesIO.GetPartName(groupType.ToLower());
+
+	private string? mGroupTypeLocalized = null;
+	public string GroupTypeLocalized { 
+		get {
+			if (mGroupTypeLocalized == null) {
+				if (IsCabin)
+					mGroupTypeLocalized = VehiclesIO.GetAccGroupName(GroupType.ToLower());
+				else
+					mGroupTypeLocalized = VehiclesIO.GetAccPartName(GroupType.ToLower());
+			}
+			return mGroupTypeLocalized;
+		}
+	}
 
 	public List<VehicleUV> UVLayers { get; } = [];
 
@@ -173,7 +150,7 @@ public class VehicleUV(string vehicleID, bool isCabin, string layerName, string 
 		}
 	} = layerName;
 
-	public string LayerNameLocalized { get; } = isCabin ? VehiclesIO.GetCabinName(layerName) : VehiclesIO.GetAccessoryName(vehicleID, layerName);
+	public string LayerNameLocalized { get; } = isCabin ? VehiclesIO.GetVehicleCabinName(layerName) : VehiclesIO.GetVehicleAccName(vehicleID, layerName);
 
 	private readonly string UVPath = uvPath;
 	private bool UVLoaded = false;
