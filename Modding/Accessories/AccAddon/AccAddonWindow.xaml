@@ -11,6 +11,7 @@
 	xmlns:res="clr-namespace:SCS_Mod_Helper.Locale.StringRes"
 	xmlns:cls="clr-namespace:SCS_Mod_Helper.Class"
 	xmlns:acc="clr-namespace:SCS_Mod_Helper.Modding.Accessories"
+	xmlns:mod="clr-namespace:SCS_Mod_Helper.Modding"
 	xmlns:popup="clr-namespace:SCS_Mod_Helper.Modding.Accessories.AccAddon.Popup"
 	d:DataContext="{d:DesignInstance Type=local:AccAddonBinding}"
 	mc:Ignorable="d"
@@ -44,7 +45,8 @@
 			x:Key="MenuModelType"
 			Tag="MenuModelType"
 			ItemContainerStyle="{StaticResource CMStyle}"
-			ItemsSource="{Binding DataContext.ModelTypes, ElementName=GridMain}">
+			d:DataContext="{d:DesignInstance Type=mod:AccTypes}"
+			ItemsSource="{Binding SelectedList}">
 			<ContextMenu.ItemTemplate>
 				<DataTemplate>
 					<Grid>
@@ -52,8 +54,8 @@
 							<ColumnDefinition
 								Width="Auto" />
 							<ColumnDefinition
-								Width="*" 
-								MinWidth="10"/>
+								Width="*"
+								MinWidth="10" />
 							<ColumnDefinition
 								Width="Auto" />
 						</Grid.ColumnDefinitions>
@@ -163,7 +165,17 @@
 				Property="Height"
 				Value="{Binding ActualHeight, ElementName=TextModelName}" />
 		</Style>
-
+		<Style
+			x:Key="ApplyButtonStyle"
+			TargetType="Button"
+			BasedOn="{StaticResource ButtonBorderless}">
+			<Setter
+				Property="ToolTip"
+				Value="{DynamicResource TipApplyTLV}" />
+			<Setter
+				Property="ToolTipService.InitialShowDelay"
+				Value="500" />
+		</Style>
 		<Style
 			TargetType="DataGrid"
 			BasedOn="{StaticResource {x:Type DataGrid}}">
@@ -286,6 +298,10 @@
 						<RowDefinition
 							Height="Auto" />
 						<RowDefinition
+							Height="5" />
+						<RowDefinition
+							Height="Auto" />
+						<RowDefinition
 							Height="Auto" />
 						<RowDefinition
 							Height="Auto" />
@@ -348,8 +364,166 @@
 						</ui:TextBox>
 					</StackPanel>
 
-					<StackPanel
+					<Grid
+						x:Name="GridAccType"
 						Grid.Row="2"
+						Grid.ColumnSpan="3">
+						<Grid.RowDefinitions>
+							<RowDefinition
+								Height="Auto" />
+							<RowDefinition
+								Height="Auto" />
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition
+								Width="*" />
+							<ColumnDefinition
+								Width="Auto" />
+							<ColumnDefinition
+								Width="5" />
+							<ColumnDefinition
+								Width="*" />
+							<ColumnDefinition
+								Width="Auto" />
+						</Grid.ColumnDefinitions>
+						<TextBlock
+							TextWrapping="Wrap"
+							VerticalAlignment="Top"
+							Grid.ColumnSpan="5">
+							<Run
+								Text="{DynamicResource ModelType}" /><Run
+								Text="{DynamicResource ModelTypeTip}" />
+						</TextBlock>
+						<Border
+							Grid.Row="1"
+							Grid.ColumnSpan="5"
+							Style="{DynamicResource MultiControlBorder}" />
+						<TextBox
+							x:Name="TextModelType"
+							Grid.Row="1"
+							Text="{Binding AccType}"
+							BorderThickness="0"
+							Cursor="">
+						</TextBox>
+						<Button
+							x:Name="ButtonCoverModelType"
+							Grid.Row="1"
+							Grid.Column="1"
+							Click="ButtonCoverValue"
+							Style="{StaticResource ApplyButtonStyle}">
+							<Viewbox>
+								<ui:SymbolIcon
+									Symbol="ClipboardPaste16" />
+							</Viewbox>
+						</Button>
+						<ui:TextBox
+							x:Name="TextAccName"
+							Text="{Binding CurrentAccType.Name}"
+							Grid.Row="1"
+							Grid.Column="2"
+							Grid.ColumnSpan="2"
+							TextWrapping="Wrap"
+							IsReadOnly="True"
+							VerticalContentAlignment="Center"
+							ToolTip="{Binding CurrentAccType.Name}"
+							Style="{StaticResource TextBoxBorderless}" />
+						<Button
+							x:Name="ButtonAccPopup"
+							Grid.Row="1"
+							Grid.Column="4"
+							Command="{Binding OpenAccPopupCommand}"
+							Style="{StaticResource ButtonBorderless}">
+							<Viewbox>
+								<ui:SymbolIcon
+									Symbol="ChevronDown16" />
+							</Viewbox>
+						</Button>
+						<Popup
+							PlacementTarget="{Binding ElementName=GridAccType}"
+							Width="{Binding ElementName=GridAccType, Path=ActualWidth}"
+							MinHeight="300"
+							MaxHeight="600"
+							IsOpen="{Binding IsAccPopupOpen}"
+							AllowsTransparency="True"
+							StaysOpen="False">
+							<Grid>
+								<Border
+									Style="{StaticResource PopupBorder}" />
+								<TreeView
+									x:Name="TreeViewAccType"
+									Margin="5"
+									ItemsSource="{Binding AccessoryTypes.AccGroupList}"
+									SelectedItemChanged="AccTypeSelctedChanged">
+									<TreeView.Resources>
+										<HierarchicalDataTemplate
+											DataType="{x:Type mod:AccExteriorGroup}"
+											ItemsSource="{Binding Groups}">
+											<StackPanel
+												Orientation="Horizontal">
+												<TextBlock
+													Text="{Binding GroupName}" />
+											</StackPanel>
+										</HierarchicalDataTemplate>
+										<HierarchicalDataTemplate
+											DataType="{x:Type mod:AccExteriorList}"
+											ItemsSource="{Binding AccList}">
+											<StackPanel
+												Orientation="Horizontal">
+												<TextBlock
+													Text="{Binding GroupName}" />
+											</StackPanel>
+										</HierarchicalDataTemplate>
+										<HierarchicalDataTemplate
+											DataType="{x:Type mod:AccInteriorList}"
+											ItemsSource="{Binding AccList}">
+											<StackPanel
+												Orientation="Horizontal">
+												<TextBlock
+													Text="{Binding GroupName}" />
+											</StackPanel>
+										</HierarchicalDataTemplate>
+										<HierarchicalDataTemplate
+											DataType="{x:Type mod:AccType}">
+											<StackPanel
+												Orientation="Horizontal">
+												<TextBlock
+													Text="{Binding NameFull}" />
+											</StackPanel>
+										</HierarchicalDataTemplate>
+									</TreeView.Resources>
+									<TreeView.ItemContainerStyle>
+										<Style
+											TargetType="TreeViewItem"
+											BasedOn="{StaticResource {x:Type TreeViewItem}}">
+											<Setter
+												Property="Focusable"
+												Value="{Binding Focusable}" />
+											<Style.Triggers>
+												<Trigger
+													Property="Focusable"
+													Value="False">
+													<Setter
+														Property="IsExpanded"
+														Value="{Binding Expanded, Mode=TwoWay}" />
+												</Trigger>
+												<Trigger
+													Property="Focusable"
+													Value="True">
+													<Setter
+														Property="IsSelected"
+														Value="{Binding IsSelected, Mode=TwoWay}" />
+												</Trigger>
+											</Style.Triggers>
+										</Style>
+									</TreeView.ItemContainerStyle>
+								</TreeView>
+							</Grid>
+
+						</Popup>
+					</Grid>
+
+					<StackPanel
+						Grid.Row="4"
 						Grid.ColumnSpan="3">
 						<TextBlock
 							Margin="0,5,0,0"
@@ -362,7 +536,7 @@
 					</StackPanel>
 
 					<Grid
-						Grid.Row="4">
+						Grid.Row="6">
 						<Grid.RowDefinitions>
 							<RowDefinition
 								Height="Auto" />
@@ -424,9 +598,8 @@
 							</ui:TextBox.Style>
 						</ui:TextBox>
 					</Grid>
-
 					<Grid
-						Grid.Row="4"
+						Grid.Row="6"
 						Grid.Column="2">
 						<Grid.RowDefinitions>
 							<RowDefinition
@@ -479,7 +652,7 @@
 					</Grid>
 
 					<StackPanel
-						Grid.Row="6">
+						Grid.Row="8">
 						<TextBlock
 							Margin="0,5,0,0"
 							TextWrapping="Wrap"
@@ -514,18 +687,14 @@
 							</ui:TextBox.Style>
 						</ui:TextBox>
 					</StackPanel>
-
 					<StackPanel
-						Grid.Row="6"
+						Grid.Row="8"
 						Grid.Column="2">
 						<TextBlock
 							Margin="0,5,0,0"
 							TextWrapping="Wrap"
-							VerticalAlignment="Top">
-								<Run
-								Language="zh-cn"
-								Text="{DynamicResource ModelUnlockLevel}" />
-						</TextBlock>
+							VerticalAlignment="Top"
+							Text="{DynamicResource ModelUnlockLevel}" />
 						<ui:TextBox
 							x:Name="TextUnlockLevel"
 							Text="{Binding AddonItem.UnlockLevelString}"
@@ -539,7 +708,7 @@
 
 					<StackPanel
 						x:Name="PanelIconName"
-						Grid.Row="8"
+						Grid.Row="10"
 						VerticalAlignment="Top">
 						<StackPanel
 							Orientation="Horizontal">
@@ -591,9 +760,8 @@
 							</Button>
 						</Grid>
 					</StackPanel>
-
 					<Border
-						Grid.Row="8"
+						Grid.Row="10"
 						Grid.Column="2"
 						HorizontalAlignment="Left"
 						VerticalAlignment="Center"
@@ -626,7 +794,7 @@
 					</Border>
 
 					<Border
-						Grid.Row="9"
+						Grid.Row="11"
 						Grid.ColumnSpan="3"
 						Height="1"
 						Margin="0,7"
@@ -636,7 +804,7 @@
 
 					<ui:ToggleSwitch
 						x:Name="CheckExteriorPath"
-						Grid.Row="10"
+						Grid.Row="12"
 						Grid.ColumnSpan="3"
 						Content="{DynamicResource ModelSetExterior}"
 						VerticalContentAlignment="Center"
@@ -670,7 +838,7 @@
 					</ui:ToggleSwitch>
 
 					<StackPanel
-						Grid.Row="11"
+						Grid.Row="13"
 						Grid.ColumnSpan="3">
 						<Grid>
 							<Grid.RowDefinitions>
@@ -808,7 +976,7 @@
 					</StackPanel>
 
 					<StackPanel
-						Grid.Row="12"
+						Grid.Row="14"
 						Grid.ColumnSpan="3"
 						Margin="0,5,0,0">
 						<StackPanel.Style>
@@ -942,17 +1110,17 @@
 
 					<ui:ToggleSwitch
 						x:Name="CheckUseCollPath"
-						Grid.Row="13"
+						Grid.Row="15"
 						Grid.ColumnSpan="3"
 						Margin="0,5,0,0"
-						IsChecked="{Binding UseCollPath}"
+						IsChecked="{Binding AddonItem.UseCollPath}"
 						d:IsChecked="True"
 						Content="{DynamicResource ModelCollPath}"
 						VerticalContentAlignment="Center"
 						HorizontalAlignment="Stretch" />
 
 					<Grid
-						Grid.Row="14"
+						Grid.Row="16"
 						Grid.ColumnSpan="3">
 						<Grid.Style>
 							<Style
@@ -1008,101 +1176,32 @@
 					</Grid>
 
 					<Grid
-						Grid.Row="15"
-						Grid.ColumnSpan="3"
+						Grid.Row="17"
 						Margin="0,5,0,0">
 						<Grid.RowDefinitions>
 							<RowDefinition
 								Height="Auto" />
 							<RowDefinition
-								Height="*" />
-							<RowDefinition
-								Height="2" />
-							<RowDefinition
 								Height="Auto" />
-							<RowDefinition
-								Height="*" />
-							<RowDefinition
-								Height="2" />
-							<RowDefinition
-								Height="Auto" />
-							<RowDefinition
-								Height="*" />
 						</Grid.RowDefinitions>
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition
 								Width="*" />
 							<ColumnDefinition
 								Width="Auto" />
-							<ColumnDefinition
-								Width="5" />
-							<ColumnDefinition
-								Width="*" />
-							<ColumnDefinition
-								Width="Auto" />
 						</Grid.ColumnDefinitions>
-
 						<TextBlock
-							TextWrapping="Wrap"
-							VerticalAlignment="Top"
-							Grid.ColumnSpan="5">
-							<Run
-								Text="{DynamicResource ModelType}" />
-							<Run
-								Text="{DynamicResource ModelTypeTip}" />
-						</TextBlock>
-						<Border
-							Grid.Row="1"
-							Grid.ColumnSpan="5"
-							Style="{DynamicResource MultiControlBorder}" />
-						<ComboBox
-							x:Name="TextModelType"
-							Grid.Row="1"
-							Text="{Binding ModelType}"
-							DisplayMemberPath="Accessory"
-							IsEditable="True"
-							IsTextSearchEnabled="True"
-							ItemsSource="{Binding ModelTypes}"
-							SelectedValue="{Binding CurrentModelType, Mode=TwoWay}"
-							Style="{StaticResource ComboBoxBorderless}"
-							Cursor="">
-						</ComboBox>
-						<Button
-							x:Name="ButtonCoverModelType"
-							Grid.Row="1"
-							Grid.Column="1"
-							Click="ButtonCoverValue"
-							Style="{StaticResource ButtonBorderless}">
-							<Viewbox>
-								<ui:SymbolIcon
-									Symbol="ClipboardPaste16" />
-							</Viewbox>
-						</Button>
-						<ui:TextBox
-							x:Name="TextAccName"
-							Text="{Binding CurrentModelType.Name}"
-							Grid.Row="1"
-							Grid.Column="2"
-							Grid.ColumnSpan="3"
-							TextWrapping="Wrap"
-							IsReadOnly="True"
-							VerticalContentAlignment="Center"
-							ToolTip="{Binding CurrentModelType.Name}"
-							Style="{StaticResource TextBoxBorderless}" />
-
-						<TextBlock
-							Grid.Row="3"
 							Grid.ColumnSpan="2"
 							TextWrapping="Wrap"
 							VerticalAlignment="Top"
 							Text="{DynamicResource ModelLook}" />
 						<Border
-							Grid.Row="4"
+							Grid.Row="1"
 							Grid.ColumnSpan="2"
 							Style="{DynamicResource MultiControlBorder}" />
 						<ComboBox
 							x:Name="TextLook"
-							Grid.Row="4"
+							Grid.Row="1"
 							Text="{Binding Look}"
 							ItemsSource="{Binding LookList}"
 							Style="{StaticResource ComboBoxBorderless}"
@@ -1110,32 +1209,44 @@
 							IsTextSearchEnabled="True" />
 						<Button
 							x:Name="ButtonCoverLook"
-							Grid.Row="4"
+							Grid.Row="1"
 							Grid.Column="1"
 							Click="ButtonCoverValue"
-							Style="{StaticResource ButtonBorderless}">
+							Style="{StaticResource ApplyButtonStyle}">
 							<Viewbox>
 								<ui:SymbolIcon
 									Symbol="ClipboardPaste16" />
 							</Viewbox>
 						</Button>
-
+					</Grid>
+					<Grid
+						Grid.Row="17"
+						Grid.Column="2"
+						Margin="0,5,0,0">
+						<Grid.RowDefinitions>
+							<RowDefinition
+								Height="Auto" />
+							<RowDefinition
+								Height="Auto" />
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition
+								Width="*" />
+							<ColumnDefinition
+								Width="Auto" />
+						</Grid.ColumnDefinitions>
 						<TextBlock
-							Grid.Row="3"
-							Grid.Column="3"
 							Grid.ColumnSpan="2"
 							TextWrapping="Wrap"
 							VerticalAlignment="Top"
 							Text="{DynamicResource ModelVariant}" />
 						<Border
-							Grid.Row="4"
-							Grid.Column="3"
+							Grid.Row="1"
 							Grid.ColumnSpan="2"
 							Style="{DynamicResource MultiControlBorder}" />
 						<ComboBox
 							x:Name="TextVariant"
-							Grid.Row="4"
-							Grid.Column="3"
+							Grid.Row="1"
 							Text="{Binding Variant}"
 							ItemsSource="{Binding VariantList}"
 							IsEditable="True"
@@ -1143,10 +1254,10 @@
 							Style="{StaticResource ComboBoxBorderless}" />
 						<Button
 							x:Name="ButtonCoverVariant"
-							Grid.Row="4"
-							Grid.Column="4"
+							Grid.Row="1"
+							Grid.Column="1"
 							Click="ButtonCoverValue"
-							Style="{StaticResource ButtonBorderless}">
+							Style="{StaticResource ApplyButtonStyle}">
 							<Viewbox>
 								<ui:SymbolIcon
 									Symbol="ClipboardPaste16" />
@@ -1156,7 +1267,7 @@
 
 					<ui:ToggleSwitch
 						x:Name="CheckOthers"
-						Grid.Row="16"
+						Grid.Row="18"
 						Grid.ColumnSpan="3"
 						Margin="0,5,0,0"
 						d:IsChecked="true"
@@ -1168,7 +1279,7 @@
 						HorizontalAlignment="Stretch" />
 
 					<Grid
-						Grid.Row="17"
+						Grid.Row="19"
 						Grid.ColumnSpan="3"
 						Margin="0,2,0,0">
 						<Grid.Style>

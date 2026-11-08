@@ -67,7 +67,7 @@ public class AddonAppIO(string savePath): AppIO {
 			WriteValueElement(TITLE_EXT_MODEL_PATH, data.ExtModelPath);
 			WriteValueElement(TITLE_EXT_MODEL_PATH_UK, data.ExtModelPathUK);
 			WriteValueElement(TITLE_COLLISION_PATH, data.CollPath);
-			WriteValueElement(TITLE_MODEL_TYPE, data.ModelType);
+			WriteValueElement(TITLE_MODEL_TYPE, data.AccType);
 			WriteValueElement(TITLE_LOOK, data.Look);
 			WriteValueElement(TITLE_VARIANT, data.Variant);
 			WriteValueElement(TITLE_HIDE_IN, data.HideIn);
@@ -153,7 +153,7 @@ public class AddonAppIO(string savePath): AppIO {
 					data.CollPath = child.InnerText;
 					break;
 				case TITLE_MODEL_TYPE:
-					data.ModelType = child.InnerText;
+					data.AccType = child.InnerText;
 					break;
 				case TITLE_LOOK:
 					data.Look = child.InnerText;

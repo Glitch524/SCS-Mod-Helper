@@ -124,6 +124,7 @@
 	<s:String x:Key="ModelTypeTip">（根据mod路径匹配）</s:String>
 	<s:String x:Key="ModelLook">外观(Look)</s:String>
 	<s:String x:Key="ModelVariant">变体(Variant)</s:String>
+	<s:String x:Key="TipApplyTLV">覆盖到所有选中车辆</s:String>
 	<s:String x:Key="HideIn">隐藏</s:String>
 	<s:String x:Key="ElectricType">Electric Type</s:String>
 	<s:String x:Key="Others">其他参数</s:String>

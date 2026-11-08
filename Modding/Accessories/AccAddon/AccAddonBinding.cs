@@ -9,8 +9,10 @@ using SCS_Mod_Helper.Vehicles;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.IO;
+using System.Security.AccessControl;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -43,7 +45,7 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 		ExtModelPath = AccAddonHistory.Default.ExtModelPath;
 		ExtModelPathUK = AccAddonHistory.Default.ExtModelPathUK;
 		CollPath = AccAddonHistory.Default.CollisionPath;
-		ModelType = AccAddonHistory.Default.ModelType;
+		AccType = AccAddonHistory.Default.ModelType;
 		Look = AccAddonHistory.Default.Look;
 		Variant = AccAddonHistory.Default.Variant;
 		ElectricType = AccAddonHistory.Default.ElectricType;
@@ -113,7 +115,7 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 		AccAddonHistory.Default.ExtModelPath = ExtModelPath;
 		AccAddonHistory.Default.ExtModelPathUK = ExtModelPathUK;
 		AccAddonHistory.Default.CollisionPath = CollPath;
-		AccAddonHistory.Default.ModelType = ModelType;
+		AccAddonHistory.Default.ModelType = AccType;
 		AccAddonHistory.Default.Look = Look;
 		AccAddonHistory.Default.Variant = Variant;
 		AccAddonHistory.Default.ElectricType = ElectricType;
@@ -319,36 +321,60 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 		set {
 			AddonItem.CollPath = value;
 			InvokeChange();
-
-			UseCollPath = value.Length > 0;
-
-			InvokeChange(nameof(CollPathClearVisibility));
 		}
 	}
-	public Visibility CollPathClearVisibility => CollPath.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
 
-	private bool mUseCollPath = false;
-	public bool UseCollPath {
-		get => mUseCollPath;
+	//配件类型、look、variant列表以及菜单
+	public ICommand OpenAccPopupCommand => new RelayCommand<object>(_ => IsAccPopupOpen = !IsAccPopupOpen);
+
+	public bool IsAccPopupOpen {
+		get;
 		set {
-			mUseCollPath = value;
+			field = value;
+			InvokeChange();
+		}
+	} = false;
+
+	public AccTypes AccessoryTypes { get; } = new();
+
+	private readonly AccType emptyAcc = new();
+
+	public AccType? mCurrentAccType = null;
+	public AccType CurrentAccType {
+		get {
+			if (mCurrentAccType == null) {
+				mCurrentAccType = emptyAcc;
+			}
+			return mCurrentAccType;
+		}
+		set {
+			mCurrentAccType = value ?? emptyAcc;
+			if (value != null && value != emptyAcc)
+				AccessoryTypes.UpdateSelectedList(value.Parent);
 			InvokeChange();
 		}
 	}
 
-	public string ModelType {
-		get => AddonItem.ModelType;
+	public string AccType {
+		get => AddonItem.AccType;
 		set {
-			AddonItem.ModelType = value;
-			if (CurrentModelType != null && value != CurrentModelType.Accessory) {
-				mCurrentModelType = null;
+			AddonItem.AccType = value;
+			if (CurrentAccType == emptyAcc || value != CurrentAccType.Accessory) {
+				if (value.Length > 0) {
+					foreach (var type in AccessoryTypes.AllAccs) {
+						if (value == type.Accessory) {
+							CurrentAccType = type;
+							type.IsSelected = true;
+						}
+					}
+				}
 			}
 			InvokeChange();
 
 			bool? flag = null;
-			if (value == $"{AccessoryType.TypeFlagL}/{AccessoryType.TypeFlagFL}") {
+			if (value == $"{"flag_l"}/{"flag_f_l"}") {
 				flag = true;
-			} else if (value == $"{AccessoryType.TypeFlagR}/{AccessoryType.TypeFlagFR}") {
+			} else if (value == $"{"flag_r"}/{"flag_f_r"}") {
 				flag = false;
 			}
 			if (flag != null) {
@@ -356,44 +382,15 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 				if (result == MessageBoxResult.Yes) {
 					if (flag == true) {
 						ModelPath = "/vehicle/truck/upgrade/flag/flag_left.pmd";
+						ModelPathUK = "";
 						CollPath = "/vehicle/truck/upgrade/flag/flag_left.pmc";
 					} else if (flag == false) {
 						ModelPath = "/vehicle/truck/upgrade/flag/flag_right.pmd";
+						ModelPathUK = "";
 						CollPath = "/vehicle/truck/upgrade/flag/flag_right.pmc";
 					}
 				}
 			}
-		}
-	}
-
-	//配件类型、look、variant列表以及菜单
-	private ObservableCollection<AccessoryType>? mModelTypes = null;
-	public ObservableCollection<AccessoryType> ModelTypes {
-		get {
-			mModelTypes ??= AccessoryType.ModelTypes;
-			return mModelTypes;
-		}
-	}
-
-	private readonly AccessoryType emptyAcc = new();
-
-	public AccessoryType? mCurrentModelType = null;
-	public AccessoryType CurrentModelType {
-		get {
-			if (mCurrentModelType == null) {
-				foreach (var type in ModelTypes) {
-					if (ModelType == type.Accessory) {
-						mCurrentModelType = type;
-						return mCurrentModelType;
-					}
-				}
-				return emptyAcc;
-			}
-			return mCurrentModelType;
-		}
-		set {
-			mCurrentModelType = value ?? emptyAcc;
-			InvokeChange();
 		}
 	}
 
@@ -659,7 +656,7 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 		ExtModelPath = "";
 		ExtModelPathUK = "";
 		CollPath = "";
-		ModelType = "";
+		AccType = "";
 		Look = "";
 		Variant = "";
 		HideIn = 0;
@@ -791,7 +788,7 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 	public void OverwriteEmpty(AccessoryVehicle vehicle, bool check) {
 		if (check) {
 			if (vehicle.ModelType.Length == 0)
-				vehicle.ModelType = ModelType;
+				vehicle.ModelType = AccType;
 			if (vehicle.Look.Length == 0)
 				vehicle.Look = Look;
 			if (vehicle.Variant.Length == 0)
@@ -819,7 +816,7 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 				StringResUtil.GetStringResResults(DisplayName, out var localizedName);
 				LocalizedDisplayName = localizedName;
 			}
-			saveFileDialog.FileName = $"{LocalizedDisplayName} {ModelType} {ModelName}";
+			saveFileDialog.FileName = $"{LocalizedDisplayName} {AccType} {ModelName}";
 		} else
 			saveFileDialog.FileName = LoadedFilename;
 		if (saveFileDialog.ShowDialog() == true) {
@@ -977,15 +974,15 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 				collPath = null;
 
 			for (int i = parentDirs.Length - 2; i > 0; i--) {
-				foreach (var info in ModelTypes) {//根据路径猜测模型的类型
-					if (parentDirs[i] == info.AccessoryETS2 || parentDirs[i] == info.AccessoryATS)
+				foreach (var info in AccessoryTypes.AllAccs) {//根据路径猜测模型的类型
+					if (parentDirs[i] == info.AccETS2 || parentDirs[i] == info.AccATS)
 						modelType = info.Accessory;
 				}
 			}
 			bool showAF = false;
 			if (ModelName == modelName)
 				modelName = null;
-			if (ModelType == modelType)
+			if (AccType == modelType)
 				modelType = null;
 			inProjectPath = inProjectPath.Replace('\\', '/');
 			inProjectPath = inProjectPath[..^4];
@@ -1075,8 +1072,8 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 					if (modelName != null && afWindow.CheckModelName)
 						ModelName = modelName;
 					if (modelType != null && afWindow.CheckModelType) {
-						mCurrentModelType = null;
-						ModelType = modelType;
+						mCurrentAccType = null;
+						AccType = modelType;
 					}
 					if (modelPath != null && afWindow.CheckModelPath) {
 						if (chooseType == ChooseModelType.ExtModel || chooseType == ChooseModelType.ExtModelUK)

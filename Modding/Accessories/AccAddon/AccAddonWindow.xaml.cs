@@ -36,7 +36,7 @@ public partial class AccAddonWindow: BaseWindow {
 		GridMain.DataContext = Binding;
 
 		MenuModelType = (ContextMenu)Resources["MenuModelType"];
-		MenuModelType.ItemsSource = Binding.ModelTypes;
+		MenuModelType.DataContext = Binding.AccessoryTypes;
 		MenuLook = (ContextMenu)Resources["MenuLook"];
 		MenuLook.ItemsSource = Binding.LookList;
 		MenuVariant = (ContextMenu)Resources["MenuVariant"];
@@ -65,15 +65,16 @@ public partial class AccAddonWindow: BaseWindow {
 			nameof(MenuVariant) => MenuVariant,
 			_ => throw new ArgumentException("")
 		};
-		AccessoryVehicle vehicle = (AccessoryVehicle)cm.DataContext;
+		var pTextbox = (TextBox)cm.PlacementTarget;
+		AccessoryVehicle vehicle = (AccessoryVehicle) pTextbox.DataContext;
 		if (cm == MenuModelType) {
-			var acc = (AccessoryType) item.DataContext;
+			var acc = (AccType) item.DataContext;
 			if (vehicle.IsETS2) {
 				if (acc.ForETS2)
-					vehicle.ModelType = acc.AccessoryETS2!;
+					vehicle.ModelType = acc.AccETS2!;
 			} else {
 				if (acc.ForATS)
-					vehicle.ModelType = acc.AccessoryATS!;
+					vehicle.ModelType = acc.AccATS!;
 			}
 		} else if (cm == MenuLook) {
 			vehicle.Look = (string)item.DataContext;
@@ -222,6 +223,14 @@ public partial class AccAddonWindow: BaseWindow {
 		}
 	}
 
+	private void AccTypeSelctedChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
+		if (e.NewValue is AccType accType) {
+			Binding.IsAccPopupOpen = false;
+			Binding.CurrentAccType = accType;
+			Binding.AccType = accType.Accessory;
+		} 
+	}
+
 	private void ButtonCoverValue(object sender, RoutedEventArgs e) {
 		void ForeachValue(Action<AccessoryVehicle> value, Action<AccessoryVehicle>? valueATS = null) {
 			if (VehicleExpandedETS2) {
@@ -243,13 +252,13 @@ public partial class AccAddonWindow: BaseWindow {
 			}
 		}
 		if (sender == ButtonCoverModelType) {
-			var acc = Binding.CurrentModelType;
+			var acc = Binding.CurrentAccType;
 			ForeachValue((t) => {
 				if (acc.ForETS2)
-					t.ModelType = acc.AccessoryETS2!;
+					t.ModelType = acc.AccETS2!;
 			}, (t) => {
 				if (acc.ForATS)
-					t.ModelType = acc.AccessoryATS!;
+					t.ModelType = acc.AccATS!;
 			});
 		} else if (sender == ButtonCoverLook) {
 			ForeachValue((t) => t.Look = TextLook.Text);

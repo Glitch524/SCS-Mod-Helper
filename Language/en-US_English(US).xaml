@@ -123,7 +123,8 @@
 	<s:String x:Key="ModelType">Model Type </s:String>
 	<s:String x:Key="ModelTypeTip">(Auto filled by modelPath)</s:String>
 	<s:String x:Key="ModelLook">Look</s:String>
-	<s:String x:Key="ModelVariant">Variant</s:String>
+	<s:String x:Key="ModelVariant">Variant</s:String>	
+	<s:String x:Key="TipApplyTLV">Apply to all selected vehicles</s:String>
 	<s:String x:Key="HideIn">Hide in</s:String>
 	<s:String x:Key="ElectricType">Electric Type</s:String>
 	<s:String x:Key="Others">Others</s:String>
