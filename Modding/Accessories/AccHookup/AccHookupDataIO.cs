@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Threading;
 
 namespace SCS_Mod_Helper.Modding.Accessories.AccHookup {
-	public class AccHookupDataIO(): AccSCSIO {
+	public class AccHookupDataIO: AccSCSIO {
 		//addon hookup storage
 		private const string NameAHSPreffix = "addon_hookup_storage";
 
@@ -13,7 +13,10 @@ namespace SCS_Mod_Helper.Modding.Accessories.AccHookup {
 		private const string NameAHSuffix = ".addon_hookup";
 		private const string NameAHModel = "model";
 
-		protected override bool HasQuote(string name) => base.HasQuote(name) || name.Equals(NameAHModel);
+		public AccHookupDataIO() {
+			ListHasQuote.Add(NameAHModel);
+		}
+
 		protected void WriteData(StreamWriter sw, string modelName, Action data) {
 			sw.Write(new string('\t', TabCount));
 			sw.WriteLine($"{NameAHHeader} : {modelName}{NameAHSuffix}");

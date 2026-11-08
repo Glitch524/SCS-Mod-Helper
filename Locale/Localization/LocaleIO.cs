@@ -5,7 +5,7 @@ using System.IO;
 using System.Windows;
 
 namespace SCS_Mod_Helper.Locale.Localization {
-	internal class LocaleIO(): SCSIO {
+	internal class LocaleIO: SCSIO {
 		private const string NameLocHeader = "localization_db : .localization";
 		private const string DictPreffix = "local_module";
 		private const string NameKey = "key";
@@ -21,10 +21,11 @@ namespace SCS_Mod_Helper.Locale.Localization {
 			data();
 			BraceOut(sw);
 		}
+		public LocaleIO() {
+			ListIsArray.AddRange([NameKey, NameValue]);
+			ListHasQuote.AddRange([NameKey, NameValue]);
 
-		protected override bool IsArray(string name) => name.Equals(NameKey) || name.Equals(NameValue);
-
-		protected override bool HasQuote(string name) => name.Equals(NameKey) || name.Equals(NameValue);
+		}
 
 		/// <summary>
 		/// 异步读取本地化目录，解析并返回所有地区的本地化模块列表。

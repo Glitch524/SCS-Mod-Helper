@@ -4,7 +4,7 @@ using System.IO;
 using System.Windows.Media;
 
 namespace SCS_Mod_Helper.Modding.PaintJob; 
-public class PaintJobSCSIO(): SCSIO {
+public class PaintJobSCSIO: SCSIO {
 	protected const string HeaderAccPaintJob = "accessory_paint_job_data";
 	private const string NameDisplayName = "name";
 	private const string NamePrice = "price";
@@ -51,33 +51,28 @@ public class PaintJobSCSIO(): SCSIO {
 	protected const string HeaderSimplePaintJob = "simple_paint_job_data";
 	private const string NameAccList = "acc_list";
 
-
-
-	protected override bool HasQuote(string name) => name switch {
-		NameDisplayName or
-		NameIcon or
-		NamePartType or
-		NameSuitableFor or
-		NameConflictWith or
-		NameDefaults or
-		NameOverrides or
-		NameRequire or
-		NameBaseTextureOverride or
-		NamePaintJobMask or
-		NameFlakeNoise => true,
-		_ => false
-	};
-
-	protected override bool IsArray(string name) => name switch {
-		NameSuitableFor or
-		NameConflictWith or
-		NameDefaults or
-		NameOverrides or
-		NameRequire or
-		NameColorVariant or
-		NameAccList => true,
-		_ => false
-	};
+	public PaintJobSCSIO() {
+		ListIsArray.AddRange([
+			NameSuitableFor,
+			NameConflictWith,
+			NameDefaults,
+			NameOverrides,
+			NameRequire,
+			NameColorVariant,
+			NameAccList]);
+		ListHasQuote.AddRange([
+			NameDisplayName,
+			NameIcon,
+			NamePartType,
+			NameSuitableFor,
+			NameConflictWith,
+			NameDefaults,
+			NameOverrides,
+			NameRequire,
+			NameBaseTextureOverride,
+			NamePaintJobMask,
+			NameFlakeNoise]);
+	}
 
 	private void WriteAccPaintJobData(StreamWriter sw, string paintJobName, string vehicleID, Action data) {
 		WriteDataHeader(sw, HeaderAccPaintJob, $"{paintJobName}.{vehicleID}.paint_job", data);

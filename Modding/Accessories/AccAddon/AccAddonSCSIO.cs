@@ -4,7 +4,7 @@ using SCS_Mod_Helper.Utils;
 using System.IO;
 
 namespace SCS_Mod_Helper.Modding.Accessories.AccAddon {
-	public class AccAddonSCSIO(): AccSCSIO {
+	public class AccAddonSCSIO: AccSCSIO {
 		private const string NameAccIntHeader = "accessory_addon_int_data";
 		private const string NameAccHeader = "accessory_addon_int_data";
 		private const string NamePatchHeader = "accessory_addon_patch_data";
@@ -14,7 +14,21 @@ namespace SCS_Mod_Helper.Modding.Accessories.AccAddon {
 		private const string NameAAIntModelUK = "interior_model_uk";
 		private const string NameAAHideIn = "hide_in";
 
-		bool isPatch = false;
+		bool IsPatch { 
+			get;
+			set {
+				field = value;
+				if (value)
+					ListIsArray.Remove(NameData);
+				else
+					ListIsArray.Add(NameData);
+			}
+		} = false;//如果以后是树状的话，这里就有可能会出现问题，不过一般做旗子也不会掺别的东西
+
+		public AccAddonSCSIO() {
+			ListIsArray.Add(NameData);
+			ListHasQuote.AddRange([NameAAIntModel, NameAAExtModel, NameAAIntModelUK, NameAAExtModelUK]);
+		}
 
 		protected void WriteData(StreamWriter sw, bool isPatch, AccAddonBinding binding, string vehicleID, string modelType, Action data) {
 			sw.Write(new string('\t', TabCount));
@@ -31,27 +45,6 @@ namespace SCS_Mod_Helper.Modding.Accessories.AccAddon {
 			BraceOut(sw);
 		}
 
-		protected new bool IsArray(string name) {
-			if (base.IsArray(name))
-				return true;
-			switch (name) {
-				case NameData://如果modeltype为patch，data的key应为“data”，而非一般的“data[]”
-					if (isPatch)
-						return false;
-					else
-						return true;
-			}
-			return false;
-		}
-
-		protected override bool HasQuote(string name) {
-			if (base.HasQuote(name))
-				return true;
-			return name switch {
-				NameAAIntModel or NameAAExtModel or NameAAIntModelUK or NameAAExtModelUK => true,
-				_ => false,
-			};
-		}
 
 		public static int CreateAccAddonSii(AccAddonBinding binding) => new AccAddonSCSIO().CreateAccAddonSiiInternal(binding);
 
@@ -75,13 +68,13 @@ namespace SCS_Mod_Helper.Modding.Accessories.AccAddon {
 						File.Delete(siiFile);
 					continue;
 				}
-				isPatch = vehicle.ModelType switch {//当modeltype为flag等，addon_data的标题应为accessory_addon_patch_data才能让旗子正常显示，而且填写物理模型的data并非数组，不带中括号
+				IsPatch = vehicle.ModelType switch {//当modeltype为flag等，addon_data的标题应为accessory_addon_patch_data才能让旗子正常显示，而且填写物理模型的data并非数组，不带中括号
 					"flag_l" or "flag_r" or "flag_f_l" or "flag_f_r" => true,
 					_ => false,
 				};
 				using StreamWriter sw = new(siiFile);
 				WriteFileStructure(sw, () => {
-					WriteData(sw, isPatch, binding, vehicle.VehicleID, vehicle.ModelType, () => {
+					WriteData(sw, IsPatch, binding, vehicle.VehicleID, vehicle.ModelType, () => {
 						WriteLine(sw, NameDisplayName, binding.DisplayName);
 						WriteLine(sw, NamePrice, binding.Price ?? 1);
 						WriteLine(sw, NameUnlock, binding.UnlockLevel ?? 0);

@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 
 namespace SCS_Mod_Helper.Manifest {
-	public class ManifestIO(): SCSIO {
+	public class ManifestIO: SCSIO {
 		private const string NameMFHeader = "mod_package : .package_name";
 		private const string NameMFPackageVersion = "package_version";
 		private const string NameMFDisplayName = "display_name";
@@ -17,18 +17,10 @@ namespace SCS_Mod_Helper.Manifest {
 		private const string NameMFDescriptionFile = "description_file";
 		private const string NameMFMPOptional = "mp_mod_optional";
 
-		protected override bool HasQuote(string name) => name switch {
-			NameMFPackageVersion or
-			NameMFDisplayName or
-			NameMFAuthor or
-			NameMFCategory or
-			NameMFIcon or
-			NameMFDescriptionFile => true,
-			_ => false
-		};
-
-		protected override bool IsArray(string name) => name.Equals(NameMFCategory);
-
+		public ManifestIO() {
+			ListIsArray.Add(NameMFCategory);
+			ListHasQuote.AddRange([NameMFPackageVersion,	NameMFDisplayName, NameMFAuthor, NameMFCategory, NameMFIcon, NameMFDescriptionFile]);
+		}
 
 		protected void WriteData(StreamWriter sw, Action data) {
 			sw.Write(new string('\t', TabCount));

@@ -37,9 +37,8 @@ namespace SCS_Mod_Helper.Class.Base {
 			sw.WriteLine('}');
 		}
 
-		protected abstract bool IsArray(string name);
-
-		protected abstract bool HasQuote(string name);
+		protected List<string> ListIsArray = [];
+		protected List<string> ListHasQuote = [];
 
 		protected static void WriteEmptyLine(StreamWriter sw) => sw.WriteLine("");
 
@@ -119,29 +118,24 @@ namespace SCS_Mod_Helper.Class.Base {
 			}
 			Write(sw, name, value);
 		}
-		protected void WriteLine(StreamWriter sw, string name, Floats floats) {
-			if (floats == null)
+		protected void WriteLine(StreamWriter sw, string name, Float2 float2, float? f0 = null, float? f1 = null) {
+			if (float2.F0 == null && float2.F1 == null)
 				return;
-			string value;
-			switch (floats) {
-				case Float2 float2:
-					if (float2.F0 == null && float2.F1 == null)
-						return;
-					value = float2.ToSiiValue();
-					break;
-				case Float3 float3:
-					if (float3.F0 == null && float3.F1 == null && float3.F2 == null)
-						return;
-					value = float3.ToSiiValue();
-					break;
-				default:
-					throw new ArgumentException("");
-			}
-			Write(sw, name, value);
+			if (float2.IsEqual(f0, f1))
+				return;
+			Write(sw, name, float2.ToSiiValue());
+		}
+
+		protected void WriteLine(StreamWriter sw, string name, Float3 float3, float? f0 = null, float? f1 = null, float? f2 = null) {
+			if (float3.F0 == null && float3.F1 == null && float3.F2 == null)
+				return;
+			if (float3.IsEqual(f0, f1, f2))
+				return;
+			Write(sw, name, float3.ToSiiValue());
 		}
 
 		protected void WriteLine(StreamWriter sw, string name, float?[] floats, float[] defaultValue) {
-			if (Array.Equals(floats, defaultValue))
+			if (Equals(floats, defaultValue))
 				return;
 			WriteLine(sw, name, floats);
 		}
@@ -177,8 +171,8 @@ namespace SCS_Mod_Helper.Class.Base {
 		}
 
 		private void Write(StreamWriter sw, string name, string value) {
-			var isArray = IsArray(name);
-			var hasQuote = HasQuote(name);
+			var isArray = ListIsArray.Contains(name);
+			var hasQuote = ListHasQuote.Contains(name);
 
 			sw.Write(new string('\t', TabCount));
 			sw.Write(name);
