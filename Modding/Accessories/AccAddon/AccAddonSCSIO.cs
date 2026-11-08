@@ -21,7 +21,7 @@ namespace SCS_Mod_Helper.Modding.Accessories.AccAddon {
 			string header;
 			if (isPatch)
 				header = NamePatchHeader;
-			else if (binding.Data.Count == 0)
+			else if (binding.Data.Count == 0)//todo 通过accType判断是否车内饰品，大概在后续树状结构才能实现
 				header = NameAccHeader;
 			else
 				header = NameAccIntHeader;
@@ -100,7 +100,8 @@ namespace SCS_Mod_Helper.Modding.Accessories.AccAddon {
 							else
 								WriteLine(sw, NameAAExtModelUK, binding.ExtModelPathUK);
 						}
-						WriteLine(sw, NameCollPath, binding.CollPath);
+						if (binding.AddonItem.UseCollPath)
+							WriteLine(sw, NameCollPath, binding.CollPath);
 						WriteLine(sw, NameLook, vehicle.Look, "default");
 						WriteLine(sw, NameVariant, vehicle.Variant, "default");
 						WriteLine(sw, NameAAHideIn, binding.HideIn, 0);
