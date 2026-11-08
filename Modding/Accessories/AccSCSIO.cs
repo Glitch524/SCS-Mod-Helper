@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Threading;
 
 namespace SCS_Mod_Helper.Modding.Accessories {
-	public abstract class AccSCSIO(): SCSIO {
+	public abstract class AccSCSIO: SCSIO {
 
 		protected const string NameDisplayName = "name";
 		protected const string NamePrice = "price";
@@ -39,12 +39,6 @@ namespace SCS_Mod_Helper.Modding.Accessories {
 				NameCollPath]);
 		}
 
-		protected override bool HasQuote(string name) => name switch {
-			NameDisplayName or
-			NameIconName or
-			NameCollPath => true,
-			_ => false,
-		};
 
 		//physics data
 		public const string NamePSuffix = ".phys_data";
@@ -120,30 +114,30 @@ namespace SCS_Mod_Helper.Modding.Accessories {
 					WriteLine(sw, NamePTVariant, toyData.Variant);
 					WriteEmptyLine(sw);
 					WriteLine(sw, NamePTToyType, toyData.ToyType);
-					WriteLine(sw, NamePTMass, toyData.Mass);
-					WriteLine(sw, NamePTCogOffset, toyData.CogOffset);
-					WriteLine(sw, NamePTLinearStiffness, toyData.LinearStiffness);
-					WriteLine(sw, NamePTLinearDamping, toyData.LinearDamping);
-					WriteLine(sw, NamePTLocatorHookOffset, toyData.LocatorHookOffset);
-					WriteLine(sw, NamePTRestPositionOffset, toyData.RestPositionOffset);
-					WriteLine(sw, NamePTRestRotationOffset, toyData.RestRotationOffset);
+					WriteLine(sw, NamePTMass, toyData.Mass, 0.1f);
+					WriteLine(sw, NamePTCogOffset, toyData.CogOffset, 0f, 0f, 0f);
+					WriteLine(sw, NamePTLinearStiffness, toyData.LinearStiffness, 1f);
+					WriteLine(sw, NamePTLinearDamping, toyData.LinearDamping, 0.5f);
+					WriteLine(sw, NamePTLocatorHookOffset, toyData.LocatorHookOffset, 0f, 0f, 0f);
+					WriteLine(sw, NamePTRestPositionOffset, toyData.RestPositionOffset, 0f, 0f, 0f);
+					WriteLine(sw, NamePTRestRotationOffset, toyData.RestRotationOffset, 0f, 0f, 0f);
 					foreach (var offset in toyData.InstanceOffsetList) {
 						WriteLine(sw, NamePTInstanceOffset, offset);
 					}
 					WriteEmptyLine(sw);
-					WriteLine(sw, NamePTAngularStiffness, toyData.AngularStiffness);
-					WriteLine(sw, NamePTAngularDamping, toyData.AngularDamping);
-					WriteLine(sw, NamePTAngularAmplitude, toyData.AngularAmplitude);
+					WriteLine(sw, NamePTAngularStiffness, toyData.AngularStiffness, 0.2f, 0.2f);
+					WriteLine(sw, NamePTAngularDamping, toyData.AngularDamping, 0.2f, 0.2f);
+					WriteLine(sw, NamePTAngularAmplitude, toyData.AngularAmplitude, 0f, 0f, 0f);
 					WriteEmptyLine(sw);
-					WriteLine(sw, NamePTRopeMaterial, toyData.RopeMaterial);
-					WriteLine(sw, NamePTRopeWidth, toyData.RopeWidth);
-					WriteLine(sw, NamePTRopeLength, toyData.RopeLength);
-					WriteLine(sw, NamePTRopeHookOffset, toyData.RopeHookOffset);
-					WriteLine(sw, NamePTRopeToyOffset, toyData.RopeToyOffset);
-					WriteLine(sw, NamePTRopeResolution, toyData.RopeResolution);
-					WriteLine(sw, NamePTRopeLinearDensity, toyData.RopeLinearDensity);
-					WriteLine(sw, NamePTPositionIterations, toyData.PositionIterations);
-					WriteLine(sw, NamePTNodeDamping, toyData.NodeDamping);
+					WriteLine(sw, NamePTRopeMaterial, toyData.RopeMaterial, string.Empty);
+					WriteLine(sw, NamePTRopeWidth, toyData.RopeWidth, 0.5f);
+					WriteLine(sw, NamePTRopeLength, toyData.RopeLength, 0f);
+					WriteLine(sw, NamePTRopeHookOffset, toyData.RopeHookOffset, 0f);
+					WriteLine(sw, NamePTRopeToyOffset, toyData.RopeToyOffset, 0f);
+					WriteLine(sw, NamePTRopeResolution, toyData.RopeResolution, 8);
+					WriteLine(sw, NamePTRopeLinearDensity, toyData.RopeLinearDensity, 1f);
+					WriteLine(sw, NamePTPositionIterations, toyData.PositionIterations, 10);
+					WriteLine(sw, NamePTNodeDamping, toyData.NodeDamping, 0f);
 				});
 			} else if (phys is PhysicsPatchData patchData) {
 				if (patchData.Material.Length == 0 || patchData.PhysicsName.Length == 0)
@@ -151,23 +145,22 @@ namespace SCS_Mod_Helper.Modding.Accessories {
 				WritePhysicsPatchData(sw, patchData.PhysicsName, () => {
 					WriteLine(sw, NamePPMaterial, patchData.Material);
 
-					WriteLine(sw, NamePPAreaDensity, patchData.AreaDensity);
-					if (patchData.AeroModelType != "AT_two_side_lift_drag")
-						WriteLine(sw, NamePPAeroModelType, patchData.AeroModelType);
+					WriteLine(sw, NamePPAreaDensity, patchData.AreaDensity, 2f);
+					WriteLine(sw, NamePPAeroModelType, patchData.AeroModelType);
 
-					WriteLine(sw, NamePPLinearStiffness, patchData.LinearStiffness);
-					WriteLine(sw, NamePPDragCoefficient, patchData.DragCoefficient);
-					WriteLine(sw, NamePPLiftCoefficient, patchData.LiftCoefficient);
+					WriteLine(sw, NamePPLinearStiffness, patchData.LinearStiffness, 0.4f);
+					WriteLine(sw, NamePPDragCoefficient, patchData.DragCoefficient, 0.1f);
+					WriteLine(sw, NamePPLiftCoefficient, patchData.LiftCoefficient, 0.3f);
 
-					WriteLine(sw, NamePPTCMinFirst, patchData.TCMinFirst);
-					WriteLine(sw, NamePPTCMaxFirst, patchData.TCMaxFirst);
-					WriteLine(sw, NamePPTCMinSecond, patchData.TCMinSecond);
-					WriteLine(sw, NamePPTCMaxSecond, patchData.TCMaxSecond);
+					WriteLine(sw, NamePPTCMinFirst, patchData.TCMinFirst, 0f, 0f);
+					WriteLine(sw, NamePPTCMaxFirst, patchData.TCMaxFirst, 1f, 1f);
+					WriteLine(sw, NamePPTCMinSecond, patchData.TCMinSecond, 0f, 0f);
+					WriteLine(sw, NamePPTCMaxSecond, patchData.TCMaxSecond, 1f, 1f);
 
-					WriteLine(sw, NamePPXRes, patchData.XRes);
-					WriteLine(sw, NamePPYRes, patchData.YRes);
-					WriteLine(sw, NamePPXSize, patchData.XSize);
-					WriteLine(sw, NamePPYSize, patchData.YSize);
+					WriteLine(sw, NamePPXRes, patchData.XRes, 3);
+					WriteLine(sw, NamePPYRes, patchData.YRes, 3);
+					WriteLine(sw, NamePPXSize, patchData.XSize, 1f);
+					WriteLine(sw, NamePPYSize, patchData.YSize, 1f);
 				});
 			}
 		}

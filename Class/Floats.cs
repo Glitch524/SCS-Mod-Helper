@@ -40,7 +40,7 @@ public class Float2(float? f0, float? f1): Floats(2) {
 	public string? F0String {
 		get => FloatToString(F0);
 		set {
-			mF0 = value == null ? null : float.Parse(value);
+			mF0 = string.IsNullOrEmpty(value) ? null : float.Parse(value);
 			InvokeChange();
 		}
 	}
@@ -56,7 +56,7 @@ public class Float2(float? f0, float? f1): Floats(2) {
 	public string? F1String {
 		get => FloatToString(F1);
 		set {
-			mF1 = value == null ? null : float.Parse(value);
+			mF1 = string.IsNullOrEmpty(value) ? null : float.Parse(value);
 			InvokeChange();
 		}
 	}
@@ -84,7 +84,7 @@ public class Float2(float? f0, float? f1): Floats(2) {
 
 	public override string ToAppValue() => $"{F0},{F1}";
 
-
+	public bool IsEqual(float? f0, float? f1) => F0 == f0 && F1 == f1;
 }
 
 public class Float3(float? f0, float? f1, float? f2): Floats(3) {
@@ -164,4 +164,5 @@ public class Float3(float? f0, float? f1, float? f2): Floats(3) {
 	public override string ToSiiValue() => $"({FloatToString(F0)},{FloatToString(F1)},{FloatToString(F2)})";
 
 	public override string ToAppValue() => $"{F0},{F1},{F2}";
+	public bool IsEqual(float? f0, float? f1, float? f2) => F0 == f0 && F1 == f1 && F2 == f2;
 }

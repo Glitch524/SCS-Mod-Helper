@@ -1119,7 +1119,7 @@
 						<ui:TextBox
 							x:Name="TextRopeResolution"
 							ClearButtonEnabled="False"
-							Text="{Binding CurrentToyData.RopeResolution}"
+							Text="{Binding CurrentToyData.RopeResolution, Converter={x:Static utils:UIntConverter.Instance}}"
 							PlaceholderText="8"
 							PreviewTextInput="NumberOnly" />
 					</StackPanel>
@@ -1132,7 +1132,7 @@
 						<ui:TextBox
 							x:Name="TextPositionIterations"
 							ClearButtonEnabled="False"
-							Text="{Binding CurrentToyData.PositionIterations}"
+							Text="{Binding CurrentToyData.PositionIterations, Converter={x:Static utils:UIntConverter.Instance}}"
 							PlaceholderText="10"
 							PreviewTextInput="NumberOnly" />
 					</StackPanel>

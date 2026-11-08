@@ -41,6 +41,8 @@ namespace SCS_Mod_Helper.Utils {
 		public object? ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
 			string text = (string)value;
 			try {
+				if (string.IsNullOrEmpty(text))
+					return null;
 				return uint.Parse(text);
 			} catch {
 				return null;
