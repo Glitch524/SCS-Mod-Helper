@@ -75,24 +75,26 @@ public class PhysicsToyData(string physicsName = ""): PhysicsData(physicsName) {
 		else
 			mVariantList.Clear();
 		var path = mModelPath;
-		if (path.Length < 5 || path.EndsWith('.'))
-			return;
+		if (path.Length >= 5 && !path.EndsWith('.')) {
+			path = path.Replace('/', '\\');
+			path = path[..^4] + ".pit";
+			path = Instances.ProjectLocation + path;
 
-		path = path.Replace('/', '\\');
-		path = path[..^4] + ".pit";
-		path = Instances.ProjectLocation + path;
-
-		static void setValue(ObservableCollection<string> list, string oldValue, Action<string> set) {
-			if (list.Count > 0) {
-				if (list.Contains(oldValue)) {
-					set(oldValue);
-				} else
-					set(list[0]);
+			static void setValue(ObservableCollection<string> list, string oldValue, Action<string> set) {
+				if (list.Count > 0) {
+					if (list.Contains(oldValue)) {
+						set(oldValue);
+					} else
+						set(list[0]);
+				}
 			}
+			AccSCSIO.ReadLookAndVariant(path, mLookList, mVariantList);
+			setValue(mLookList, oldLook, (set) => Look = set);
+			setValue(mVariantList, oldVariant, (set) => Variant = set);
+		} else {
+			mLookList.Add("default");
+			mVariantList.Add("default");
 		}
-		AccSCSIO.ReadLookAndVariant(path, mLookList, mVariantList);
-		setValue(mLookList, oldLook, (set) => Look = set);
-		setValue(mVariantList, oldVariant, (set) => Variant = set);
 	}
 
 	private string mToyType = "TT_rope";

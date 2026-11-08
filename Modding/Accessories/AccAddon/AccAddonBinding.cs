@@ -422,15 +422,15 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 				else if (ModelPathUK.Length > 0)
 					path = ModelPathUK;
 				else
-					return;
+					throw new ArgumentNullException("default");
 				path = path.Replace('/', '\\');
 				if (path.Length < 4)
-					return;
+					throw new ArgumentNullException("default");
 				path = path[..^4] + ".pit";
 				path = ProjectLocation + path;
 			} else if (path.EndsWith(".pim")) {
 				if (path.Length < 4)
-					return;
+					throw new ArgumentNullException("default");
 				path = path[..^4] + ".pit";
 			}
 			Application.Current.Dispatcher.Invoke(() => {
@@ -450,6 +450,14 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 			}
 			setValue(LookList, oldLook, (set) => Look = set);
 			setValue(VariantList, oldVariant, (set) => Variant = set);
+		} catch (ArgumentNullException ex) {
+			if (ex.Message == "default") {
+				if (LookList.Count == 0 && VariantList.Count == 0) {
+					LookList.Add("default");
+					VariantList.Add("default");
+				}
+			} else
+				MessageBox.Show(BindingWindow, Util.GetString("MessageLoadDEDErrFail") + "\n" + ex.Message);
 		} catch (Exception ex) {
 			MessageBox.Show(BindingWindow, Util.GetString("MessageLoadDEDErrFail") + "\n" + ex.Message);
 		}
