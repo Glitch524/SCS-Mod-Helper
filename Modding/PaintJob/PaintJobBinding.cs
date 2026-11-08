@@ -1,11 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using Microsoft.Win32;
 using SCS_Mod_Helper.Class.Base;
 using SCS_Mod_Helper.Modding.Accessories;
 using SCS_Mod_Helper.Modding.PaintJob.ColorMask;
 using SCS_Mod_Helper.Utils;
 using SCS_Mod_Helper.Vehicles;
-using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
