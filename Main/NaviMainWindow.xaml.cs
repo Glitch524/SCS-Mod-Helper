@@ -63,8 +63,11 @@ public partial class NaviMainWindow: BaseWindow {
 					} else
 						return;
 				}
-				window = new ConverterPixWindow();
-				break;
+				window = new ConverterPixWindow {
+					Owner = this
+				};
+				window.Show();
+				return;
 			default:
 				return;
 		}
