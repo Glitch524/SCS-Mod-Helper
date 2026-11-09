@@ -2,6 +2,7 @@
 using SCS_Mod_Helper.Class.Base;
 using SCS_Mod_Helper.Setting;
 using SCS_Mod_Helper.Utils;
+using System.Collections;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
@@ -14,45 +15,7 @@ namespace SCS_Mod_Helper.ConverterPix;
 public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PIXFile> listBoxScrollToTop): WindowBinding(visualFunc) {
 	private readonly Action<PIXFile> ScrollToFile = listBoxScrollToTop;
 
-	private void ScrollToTop() => ScrollToFile(FileList[0]);
-
-	public string PackPath {
-		get;
-		set {
-			field = value;
-			InvokeChange();
-		}
-	} = string.Empty;
-
-	public ICommand ChoosePackCommand => new RelayCommand<object>(_ => ChoosePack());
-
-	private void ChoosePack() {
-		string defaultDir;
-		if (!string.IsNullOrEmpty(Instances.ETS2GamePath))
-			defaultDir = Instances.ETS2GamePath;
-		else if (!string.IsNullOrEmpty(Instances.ATSGamePath))
-			defaultDir = Instances.ATSGamePath;
-		else
-			defaultDir = Instances.CommonModPath;
-
-		string initialDir;
-		if (string.IsNullOrEmpty(History.Default.PixPackPath))
-			initialDir = defaultDir;
-		else
-			initialDir = History.Default.PixPackPath;
-		OpenFileDialog openFileDialog = new() {
-			Filter = Util.GetFilter("DialogFilterMod"),
-			Multiselect = false,
-			DefaultDirectory = defaultDir,
-			InitialDirectory = initialDir
-		};
-		if (openFileDialog.ShowDialog() == true) {
-			PackPath = openFileDialog.FileName;
-			History.Default.PixPackPath = Directory.GetParent(PackPath)!.FullName;
-			History.Default.Save();
-			DirStart(openFileDialog.SafeFileName);
-		}
-	}
+	private void ScrollToTop() => ScrollToFile(CurrentPack!.FileList[0]);
 
 	public bool UseCustomDestPath {
 		get;
@@ -94,46 +57,74 @@ public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PI
 		}
 	}
 
+	public ObservableCollection<PixPackage> PackList { get; } = [new()];
 
-	private readonly List<List<PackDir>> HistoryUndoList = [];//记录切换位置之前的所有dir
-	public int UndoCount => HistoryUndoList.Count;
-
-	private void HistoryAdd() {
-		HistoryUndoList.Add([.. DirList]);
-		InvokeChange(nameof(UndoCount));
-	}
-	private void HistoryClear() {
-		HistoryUndoList.Clear();
-		InvokeChange(nameof(UndoCount));
-	}
-
-
-	public ICommand UndoCommand => new RelayCommand<object>(_ => Undo());
-	public void Undo() {//返回时直接将dir放进dirlist里，然后readdir
-		var last = HistoryUndoList.Last();
-		HistoryUndoList.RemoveAt(HistoryUndoList.Count - 1);
-		InvokeChange(nameof(UndoCount));
-		DirList.Clear();
-		foreach(var l in last) {
-			DirList.Add(l);
+	public PixPackage? CurrentPack {
+		get;
+		set {
+			field = value;
+			InvokeChange();
 		}
-		_ = ReadDir();
+	} = null;
+
+	public void AddPack() {
+		PixPackage newPack = new();
+		PackList.Add(newPack);
+		CurrentPack = newPack;
 	}
 
-	private readonly ObservableCollection<PackDir> mDirList = [];
-
-	public ObservableCollection<PackDir> DirList => mDirList;
-	public string PackDir => DirList.LastOrDefault()?.DirName ?? "/";
-
-	public void DirStart(string packName) {
-		DirList.Clear();
-		HistoryClear();
-		DirList.Add(new("/", packName));
-		_ = ReadDir();
+	public void ClosePack(PixPackage pack) {
+		PackList.Remove(pack);
+		if (PackList.Count == 0) {
+			AddPack();
+		}
 	}
+
+	private ObservableCollection<PackDir> CurrentPathList => CurrentPack!.PathList;
+	private ObservableCollection<List<PackDir>> CurrentHistoryUndoList => CurrentPack!.HistoryUndoList;
+	private ObservableCollection<PIXFile> CurrentFileList => CurrentPack!.FileList;
+	private PIXFile? CurrentSelectedFile { 
+		get => CurrentPack?.SelectedFile;
+		set => CurrentPack?.SelectedFile = value;
+	}
+	private string CurrentPackPath => CurrentPack!.PackPath;
+	private string CurrentPackDir => CurrentPack!.PackDir;
+
+	public ICommand ChoosePackCommand => new RelayCommand<object>(_ => ChoosePack());
+
+	private void ChoosePack() {
+		string defaultDir;
+		if (!string.IsNullOrEmpty(Instances.ETS2GamePath))
+			defaultDir = Instances.ETS2GamePath;
+		else if (!string.IsNullOrEmpty(Instances.ATSGamePath))
+			defaultDir = Instances.ATSGamePath;
+		else
+			defaultDir = Instances.CommonModPath;
+
+		string initialDir;
+		if (string.IsNullOrEmpty(History.Default.PixPackPath))
+			initialDir = defaultDir;
+		else
+			initialDir = History.Default.PixPackPath;
+		OpenFileDialog openFileDialog = new() {
+			Filter = Util.GetFilter("DialogFilterMod"),
+			Multiselect = false,
+			DefaultDirectory = defaultDir,
+			InitialDirectory = initialDir
+		};
+		if (openFileDialog.ShowDialog() == true) {
+			CurrentPack!.PackPath = openFileDialog.FileName;
+			CurrentPack!.PackName = openFileDialog.SafeFileName;
+			History.Default.PixPackPath = Directory.GetParent(CurrentPack.PackPath)!.FullName;
+			History.Default.Save();
+			DirStart(openFileDialog.SafeFileName);
+		}
+	}
+
+
 
 	public ICommand OpenFileCommand => new RelayCommand<object>(DirOpen);
-	public void OpenSelectedDir() => DirOpen(SelectedFile);
+	public void OpenSelectedDir() => DirOpen(CurrentSelectedFile);
 	public void DirOpen(object? parameter) {
 		if (parameter == null)
 			return;
@@ -141,7 +132,7 @@ public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PI
 			var filename = pixFile.Filename;
 			if (pixFile.IsDir) {
 				HistoryAdd();
-				DirList.Add(new PackDir(filename));
+				CurrentPathList.Add(new PackDir(filename));
 				_ = ReadDir();
 			}
 		}
@@ -149,22 +140,58 @@ public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PI
 
 	public ICommand FolderBackCommand => new RelayCommand<object>(_ => FolderBack());
 	public void FolderBack() {
-		if (DirList.Count > 1) {
-			DirBack(DirList.Count - 2);
+		if (CurrentPathList.Count > 1) {
+			FolderBack(CurrentPathList.Count - 2);
 		}
 	}
 
-	public void DirBack(int index) {
+	public void FolderBack(int index) {
 		HistoryAdd();
-		string focusFile = DirList[index + 1].DirName;
-		while (DirList.Count > index + 1) {
-			DirList.RemoveAt(index + 1);
+		string focusFile = CurrentPathList[index + 1].DirName;
+		while (CurrentPathList.Count > index + 1) {
+			CurrentPathList.RemoveAt(index + 1);
 		}
 		_ = ReadDir(focusFile);
 	}
 
+	private void UpdateDirList(string linkPath) {
+		if (CurrentPathList.Count > 1) {
+			var baseDir = CurrentPathList[0];
+			CurrentPathList.Clear();
+			CurrentPathList.Add(baseDir);
+		}
+		while ((linkPath = linkPath[..linkPath.LastIndexOf('/')]).Length > 0) {
+			CurrentPathList.Insert(1, new(linkPath));
+		}
+	}
+
+
+	private void HistoryAdd() {
+		CurrentHistoryUndoList.Add([.. CurrentPathList]);
+	}
+	private void HistoryClear() {
+		CurrentHistoryUndoList.Clear();
+	}
+	public ICommand UndoCommand => new RelayCommand<object>(_ => Undo());
+	public void Undo() {//返回时直接将dir放进dirlist里，然后readdir
+		var last = CurrentHistoryUndoList.Last();
+		CurrentHistoryUndoList.RemoveAt(CurrentHistoryUndoList.Count - 1);
+		CurrentPathList.Clear();
+		foreach (var l in last) {
+			CurrentPathList.Add(l);
+		}
+		_ = ReadDir();
+	}
+
+	public void DirStart(string packName) {
+		CurrentPathList.Clear();
+		HistoryClear();
+		CurrentPathList.Add(new("/", packName));
+		_ = ReadDir();
+	}
+
 	public async Task ReadDir(string? focusPath = null) {
-		string args = $"-b \"{PackPath}\" -listdir \"{PackDir}\"";
+		string args = $"-b \"{CurrentPackPath}\" -listdir \"{CurrentPackDir}\"";
 
 		var startInfo = CallPixInfo(args);
 
@@ -211,42 +238,18 @@ public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PI
 		});
 
 		var (success, reason) = await tcs.Task;
-		if(success) {
-			FileList.Clear();
+		if (success) {
+			CurrentFileList.Clear();
 			foreach (var f in batchList) {
-				FileList.Add(f);
+				CurrentFileList.Add(f);
 			}
-			SelectedFile = focusFile;
+			CurrentSelectedFile = focusFile;
 			if (focusFile == null)
 				ScrollToTop();
 			else
 				ScrollToFile(focusFile);
 		} else {
 			MessageBox.Show(GetString("MessageReadFileFailed") + ": " + reason);
-		}
-	}
-
-	private void UpdateDirList(string linkPath) {
-		if (DirList.Count > 1) {
-			var baseDir = DirList[0];
-			DirList.Clear();
-			DirList.Add(baseDir);
-		}
-		while ((linkPath = linkPath[..linkPath.LastIndexOf('/')]).Length > 0) {
-			DirList.Insert(1, new(linkPath));
-		}
-	}
-
-	private readonly ObservableCollection<PIXFile> mFileList = [];
-
-	public ObservableCollection<PIXFile> FileList => mFileList;
-
-	private PIXFile? mSelectedFile = null;
-	public PIXFile? SelectedFile {
-		get => mSelectedFile;
-		set {
-			mSelectedFile = value;
-			InvokeChange();
 		}
 	}
 
@@ -276,11 +279,11 @@ public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PI
 		StandardErrorEncoding = Encoding.UTF8
 	};
 
-	public ICommand ExtractCommand => new RelayCommand<PIXFile>(pixFile => ExtractFile(pixFile ?? SelectedFile));
+	public ICommand ExtractCommand => new RelayCommand<PIXFile>(pixFile => ExtractFile(pixFile ?? CurrentSelectedFile));
 	public void ExtractFile(PIXFile? pixFile) {
 		if (pixFile == null)
 			return;
-		StringBuilder args = new($"-b \"{PackPath}\" -e \"{ExportPath}\"");
+		StringBuilder args = new($"-b \"{CurrentPackPath}\" -e \"{ExportPath}\"");
 		int type = 0;
 		if (pixFile.IsDir) {
 			args.Append(" -extract_d \"").Append(pixFile.Filename).Append('"');
@@ -381,7 +384,7 @@ public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PI
 	}
 
 	public List<string> SearchAnimExe(string modelPath) {
-		string args = $"-b \"{PackPath}\" --find-model-animations \"{modelPath}\"";
+		string args = $"-b \"{CurrentPackPath}\" --find-model-animations \"{modelPath}\"";
 
 		Process p = CallPix(args);
 
@@ -401,25 +404,10 @@ public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PI
 		return anims;
 	}
 
-	public void TestExtractFD(PIXFile pixFile) {
-		StringBuilder args = new($"-b \"{PackPath}\" -e \"{ExportPath}\"");
-		if (pixFile.IsDir) {
-			args.Append(" -extract_d \"").Append(pixFile.Filename).Append('"');
-		} else {
-			args.Append(" -extract_f \"").Append(pixFile.Filename).Append('"');
-		}
-		Process p = CallPix(args.ToString());
-
-		p.Start();
-		Debug.WriteLine(p.StandardOutput.ReadToEnd());
-		p.WaitForExit();
-		p.Close();
-	}
-
 	public ICommand ExtractAllCommand => new RelayCommand<object>(_ => ExtractAll());
 
 	private void ExtractAll() {
-		var extractTask = new ExtractAllTask(PackPath, ExportPath) {
+		var extractTask = new ExtractAllTask(CurrentPackPath, ExportPath) {
 			Owner = BindingWindow
 		};
 		extractTask.ShowDialog();
@@ -452,4 +440,42 @@ public class PackDir(string dirName, string? title): BaseBinding {
 	}
 
 	public override string ToString() => $"PackDir Dir={DirName}";
+}
+
+public class PixPackage: BaseBinding {
+	public string PackPath {
+		get;
+		set {
+			field = value;
+			InvokeChange();
+		}
+	} = string.Empty;
+
+	public string PackName {
+		get;
+		set {
+			field = value;
+			InvokeChange();
+		}
+	} = GetString("TitlePackName");
+
+	private readonly ObservableCollection<PackDir> mPathList = [];
+
+	public ObservableCollection<PackDir> PathList => mPathList;
+	public string PackDir => PathList.LastOrDefault()?.DirName ?? "/";
+
+	public ObservableCollection<List<PackDir>> HistoryUndoList { get; } = [];//记录切换位置之前的所有dir
+
+	private readonly ObservableCollection<PIXFile> mFileList = [];
+
+	public ObservableCollection<PIXFile> FileList => mFileList;
+
+	private PIXFile? mSelectedFile = null;
+	public PIXFile? SelectedFile {
+		get => mSelectedFile;
+		set {
+			mSelectedFile = value;
+			InvokeChange();
+		}
+	}
 }

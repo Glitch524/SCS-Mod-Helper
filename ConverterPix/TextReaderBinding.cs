@@ -14,10 +14,12 @@ public partial class ConverterPixBinding {
 		TextLines.Clear();
 	}
 
-	public ICommand ReadFileCommand => new RelayCommand<PIXFile>(pixFile => ReadFile(pixFile ?? SelectedFile));
+	public ICommand ReadFileCommand => new RelayCommand<PIXFile>(pixFile => ReadFile(pixFile ?? CurrentSelectedFile));
 	public void ReadFile(PIXFile? pixFile) {
 		if (pixFile == null || pixFile.IsDir)
 			return;
+		ReadingFilePackName = CurrentPack!.PackName;
+
 		if (TextReaderWindow == null) {
 			TextReaderWindow = new(this, pixFile) {
 				Owner = BindingWindow
@@ -28,7 +30,7 @@ public partial class ConverterPixBinding {
 		}
 	}
 
-
+	private string ReadingFilePackName = string.Empty;
 	private PIXFile? mCurrentReadingFile = null;
 	public PIXFile? CurrentReadingFile {
 		get => mCurrentReadingFile;
@@ -54,7 +56,7 @@ public partial class ConverterPixBinding {
 		}
 	}
 
-	public string TextFilename => CurrentReadingFile?.Filename ?? "";
+	public string TextFilename => CurrentReadingFile == null ? "" : $"{ReadingFilePackName}:{CurrentReadingFile.Filename}";
 	private readonly ObservableCollection<string> mTextLines = [];
 	public ObservableCollection<string> TextLines => mTextLines;
 
@@ -93,38 +95,37 @@ public partial class ConverterPixBinding {
 		});
 		if (pixFile == null)
 			return;
-		string args = $"-b \"{PackPath}\" -show_f \"{pixFile.Filename}\"";
+		string args = $"-b \"{CurrentPackPath}\" -show_f \"{pixFile.Filename}\"";
 
-		var startInfo = CallPixInfo(args);
+		using Process p = CallPix(args);
+		p.ErrorDataReceived += (s, e) => {
+			if (e.Data != null)
+				Debug.WriteLine("[err] " + e.Data);
+		};
+		p.Start();
+		p.BeginErrorReadLine();
 
 		int span = 50;
 		List<string> batch = new(span);
 		bool get = false;
 
-		using var p = new Process { StartInfo = startInfo };
-		p.OutputDataReceived += async (sender, e) => {
-			if (e.Data == null)
-				return;
-			var line = e.Data;
-			//Debug.WriteLine(line);
-
+		string? line;
+		while((line = await p.StandardOutput.ReadLineAsync()) != null) {
 			if (line.Trim().StartsWith('*') || line.Length == 0)
-				return;
+				continue;
 			if (line.StartsWith("Unable to open file to read")) {
 				await Application.Current.Dispatcher.InvokeAsync(() => {
 					MessageBox.Show(TextReaderWindow, GetString("MessageReadFileFailed"), pixFile.Filename);
 				});
-				return;
+				continue;
 			}
 			if (line.Trim().Contains("--")) {
-				if (get)
-					return;
-				get = true;
-				return;
+				if (!get)
+					get = true;
+				continue;
 			}
 			if (!get)
-				return;
-
+				continue;
 			var trim = line.Trim();
 			if (trim.StartsWith("interior_model") ||
 			trim.StartsWith("interior_model_uk") ||
@@ -134,7 +135,7 @@ public partial class ConverterPixBinding {
 			trim.StartsWith("icon") ||
 			trim.StartsWith("model") ||
 			trim.StartsWith("coll") ||
-			trim.StartsWith("rope_material") || 
+			trim.StartsWith("rope_material") ||
 			trim.StartsWith("animation") ||
 			trim.StartsWith("phys_model") ||
 			trim.StartsWith("phys_model_coll") ||
@@ -142,7 +143,7 @@ public partial class ConverterPixBinding {
 			trim.StartsWith("@include") ||
 			trim.StartsWith("detail_model") ||
 			trim.StartsWith("lods[]") ||
-			trim.StartsWith("trailer_brace_model") || 
+			trim.StartsWith("trailer_brace_model") ||
 			trim.StartsWith("trailer_brace_anim") ||
 			trim.StartsWith("extended_shadow_texture") ||
 			trim.StartsWith("ui_shadow")) {
@@ -155,6 +156,8 @@ public partial class ConverterPixBinding {
 					}
 				}
 			}
+
+
 			batch.Add(line);
 			if (batch.Count >= span) {
 				var snapshot = batch.ToList();
@@ -168,18 +171,7 @@ public partial class ConverterPixBinding {
 					}
 				}, System.Windows.Threading.DispatcherPriority.Background);
 			}
-		};
-
-		var errorString = new StringBuilder();
-		p.ErrorDataReceived += (sender, e) => {
-			if (e.Data != null)
-				errorString.AppendLine(e.Data);
-		};
-
-		p.Start();
-		p.BeginOutputReadLine();
-		p.BeginErrorReadLine();
-
+		}
 		await p.WaitForExitAsync();
 		if (batch.Count > 0) {
 			var snapshot = batch.ToList();
@@ -204,11 +196,16 @@ public partial class ConverterPixBinding {
 			if (link.StartsWith('/'))//如果以/开头，就表示路径为绝对路径，从projectlocation开始
 				path = link;
 			else
-				path = PackDir + '/' + link;
+				path = CurrentPackDir + '/' + link;
 			SubTextFilename = trim;
-			ReadSubFile(new PIXFile(path, false));
+			Task.Run(async () => {
+				LoadingFile = true;
+				await ReadTextFile(new PIXFile(path, false), true);
+				LoadingFile = false;
+			});
 			return;
-		} else if (trim.StartsWith("icon")) {
+		}
+		if (trim.StartsWith("icon")) {
 			path = $"/material/ui/accessory/{link}.tobj";
 		} else 
 			path = link;
@@ -216,93 +213,103 @@ public partial class ConverterPixBinding {
 		if (lastS == -1)
 			return;
 		string dir = path[..lastS];
-		if (PackDir != dir)
+		if (CurrentPackDir != dir)
 			HistoryAdd();
-		Task.Run(() => {
-			_ = GotoLink(path);
-		});
-	}
-
-	private void ReadSubFile(PIXFile subFile) {
 		Task.Run(async () => {
-			LoadingFile = true;
-			await ReadTextFile(subFile, true);
-			LoadingFile = false;
+			int lastS = path.LastIndexOf('/');
+			if (lastS == -1)
+				return;
+			var pathLocation = path[..lastS];
+			if (CurrentPackDir == dir) { //如果当前dir与reader点击的链接所在dir相同，那就没有必要重新读取
+				foreach(var pix in CurrentFileList) {
+					if (pix.Filename == path)
+						return;
+				}
+			}
+			var result = await GotoLink(CurrentPack!, pathLocation, path);//首先搜索当前的pack
+			if (result)//result为true即成功找到并展示对应文件夹
+				return;
+			if (PackList.Count > 1) {//打开了多个pack的情况，使用对应pack来获取文件夹内容
+				//result在这里依然是false所以不需要改
+				foreach (var pack in PackList) {
+					if (pack == CurrentPack || pack.PackPath.Length == 0)
+						continue;
+					if (await GotoLink(pack, pathLocation, path))
+						return;
+				}
+			}
+			await Application.Current.Dispatcher.InvokeAsync(() => {
+				MessageBox.Show(GetString("MessageLinkFileNotExist"));
+			});
 		});
 	}
 
 
-	public async Task GotoLink(string linkPath) {
+	public async Task<bool> GotoLink(PixPackage pixPack, string pathLocation, string linkPath) {//如果path是def.scs，而且是def/vehicle，就转到basevehicle
+		var packPath = pixPack.PackPath;
+		string args = $"-b \"{packPath}\" -listdir \"{pathLocation}\"";
+		using Process p = CallPix(args);
+		p.ErrorDataReceived += (s, e) => {
+			if (e.Data != null)
+				Debug.WriteLine("[err] " + e.Data);
+		};
+		p.Start();
+		p.BeginErrorReadLine();
 
-		int lastS = linkPath.LastIndexOf('/');
-		if (lastS == -1)
-			return;
-		string dir = linkPath[..lastS];
-		if (PackDir == dir)//如果当前dir与reader点击的链接所在dir相同，那就没有必要重新读取
-			return;
-
-		string args = $"-b \"{PackPath}\" -listdir \"{dir}\"";
-
-		var startInfo = CallPixInfo(args);
-
-		PIXFile? linkFile = null;
 		bool error = false;
+		PIXFile? linkFile = null;
 		List<PIXFile> linkFiles = [];
 
-		using var p = new Process { StartInfo = startInfo };
-		p.OutputDataReceived += async (sender, e) => {
-			var line = e.Data;
+		string? line;
+		while ((line = await p.StandardOutput.ReadLineAsync()) != null) {
 			if (line == null || line.Trim().StartsWith('*') || line.Length == 0)
-				return;
+				continue;
 			if (line.StartsWith("<error>")) {
 				var reason = line[(line.IndexOf(':') + 1)..].Trim();
 				await Application.Current.Dispatcher.InvokeAsync(() => {
 					if (reason == "readDir returned null!") {
 						MessageBox.Show(GetString("MessageLinkFileNotExist"));
-					} else 
+					} else
 						MessageBox.Show(GetString("MessageReadFileFailed") + ": " + reason);
 				});
 				error = true;
-				return;
+				continue;
 			}
-			if (line.Contains("Done")) 
-				return;
-			if (line.StartsWith("[D]")) {
+			if (line.Contains("Done"))
+				continue;
+			if (line.StartsWith("[D]") || line.StartsWith("[F]")) {
 				string path = line[4..];
-				var file = new PIXFile(path, true);
-				if (linkPath == path)
-					linkFile = file;
-				linkFiles.Add(file);
-			} else if (line.StartsWith("[F]")) {
-				string path = line[4..];
-				var file = new PIXFile(path, false);
+				var file = new PIXFile(path, line.StartsWith("[D]"));
 				if (linkPath == path)
 					linkFile = file;
 				linkFiles.Add(file);
 			}
-		};
-		p.Start();
-		p.BeginOutputReadLine();
-
+		}
 		await p.WaitForExitAsync();
+		p.Close();
 		if (!error) {
-			await Application.Current.Dispatcher.InvokeAsync(() => {
-				if (linkFile == null)//如果没有linkfile说明这个文件不在这个包里
+			return await Application.Current.Dispatcher.InvokeAsync(() => {
+				if (linkFile == null) {//如果没有linkfile说明这个文件不在这个包里
 					MessageBox.Show(GetString("MessageLinkFileNotExist"));
-				else {
+					return false;
+				} else {
+					if (pixPack != CurrentPack)//如果输入的pixPack不是当前pack说明是其他pack找到的路径
+						CurrentPack = pixPack;//所以先切换当前选中pack
 					UpdateDirList(linkPath);
-					FileList.Clear();
+					CurrentFileList.Clear();
 					foreach (var f in linkFiles) {
-						FileList.Add(f);
+						CurrentFileList.Add(f);
 					}
 					ScrollToFile(linkFile);
-					SelectedFile = linkFile;
+					CurrentSelectedFile = linkFile;
 
 					foreach(var pix in Application.Current.Windows.OfType<ConverterPixWindow>()) {
 						pix.Focus();
 					}
+					return true;
 				}
 			});
 		}
+		return false;
 	}
 }

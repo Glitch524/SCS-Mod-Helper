@@ -425,9 +425,10 @@
 	<s:String x:Key="TitleConverterPIX">Converter PIX</s:String>
 	<s:String x:Key="TooltipGoBack">Go Back</s:String>
 	<s:String x:Key="TitleTextReader">Text Reader</s:String>
-	<s:String x:Key="TitleModPath">Mod Path:</s:String>
+	<s:String x:Key="TitlePackPath">Package Path:</s:String>
+	<s:String x:Key="TitlePackName">Package</s:String>
 	<s:String x:Key="TitleCustomExportPath">Custom Export Path:</s:String>
-	<s:String x:Key="DialogFilterMod">"SCS Mod File|*.scs;*.zip|All Files|*.*"</s:String>
+	<s:String x:Key="DialogFilterMod">"SCS Archive File|*.scs;*.zip|All Files|*.*"</s:String>
 	<s:String x:Key="TitleExtractFile">Extract File</s:String>
 	<s:String x:Key="TitleOpenExtractedLocation">Open Extracted Location</s:String>
 	<s:String x:Key="TitleFindAnim">Find and Export Animation File</s:String>

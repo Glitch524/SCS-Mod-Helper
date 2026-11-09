@@ -425,9 +425,10 @@
 	<s:String x:Key="TitleConverterPIX">Converter PIX</s:String>
 	<s:String x:Key="TooltipGoBack">返回</s:String>
 	<s:String x:Key="TitleTextReader">文本查看器</s:String>
-	<s:String x:Key="TitleModPath">Mod路径：</s:String>
+	<s:String x:Key="TitlePackPath">资源路径：</s:String>
+	<s:String x:Key="TitlePackName">资源</s:String>
 	<s:String x:Key="TitleCustomExportPath">自定义导出路径：</s:String>
-	<s:String x:Key="DialogFilterMod">"SCS Mod文件|*.scs;*.zip|所有文件|*.*"</s:String>
+	<s:String x:Key="DialogFilterMod">"SCS资源文件|*.scs;*.zip|所有文件|*.*"</s:String>
 	<s:String x:Key="TitleExtractFile">提取文件</s:String>
 	<s:String x:Key="TitleOpenExtractedLocation">打开提取文件位置</s:String>
 	<s:String x:Key="TitleFindAnim">寻找并输出动画文件</s:String>

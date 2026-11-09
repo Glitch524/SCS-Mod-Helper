@@ -1,5 +1,6 @@
 ﻿using SCS_Mod_Helper.Class.Base;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace SCS_Mod_Helper.ConverterPix {
@@ -18,7 +19,7 @@ namespace SCS_Mod_Helper.ConverterPix {
 
 		private void BreadcrumbBarItemClicked(Wpf.Ui.Controls.BreadcrumbBar _, Wpf.Ui.Controls.BreadcrumbBarItemClickedEventArgs args) {
 			var index = args.Index;
-			Binding.DirBack(index);
+			Binding.FolderBack(index);
 		}
 
 		public void ListBoxScrollToTop(PIXFile file) => ListFiles.ScrollIntoView(file);
@@ -31,5 +32,14 @@ namespace SCS_Mod_Helper.ConverterPix {
 				e.Handled = true;
 			}
 		}
+
+		private void ButtonAddPackClick(object sender, RoutedEventArgs e) => Binding.AddPack();
+
+		private void ButtonClosePackClick(object sender, RoutedEventArgs e) {
+			if (sender is Button button) {
+				var pack = (PixPackage) button.DataContext;
+				Binding.ClosePack(pack);
+			}
+        }
 	}
 }
