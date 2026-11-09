@@ -69,7 +69,7 @@ public class BiliAuthorInfo: AuthorInfo {//诅咒你，你看看steam，你看�
 		}
 	}
 
-	protected async Task<(string? AvatarUrl, string? DisplayName)> GetUserInfoDirectlyAsync(bool retry = false) {
+	protected async Task<(string? AvatarUrl, string? DisplayName)> GetUserInfoDirectlyAsync() {
 		await EnsureCookiesAsync();
 
 		var parameters = new Dictionary<string, string> { { "mid", "1970055" } };
@@ -113,12 +113,7 @@ public class BiliAuthorInfo: AuthorInfo {//诅咒你，你看看steam，你看�
 			var wridPath = Paths.WridFile();
 			if (File.Exists(wridPath))
 				File.Delete(wridPath);
-			if (retry) {
-				return (null, null);
-			}
-			Debug.WriteLine($"[WBI] 签名可能失效（code={response.Code}），清除缓存后重试");
-			await Task.Delay(TimeSpan.FromSeconds(4));
-			return await GetUserInfoDirectlyAsync(true);
+			return (null, null);
 		}
 		if (response?.Code != 0 || response.Data == null)
 			return (null, null);
