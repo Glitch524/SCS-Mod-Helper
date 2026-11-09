@@ -498,8 +498,26 @@
 	<s:String x:Key="MessageLoadErrNotLocale">这个文件似乎不是字典文件</s:String>
 	<s:String x:Key="MessageLoadErr">读取locale文件出现错误</s:String>
 	<s:String x:Key="MessageSyncResultZero">没有需要同步的内容</s:String>
-	<s:String x:Key="MessageSyncResultTo">向Universal同步{0}个语句</s:String>
-	<s:String x:Key="MessageSyncResultFrom">从Universal同步{0}个语句</s:String>
+	<x:Array
+		x:Key="MessageSyncResultTo"
+		Type="s:String">
+		<x:Null /><!--zero-->
+		<x:Null /><!--one-->
+		<x:Null /><!--two-->
+		<x:Null /><!--few-->
+		<x:Null /><!--many-->
+		<s:String>向Universal同步{0}个语句</s:String><!--other-->
+	</x:Array>
+	<x:Array
+		x:Key="MessageSyncResultFrom"
+		Type="s:String">
+		<x:Null /><!--zero-->
+		<x:Null /><!--one-->
+		<x:Null /><!--two-->
+		<x:Null /><!--few-->
+		<x:Null /><!--many-->
+		<s:String>从Universal同步{0}个语句</s:String><!--other-->
+	</x:Array>
 	<s:String x:Key="MessageTitleSyncResult">同步完成</s:String>
 	<s:String x:Key="MessageSaveErrNoName">翻译文件列表中存在未命名的文件</s:String>
 	<s:String x:Key="MessageSaveSuccess">文件已保存</s:String>

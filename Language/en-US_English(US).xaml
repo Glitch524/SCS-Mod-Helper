@@ -498,8 +498,26 @@
 	<s:String x:Key="MessageLoadErrNotLocale">Looks like this file is not a localization file</s:String>
 	<s:String x:Key="MessageLoadErr">Error occurs when loading localization file</s:String>
 	<s:String x:Key="MessageSyncResultZero">There's nothing needs to sync</s:String>
-	<s:String x:Key="MessageSyncResultTo">{0} key(s) synced to Universal</s:String>
-	<s:String x:Key="MessageSyncResultFrom">{0} key(s) synced from Universal</s:String>
+	<x:Array
+		x:Key="MessageSyncResultTo"
+		Type="s:String">
+		<x:Null /><!--zero-->
+		<s:String>{0} key synced to Universal</s:String><!--one-->
+		<x:Null /><!--two-->
+		<x:Null /><!--few-->
+		<x:Null /><!--many-->
+		<s:String>{0} keys synced to Universal</s:String><!--other-->
+	</x:Array>
+	<x:Array
+		x:Key="MessageSyncResultFrom"
+		Type="s:String">
+		<x:Null /><!--zero-->
+		<s:String>{0} key synced from Universal</s:String><!--one-->
+		<x:Null /><!--two-->
+		<x:Null /><!--few-->
+		<x:Null /><!--many-->
+		<s:String>{0} keys synced from Universal</s:String><!--other-->
+	</x:Array>
 	<s:String x:Key="MessageTitleSyncResult">Syncing Complete</s:String>
 	<s:String x:Key="MessageSaveErrNoName">There is (are) some unnamed Translation file(s)</s:String>
 	<s:String x:Key="MessageSaveSuccess">File saved</s:String>

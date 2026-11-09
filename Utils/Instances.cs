@@ -9,8 +9,6 @@ namespace SCS_Mod_Helper.Utils;
 public static partial class Instances {
 	public static string GameVersion = "1.62";
 
-	public static bool IsDebug() => Debugger.IsAttached;
-
 	private static string? mAppVersionString = null;
 	public static string AppVersionString {
 		get {

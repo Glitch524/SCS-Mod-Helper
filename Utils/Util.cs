@@ -8,6 +8,7 @@ using System.Windows.Media.Imaging;
 namespace SCS_Mod_Helper.Utils; 
 
 static class Util {
+	public static bool IsDebug() => Debugger.IsAttached;
 	public static string SystemLocaleForSCS() {
 		var culture = System.Globalization.CultureInfo.InstalledUICulture.Name;
 		return culture.Replace('-', '_').ToLower();

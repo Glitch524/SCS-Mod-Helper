@@ -46,7 +46,7 @@ public partial class VersionChecker {
 				await Task.Delay(RetryDelay * (i + 1), cancellationToken);
 			}
 		}
-		throw new TimeoutException("FailedMultipleAttempts", lastEx);
+		throw new TimeoutException("[Version Checker] FailedMultipleAttempts", lastEx);
 	}
 
 	private static async Task<Version?> LoadHistory() {

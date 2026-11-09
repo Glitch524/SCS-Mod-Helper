@@ -92,11 +92,11 @@ public class LocaleBinding(Func<IBaseVisual> visualFunc): WindowBinding(visualFu
 			message.Append(GetString("MessageSyncResultZero"));
 		} else {
 			if (onlyInCurrent.Count > 0)
-				message.Append(GetString("MessageSyncResultTo", onlyInCurrent.Count));
+				message.Append(GetQuantityString("MessageSyncResultTo", onlyInCurrent.Count, onlyInCurrent.Count));
 			if (onlyInUniversal.Count > 0) {
 				if (message.Length > 0)
 					message.Append('\n');
-				message.Append(GetString("MessageSyncResultFrom", onlyInUniversal.Count));
+				message.Append(GetQuantityString("MessageSyncResultFrom", onlyInUniversal.Count, onlyInUniversal.Count));
 			}
 		}
 		MessageBox.Show(BindingWindow, message.ToString(), title);

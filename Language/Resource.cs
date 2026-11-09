@@ -6,9 +6,9 @@ public static class Resource {
 
 	private static object? GetResource(string key, Window? window = null) {
 		if (window == null)
-			return Instances.IsDebug() ? Application.Current.FindResource(key) : Application.Current.TryFindResource(key);
+			return Util.IsDebug() ? Application.Current.FindResource(key) : Application.Current.TryFindResource(key);
 		else
-			return Instances.IsDebug() ? window.FindResource(key) : window.TryFindResource(key);
+			return Util.IsDebug() ? window.FindResource(key) : window.TryFindResource(key);
 	}
 
 	public static string GetString(string key, params object[] args) => GetString(key, null, args);
@@ -17,7 +17,13 @@ public static class Resource {
 		var obj = GetResource(key, window);
 		if (obj == null)
 			return key;
-		string res = obj.ToString()!;
+		string res;
+		if (obj is string?[] p) {
+			if (Util.IsDebug())
+				throw new ArgumentException("Call plural in GetString");
+			res = p[Other]! ?? key;
+		} else
+			res = obj.ToString()!;
 		if (args.Length > 0) {
 			res = string.Format(res, args);
 		}

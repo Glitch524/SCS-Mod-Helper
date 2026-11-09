@@ -100,7 +100,7 @@ public static partial class VehiclesIO {
 
 	private static object GetVehicleDictValue(string key, string? defaultValue = null) {
 		return VehicleDictionary[key] ?? 
-			(Instances.IsDebug() ? 
+			(Util.IsDebug() ? 
 				throw new ResourceReferenceKeyNotFoundException($"Could not find resource from key={key}", key) : 
 				defaultValue ?? key);
 }
