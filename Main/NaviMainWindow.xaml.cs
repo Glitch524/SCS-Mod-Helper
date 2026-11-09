@@ -1,12 +1,14 @@
 ﻿using SCS_Mod_Helper.Class;
 using SCS_Mod_Helper.Class.Base;
 using SCS_Mod_Helper.ConverterPix;
+using SCS_Mod_Helper.Language;
 using SCS_Mod_Helper.Locale.Localization;
 using SCS_Mod_Helper.Modding.PaintJob;
 using SCS_Mod_Helper.Setting;
 using SCS_Mod_Helper.Utils;
 using SCS_Mod_Helper.Vehicles;
 using System.IO;
+using System.Text;
 using System.Windows;
 using Wpf.Ui.Input;
 
@@ -76,7 +78,12 @@ public partial class NaviMainWindow: BaseWindow {
 	}
 
 	private void Test(string? value) {
-		throw new Exception("test");
+		StringBuilder sb = new();
+		sb.AppendLine("quantities:");
+		for (int i = 0; i < 10; i++) {
+			sb.AppendLine(GetQuantityString("MessageExtractWarning2", i));
+		}
+		MessageBox.Show(sb.ToString());
 	}
 
 	private void NaviMainWindowLoaded(object sender, RoutedEventArgs e) => Navigation.Navigate("ModManifest");

@@ -434,6 +434,8 @@
 	<s:String x:Key="TitleOpenExtractedLocation">Open Extracted Location</s:String>
 	<s:String x:Key="TitleFindAnim">Find and Export Animation File</s:String>
 	<s:String x:Key="TitleGlanceFile">Glance File</s:String>
+	<s:String x:Key="TitleMountPackages">Mount Opened Pakcages</s:String>
+	<s:String x:Key="ToolTipMountPackages">Mount opened packages. Sometimes vehicle models use shared textures in others packages, so mounting those packages lets you extract the needed assets along with the files</s:String>
 	<s:String x:Key="TitleEDF">Extract and decrypt all files</s:String>
 	<s:String x:Key="TooltipEDF">Except the auto-generated files</s:String>
 	<s:String x:Key="DialogMessageEDF">Careful, you can't use this tool to decrypt someone else's Mod project for other purposes without permission.</s:String>
@@ -453,14 +455,34 @@
 	<s:String x:Key="CurrentFileOther">Other File:</s:String>
 	<s:String x:Key="CurrentFileDir">Folder:</s:String>
 	<s:String x:Key="MessageResultExtractAllFinished">Task Finished</s:String>
+	<s:String x:Key="TitleExtractResult">Extract Result</s:String>
 	<s:String x:Key="MessageExtractedModel">Extracted and decrypted model successfully to:</s:String>
 	<s:String x:Key="MessageExtractedTobj">Extracted and decrypted tobj file and its image successfully to:</s:String>
 	<s:String x:Key="MessageExtractedFile">Extracted file successfully to:</s:String>
 	<s:String x:Key="MessageExtractFail">Failed to extract the file.&#10;Error:</s:String>
+	<x:Array
+		x:Key="MessageExtractWarning1"
+		Type="s:String">
+		<x:Null /><!--zero-->
+		<s:String>Unable to read the following file:</s:String><!--one-->
+		<x:Null /><!--two-->
+		<x:Null /><!--few-->
+		<x:Null /><!--many-->
+		<s:String>Unable to read the following files:</s:String><!--other-->
+	</x:Array>
+	<x:Array
+		x:Key="MessageExtractWarning2"
+		Type="s:String">
+		<x:Null /><!--zero-->
+		<s:String>probably because this file is from other packages</s:String><!--one-->
+		<x:Null /><!--two-->
+		<x:Null /><!--few-->
+		<x:Null /><!--many-->
+		<s:String>probably because these files are from other packages</s:String><!--other-->
+	</x:Array>
 	<s:String x:Key="MessageReadFileFailed">Unable to read this file</s:String>
 	<s:String x:Key="MessageLinkFileNotExist">This file seems not exist in this pack, you should find it in other packs</s:String>
 	
-
 
 
 	<!--Localization-->

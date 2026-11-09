@@ -12,7 +12,7 @@
 	<s:String x:Key="ATS">美洲卡车模拟</s:String>
 	<s:String x:Key="ETS2Short">欧卡2</s:String>
 	<s:String x:Key="ATSShort">美卡</s:String>
-
+	
 	<s:String x:Key="ThemeFollowSystem">跟随系统</s:String>
 	<s:String x:Key="ThemeLight">浅色</s:String>
 	<s:String x:Key="ThemeDark">深色</s:String>
@@ -434,6 +434,8 @@
 	<s:String x:Key="TitleOpenExtractedLocation">打开提取文件位置</s:String>
 	<s:String x:Key="TitleFindAnim">寻找并输出动画文件</s:String>
 	<s:String x:Key="TitleGlanceFile">查看文件</s:String>
+	<s:String x:Key="TitleMountPackages">挂载打开的资源包</s:String>
+	<s:String x:Key="ToolTipMountPackages">挂载打开的资源包，车辆模型有时会使用其他包内的公用素材，挂载这些资源包可以在提取文件时一并提取需要的素材</s:String>
 	<s:String x:Key="TitleEDF">提取并解密所有文件</s:String>
 	<s:String x:Key="TooltipEDF">除了自动生成文件</s:String>
 	<s:String x:Key="DialogMessageEDF">注意，你不能未经允许使用此工具解密他人的Mod工程用作他用</s:String>
@@ -453,13 +455,33 @@
 	<s:String x:Key="CurrentFileOther">其他文件：</s:String>
 	<s:String x:Key="CurrentFileDir">文件夹：</s:String>
 	<s:String x:Key="MessageResultExtractAllFinished">提取完成</s:String>
+	<s:String x:Key="TitleExtractResult">提取结果</s:String>
 	<s:String x:Key="MessageExtractedModel">成功提取并解密模型至：</s:String>
 	<s:String x:Key="MessageExtractedTobj">成功提取并解密Tobj及贴图至：</s:String>
 	<s:String x:Key="MessageExtractedFile">成功提取文件至：</s:String>
 	<s:String x:Key="MessageExtractFail">提取文件失败&#10;错误原因：</s:String>
+	<x:Array
+		x:Key="MessageExtractWarning1"
+		Type="s:String">
+		<x:Null /><!--zero-->
+		<x:Null /><!--one-->
+		<x:Null /><!--two-->
+		<x:Null /><!--few-->
+		<x:Null /><!--many-->
+		<s:String>无法提取以下文件：</s:String><!--other-->
+	</x:Array>
+	<x:Array
+		x:Key="MessageExtractWarning2"
+		Type="s:String">
+		<x:Null /><!--zero-->
+		<s:String>大概率是因为这个文件来自其他资源包</s:String><!--one-->
+		<x:Null /><!--two-->
+		<x:Null /><!--few-->
+		<x:Null /><!--many-->
+		<s:String>大概率是因为这些文件来自其他资源包</s:String><!--other-->
+	</x:Array>
 	<s:String x:Key="MessageReadFileFailed">无法读取此文件</s:String>
 	<s:String x:Key="MessageLinkFileNotExist">这个文件似乎不存在这个包里，你需要在其他包里面查找</s:String>
-	
 	
 
 

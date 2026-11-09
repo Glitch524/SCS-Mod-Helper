@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.Sqlite;
 using Microsoft.Win32;
+using SCS_Mod_Helper.Language;
 using System.Diagnostics;
 using System.IO;
 using System.Management;
@@ -54,7 +55,7 @@ public class SystemVerification {
 					string? currentGuid = GetMachineGuid();
 					if (currentGuid != guid) {
 						_ = Application.Current.Dispatcher.BeginInvoke(() => {
-							MessageBox.Show(Util.GetString("MessageCheck"));
+							MessageBox.Show(Resource.GetString("MessageCheck"));
 						});
 						var updateCmd = conn.CreateCommand();
 						cmd.CommandText = @$"update Store 

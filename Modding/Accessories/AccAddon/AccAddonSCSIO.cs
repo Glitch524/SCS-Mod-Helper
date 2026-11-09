@@ -20,8 +20,10 @@ namespace SCS_Mod_Helper.Modding.Accessories.AccAddon {
 				field = value;
 				if (value)
 					ListIsArray.Remove(NameData);
-				else
-					ListIsArray.Add(NameData);
+				else {
+					if (!ListIsArray.Contains(NameData))
+						ListIsArray.Add(NameData);
+				}
 			}
 		} = false;//如果以后是树状的话，这里就有可能会出现问题，不过一般做旗子也不会掺别的东西
 
