@@ -107,7 +107,8 @@
 					d:ItemsSource="{d:SampleData ItemCount=3}"
 					ItemsSource="{Binding PackList}"
 					SelectedValue="{Binding CurrentPack}"
-					VerticalAlignment="Top">
+					VerticalAlignment="Top"
+					d:SelectedIndex="0">
 					<TabControl.ItemTemplate>
 						<DataTemplate>
 							<StackPanel
@@ -117,7 +118,8 @@
 								<Button
 									Margin="5,0,0,0"
 									BorderThickness="0"
-									Click="ButtonClosePackClick">
+									Command="{Binding ElementName=TabPackages, Path=DataContext.ClosePackCommand}"
+									CommandParameter="{Binding .}">
 									<Viewbox>
 										<ui:SymbolIcon
 											Symbol="Dismiss20" />
@@ -133,13 +135,19 @@
 				<Button
 					Margin="5,10,0,3"
 					Height="24"
-					Click="ButtonAddPackClick">
+					Command="{Binding AddPackCommand}">
 					<Viewbox>
 						<ui:SymbolIcon
 							Symbol="Add20" />
 					</Viewbox>
 				</Button>
 			</DockPanel>
+			<Border
+				Grid.Row="1"
+				Height="1"
+				BorderBrush="LightGray"
+				BorderThickness="1"
+				VerticalAlignment="Bottom" />
 			
 			<Grid
 				x:Name="GridContent"
@@ -168,6 +176,10 @@
 					<RowDefinition
 						Height="*" />
 				</Grid.RowDefinitions>
+				<Border
+					Grid.RowSpan="4"
+					BorderThickness="1,0,1,1"
+					BorderBrush="LightGray" />
 				<Grid
 					Margin="0,5,0,0">
 					<Grid.ColumnDefinitions>
@@ -179,6 +191,7 @@
 							Width="Auto" />
 					</Grid.ColumnDefinitions>
 					<TextBlock
+						Margin="5,0,0,0"
 						TextWrapping="Wrap"
 						Text="{DynamicResource TitlePackPath}"
 						VerticalAlignment="Center" />
@@ -186,6 +199,7 @@
 						x:Name="BoxFile"
 						Grid.Column="1"
 						ClearButtonEnabled="False"
+						Margin="0,0,5,0"
 						Text="{Binding CurrentPack.PackPath}" />
 					<Button
 						x:Name="ButtonChooseFile"
@@ -193,12 +207,12 @@
 						Grid.Column="2"
 						Command="{Binding ChoosePackCommand}"
 						Padding="10,5"
-						Margin="5,0,0,0" />
+						Margin="0,0,5,0" />
 				</Grid>
 
 				<Border
 					Grid.Row="2"
-					BorderThickness="1"
+					BorderThickness="0,1"
 					BorderBrush="LightGray" />
 
 				<Grid
@@ -233,33 +247,19 @@
 										<Setter
 											Property="IsEnabled"
 											Value="False" />
+										<Setter
+											Property="Foreground"
+											Value="LightGray" />
 									</DataTrigger>
 								</Style.Triggers>
 							</Style>
 						</Button.Style>
-						<Grid>
-							<Viewbox
-								Stretch="UniformToFill">
-								<ui:SymbolIcon
-									Symbol="ArrowLeft20"
-									FontSize="20">
-									<ui:SymbolIcon.Style>
-										<Style
-											TargetType="ui:SymbolIcon">
-											<Style.Triggers>
-												<DataTrigger
-													Binding="{Binding CurrentPack.HistoryUndoList.Count, Mode=OneWay}"
-													Value="0">
-													<Setter
-														Property="Foreground"
-														Value="LightGray" />
-												</DataTrigger>
-											</Style.Triggers>
-										</Style>
-									</ui:SymbolIcon.Style>
-								</ui:SymbolIcon>
-							</Viewbox>
-						</Grid>
+						<Viewbox>
+							<ui:SymbolIcon
+								Symbol="ArrowLeft20"
+								FontSize="20">
+							</ui:SymbolIcon>
+						</Viewbox>
 					</Button>
 
 					<Rectangle
@@ -284,6 +284,9 @@
 										<Setter
 											Property="IsEnabled"
 											Value="False" />
+										<Setter
+											Property="Foreground"
+											Value="LightGray" />
 									</DataTrigger>
 									<DataTrigger
 										Binding="{Binding CurrentPack.PathList.Count, Mode=OneWay}"
@@ -291,36 +294,17 @@
 										<Setter
 											Property="IsEnabled"
 											Value="False" />
+										<Setter
+											Property="Foreground"
+											Value="LightGray" />
 									</DataTrigger>
 								</Style.Triggers>
 							</Style>
 						</Button.Style>
-						<Viewbox
-							Stretch="UniformToFill">
+						<Viewbox>
 							<ui:SymbolIcon
 								Symbol="ArrowUp20"
 								FontSize="20">
-								<ui:SymbolIcon.Style>
-									<Style
-										TargetType="ui:SymbolIcon">
-										<Style.Triggers>
-											<DataTrigger
-												Binding="{Binding CurrentPack.PathList.Count, Mode=OneWay}"
-												Value="0">
-												<Setter
-													Property="Foreground"
-													Value="LightGray" />
-											</DataTrigger>
-											<DataTrigger
-												Binding="{Binding CurrentPack.PathList.Count, Mode=OneWay}"
-												Value="1">
-												<Setter
-													Property="Foreground"
-													Value="LightGray" />
-											</DataTrigger>
-										</Style.Triggers>
-									</Style>
-								</ui:SymbolIcon.Style>
 							</ui:SymbolIcon>
 						</Viewbox>
 					</Button>
@@ -354,6 +338,7 @@
 					ItemsSource="{Binding CurrentPack.FileList}"
 					SelectedItem="{Binding CurrentPack.SelectedFile}"
 					SelectionMode="Single"
+					FocusVisualStyle="{x:Null}"
 					KeyDown="ListBoxKeyDown">
 					<ListBox.ItemTemplate>
 						<DataTemplate>
@@ -461,7 +446,7 @@
 
 			<Grid
 				Grid.Row="3"
-				Margin="0,5">
+				Margin="0,5,0,0">
 				<Grid.Style>
 					<Style
 						TargetType="Grid">
@@ -480,106 +465,106 @@
 					<ColumnDefinition
 						Width="Auto" />
 					<ColumnDefinition
-						Width="Auto" />
-					<ColumnDefinition
-						Width="Auto" />
-					<ColumnDefinition
-						Width="Auto" />
-					<ColumnDefinition
 						Width="*" />
 					<ColumnDefinition
 						Width="Auto" />
 				</Grid.ColumnDefinitions>
-				<Button
-					Grid.Column="0"
-					Content="{DynamicResource TitleExtractFile}"
-					Padding="10,5"
-					Command="{Binding ExtractCommand}">
-					<Button.Style>
-						<Style
-							TargetType="Button"
-							BasedOn="{StaticResource {x:Type Button}}">
-							<Style.Triggers>
-								<DataTrigger
-									Binding="{Binding ElementName=ListFiles, Path=SelectedIndex}"
-									Value="-1">
-									<Setter
-										Property="IsEnabled"
-										Value="False" />
-								</DataTrigger>
-							</Style.Triggers>
-						</Style>
-					</Button.Style>
-				</Button>
-				<CheckBox
-					Grid.Column="1"
-					Content="{DynamicResource TitleOpenExtractedLocation}"
-					IsChecked="{Binding OpenExtracted}"
-					Padding="10,5"
-					Margin="5,0,0,0" />
-				<CheckBox
-					Grid.Column="2"
-					Content="{DynamicResource TitleFindAnim}"
-					IsChecked="{Binding SearchAnim}"
-					Padding="10,5"
-					Margin="5,0,0,0">
-					<CheckBox.Style>
-						<Style
-							TargetType="CheckBox"
-							BasedOn="{StaticResource {x:Type CheckBox}}">
-							<Setter
-								Property="IsEnabled"
-								Value="False" />
-							<Style.Triggers>
-								<DataTrigger
-									Binding="{Binding CurrentPack.SelectedFile.Extension}"
-									Value="PMD">
-									<Setter
-										Property="IsEnabled"
-										Value="True" />
-								</DataTrigger>
-								<DataTrigger
-									Binding="{Binding CurrentPack.SelectedFile.Extension}"
-									Value="PMG">
-									<Setter
-										Property="IsEnabled"
-										Value="True" />
-								</DataTrigger>
-								<DataTrigger
-									Binding="{Binding CurrentPack.SelectedFile.Extension}"
-									Value="PMC">
-									<Setter
-										Property="IsEnabled"
-										Value="True" />
-								</DataTrigger>
-							</Style.Triggers>
-						</Style>
-					</CheckBox.Style>
-				</CheckBox>
-				<Button
-					Grid.Column="3"
-					Content="{DynamicResource TitleGlanceFile}"
-					Padding="10,5"
-					Command="{Binding ReadFileCommand}">
-					<Button.Style>
-						<Style
-							TargetType="Button"
-							BasedOn="{StaticResource {x:Type Button}}">
-							<Style.Triggers>
-								<DataTrigger
-									Binding="{Binding CurrentPack.SelectedFile.IsDir}"
-									Value="True">
-									<Setter
-										Property="IsEnabled"
-										Value="False" />
-								</DataTrigger>
-							</Style.Triggers>
-						</Style>
-					</Button.Style>
-				</Button>
+				<StackPanel
+					Orientation="Horizontal">
+					<Button
+						Grid.Column="0"
+						Content="{DynamicResource TitleExtractFile}"
+						Padding="20,5"
+						Command="{Binding ExtractCommand}">
+						<Button.Style>
+							<Style
+								TargetType="Button"
+								BasedOn="{StaticResource {x:Type Button}}">
+								<Style.Triggers>
+									<DataTrigger
+										Binding="{Binding ElementName=ListFiles, Path=SelectedIndex}"
+										Value="-1">
+										<Setter
+											Property="IsEnabled"
+											Value="False" />
+									</DataTrigger>
+								</Style.Triggers>
+							</Style>
+						</Button.Style>
+					</Button>
+					<CheckBox
+						Content="{DynamicResource TitleOpenExtractedLocation}"
+						IsChecked="{Binding OpenExtracted}"
+						Padding="5"
+						Margin="5,0,0,0" />
+					<CheckBox
+						Content="{DynamicResource TitleMountPackages}"
+						ToolTip="{DynamicResource ToolTipMountPackages}"
+						IsChecked="{Binding MountPackages}"
+						Padding="5"
+						Margin="5,0,0,0" />
+					<CheckBox
+						Content="{DynamicResource TitleFindAnim}"
+						IsChecked="{Binding SearchAnim}"
+						Padding="5"
+						Margin="5,0,0,0">
+						<CheckBox.Style>
+							<Style
+								TargetType="CheckBox"
+								BasedOn="{StaticResource {x:Type CheckBox}}">
+								<Setter
+									Property="IsEnabled"
+									Value="False" />
+								<Style.Triggers>
+									<DataTrigger
+										Binding="{Binding CurrentPack.SelectedFile.Extension}"
+										Value="PMD">
+										<Setter
+											Property="IsEnabled"
+											Value="True" />
+									</DataTrigger>
+									<DataTrigger
+										Binding="{Binding CurrentPack.SelectedFile.Extension}"
+										Value="PMG">
+										<Setter
+											Property="IsEnabled"
+											Value="True" />
+									</DataTrigger>
+									<DataTrigger
+										Binding="{Binding CurrentPack.SelectedFile.Extension}"
+										Value="PMC">
+										<Setter
+											Property="IsEnabled"
+											Value="True" />
+									</DataTrigger>
+								</Style.Triggers>
+							</Style>
+						</CheckBox.Style>
+					</CheckBox>
+					<Button
+						Content="{DynamicResource TitleGlanceFile}"
+						Padding="10,5"
+						Command="{Binding ReadFileCommand}">
+						<Button.Style>
+							<Style
+								TargetType="Button"
+								BasedOn="{StaticResource {x:Type Button}}">
+								<Style.Triggers>
+									<DataTrigger
+										Binding="{Binding CurrentPack.SelectedFile.IsDir}"
+										Value="True">
+										<Setter
+											Property="IsEnabled"
+											Value="False" />
+									</DataTrigger>
+								</Style.Triggers>
+							</Style>
+						</Button.Style>
+					</Button>
+				</StackPanel>
 
 				<Button
-					Grid.Column="5"
+					Grid.Column="2"
 					Content="{DynamicResource TitleEDF}"
 					ToolTip="{DynamicResource TooltipEDF}"
 					Padding="10,5"

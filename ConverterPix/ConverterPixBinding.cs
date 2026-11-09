@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using SCS_Mod_Helper.Class;
 using SCS_Mod_Helper.Class.Base;
+using SCS_Mod_Helper.Language;
 using SCS_Mod_Helper.Setting;
 using SCS_Mod_Helper.Utils;
 using System.Collections.ObjectModel;
@@ -67,13 +68,17 @@ public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PI
 		}
 	} = null;
 
+	public ICommand AddPackCommand => new RelayCommand<object>(_ => AddPack());
 	public void AddPack() {
 		PixPackage newPack = new();
 		PackList.Add(newPack);
 		CurrentPack = newPack;
 	}
 
-	public void ClosePack(PixPackage pack) {
+	public ICommand ClosePackCommand => new RelayCommand<PixPackage>(ClosePack);
+	public void ClosePack(PixPackage? pack) {
+		if (pack == null)
+			return;
 		PackList.Remove(pack);
 		if (PackList.Count == 0) {
 			AddPack();
@@ -107,14 +112,14 @@ public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PI
 		else
 			initialDir = History.Default.PixPackPath;
 		OpenFileDialog openFileDialog = new() {
-			Filter = Util.GetFilter("DialogFilterMod"),
+			Filter = Resource.GetFilter("DialogFilterMod"),
 			Multiselect = false,
 			DefaultDirectory = defaultDir,
 			InitialDirectory = initialDir
 		};
 		if (openFileDialog.ShowDialog() == true) {
 			if (openFileDialog.FileName.StartsWith(Instances.ETS2GamePath) || openFileDialog.FileName.StartsWith(Instances.ATSGamePath)) {
-				if (openFileDialog.SafeFileName == "def.scs") {
+				if (openFileDialog.SafeFileName == "def.scs" && History.Default.PixOpenDefNotice) {
 					NotShowableMessageBox messageBox = new(GetString("MessageOpenDef"), MessageBoxButton.OK, true) {
 						Owner = BindingWindow
 					};
@@ -285,14 +290,23 @@ public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PI
 		return p;
 	}
 
-	public ICommand ExtractCommand => new RelayCommand<PIXFile>(pixFile => ExtractFile(pixFile ?? CurrentSelectedFile));
-	public void ExtractFile(PIXFile? pixFile) {
+	public ICommand ExtractCommand => new RelayCommand<PIXFile>(pixFile => _ = ExtractFile(pixFile ?? CurrentSelectedFile));
+	public async Task ExtractFile(PIXFile? pixFile) {
 		if (pixFile == null)
 			return;
-		StringBuilder args = new($"-b \"{CurrentPackPath}\" -e \"{ExportPath}\"");
+		StringBuilder args = new($"-b \"{CurrentPackPath}\"");
+		if (MountPackages && PackList.Count > 1) {
+			foreach (var pack in PackList) {
+				if (pack == CurrentPack || pack.PackPath.Length == 0)
+					continue;
+				args.Append($" -b \"{pack.PackPath}\"");
+				
+			}
+		}
+		args.Append($" -e \"{ExportPath}\"");
 		int type = 0;
 		if (pixFile.IsDir) {
-			args.Append(" -extract_d \"").Append(pixFile.Filename).Append('"');
+			args.Append($" -extract_d \"{pixFile.Filename}\"");
 		} else {
 			switch (pixFile.Extension.ToLower()) {
 				case "pmd":
@@ -302,22 +316,22 @@ public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PI
 					type = 1;
 					var name = pixFile.Filename;
 					name = name[..^4];
-					args.Append(" -m \"").Append(name).Append('"');
+					args.Append($" -m \"{name}\"");
 					if (SearchAnim) {
-						var anim = SearchAnimExe(name);
-						if (anim.Count > 0)
-							foreach (string a in anim) {
-								args.Append(" \"").Append(a).Append('"');
+						var animList = SearchAnimExe(name);
+						if (animList.Count > 0)
+							foreach (string anim in animList) {
+								args.Append($" \"{anim}\"");
 								break;
 							}
 					}
 					break;
 				case "tobj":
 					type = 2;
-					args.Append(" -t \"").Append(pixFile.Filename).Append('"');
+					args.Append($" -t \"{pixFile.Filename}\"");
 					break;
 				default:
-					args.Append(" -extract_f \"").Append(pixFile.Filename).Append('"');
+					args.Append($" -extract_f \"{pixFile.Filename}\"");
 					break;
 			}
 		}
@@ -325,28 +339,31 @@ public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PI
 		p.Start();
 
 		string? line;
+		string errorHeader = "<error>", warningHeader = "<warning>";
 		bool success = true;
-		List<string> errors = [];
-		while ((line = p.StandardOutput.ReadLine()) != null) {
+		List<string> errors = [], warnings = [];
+		while ((line = await p.StandardOutput.ReadLineAsync()) != null) {
 			Debug.WriteLine(line);
 
 			if (line.Trim().StartsWith('*') || line.Length == 0)
 				continue;
-			if (line.StartsWith("<error>")) {
+			if (line.StartsWith(errorHeader)) {
 				success = false;
-				line = line[7..];
+				line = line[errorHeader.Length..];
 				errors.Add(line);
+			} else if (line.StartsWith(warningHeader)) {
+				line = line[warningHeader.Length..].Trim();
+				warnings.Add(line);
 			}
 		}
-		p.WaitForExit();
+		await p.WaitForExitAsync();
 		p.Close();
 		if (success) {
 			string osFilename = pixFile.Filename.Replace('/', '\\');
 			string filePath = ExportPath + osFilename;
 			if (OpenExtracted) {
-				if (type == 1) {
+				if (type == 1)
 					filePath = filePath[..^4] + ".pim";
-				}
 				if (File.Exists(filePath)) {
 					Process.Start(new ProcessStartInfo {
 						FileName = "explorer.exe",
@@ -362,32 +379,47 @@ public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PI
 				2 => "MessageExtractedTobj",
 				_ => "MessageExtractedFile",
 			};
-			string resultMessage = $"{GetString(key)} {filePath}";
-			MessageBox.Show(BindingWindow, resultMessage, "Result");
+			StringBuilder resultString = new();
+			resultString.AppendLine(GetString(key));
+			resultString.Append(filePath);
+			if (warnings.Count > 0) {
+				List<string> failFiles = [];
+				string wStart = "[tobj] ", wEnd = ": Unable to load!";
+				foreach (var warning in warnings) {
+					if (warning.StartsWith(wStart) && warning.EndsWith(wEnd)) {
+						string file = warning.Substring(wStart.Length, warning.Length - wStart.Length - wEnd.Length);
+						failFiles.Add(file);
+					}
+				}
+				resultString.Append("\n\n");
+				resultString.AppendLine(GetQuantityString("MessageExtractWarning1", failFiles.Count));
+				foreach(var file in failFiles) {
+					resultString.AppendLine(file);
+				}
+				resultString.AppendLine(GetQuantityString("MessageExtractWarning2", failFiles.Count));
+			}
+			MessageBox.Show(BindingWindow, resultString.ToString(), GetString("TitleExtractResult"));
 		} else {
 			string resultMessage = $"{GetString("MessageExtractFail")}\n{string.Join(Environment.NewLine, errors)}";
-			MessageBox.Show(BindingWindow, resultMessage, "Result");
+			MessageBox.Show(BindingWindow, resultMessage, GetString("TitleExtractResult"));
 		}
 	}
 
-
-	private bool mSearchAnim = false;
 	public bool SearchAnim {
-		get => mSearchAnim;
+		get;
 		set {
-			mSearchAnim = value;
+			field = value;
 			InvokeChange();
 		}
-	}
+	} = false;
 
-	private bool mOpenExtracted = false;
 	public bool OpenExtracted {
-		get => mOpenExtracted;
+		get;
 		set {
-			mOpenExtracted = value;
+			field = value;
 			InvokeChange();
 		}
-	}
+	} = false;
 
 	public List<string> SearchAnimExe(string modelPath) {
 		string args = $"-b \"{CurrentPackPath}\" --find-model-animations \"{modelPath}\"";
@@ -409,6 +441,14 @@ public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PI
 		p.Close();
 		return anims;
 	}
+
+	public bool MountPackages {
+		get;
+		set {
+			field = value;
+			InvokeChange();
+		}
+	} = false;
 
 	public ICommand ExtractAllCommand => new RelayCommand<object>(_ => ExtractAll());
 
@@ -476,12 +516,11 @@ public class PixPackage: BaseBinding {
 
 	public ObservableCollection<PIXFile> FileList => mFileList;
 
-	private PIXFile? mSelectedFile = null;
 	public PIXFile? SelectedFile {
-		get => mSelectedFile;
+		get;
 		set {
-			mSelectedFile = value;
+			field = value;
 			InvokeChange();
 		}
-	}
+	} = null;
 }

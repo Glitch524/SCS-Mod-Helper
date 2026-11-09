@@ -32,14 +32,5 @@ namespace SCS_Mod_Helper.ConverterPix {
 				e.Handled = true;
 			}
 		}
-
-		private void ButtonAddPackClick(object sender, RoutedEventArgs e) => Binding.AddPack();
-
-		private void ButtonClosePackClick(object sender, RoutedEventArgs e) {
-			if (sender is Button button) {
-				var pack = (PixPackage) button.DataContext;
-				Binding.ClosePack(pack);
-			}
-        }
 	}
 }
