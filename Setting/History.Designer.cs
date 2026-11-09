@@ -82,5 +82,29 @@ namespace SCS_Mod_Helper.Setting {
                 this["IconDefCreateOnAccessory"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ConverterPixNotice {
+            get {
+                return ((bool)(this["ConverterPixNotice"]));
+            }
+            set {
+                this["ConverterPixNotice"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool PixOpenDefNotice {
+            get {
+                return ((bool)(this["PixOpenDefNotice"]));
+            }
+            set {
+                this["PixOpenDefNotice"] = value;
+            }
+        }
     }
 }

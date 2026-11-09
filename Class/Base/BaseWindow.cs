@@ -21,11 +21,5 @@ public class BaseWindow: FluentWindow, IBaseVisual {
 			Wpf.Ui.Appearance.SystemThemeWatcher.UnWatch(this);
 	}
 
-	public string GetString(string key, params object[] args) {
-		string res = FindResource(key).ToString()!;
-		if (args.Length > 0) {
-			res = string.Format(res, args);
-		}
-		return res;
-	}
+	public static string GetString(string key, params object[] args) => Util.GetString(key, args);
 }

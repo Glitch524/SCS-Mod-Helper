@@ -73,18 +73,6 @@ namespace SCS_Mod_Helper.Setting {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ConverterPixNotice {
-            get {
-                return ((bool)(this["ConverterPixNotice"]));
-            }
-            set {
-                this["ConverterPixNotice"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string ConversionToolsPath {
             get {

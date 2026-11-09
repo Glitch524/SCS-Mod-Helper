@@ -1,0 +1,107 @@
+﻿<base:BaseWindow
+	x:Class="SCS_Mod_Helper.Class.NotShowableMessageBox"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+	xmlns:local="clr-namespace:SCS_Mod_Helper.Manifest"
+	xmlns:base="clr-namespace:SCS_Mod_Helper.Class.Base"
+	mc:Ignorable="d"
+	MaxWidth="400"
+	MinHeight="100"
+	MinWidth="100"
+	SizeToContent="Height"
+	WindowStartupLocation="CenterOwner"
+	Title="{DynamicResource MessageTitleNotice}"
+	Cursor="">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="*" />
+			<RowDefinition
+				Height="Auto" />
+		</Grid.RowDefinitions>
+		<ui:TitleBar
+			x:Name="TitleBar"
+			d:Title="{DynamicResource MessageTitleNotice}"
+			VerticalAlignment="Stretch" />
+		<StackPanel
+			Grid.Row="1"
+			Margin="15,0,15,20">
+			<TextBlock
+				x:Name="TextMessage"
+				TextWrapping="Wrap"
+				d:Text="message" />
+			<CheckBox
+				x:Name="CheckBoxDontShowAgain"
+				Margin="0,5,0,0"
+				Content="{DynamicResource ButtonDontShowAgain}"
+				MaxWidth="150" />
+		</StackPanel>
+		<Grid
+			Grid.Row="2">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition
+					Width="*"
+					MinWidth="40" />
+				<ColumnDefinition
+					Width="Auto" />
+				<ColumnDefinition
+					Width="Auto" />
+				<ColumnDefinition
+					Width="Auto" />
+				<ColumnDefinition
+					Width="*"
+					MinWidth="40" />
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition
+					Height="*"
+					MinHeight="10" />
+				<RowDefinition
+					Height="Auto" />
+				<RowDefinition
+					Height="*"
+					MinHeight="10" />
+			</Grid.RowDefinitions>
+			<Border
+				Grid.RowSpan="3"
+				Grid.ColumnSpan="5"
+				Background="{DynamicResource TextControlElevationBorderBrush}" />
+
+			<Button
+				x:Name="ButtonPositive"
+				Padding="30,3"
+				Margin="3,0"
+				Grid.Row="1"
+				Grid.Column="1"
+				Content="{DynamicResource ButtonYes}"
+				HorizontalContentAlignment="Center"
+				HorizontalAlignment="Stretch"
+				Click="ButtonResult" />
+			<Button
+				x:Name="ButtonNegative"
+				Padding="30,3"
+				Margin="3,0"
+				Grid.Row="1"
+				Grid.Column="2"
+				Content="{DynamicResource ButtonNo}"
+				HorizontalContentAlignment="Center"
+				HorizontalAlignment="Stretch"
+				Click="ButtonResult" />
+			<Button
+				x:Name="ButtonNeutral"
+				Padding="30,3"
+				Margin="3,0"
+				Grid.Row="1"
+				Grid.Column="3"
+				Content="{DynamicResource ButtonCancel}"
+				HorizontalContentAlignment="Center"
+				HorizontalAlignment="Stretch"
+				Click="ButtonResult" />
+		</Grid>
+	</Grid>
+</base:BaseWindow>

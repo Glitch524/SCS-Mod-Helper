@@ -1,8 +1,8 @@
 ﻿using Microsoft.Win32;
+using SCS_Mod_Helper.Class;
 using SCS_Mod_Helper.Class.Base;
 using SCS_Mod_Helper.Setting;
 using SCS_Mod_Helper.Utils;
-using System.Collections;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
@@ -113,6 +113,18 @@ public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PI
 			InitialDirectory = initialDir
 		};
 		if (openFileDialog.ShowDialog() == true) {
+			if (openFileDialog.FileName.StartsWith(Instances.ETS2GamePath) || openFileDialog.FileName.StartsWith(Instances.ATSGamePath)) {
+				if (openFileDialog.SafeFileName == "def.scs") {
+					NotShowableMessageBox messageBox = new(GetString("MessageOpenDef"), MessageBoxButton.OK, true) {
+						Owner = BindingWindow
+					};
+					if (messageBox.ShowDialog() == true) {
+						if (messageBox.DontShowAgain) {
+							History.Default.PixOpenDefNotice = false;//下面也会保存history所以这里没有写
+						}
+					}
+				}
+			}
 			CurrentPack!.PackPath = openFileDialog.FileName;
 			CurrentPack!.PackName = openFileDialog.SafeFileName;
 			History.Default.PixPackPath = Directory.GetParent(CurrentPack.PackPath)!.FullName;
@@ -193,18 +205,23 @@ public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PI
 	public async Task ReadDir(string? focusPath = null) {
 		string args = $"-b \"{CurrentPackPath}\" -listdir \"{CurrentPackDir}\"";
 
-		var startInfo = CallPixInfo(args);
+		using Process p = CallPix(args);
+		p.ErrorDataReceived += (s, e) => {
+			if (e.Data != null)
+				Debug.WriteLine("[err] " + e.Data);
+		};
+		p.Start();
+		p.BeginErrorReadLine();
 
 		var tcs = new TaskCompletionSource<(bool success, string? reason)>();
 		PIXFile? focusFile = null;
 		var batchList = new List<PIXFile>(50);
 
 		await Task.Run(async () => {
-			using var p = new Process { StartInfo = startInfo };
 			p.Start();
 			try {
 				string? line;
-				while ((line = p.StandardOutput.ReadLine()) != null) {
+				while ((line = await p.StandardOutput.ReadLineAsync()) != null) {
 					if (line == null || line.Trim().StartsWith('*') || line.Length == 0)
 						continue;
 					if (line.StartsWith("<error>")) {
@@ -267,17 +284,6 @@ public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PI
 		p.StartInfo.CreateNoWindow = true;
 		return p;
 	}
-	private static ProcessStartInfo CallPixInfo(string args) => new() {
-		FileName = Instances.ConverterPixExe!,
-		Arguments = args.ToString(),
-		UseShellExecute = false,
-		CreateNoWindow = true,
-		RedirectStandardInput = true,
-		RedirectStandardOutput = true,
-		RedirectStandardError = true,
-		StandardOutputEncoding = Encoding.UTF8,
-		StandardErrorEncoding = Encoding.UTF8
-	};
 
 	public ICommand ExtractCommand => new RelayCommand<PIXFile>(pixFile => ExtractFile(pixFile ?? CurrentSelectedFile));
 	public void ExtractFile(PIXFile? pixFile) {

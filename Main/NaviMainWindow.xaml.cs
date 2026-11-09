@@ -1,11 +1,11 @@
-﻿using SCS_Mod_Helper.Class.Base;
+﻿using SCS_Mod_Helper.Class;
+using SCS_Mod_Helper.Class.Base;
 using SCS_Mod_Helper.ConverterPix;
 using SCS_Mod_Helper.Locale.Localization;
 using SCS_Mod_Helper.Modding.PaintJob;
 using SCS_Mod_Helper.Setting;
 using SCS_Mod_Helper.Utils;
 using SCS_Mod_Helper.Vehicles;
-using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using Wpf.Ui.Input;
@@ -51,14 +51,14 @@ public partial class NaviMainWindow: BaseWindow {
 					}
 					return;
 				}
-				if (Settings.Default.ConverterPixNotice) {
-					ConverterNoticeBox notice = new() {
+				if (History.Default.ConverterPixNotice) {
+					NotShowableMessageBox notice = new(GetString("DialogMessageEDF"), MessageBoxButton.OKCancel, true) {
 						Owner = this
 					};
 					if (notice.ShowDialog() == true) {
 						if (notice.DontShowAgain) {
-							Settings.Default.ConverterPixNotice = false;
-							Settings.Default.Save();
+							History.Default.ConverterPixNotice = false;
+							History.Default.Save();
 						}
 					} else
 						return;
