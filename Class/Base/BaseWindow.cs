@@ -1,4 +1,5 @@
-﻿using SCS_Mod_Helper.Utils;
+﻿using SCS_Mod_Helper.Language;
+using SCS_Mod_Helper.Utils;
 using System.Windows;
 using Wpf.Ui.Controls;
 
@@ -21,5 +22,7 @@ public class BaseWindow: FluentWindow, IBaseVisual {
 			Wpf.Ui.Appearance.SystemThemeWatcher.UnWatch(this);
 	}
 
-	public static string GetString(string key, params object[] args) => Util.GetString(key, args);
+	public string GetString(string key, params object[] args) => Resource.GetString(this, key, args);
+	public string GetQuantityString(string key, int quantity, params object[] args) => Resource.GetQuantityString(this, key, quantity, args);
+	public string GetFilter(string key) => Resource.GetFilter(this, key);
 }

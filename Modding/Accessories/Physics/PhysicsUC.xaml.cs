@@ -92,7 +92,7 @@ public partial class PhysicsUC: BaseUserControl {
 			if (physics == null)
 				return;
 			AccessoryPhysicsIO.AddPhysicsToList(physics);
-			MessageBox.Show(Window.GetWindow(this), Util.GetString("MessageResultPhysSaved"));
+			MessageBox.Show(Window.GetWindow(this), GetString("MessageResultPhysSaved"));
 		}
 	}
 

@@ -1,4 +1,5 @@
 ﻿using SCS_Mod_Helper.Class.Base;
+using SCS_Mod_Helper.Language;
 using SCS_Mod_Helper.Utils;
 using System.Drawing.Imaging;
 using System.IO;
@@ -36,7 +37,7 @@ namespace SCS_Mod_Helper.Manifest {
 
 		private void SaveManifestInternal(Window window, ManifestBinding binding) {
 			if (Util.IsEmpty(binding.ProjectLocation, binding.ModDisplayName, binding.DescriptionName)) {
-				MessageBox.Show(window, Util.GetString("MessageManifestNotFilled"));
+				MessageBox.Show(window, Resource.GetString("MessageManifestNotFilled"));
 				return;
 			}
 			var saveLocation = binding.ProjectLocation;
@@ -112,7 +113,7 @@ namespace SCS_Mod_Helper.Manifest {
 				using StreamReader sr = new(manifest);
 				string? line = sr.ReadLine()?.Trim();
 				if (line == null || !line.StartsWith(FileHeader))
-					throw new(Util.GetString("MessageLoadManifestErrNotManifest"));
+					throw new(Resource.GetString("MessageLoadManifestErrNotManifest"));
 				while ((line = sr.ReadLine()?.Trim()) != null) {
 					if (line.Length == 0 || line == "{" || line == "}" || line.StartsWith('#') || line.StartsWith(NameMFHeader))
 						continue;
@@ -153,7 +154,7 @@ namespace SCS_Mod_Helper.Manifest {
 					}
 				}
 			} catch (Exception ex) {
-				MessageBox.Show(Util.GetString("MessageLoadManifestErrFail") + "\n" + ex.Message);
+				MessageBox.Show(Resource.GetString("MessageLoadManifestErrFail") + "\n" + ex.Message);
 			}
 		}
 

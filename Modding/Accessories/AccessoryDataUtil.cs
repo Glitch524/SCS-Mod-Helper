@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using SCS_Mod_Helper.Language;
 using SCS_Mod_Helper.Utils;
 using SCS_Mod_Helper.Vehicles;
 using System.IO;
@@ -12,24 +13,24 @@ public static class AccessoryDataUtil {
 	public static string? ChooseModelPath(ChooseModelType chooseType, string? currentPath, VehicleType vehicleType = VehicleType.Truck) {
 		var projectLocation = Instances.ProjectLocation;
 		if (projectLocation.Length == 0)
-			throw new(Util.GetString("MessageProjectLocationFirst"));
+			throw new(Resource.GetString("MessageProjectLocationFirst"));
 		string title, filter, defaultExt;
 		switch (chooseType) {
 			case ChooseModelType.Model:
 			case ChooseModelType.ExtModel:
-				title = Util.GetString("DialogTitleChooseModel");
-				filter = Util.GetFilter("DialogFilterChooseModel");
+				title = Resource.GetString("DialogTitleChooseModel");
+				filter = Resource.GetFilter("DialogFilterChooseModel");
 				defaultExt = "pmd";
 				break;
 			case ChooseModelType.ModelUK:
 			case ChooseModelType.ExtModelUK:
-				title = Util.GetString("DialogTitleChooseModelUK");
-				filter = Util.GetFilter("DialogFilterChooseModel");
+				title = Resource.GetString("DialogTitleChooseModelUK");
+				filter = Resource.GetFilter("DialogFilterChooseModel");
 				defaultExt = "pmd";
 				break;
 			case ChooseModelType.Coll:
-				title = Util.GetString("DialogTitleChooseColl");
-				filter = Util.GetFilter("DialogFilterChooseColl");
+				title = Resource.GetString("DialogTitleChooseColl");
+				filter = Resource.GetFilter("DialogFilterChooseColl");
 				defaultExt = "pmc";
 				break;
 			default:
@@ -69,12 +70,12 @@ public static class AccessoryDataUtil {
 			return null;
 		string path = fileDialog.FileName;
 		if (!path.StartsWith(projectLocation))
-			throw new(Util.GetString("MessageModelOutsideProject"));
+			throw new(Resource.GetString("MessageModelOutsideProject"));
 		if (chooseType == ChooseModelType.Coll) {
 			if (!path.EndsWith(".pic") && !path.EndsWith(".pmc"))
-				throw new(Util.GetString("MessageInvalidExtColl"));
+				throw new(Resource.GetString("MessageInvalidExtColl"));
 		} else if (!path.EndsWith(".pim") && !path.EndsWith(".pmd")) {
-			throw new(Util.GetString("MessageInvalidExt"));
+			throw new(Resource.GetString("MessageInvalidExt"));
 		}
 		Instances.HistoryModelPath = Directory.GetParent(path)!.FullName;
 		return path;
@@ -85,19 +86,19 @@ public static class AccessoryDataUtil {
 		try {
 			string projectLocation = Instances.ProjectLocation;
 			if (projectLocation.Length == 0)
-				throw new(Util.GetString("MessageProjectLocationFirst"));
+				throw new(Resource.GetString("MessageProjectLocationFirst"));
 			var pathAcc = Paths.AccessoryIconDir();
 			var fileDialog = new OpenFileDialog {
 				Multiselect = false,
 				DefaultDirectory = pathAcc,
 				DefaultExt = "tga",
-				Title = Util.GetString("DialogTitleChooseIcon"),
-				Filter = Util.GetFilter("DialogFilterChooseIcon")
+				Title = Resource.GetString("DialogTitleChooseIcon"),
+				Filter = Resource.GetFilter("DialogFilterChooseIcon")
 			};
 			if (!fileDialog.InitialDirectory.StartsWith(pathAcc))
 				fileDialog.InitialDirectory = pathAcc;
 			if (!Directory.Exists(pathAcc) && Directory.CreateDirectory(pathAcc) == null)//确保accessory文件夹存在
-				throw new(Util.GetString("MessageCreateAccessoryFail"));
+				throw new(Resource.GetString("MessageCreateAccessoryFail"));
 			if (fileDialog.ShowDialog() != true)
 				return null;
 			return fileDialog.FileName;
@@ -112,12 +113,12 @@ public static class AccessoryDataUtil {
 			string projectLocation = Instances.ProjectLocation;
 			var pathAcc = Paths.AccessoryIconDir();
 			if (!path.StartsWith(projectLocation) || path.Length == projectLocation.Length) //必须在项目内
-				throw new(Util.GetString("MessageIconOutsideProject"));
+				throw new(Resource.GetString("MessageIconOutsideProject"));
 			var iconFile = new DirectoryInfo(path);
 			string pathCheck = path;
 			pathCheck = pathCheck.Replace(projectLocation, "");
 			if (pathCheck.Split(' ', '(', ')').Length > 1) //路径或文件名不能有空格或括号
-				throw new(Util.GetString("MessageIconInvalidChar"));
+				throw new(Resource.GetString("MessageIconInvalidChar"));
 			var siiIconLocation = CheckIconFileExistence(window, pathAcc, iconFile);
 			if (siiIconLocation == null)
 				return null;
@@ -253,24 +254,24 @@ public static class AccessoryDataUtil {
 		try {
 			var projectLocation = Instances.ProjectLocation;
 			if (projectLocation.Length == 0)
-				throw new(Util.GetString("MessageProjectLocationFirst"));
+				throw new(Resource.GetString("MessageProjectLocationFirst"));
 			string title;
 			switch(texType) {
 				case ChooseTexType.Rope:
-					title = Util.GetString("DialogTitleChooseRope");
+					title = Resource.GetString("DialogTitleChooseRope");
 					break;
 				case ChooseTexType.Patch:
-					title = Util.GetString("DialogTitleChoosePatch");
+					title = Resource.GetString("DialogTitleChoosePatch");
 					break;
 				case ChooseTexType.Paintjob:
 				case ChooseTexType.AccTex:
-					title = Util.GetString("TitlePaintJobTexture");
+					title = Resource.GetString("TitlePaintJobTexture");
 					break;
 				case ChooseTexType.BaseTexOvr:
-					title = Util.GetString("TitleBaseTextureOverride");
+					title = Resource.GetString("TitleBaseTextureOverride");
 					break;
 				case ChooseTexType.FlakeNoise:
-					title = Util.GetString("TitleFlakeNoise");
+					title = Resource.GetString("TitleFlakeNoise");
 					break;
 				default:
 					return null;
@@ -309,7 +310,7 @@ public static class AccessoryDataUtil {
 				DefaultDirectory = defaultDir,
 				InitialDirectory = initialDir,
 				DefaultExt = "tobj",
-				Filter = Util.GetFilter("DialogFilterTextureFile"),
+				Filter = Resource.GetFilter("DialogFilterTextureFile"),
 			};
 			if (fileDialog.ShowDialog() != true)
 				return null;
@@ -326,18 +327,18 @@ public static class AccessoryDataUtil {
 		return null;
 	}
 
-	public static string? ChooseRope() => ChooseMaterial(Util.GetString("DialogTitleChooseRope"));
-	public static string? ChoosePatch() => ChooseMaterial(Util.GetString("DialogTitleChoosePatch"));
+	public static string? ChooseRope() => ChooseMaterial(Resource.GetString("DialogTitleChooseRope"));
+	public static string? ChoosePatch() => ChooseMaterial(Resource.GetString("DialogTitleChoosePatch"));
 	private static string? ChooseMaterial(string title) {//rope需要保留mat扩展名
 		string projectLocation = Instances.ProjectLocation;
 		if (projectLocation.Length == 0)
-			throw new(Util.GetString("MessageProjectLocationFirst"));
+			throw new(Resource.GetString("MessageProjectLocationFirst"));
 		var fileDialog = new OpenFileDialog {
 			Multiselect = false,
 			DefaultDirectory = projectLocation,
 			DefaultExt = "mat",
 			Title = title,
-			Filter = Util.GetFilter("DialogFilterChooseMaterial"),
+			Filter = Resource.GetFilter("DialogFilterChooseMaterial"),
 		};
 		if (!fileDialog.InitialDirectory.StartsWith(projectLocation))
 			fileDialog.InitialDirectory = projectLocation;
@@ -345,13 +346,13 @@ public static class AccessoryDataUtil {
 			return null;
 		string path = fileDialog.FileName;
 		if (!path.StartsWith(projectLocation) || path.Length == projectLocation.Length)
-			throw new(Util.GetString("MessageModelOutsideProject"));
+			throw new(Resource.GetString("MessageModelOutsideProject"));
 		if (path.EndsWith(".tga") || path.EndsWith(".dds")) {
 			var iconFile = new DirectoryInfo(path);
 			string pathCheck = path;
 			pathCheck = pathCheck.Replace(projectLocation, "");
 			if (pathCheck.Split(' ', '(', ')').Length > 1) //路径或文件名不能有空格或括号
-				throw new(Util.GetString("MessageIconInvalidChar"));
+				throw new(Resource.GetString("MessageIconInvalidChar"));
 			var matLocation = CheckMatExistence(iconFile);
 			if (matLocation == null)
 				return null;
@@ -361,7 +362,7 @@ public static class AccessoryDataUtil {
 			string inProjectPath = path.Replace(projectLocation, "");
 			return inProjectPath.Replace('\\', '/');
 		} else
-			throw new(Util.GetString("MessageErrorChooseMaterial"));
+			throw new(Resource.GetString("MessageErrorChooseMaterial"));
 	}
 
 	private static string? CheckMatExistence(DirectoryInfo iconFile) {

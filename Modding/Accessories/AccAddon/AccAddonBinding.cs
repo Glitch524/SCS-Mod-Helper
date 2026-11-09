@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 using SCS_Mod_Helper.Class.Base;
+using SCS_Mod_Helper.Language;
 using SCS_Mod_Helper.Locale.StringRes;
 using SCS_Mod_Helper.Modding.Accessories.AccAddon.Popup;
 using SCS_Mod_Helper.Modding.Accessories.Physics;
@@ -378,7 +379,7 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 				flag = false;
 			}
 			if (flag != null) {
-				var result = MessageBox.Show(Util.GetString("MessageModelTypeFlag"), Util.GetString("MessageTitleNotice"), MessageBoxButton.YesNo);
+				var result = MessageBox.Show(GetString("MessageModelTypeFlag"), GetString("MessageTitleNotice"), MessageBoxButton.YesNo);
 				if (result == MessageBoxResult.Yes) {
 					if (flag == true) {
 						ModelPath = "/vehicle/truck/upgrade/flag/flag_left.pmd";
@@ -457,9 +458,9 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 					VariantList.Add("default");
 				}
 			} else
-				MessageBox.Show(BindingWindow, Util.GetString("MessageLoadDEDErrFail") + "\n" + ex.Message);
+				MessageBox.Show(BindingWindow, GetString("MessageLoadDEDErrFail") + "\n" + ex.Message);
 		} catch (Exception ex) {
-			MessageBox.Show(BindingWindow, Util.GetString("MessageLoadDEDErrFail") + "\n" + ex.Message);
+			MessageBox.Show(BindingWindow, GetString("MessageLoadDEDErrFail") + "\n" + ex.Message);
 		}
 	}
 
@@ -812,12 +813,12 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 	public void SaveDED() {
 		PopupAddVehicleOpen = false;
 		SaveFileDialog saveFileDialog = new() {
-			Title = Util.GetString("SaveDED"),
+			Title = GetString("SaveDED"),
 			AddExtension = true,
 			DefaultDirectory = Paths.DefaultDEDDir(),
 			InitialDirectory = GetDEDInitDir(),
 			DefaultExt = "ded",
-			Filter = Util.GetFilter("DialogFilterDED"),
+			Filter = GetFilter("DialogFilterDED"),
 		};
 		if (LoadedFilename == null) {
 			if (LocalizedDisplayName == null) {
@@ -831,7 +832,7 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 			SaveDedLocation(saveFileDialog.FileName);
 
 			new AddonAppIO(saveFileDialog.FileName).SaveAddon(this);
-			MessageBox.Show(BindingWindow, Util.GetString("MessageSaveDED"));
+			MessageBox.Show(BindingWindow, GetString("MessageSaveDED"));
 		}
 	}
 
@@ -840,13 +841,13 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 		try {
 			PopupAddVehicleOpen = false;
 			OpenFileDialog openFileDialog = new() {
-				Title = Util.GetString("LoadDED"),
+				Title = GetString("LoadDED"),
 				Multiselect = false,
 				AddExtension = true,
 				DefaultDirectory = Paths.DefaultDEDDir(),
 				InitialDirectory = GetDEDInitDir(),
 				DefaultExt = "ded",
-				Filter = Util.GetFilter("DialogFilterDED"),
+				Filter = GetFilter("DialogFilterDED"),
 			};
 			if (openFileDialog.ShowDialog() == true) {
 				SaveDedLocation(openFileDialog.FileName);
@@ -859,7 +860,7 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 			}
 			LoadLooksAndVariants();
 		} catch (Exception ex) {
-			MessageBox.Show(BindingWindow, Util.GetString("MessageLoadDEDErrFail") + "\n" + ex.Message);
+			MessageBox.Show(BindingWindow, GetString("MessageLoadDEDErrFail") + "\n" + ex.Message);
 		}
 	}
 
@@ -909,17 +910,17 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 		try {
 			PopupAddVehicleOpen = false;
 			if (!VehicleExpandedETS2 && !VehicleExpandedATS)
-				throw new(Util.GetString("MessageCreateSiiNoExpanded"));
+				throw new(GetString("MessageCreateSiiNoExpanded"));
 			if (ProjectLocation.Length == 0 ||
 				DisplayName.Length == 0 ||
 				ModelPath.Length == 0 ||
 				ModelName.Length == 0) {
-				throw new(Util.GetString("MessageCreateSiiNotFilled"));
+				throw new(GetString("MessageCreateSiiNotFilled"));
 			}
 			if (Price == 0)
-				throw new(Util.GetString("ModelPriceErrNot0"));
+				throw new(GetString("ModelPriceErrNot0"));
 			var created = AccAddonSCSIO.CreateAccAddonSii(this);
-			MessageBox.Show(BindingWindow, Util.GetString(created == 0 ? "MessageCreateSiiZero" : "MessageCreateSiiResult"));
+			MessageBox.Show(BindingWindow, GetString(created == 0 ? "MessageCreateSiiZero" : "MessageCreateSiiResult"));
 		} catch (Exception ex) {
 			MessageBox.Show(BindingWindow, ex.Message);
 		}

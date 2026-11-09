@@ -45,7 +45,7 @@ public partial class HookupsWindow: BaseWindow {
 				InitialDirectory = Paths.IntDecorsDir(ProjectLocation),
 				DefaultExt = "pmd",
 				Title = GetString(ChooseModel ? "DialogTitleModel" : "DialogTitleAnim"),
-				Filter = Util.GetFilter(ChooseModel ? "DialogFilterModel" : "DialogFilterAnim")
+				Filter = GetFilter(ChooseModel ? "DialogFilterModel" : "DialogFilterAnim")
 			};
 			if (fileDialog.ShowDialog() != true)
 				return;

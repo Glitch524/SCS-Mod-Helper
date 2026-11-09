@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using SCS_Mod_Helper.Class.Base;
+using SCS_Mod_Helper.Language;
 using SCS_Mod_Helper.Main;
 using SCS_Mod_Helper.Utils;
 using System.Diagnostics;
@@ -101,7 +102,7 @@ public partial class ModManifestPage: BasePage {
 		if (sender == ButtonChooseIcon) {
 			OpenFileDialog ofd = new() {
 				Multiselect = false,
-				Filter = Util.GetFilter("DialogFilterIcon"),
+				Filter = GetFilter("DialogFilterIcon"),
 				DefaultExt = "jpg"
 			};
 			if (ofd.ShowDialog() != true)

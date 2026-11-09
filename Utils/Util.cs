@@ -49,48 +49,6 @@ namespace SCS_Mod_Helper.Utils {
 
 		public static Window? MainWindow = null;
 
-		private static object? GetResource(string key, Window? window = null) {
-			if (window == null)
-				return Instances.IsDebug() ? Application.Current.FindResource(key) : Application.Current.TryFindResource(key);
-			else
-				return Instances.IsDebug() ? window.FindResource(key) : window.TryFindResource(key);
-		}
-
-		public static string GetString(string key, params object[] args) {//"Object reference not set to an instance of an object." 如果字典的值为空就会出现这个报错
-			var obj = GetResource(key);
-			if (obj == null)
-				return key;
-			string res = obj.ToString()!;
-			if (args.Length > 0) {
-				res = string.Format(res, args);
-			}
-			return res;
-		}
-
-		public static int GetInt(string key) => (int)(Application.Current.FindResource(key) ?? 0);//"Object reference not set to an instance of an object." 如果字典的值为空就会出现这个报错
-
-		public static string GetFilter(string key) {
-			var specificFilter = GetString(key);
-			var allFilter = GetString("FilterAllFiles");
-			return $"{specificFilter}|{allFilter}";
-		}
-
-		public static string GetString(this Window window, string key, params object[] args) {
-			var obj = GetResource(key, window);
-			if (obj == null)
-				return key;
-			string res = obj.ToString()!;
-			if (args.Length > 0) {
-				res = string.Format(res, args);
-			}
-			return res;
-		}
-		public static string GetFilter(this Window window, string key) {
-			var specificFilter = window.GetString(key);
-			var allFilter = window.GetString("FilterAllFiles");
-			return $"{specificFilter}|{allFilter}";
-		}
-
 		public static bool IsEmpty(params string[] values) {
 			foreach (var v in values) {
 				if (v.Length == 0)

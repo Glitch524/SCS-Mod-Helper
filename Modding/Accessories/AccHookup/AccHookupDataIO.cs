@@ -1,4 +1,5 @@
-﻿using SCS_Mod_Helper.Modding.Accessories.Physics;
+﻿using SCS_Mod_Helper.Language;
+using SCS_Mod_Helper.Modding.Accessories.Physics;
 using SCS_Mod_Helper.Utils;
 using System.IO;
 using System.Windows;
@@ -28,13 +29,13 @@ namespace SCS_Mod_Helper.Modding.Accessories.AccHookup {
 		public static void SaveAddonHookup(Window window, AccHookupBinding viewModel) => new AccHookupDataIO().SaveAddonHookupInternal(window, viewModel);
 
 		private void SaveAddonHookupInternal(Window window, AccHookupBinding viewModel) {
-			MessageBox.Show(Util.GetString("MessageSaveBeforeStart"));
+			MessageBox.Show(Resource.GetString("MessageSaveBeforeStart"));
 			if (viewModel.StorageName.Length == 0) {
-				MessageBox.Show(window, Util.GetString("MessageSaveNoName"));
+				MessageBox.Show(window, Resource.GetString("MessageSaveNoName"));
 				return;
 			}
 			if (viewModel.SuiItems.Count == 0) {
-				MessageBox.Show(window, Util.GetString("MessageSaveSui0"));
+				MessageBox.Show(window, Resource.GetString("MessageSaveSui0"));
 				return;
 			}
 			var StorageDir = Paths.HookupStorageDir(Instances.ProjectLocation);
@@ -49,7 +50,7 @@ namespace SCS_Mod_Helper.Modding.Accessories.AccHookup {
 					WriteInclude(sw, viewModel);
 				});
 			}
-			MessageBox.Show(window, Util.GetString("MessageSaved"));
+			MessageBox.Show(window, Resource.GetString("MessageSaved"));
 		}
 
 		private static void WriteStorageTips(StreamWriter sw) {

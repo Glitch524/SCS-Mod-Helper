@@ -1,4 +1,5 @@
 ﻿using SCS_Mod_Helper.Class.Base;
+using SCS_Mod_Helper.Language;
 using SCS_Mod_Helper.Modding.PaintJob;
 using SCS_Mod_Helper.Utils;
 using System.Collections.ObjectModel;
@@ -338,7 +339,7 @@ public static class VehicleTypeExtension {
 		};
 	}
 	public static string GetLocalizedName(this VehicleType type) {
-		return Util.GetString(type switch {
+		return Resource.GetString(type switch {
 			VehicleType.Truck => "VehicleTypeTruck",
 			VehicleType.Trailer => "VehicleTypeTrailer",
 			VehicleType.Car => "VehicleTypeCar",
@@ -461,7 +462,7 @@ public class VehicleGroup(VehicleType vehicleType, bool isETS2): BaseBinding {
 		}
 	} = false;
 
-	public string GroupNameVisual => $"{VehicleType.GetLocalizedName()}({Util.GetString(IsETS2 ? "ETS2Short" : "ATSShort")})";
+	public string GroupNameVisual => $"{VehicleType.GetLocalizedName()}({Resource.GetString(IsETS2 ? "ETS2Short" : "ATSShort")})";
 
 	public List<Vehicle> Vehicles { get; } = [];
 

@@ -144,7 +144,7 @@ public class SettingsBinding(Func<IBaseVisual> windowFunc): WindowBinding(window
 	public string ETS2GamePath {
 		get {
 			if (Instances.ETS2GamePath.Length == 0)
-				return Util.GetString("StatusEmpty");
+				return GetString("StatusEmpty");
 			return Instances.ETS2GamePath;
 		}
 		set {
@@ -156,7 +156,7 @@ public class SettingsBinding(Func<IBaseVisual> windowFunc): WindowBinding(window
 	public string ATSGamePath {
 		get {
 			if (Instances.ATSGamePath.Length == 0)
-				return Util.GetString("StatusEmpty");
+				return GetString("StatusEmpty");
 			return Instances.ATSGamePath;
 		}
 		set {
@@ -287,7 +287,7 @@ public class SettingsBinding(Func<IBaseVisual> windowFunc): WindowBinding(window
 	public string ConverterPixPath {
 		get {
 			if (Instances.ConverterPixPath.Length == 0)
-				return Util.GetString("StatusEmpty");
+				return GetString("StatusEmpty");
 			return Instances.ConverterPixPath;
 		}
 		set {
@@ -322,7 +322,7 @@ public class SettingsBinding(Func<IBaseVisual> windowFunc): WindowBinding(window
 	public string ConversionToolsPath {
 		get {
 			if (Instances.ConversionToolsPath.Length == 0)
-				return Util.GetString("StatusEmpty");
+				return GetString("StatusEmpty");
 			return Instances.ConversionToolsPath;
 		}
 		set {
@@ -346,7 +346,7 @@ public class SettingsBinding(Func<IBaseVisual> windowFunc): WindowBinding(window
 	public string CommonModPath {
 		get {
 			if (Instances.CommonModPath.Length == 0)
-				return Util.GetString("StatusEmpty");
+				return GetString("StatusEmpty");
 			return Instances.CommonModPath;
 		}
 		set {

@@ -1,4 +1,5 @@
 ﻿using SCS_Mod_Helper.Class.Base;
+using SCS_Mod_Helper.Language;
 using SCS_Mod_Helper.Utils;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -53,7 +54,7 @@ namespace SCS_Mod_Helper.Locale.Localization {
 							ReadLocaleFile(module, file, langDict);
 
 						} catch (Exception ex) {
-							MessageBox.Show(Util.GetString("MessageLoadErr") + "\n" + ex.Message);
+							MessageBox.Show(Resource.GetString("MessageLoadErr") + "\n" + ex.Message);
 						}
 					}
 				}
@@ -65,7 +66,7 @@ namespace SCS_Mod_Helper.Locale.Localization {
 			using StreamReader sr = new(file.FullName);
 			string? line = sr.ReadLine()?.Trim();
 			if (line == null || line != FileHeader)
-				throw new(Util.GetString("MessageLoadErrNotLocale"));
+				throw new(Resource.GetString("MessageLoadErrNotLocale"));
 			string? stringKey = null;
 			bool copyToUni = false;
 			while ((line = sr.ReadLine()?.Trim()) != null) {
@@ -120,7 +121,7 @@ namespace SCS_Mod_Helper.Locale.Localization {
 		public void SaveLocaleDictInternal(Window window, ObservableCollection<LocaleModule> moduleList, ObservableCollection<LocaleModule> deletedModuleList) {
 			foreach (var module in moduleList) {
 				if (module.ModuleName.Length == 0) {
-					MessageBox.Show(window, Util.GetString("MessageSaveErrNoName"));
+					MessageBox.Show(window, Resource.GetString("MessageSaveErrNoName"));
 					return;
 				}
 			}

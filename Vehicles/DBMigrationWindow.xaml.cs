@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.Sqlite;
 using SCS_Mod_Helper.Class.Base;
+using SCS_Mod_Helper.Language;
 using SCS_Mod_Helper.Utils;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -181,7 +182,7 @@ public partial class VehiclesIO {
 			}
 			Dictionary<string, Vehicle>? keepVehiclesETS2 = null, keepVehiclesATS = null;
 			if (veEdited || vaEdited) {
-				var result = MessageBox.Show(window, Util.GetString("MessageDBMigration"), Util.GetString("TitleVehicleMigration"), MessageBoxButton.YesNo);
+				var result = MessageBox.Show(window, Resource.GetString("MessageDBMigration"), Resource.GetString("TitleVehicleMigration"), MessageBoxButton.YesNo);
 				if (result == MessageBoxResult.Yes) {
 					DBMigrationWindow updateWindow = new(currentVersion, dbVersion, veEdited, vaEdited) {
 						Owner = window
@@ -203,11 +204,11 @@ public partial class VehiclesIO {
 						InsertKeepVehicles(true, keepVehiclesETS2);
 					if (keepVehiclesATS != null)
 						InsertKeepVehicles(false, keepVehiclesATS);
-					message = Util.GetString("MessageDBMigrationResultSuccess");
+					message = Resource.GetString("MessageDBMigrationResultSuccess");
 				} catch {
-					message = Util.GetString("MessageDBMigrationResultFailed");//建议重命名旧的数据库文件，如果途中出错，就复原，成功就删除。
+					message = Resource.GetString("MessageDBMigrationResultFailed");//建议重命名旧的数据库文件，如果途中出错，就复原，成功就删除。
 				}
-				MessageBox.Show(window, message, Util.GetString("MessageTitleNotice"));
+				MessageBox.Show(window, message, Resource.GetString("MessageTitleNotice"));
 			}
 		}
 	}

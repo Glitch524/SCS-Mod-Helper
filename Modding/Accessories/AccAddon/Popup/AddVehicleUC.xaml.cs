@@ -43,7 +43,7 @@ public partial class AccAddonBinding {
 		if (NewManufacturer.Length == 0 || 
 			NewVehicleCodename.Length == 0 ||
 			NewVehicleName.Length == 0) {
-			MessageBox.Show(BindingWindow, Util.GetString("MessageAddErrNotFilled"));
+			MessageBox.Show(BindingWindow, GetString("MessageAddErrNotFilled"));
 			return;
 		}
 		int prod;
@@ -74,7 +74,7 @@ public partial class AccAddonBinding {
 					var cVehicle = Vehicles[i];
 					var cResult = newVehicle.CompareTo(cVehicle);
 					if (cResult == 0) {
-						throw new(Util.GetString("MessageAddErrSameID"));
+						throw new(GetString("MessageAddErrSameID"));
 					} else if (cResult < 0) {
 						Vehicles.Insert(i, newVehicle);
 						break;
@@ -86,7 +86,7 @@ public partial class AccAddonBinding {
 					var cVehicle = Vehicles[i];
 					var cResult = newVehicle.VehicleID.CompareTo(cVehicle.VehicleID);
 					if (cResult == 0) {
-						throw new(Util.GetString("MessageAddErrSameID"));
+						throw new(GetString("MessageAddErrSameID"));
 					} else if (cResult > 0) {
 						Vehicles.Insert(i + 1, newVehicle);
 						break;
@@ -97,7 +97,7 @@ public partial class AccAddonBinding {
 			}
 			VehiclesIO.AddVehicle(newVehicle);
 		} catch (Exception ex) {
-			MessageBox.Show(BindingWindow, ex.Message, Util.GetString("MessageTitleErr"));
+			MessageBox.Show(BindingWindow, ex.Message, GetString("MessageTitleErr"));
 		}
 	}
 

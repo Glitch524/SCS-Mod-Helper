@@ -1,4 +1,5 @@
 ﻿using SCS_Mod_Helper.Class.Base;
+using SCS_Mod_Helper.Language;
 using SCS_Mod_Helper.Utils;
 using System.Collections.ObjectModel;
 using System.Text;
@@ -27,7 +28,7 @@ internal class StringResUtil {
 		var dict = Instances.LocaleDict;
 		foreach (var pair in dict) {
 			StringBuilder tips = new();
-			tips.Append(Util.GetString("ResourceValueHeader"));
+			tips.Append(Resource.GetString("ResourceValueHeader"));
 			foreach (var value in pair.Value) {
 				tips.Append('\n');
 				tips.Append($"    {value}");
