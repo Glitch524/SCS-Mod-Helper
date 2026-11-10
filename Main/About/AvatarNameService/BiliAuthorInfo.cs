@@ -1,5 +1,4 @@
-﻿using SCS_Mod_Helper.Setting;
-using SCS_Mod_Helper.Utils;
+﻿using SCS_Mod_Helper.Utils;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
@@ -9,7 +8,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using WinRT.Interop;
 
 namespace SCS_Mod_Helper.Main.About.AvatarNameService;
 
@@ -76,8 +74,6 @@ public class BiliAuthorInfo: AuthorInfo {//诅咒你，你看看steam，你看�
 
 		var wrid = await CalcWridAsync(parameters);
 		parameters["w_rid"] = wrid;
-		parameters["platform"] = "web";
-		parameters["web_location"] = "1550101";
 
 		var queryParts = new List<string>();
 		foreach (var kv in parameters) {
@@ -152,50 +148,6 @@ public class BiliAuthorInfo: AuthorInfo {//诅咒你，你看看steam，你看�
 		}
 		foreach (Cookie apiCookie in apiCookies) {
 			Debug.WriteLine($"\tapi Cookie:{apiCookie.Name} = {apiCookie.Value}");
-		}
-		await EnsureBuvid4Async();
-		await EnsureBiliTicketAsync();
-	}
-
-	private async Task EnsureBuvid4Async() {
-		var existing = cookies.GetCookies(new Uri("https://api.bilibili.com"));
-		if (existing.Cast<Cookie>().Any(c => c.Name == "buvid4"))
-			return;
-		try {
-			var json = await HttpClient.GetStringAsync("https://api.bilibili.com/x/frontend/finger/spi");
-			using var doc = JsonDocument.Parse(json);
-			var data = doc.RootElement.GetProperty("data");
-			var buvid4 = data.GetProperty("b_4").GetString();
-			Debug.WriteLine($"[WBI] json={json}");
-
-			if (!string.IsNullOrEmpty(buvid4)) {
-				cookies.Add(new Cookie("buvid4", buvid4) { Domain = ".bilibili.com", Path = "/" });
-				Debug.WriteLine($"[WBI] buvid4 已写入: {buvid4[..Math.Min(20, buvid4.Length)]}...");
-			}
-		} catch (Exception e) {
-			Debug.WriteLine($"[WBI]获取buvid4失败：{e.Message}");
-		}
-	}
-
-	private async Task EnsureBiliTicketAsync() {
-		var ts = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
-		using var hmac = new HMACSHA256(Encoding.UTF8.GetBytes("XgwSnGZ1p"));
-		var hash = hmac.ComputeHash(Encoding.UTF8.GetBytes($"ts{ts}"));
-		var hexsign = Convert.ToHexStringLower(hash);
-
-		var url = "https://api.bilibili.com/bapis/bilibili.api.ticket.v1.Ticket/GenWebTicket" +
-			$"?key_id=ec02&hexsign={hexsign}&context[ts]={ts}";
-		Debug.WriteLine($"url={url}");
-
-		using var resp = await HttpClient.PostAsync(url, null);
-		var json = await resp.Content.ReadAsStringAsync();
-		using var doc = JsonDocument.Parse(json);
-		Debug.WriteLine($"[WBI] json={json}");
-
-		var ticket = doc.RootElement.GetProperty("data").GetProperty("ticket").GetString();
-		if (!string.IsNullOrEmpty(ticket)) {
-			cookies.Add(new Cookie("bili_ticket", ticket) { Domain = ".bilibili.com", Path = "/" });
-			Debug.WriteLine($"[WBI] bili_ticket 已写入: {ticket[..20]}...");
 		}
 	}
 
@@ -292,7 +244,13 @@ public class BiliAuthorInfo: AuthorInfo {//诅咒你，你看看steam，你看�
 		}
 		return sb.ToString()[..32];
 	}
+}
 
+public class BiliUserInfo {
+	[JsonPropertyName("name")]
+	public string? Name { get; set; }
+	[JsonPropertyName("face")]
+	public string? Face { get; set; }
 }
 public class BiliApiResponse {
 	[JsonPropertyName("code")]
@@ -303,15 +261,4 @@ public class BiliApiResponse {
 	public string? Msg { get; set; }
 	[JsonPropertyName("message")]
 	public string? Message { get; set; }
-}
-
-public class BiliUserInfo {
-	[JsonPropertyName("name")]
-	public string? Name { get; set; }
-	[JsonPropertyName("face")]
-	public string? Face { get; set; }
-}
-
-public class BiliAuthorInfo3rd {
-
 }
