@@ -70,10 +70,16 @@
 				<ui:NavigationViewItem
 					Content="{DynamicResource TitleShortcut}"
 					Icon="{ui:SymbolIcon Send20}"
-					Command="{Binding WindowCommand}"
 					Cursor="Hand"
 					TargetPageType="{x:Type local:ShortcutPage}"
 					TargetPageTag="Shortcuts" />
+				<ui:NavigationViewItem
+					Content="{DynamicResource TitleExports}"
+					Icon="{ui:SymbolIcon ArrowExportUp20}"
+					Cursor="Hand"
+					TargetPageType="{x:Type local:ExportsPage}"
+					TargetPageTag="Exports"
+					Visibility="Collapsed"/>
 				<ui:NavigationViewItem
 					Content="Test"
 					Icon="{ui:SymbolIcon Lightbulb20}"

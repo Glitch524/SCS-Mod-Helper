@@ -45,8 +45,10 @@ public partial class CreatedModelWindow: BaseWindow {
 	private void LoadCreatedSii() {
 		ModelPair.Clear();
 		void NoSii() {
-			MessageBox.Show(this, GetString("MessageLoadSiiErrNoSii"));
-			Close();
+			Application.Current.Dispatcher.Invoke(() => {
+				MessageBox.Show(this, GetString("MessageLoadSiiErrNoSii"));
+				Close();
+			});
 		}
 		if (!defDir.Exists) {
 			NoSii();

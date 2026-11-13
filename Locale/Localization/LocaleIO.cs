@@ -119,12 +119,13 @@ namespace SCS_Mod_Helper.Locale.Localization {
 		}
 
 		public void SaveLocaleDictInternal(Window window, ObservableCollection<LocaleModule> moduleList, ObservableCollection<LocaleModule> deletedModuleList) {
+			var unnamedCount = 0;
 			foreach (var module in moduleList) {
 				if (module.ModuleName.Length == 0) {
-					MessageBox.Show(window, Resource.GetString("MessageSaveErrNoName"));
-					return;
+					unnamedCount++;
 				}
 			}
+			MessageBox.Show(window, Resource.GetQuantityString("MessageSaveErrNoName", unnamedCount));
 			foreach (var module in moduleList) {
 				var moduleName = module.ModuleName;
 				var universal = module.UniversalDict;

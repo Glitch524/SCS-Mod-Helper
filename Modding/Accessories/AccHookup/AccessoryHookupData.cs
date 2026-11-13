@@ -12,7 +12,7 @@ public class AccessoryHookupData(string modelName): AccessoryIntData(modelName, 
 		get => mModelPath;
 		set {
 			mModelPath = value;
-			InvokeChange(nameof(ModelPath));
+			InvokeChange();
 
 			LoadLooksAndVariants();
 		}
@@ -47,25 +47,27 @@ public class AccessoryHookupData(string modelName): AccessoryIntData(modelName, 
 			mVariantList.Clear();
 		if (mModelPath.Length != 0) {
 			var path = mModelPath;
-
 			path = path.Replace('/', '\\');
-			path = path[..^4] + ".pit";
-			path = Instances.ProjectLocation + path;
+			if (path.EndsWith(".pmd") || path.EndsWith(".pim")) {
+				path = path[..^4] + ".pit";
 
-			static void setValue(ObservableCollection<string> list, string oldValue, Action<string> set) {
-				if (list.Count > 0) {
-					if (list.Contains(oldValue)) {
-						set(oldValue);
-					} else
-						set(list[0]);
+				path = Instances.ProjectLocation + path;
+
+				static void setValue(ObservableCollection<string> list, string oldValue, Action<string> set) {
+					if (list.Count > 0) {
+						if (list.Contains(oldValue)) {
+							set(oldValue);
+						} else
+							set(list[0]);
+					}
 				}
+				AccSCSIO.ReadLookAndVariant(path, mLookList, mVariantList);
+				setValue(mLookList, oldLook, (set) => Look = set);
+				setValue(mVariantList, oldVariant, (set) => Variant = set);
+				return;
 			}
-			AccSCSIO.ReadLookAndVariant(path, mLookList, mVariantList);
-			setValue(mLookList, oldLook, (set) => Look = set);
-			setValue(mVariantList, oldVariant, (set) => Variant = set);
-		} else {
-			mLookList.Add("deault");
-			mVariantList.Add("deault");
 		}
+		mLookList.Add("deault");
+		mVariantList.Add("deault");
 	}
 }

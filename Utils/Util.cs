@@ -1,5 +1,6 @@
 ﻿using Pfim;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Media;
@@ -63,5 +64,56 @@ static class Util {
 			ImageFormat.R5g6b5 => PixelFormats.Bgr565,
 			_ => throw new Exception($"Unable to convert {image.Format} to WPF PixelFormat"),
 		};
+	}
+
+	public static async Task ZipLock(string zipFile, uint fakeCrc = 0x00000000) {
+		byte[] data = await File.ReadAllBytesAsync(zipFile);
+		byte[] LocalHeaderSig = [0x50, 0x4B, 0x03, 0x04];
+		byte[] centralDirSig = [0x50, 0x4B, 0x01, 0x02];
+		for (int i = 0; i <= data.Length - 4; i++) {
+			if (SigMatch(data, i, LocalHeaderSig)) {
+				int offset = i + 6;
+				if (offset + 1 < data.Length) {
+					WriteLock(data, offset);
+					WriteCrc(data, offset + 8, fakeCrc);
+				}
+				i += 29;
+			}
+		}
+		for (int i = 0; i <= data.Length - 4; i++) {
+			if (SigMatch(data, i, centralDirSig)) {
+				int offset = i + 8;
+				if (offset < data.Length) {
+					WriteLock(data, offset);
+					WriteCrc(data, offset + 8, fakeCrc);
+				}
+				i += 45;
+			}
+		}
+		await File.WriteAllBytesAsync(zipFile, data);
+	}
+
+	private static bool SigMatch(byte[] data, int offset, byte[] sig) {
+		for (int i = 0; i < sig.Length; i++) {
+			if (data[offset + i] != sig[i])
+				return false;
+		}
+		return true;
+	}
+
+	private static void WriteLock(byte[] data, int offset) {
+		if (offset + 1 >= data.Length)
+			return;
+		data[offset] = 0x09;
+		data[offset + 1] = 0x00;
+	}
+
+	private static void WriteCrc(byte[] data, int offset, uint value) {
+		if (offset + 3 >= data.Length)
+			return;
+		data[offset] = (byte)(value & 0xFF);
+		data[offset + 1] = (byte)((value >> 8) & 0xFF);
+		data[offset + 1] = (byte)((value >> 16) & 0xFF);
+		data[offset + 1] = (byte)((value >> 24) & 0xFF);
 	}
 }

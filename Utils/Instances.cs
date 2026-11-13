@@ -1,6 +1,5 @@
 ﻿using SCS_Mod_Helper.Locale.StringRes;
 using SCS_Mod_Helper.Setting;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
