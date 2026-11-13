@@ -230,7 +230,6 @@ public partial class ConverterPixBinding {
 			if (result)//result为true即成功找到并展示对应文件夹
 				return;
 			if (PackList.Count > 1) {//打开了多个pack的情况，使用对应pack来获取文件夹内容
-				//result在这里依然是false所以不需要改
 				foreach (var pack in PackList) {
 					if (pack == CurrentPack || pack.PackPath.Length == 0)
 						continue;
@@ -245,7 +244,7 @@ public partial class ConverterPixBinding {
 	}
 
 
-	public async Task<bool> GotoLink(PixPackage pixPack, string pathLocation, string linkPath) {//如果path是def.scs，而且是def/vehicle，就转到basevehicle
+	public async Task<bool> GotoLink(PixPackage pixPack, string pathLocation, string linkPath) {//todo 如果path是def.scs，而且是def/vehicle，就转到basevehicle
 		var packPath = pixPack.PackPath;
 		string args = $"-b \"{packPath}\" -listdir \"{pathLocation}\"";
 		using Process p = CallPix(args);
@@ -289,8 +288,7 @@ public partial class ConverterPixBinding {
 		p.Close();
 		if (!error) {
 			return await Application.Current.Dispatcher.InvokeAsync(() => {
-				if (linkFile == null) {//如果没有linkfile说明这个文件不在这个包里
-					MessageBox.Show(GetString("MessageLinkFileNotExist"));
+				if (linkFile == null) {//如果没有linkfile说明这个文件不在这个包里，由于需要返回click处继续查找下一个包，所以这里不能放messagebox提示，否则会发生跳到正确位置，但依旧提示找不到的问题
 					return false;
 				} else {
 					if (pixPack != CurrentPack)//如果输入的pixPack不是当前pack说明是其他pack找到的路径

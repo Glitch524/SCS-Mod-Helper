@@ -388,7 +388,8 @@ public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PI
 				foreach (var warning in warnings) {
 					if (warning.StartsWith(wStart) && warning.EndsWith(wEnd)) {
 						string file = warning.Substring(wStart.Length, warning.Length - wStart.Length - wEnd.Length);
-						failFiles.Add(file);
+						if (!failFiles.Contains(file))
+							failFiles.Add(file);
 					}
 				}
 				resultString.Append("\n\n");
