@@ -246,28 +246,35 @@ namespace SCS_Mod_Helper.Main {
 				var creationTime = extraDescFile.CreationTime;
 				if (DateTime.Now - creationTime < TimeSpan.FromDays(1)) {
 					var lines = await File.ReadAllLinesAsync(extraDescFile.FullName);
-					foreach (var line in lines) {
-						if (line.StartsWith(Instances.CurrentLanguage)) {
-							Application.Current.Dispatcher.Invoke(() => {
-								ExtraDesc = line[(line.IndexOf('=') + 1)..];
-							});
-						}
-					}
+					ShowExtraDesc(lines);
 					return;
 				}
 			}
-
 			string url = $"https://raw.githubusercontent.com/Glitch524/SCS-Mod-Helper/refs/heads/master/Main/About/ExtraDesc.txt";
 			var desc = await HttpClient.GetStringAsync(url);
-			await File.WriteAllTextAsync(extraDescFile.FullName, desc);
+
+			var temp = extraDescFile.FullName + ".tmp";
+			await File.WriteAllTextAsync(temp, desc);
+			File.Move(temp, extraDescFile.FullName, overwrite: true);
+
 			var split = desc.Split("\n");
-			foreach(var line in split) {
+			ShowExtraDesc(split);
+		}
+
+		private void ShowExtraDesc(string[]? lines) {
+			if (lines == null)
+				return;
+			string? showLine = null;
+			foreach (var line in lines) {
 				if (line.StartsWith(Instances.CurrentLanguage)) {
-					Application.Current.Dispatcher.Invoke(() => {
-						ExtraDesc = line[('=' + 1)..];
-					});
-				}
+					showLine = line[(line.IndexOf('=') + 1)..];
+					break;
+				} else if (line.StartsWith("en-US"))
+					showLine = line[(line.IndexOf('=') + 1)..];
 			}
+			Application.Current.Dispatcher.Invoke(() => {
+				ExtraDesc = showLine ?? "";
+			});
 		}
 
 
