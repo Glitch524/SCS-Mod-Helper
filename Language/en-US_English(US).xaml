@@ -21,7 +21,7 @@
 	<s:String x:Key="VehicleTypeTruck">Truck</s:String>
 	<s:String x:Key="VehicleTypeTrailer">Trailer</s:String>
 	<s:String x:Key="VehicleTypeCar">Car</s:String>
-	<s:String x:Key="VehicleTypeCoach">Coach</s:String>
+	<s:String x:Key="VehicleTypeBus">Coach</s:String>
 	
 	<s:String x:Key="VehicleID">Vehicle ID</s:String>
 	<s:String x:Key="VehicleProdYear">Production Year</s:String>
@@ -519,7 +519,16 @@
 		<s:String>{0} keys synced from Universal</s:String><!--other-->
 	</x:Array>
 	<s:String x:Key="MessageTitleSyncResult">Syncing Complete</s:String>
-	<s:String x:Key="MessageSaveErrNoName">There is (are) some unnamed Translation file(s)</s:String>
+	<x:Array
+		x:Key="MessageSaveErrNoName"
+		Type="s:String">
+		<x:Null /><!--zero-->
+		<s:String>There is a unnamed Translation file</s:String><!--one-->
+		<x:Null /><!--two-->
+		<x:Null /><!--few-->
+		<x:Null /><!--many-->
+		<s:String>There are some unnamed Translation files</s:String><!--other-->
+	</x:Array>
 	<s:String x:Key="MessageSaveSuccess">File saved</s:String>
 	<s:String x:Key="MessageDeleteLocale">Are you sure to delete this translation file?</s:String>
 	<s:String x:Key="MessageUniEmpty">Universal translation is empty, the language without definition will not show translation properly, anre you sure to continue?</s:String>
@@ -548,6 +557,11 @@
 	<s:String x:Key="TitleOthers">Others</s:String>
 	<s:String x:Key="MessageSetPathFirst">Please set the Folder path in Settings first</s:String>
 	<s:String x:Key="MessageFolderNotExist">The chosen folder is not exist</s:String>
+	
+	
+	
+	<!--Exports-->
+	<s:String x:Key="TitleExports">Exports</s:String>
 	
 	
 

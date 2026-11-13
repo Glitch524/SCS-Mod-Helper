@@ -316,8 +316,8 @@ public enum VehicleType {
 	Trailer,
 	[Description("car")]
 	Car,
-	[Description("coach")]
-	Coach
+	[Description("bus")]
+	Bus
 }
 public static class VehicleTypeExtension {
 	public static string GetTypeValue(this VehicleType type) {
@@ -325,7 +325,7 @@ public static class VehicleTypeExtension {
 			VehicleType.Truck => "truck",
 			VehicleType.Trailer => "trailer_owned",
 			VehicleType.Car => "car",
-			VehicleType.Coach => "coach",
+			VehicleType.Bus => "bus",
 			_ => throw new ArgumentException("")
 		};
 	}
@@ -334,7 +334,7 @@ public static class VehicleTypeExtension {
 			"truck" => VehicleType.Truck,
 			"trailer_owned" => VehicleType.Trailer,
 			"car" => VehicleType.Car,
-			"coach" => VehicleType.Coach,
+			"bus" => VehicleType.Bus,
 			_ => throw new ArgumentException("")
 		};
 	}
@@ -343,7 +343,7 @@ public static class VehicleTypeExtension {
 			VehicleType.Truck => "VehicleTypeTruck",
 			VehicleType.Trailer => "VehicleTypeTrailer",
 			VehicleType.Car => "VehicleTypeCar",
-			VehicleType.Coach => "VehicleTypeCoach",
+			VehicleType.Bus => "VehicleTypeBus",
 			_ => throw new ArgumentException("")
 		});
 	}
@@ -356,8 +356,8 @@ public class VehicleGroups {
 	readonly VehicleGroup GroupTrailerATS = new(VehicleType.Trailer, false);
 	readonly VehicleGroup GroupCarETS2 = new(VehicleType.Car, true);
 	readonly VehicleGroup GroupCarATS = new(VehicleType.Car, false);
-	readonly VehicleGroup GroupCoachETS2 = new(VehicleType.Coach, true);
-	readonly VehicleGroup GroupCoachATS = new(VehicleType.Coach, false);
+	readonly VehicleGroup GroupBusETS2 = new(VehicleType.Bus, true);
+	readonly VehicleGroup GroupBusATS = new(VehicleType.Bus, false);
 	public ObservableCollection<VehicleGroup> GroupList { get; } = [];
 
 	public void Add(bool isETS2, VehicleType vehicleType, Vehicle vehicle) {
@@ -391,12 +391,12 @@ public class VehicleGroups {
 					index = 5;
 				}
 				break;
-			case VehicleType.Coach:
+			case VehicleType.Bus:
 				if (isETS2) {
-					group = GroupCoachETS2;
+					group = GroupBusETS2;
 					index = 6;
 				} else {
-					group = GroupCoachATS;
+					group = GroupBusATS;
 					index = 7;
 				}
 				break;

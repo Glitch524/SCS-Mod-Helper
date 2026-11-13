@@ -148,8 +148,8 @@
 							Content="{DynamicResource VehicleTypeCar}"
 							Tag="car" />
 						<ComboBoxItem
-							Content="{DynamicResource VehicleTypeCoach}"
-							Tag="coach" />
+							Content="{DynamicResource VehicleTypeBus}"
+							Tag="bus" />
 					</ComboBox.Items>
 				</ComboBox>
 

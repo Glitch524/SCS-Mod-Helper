@@ -21,7 +21,7 @@
 	<s:String x:Key="VehicleTypeTruck">卡车</s:String>
 	<s:String x:Key="VehicleTypeTrailer">挂车</s:String>
 	<s:String x:Key="VehicleTypeCar">乘用车</s:String>
-	<s:String x:Key="VehicleTypeCoach">客车</s:String>
+	<s:String x:Key="VehicleTypeBus">客车</s:String>
 	
 	<s:String x:Key="VehicleID">车辆ID</s:String>
 	<s:String x:Key="VehicleProdYear">生产年份</s:String>
@@ -519,7 +519,16 @@
 		<s:String>从Universal同步{0}个语句</s:String><!--other-->
 	</x:Array>
 	<s:String x:Key="MessageTitleSyncResult">同步完成</s:String>
-	<s:String x:Key="MessageSaveErrNoName">翻译文件列表中存在未命名的文件</s:String>
+	<x:Array
+		x:Key="MessageSaveErrNoName"
+		Type="s:String">
+		<x:Null /><!--zero-->
+		<x:Null /><!--one-->
+		<x:Null /><!--two-->
+		<x:Null /><!--few-->
+		<x:Null /><!--many-->
+		<s:String>翻译文件列表中存在未命名的文件</s:String><!--other-->
+	</x:Array>
 	<s:String x:Key="MessageSaveSuccess">文件已保存</s:String>
 	<s:String x:Key="MessageDeleteLocale">确定是否删除此翻译文件？</s:String>
 	<s:String x:Key="MessageUniEmpty">通用翻译为空,没有定义翻译的语言可能无法正常显示，是否继续？</s:String>
@@ -548,6 +557,11 @@
 	<s:String x:Key="TitleOthers">其他</s:String>
 	<s:String x:Key="MessageSetPathFirst">请先在设置内设定好文件夹路径</s:String>
 	<s:String x:Key="MessageFolderNotExist">选择的文件夹不存在</s:String>
+	
+	
+	
+	<!--导出页-->
+	<s:String x:Key="TitleExports">导出</s:String>
 	
 	
 	
