@@ -47,7 +47,7 @@
 	<s:String
 		x:Key="Acc.cabflares">驾驶室灯</s:String>
 	<s:String
-		x:Key="Acc.r_panel">面板</s:String>
+		x:Key="Acc.r_panel">后面板</s:String>
 	<s:String
 		x:Key="Acc.s_panel">侧板</s:String>
 	<s:String
@@ -105,6 +105,8 @@
 	<s:String
 		x:Key="Acc.s_logo">侧徽标</s:String>
 	<s:String
+		x:Key="Acc.warnsticker">警示贴纸</s:String>
+	<s:String
 		x:Key="Acc.decals">贴花</s:String>
 	<s:String
 		x:Key="Acc.s_reflector">侧反光片</s:String>
@@ -140,6 +142,8 @@
 		x:Key="Acc.f_inlay_chs">前格栅底部</s:String>
 	<s:String
 		x:Key="Acc.f_intake_bar">前徽标面板</s:String>
+	<s:String
+		x:Key="Acc.f_intake">前面罩</s:String>
 	<s:String
 		x:Key="Acc.f_intake_cab">前面罩</s:String>
 	<s:String
@@ -331,7 +335,6 @@
 		x:Key="Acc.toytable">卧铺桌面物品（美卡）</s:String>
 	<s:String
 		x:Key="Acc.carpet">地毯</s:String>
-	<!--在Renault T里有-->
 	
 	
 	<!--卡车备注 ETS2-->
@@ -2818,6 +2821,75 @@
 	
 	
 	<!--客车 ETS2-->
+	<s:String
+		x:Key="name.man.lions_24">MAN Lion's Coach</s:String>
+	<x:Static
+		x:Key="desc.man.lions_24"
+		Member="s:String.Empty" />
+	<!--Cabin-->
+	<s:String
+		x:Key="121h4.man.lions_24.cabin">12.1m</s:String>
+	<s:String
+		x:Key="139h6.man.lions_24.cabin">L 13.9m</s:String>
+	<!--Accessory-->
+	<s:String
+		x:Key="man.lions_24.f_bumper.std_pnt">前保险杠-标准，喷漆</s:String>
+	<s:String
+		x:Key="man.lions_24.f_wnd_frame.std_pnt">挡风玻璃边框-标准，喷漆</s:String>
+	<s:String
+		x:Key="man.lions_24.mirror.std_pnt">主后视镜-标准，喷漆</s:String>
+	<s:String
+		x:Key="man.lions_24.mirror.cam_pnt">主后视镜-电子后视镜，喷漆</s:String>
+	<s:String
+		x:Key="man.lions_24.r_bumper.std_pnt">后保险杠-标准，喷漆</s:String>
+	<s:String
+		x:Key="man.lions_24.r_panel.std_pnt">后面板-标准，喷漆</s:String>
+	
+	
+	
+	<s:String
+		x:Key="name.scania.touring_23">Scania Touring HD</s:String>
+	<x:Static
+		x:Key="desc.scania.touring_23"
+		Member="s:String.Empty" />
+	<!--Cabin-->
+	<s:String
+		x:Key="129h4.scania.touring_23.cabin">HD 12.9, 4x2</s:String>
+	<s:String
+		x:Key="137h6.scania.touring_23.cabin">HD 13.7, 6x2*4</s:String>
+	<!--Accessory-->
+	<s:String
+		x:Key="scania.touring_23.f_bumper.std_pnt">前保险杠-标准，喷漆</s:String>
+	<s:String
+		x:Key="scania.touring_23.f_intake.std_pnt">前面罩-标准，喷漆</s:String>
+	<s:String
+		x:Key="scania.touring_23.mirror.std_pnt">主后视镜-标准，喷漆</s:String>
+	<s:String
+		x:Key="scania.touring_23.mirror.std_pnf">主后视镜-标准，完全喷漆</s:String>
+	<s:String
+		x:Key="scania.touring_23.r_bumper.std_pnt">后保险杠-标准，喷漆</s:String>
+	<s:String
+		x:Key="scania.touring_23.r_panel.std_pnt">后面板-标准，喷漆</s:String>
+	
+	
+	
+	<s:String
+		x:Key="name.volvo.9700_23">Volvo 9700 DD</s:String>
+	<x:Static
+		x:Key="desc.volvo.9700_23"
+		Member="s:String.Empty" />
+	<!--Cabin-->
+	<s:String
+		x:Key="143d6.volvo.9700_23.cabin">DD 4.0m</s:String>
+	<!--Accessory-->
+	<s:String
+		x:Key="volvo.9700_23.f_bumper.std_pnt_d">前保险杠-标准，喷漆</s:String>
+	<s:String
+		x:Key="volvo.9700_23.mirror.std_pnt">主后视镜-标准，喷漆</s:String>
+	<s:String
+		x:Key="volvo.9700_23.r_bumper.std_pnt">后保险杠-标准，喷漆</s:String>
+	<s:String
+		x:Key="volvo.9700_23.r_panel.std_pnt_d">后面板-标准，喷漆</s:String>
 	<!--客车 ATS-->
 	
 </ResourceDictionary>

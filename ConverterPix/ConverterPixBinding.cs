@@ -234,8 +234,6 @@ public partial class ConverterPixBinding(Func<IBaseVisual> visualFunc, Action<PI
 						tcs.TrySetResult((false, reason));
 						break;
 					}
-					if (line.Contains("Done"))
-						break;
 					if (line.StartsWith("[D]")) {
 						string path = line[4..];
 						var file = new PIXFile(path, true);
