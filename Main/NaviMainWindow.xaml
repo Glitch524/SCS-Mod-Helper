@@ -78,8 +78,7 @@
 					Icon="{ui:SymbolIcon ArrowExportUp20}"
 					Cursor="Hand"
 					TargetPageType="{x:Type local:ExportsPage}"
-					TargetPageTag="Exports"
-					Visibility="Collapsed"/>
+					TargetPageTag="Exports"/>
 				<ui:NavigationViewItem
 					Content="Test"
 					Icon="{ui:SymbolIcon Lightbulb20}"

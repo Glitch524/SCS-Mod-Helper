@@ -562,6 +562,11 @@
 	
 	<!--导出页-->
 	<s:String x:Key="TitleExports">导出</s:String>
+	<s:String x:Key="TitleLockZip">锁定Zip资源包</s:String>
+	<s:String x:Key="DialogFilterZip">Zip资源包|*.zip</s:String>
+	<s:String x:Key="DialogResultZipLocked">Zip资源包已锁定</s:String>
+	<s:String x:Key="DialogResultZipLockFail">Zip资源包锁定失败&#10;错误原因：</s:String>
+	<s:String x:Key="DialogResultZipLockIOE">无法写入Zip资源包。如果你正在锁定Mod文件夹内的zip资源包，那很可能是因为游戏正在运行且正在使用这个资源包</s:String>
 	
 	
 	

@@ -562,6 +562,11 @@
 	
 	<!--Exports-->
 	<s:String x:Key="TitleExports">Exports</s:String>
+	<s:String x:Key="TitleLockZip">Lock Zip Package</s:String>
+	<s:String x:Key="DialogFilterZip">Zip Package|*.zip</s:String>
+	<s:String x:Key="DialogResultZipLocked">Zip Package Locked</s:String>
+	<s:String x:Key="DialogResultZipLockFail">Zip package locking failed&#10;Error:</s:String>
+	<s:String x:Key="DialogResultZipLockIOE">Cannot write the zip package. If you're lockin the zip package in the mod folder, then probably because the game is running and using this package</s:String>
 	
 	
 

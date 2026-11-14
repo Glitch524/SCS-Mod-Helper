@@ -1,4 +1,5 @@
 ﻿using Pfim;
+using SCS_Mod_Helper.Language;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -66,31 +67,41 @@ static class Util {
 		};
 	}
 
-	public static async Task ZipLock(string zipFile, uint fakeCrc = 0x00000000) {
-		byte[] data = await File.ReadAllBytesAsync(zipFile);
-		byte[] LocalHeaderSig = [0x50, 0x4B, 0x03, 0x04];
-		byte[] centralDirSig = [0x50, 0x4B, 0x01, 0x02];
-		for (int i = 0; i <= data.Length - 4; i++) {
-			if (SigMatch(data, i, LocalHeaderSig)) {
-				int offset = i + 6;
-				if (offset + 1 < data.Length) {
-					WriteLock(data, offset);
-					WriteCrc(data, offset + 8, fakeCrc);
+	public static async Task<(bool, string?)> ZipLock(string zipFile, uint fakeCrc = 0x00000000) {
+		try {
+			byte[] data = await File.ReadAllBytesAsync(zipFile);
+			byte[] LocalHeaderSig = [0x50, 0x4B, 0x03, 0x04];
+			byte[] centralDirSig = [0x50, 0x4B, 0x01, 0x02];
+			for (int i = 0; i <= data.Length - 4; i++) {
+				if (SigMatch(data, i, LocalHeaderSig)) {
+					int offset = i + 6;
+					if (offset + 1 < data.Length) {
+						WriteLock(data, offset);
+						WriteCrc(data, offset + 8, fakeCrc);
+					}
+					i += 29;
 				}
-				i += 29;
 			}
-		}
-		for (int i = 0; i <= data.Length - 4; i++) {
-			if (SigMatch(data, i, centralDirSig)) {
-				int offset = i + 8;
-				if (offset < data.Length) {
-					WriteLock(data, offset);
-					WriteCrc(data, offset + 8, fakeCrc);
+			for (int i = 0; i <= data.Length - 4; i++) {
+				if (SigMatch(data, i, centralDirSig)) {
+					int offset = i + 8;
+					if (offset < data.Length) {
+						WriteLock(data, offset);
+						WriteCrc(data, offset + 8, fakeCrc);
+					}
+					i += 45;
 				}
-				i += 45;
 			}
+			await File.WriteAllBytesAsync(zipFile, data);
+			return (true, null);
+		} catch (IOException ioe) {
+			if (ioe.Message.StartsWith("The process cannot access the file") && ioe.Message.EndsWith("because it is being used by another process.")) {
+				return (false, Resource.GetString("DialogResultZipLockIOE"));
+			} else
+				return (false, ioe.Message);
+		} catch (Exception e) {
+			return (false, e.Message);
 		}
-		await File.WriteAllBytesAsync(zipFile, data);
 	}
 
 	private static bool SigMatch(byte[] data, int offset, byte[] sig) {
