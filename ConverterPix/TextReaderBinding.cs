@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Text;
 using System.Windows;
 using System.Windows.Input;
 
@@ -83,6 +82,13 @@ public partial class ConverterPixBinding {
 	private readonly ObservableCollection<string> mSubTextLines = [];
 	public ObservableCollection<string> SubTextLines => mSubTextLines;
 
+	/// <summary>
+	/// 使用converterpix的读取功能显示文本内容
+	/// 其中部分带路径的值可以跳转
+	/// </summary>
+	/// <param name="pixFile"></param>
+	/// <param name="subText"></param>
+	/// <returns></returns>
 	public async Task ReadTextFile(PIXFile? pixFile, bool subText = false) {
 		await Application.Current.Dispatcher.InvokeAsync(() => {
 			SubTextLines.Clear();
@@ -222,8 +228,13 @@ public partial class ConverterPixBinding {
 			var pathLocation = path[..lastS];
 			if (CurrentPackDir == dir) { //如果当前dir与reader点击的链接所在dir相同，那就没有必要重新读取
 				foreach(var pix in CurrentFileList) {
-					if (pix.Filename == path)
+					if (pix.Filename == path) {
+						Application.Current.Dispatcher.Invoke(() => {
+							ScrollToFile(pix);
+							CurrentSelectedFile = pix;
+						});
 						return;
+					}
 				}
 			}
 			var result = await GotoLink(CurrentPack!, pathLocation, path);//首先搜索当前的pack
