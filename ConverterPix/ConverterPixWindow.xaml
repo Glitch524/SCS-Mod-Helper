@@ -106,7 +106,7 @@
 					x:Name="TabPackages"
 					d:ItemsSource="{d:SampleData ItemCount=3}"
 					ItemsSource="{Binding PackList}"
-					SelectedValue="{Binding CurrentPack}"
+					SelectedItem="{Binding CurrentPack, Mode=TwoWay}"
 					VerticalAlignment="Top"
 					d:SelectedIndex="0">
 					<TabControl.ItemTemplate>

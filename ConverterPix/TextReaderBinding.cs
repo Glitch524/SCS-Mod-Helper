@@ -277,9 +277,7 @@ public partial class ConverterPixBinding {
 			if (line.StartsWith("<error>")) {
 				var reason = line[(line.IndexOf(':') + 1)..].Trim();
 				await Application.Current.Dispatcher.InvokeAsync(() => {
-					if (reason == "readDir returned null!") {
-						MessageBox.Show(GetString("MessageLinkFileNotExist"));
-					} else
+					if (reason != "readDir returned null!") 
 						MessageBox.Show(GetString("MessageReadFileFailed") + ": " + reason);
 				});
 				error = true;
@@ -298,10 +296,13 @@ public partial class ConverterPixBinding {
 		await p.WaitForExitAsync();
 		p.Close();
 		if (!error) {
-			return await Application.Current.Dispatcher.InvokeAsync(() => {
+			return Application.Current.Dispatcher.Invoke(() => {
 				if (linkFile == null) {//如果没有linkfile说明这个文件不在这个包里，由于需要返回click处继续查找下一个包，所以这里不能放messagebox提示，否则会发生跳到正确位置，但依旧提示找不到的问题
 					return false;
 				} else {
+					foreach (var pix in Application.Current.Windows.OfType<ConverterPixWindow>()) {
+						pix.Focus();
+					}
 					if (pixPack != CurrentPack)//如果输入的pixPack不是当前pack说明是其他pack找到的路径
 						CurrentPack = pixPack;//所以先切换当前选中pack
 					UpdateDirList(linkPath);
@@ -311,10 +312,6 @@ public partial class ConverterPixBinding {
 					}
 					ScrollToFile(linkFile);
 					CurrentSelectedFile = linkFile;
-
-					foreach(var pix in Application.Current.Windows.OfType<ConverterPixWindow>()) {
-						pix.Focus();
-					}
 					return true;
 				}
 			});

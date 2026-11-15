@@ -522,4 +522,6 @@ public class PixPackage: BaseBinding {
 			InvokeChange();
 		}
 	} = null;
+
+	public override string ToString() => "PixPackage=" + PackName;
 }
