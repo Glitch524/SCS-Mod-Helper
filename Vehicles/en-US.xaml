@@ -292,7 +292,7 @@
 
 	<s:String
 		x:Key="Group.Interior">Interior Accessories</s:String>
-	<!--内部饰品-->
+	<!--Interior Accessories-->
 	<s:String
 		x:Key="Acc.cup_holder">Cup Holder</s:String>
 	<s:String
@@ -300,19 +300,11 @@
 	<s:String
 		x:Key="Acc.inlight_bck">Light Board</s:String>
 	<s:String
-		x:Key="Acc.back_wall">Back Wall Items</s:String>
+		x:Key="Acc.bckpanel">Back Wall Items</s:String>
 	<s:String
 		x:Key="Acc.l_pillow">Pillow Items</s:String>
 	<s:String
-		x:Key="Acc.set_cabinet">Cabinet Sets(ATS)</s:String>
-	<s:String
-		x:Key="Acc.set_dashbrd">Dashboard Sets</s:String>
-	<s:String
-		x:Key="Acc.set_glass">Windshield Sets</s:String>
-	<s:String
-		x:Key="Acc.set_lglass">Windshield Corner</s:String>
-	<s:String
-		x:Key="Acc.sterring_w">Steering Wheel</s:String>
+		x:Key="Acc.steering_w">Steering Wheel</s:String>
 	<s:String
 		x:Key="Acc.toyhang">Hanging Items</s:String>
 	<s:String
@@ -324,6 +316,8 @@
 	<s:String
 		x:Key="Acc.toyseat">Seat Items(Co-Driver's Seat)</s:String>
 	<s:String
+		x:Key="Acc.toybackseat">Backseat Items</s:String>
+	<s:String
 		x:Key="Acc.toybed">Bed Items</s:String>
 	<s:String
 		x:Key="Acc.toybig">Center Floor Items</s:String>
@@ -334,7 +328,25 @@
 	<s:String
 		x:Key="Acc.toytable">Table Items(ATS)</s:String>
 	<s:String
-		x:Key="Acc.carpet">Carpet</s:String>
+		x:Key="Acc.carpet">Carpet(Coach)</s:String>
+	<s:String
+		x:Key="Acc.codrv_seat">Seat(Coach)</s:String>
+	<s:String
+		x:Key="Acc.curtains">Curtains(Coach)</s:String>
+	<s:String
+		x:Key="Acc.intlight_bgr">Background Light(Coach)</s:String>
+	<s:String
+		x:Key="Acc.p_seats">Passenger Seats(Coach)</s:String>
+	<s:String
+		x:Key="Acc.set_cabinet">Cabinet Sets(ATS)</s:String>
+	<s:String
+		x:Key="Acc.set_dashbrd">Dashboard Sets</s:String>
+	<s:String
+		x:Key="Acc.set_glass">Windshield Sets</s:String>
+	<s:String
+		x:Key="Acc.set_lglass">Windshield Corner</s:String>
+	<s:String
+		x:Key="Acc.set_cuphold">Cup Holder Sets</s:String>
 
 	
 	<!--Truck Description ETS2-->

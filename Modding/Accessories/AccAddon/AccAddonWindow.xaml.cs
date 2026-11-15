@@ -227,7 +227,7 @@ public partial class AccAddonWindow: BaseWindow {
 		if (e.NewValue is AccType accType) {
 			Binding.IsAccPopupOpen = false;
 			Binding.CurrentAccType = accType;
-			Binding.AccType = accType.Accessory;
+			Binding.AccessoryType = accType.Accessory;
 		} 
 	}
 

@@ -34,5 +34,5 @@ partial class Paths {
 	public static string SampleExamplePath() => @"Language\example.txt";
 
 	public static string ExcpDir() => "Exceptions";
-	public static string ExcpPath() => @$"Exceptions\Excp_{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.txt";
+	public static string ExcpPath() => @$"Exceptions\Excp_{DateTime.Now:yyyy-MM-dd-HH-mm-ss.fff}.txt";
 }

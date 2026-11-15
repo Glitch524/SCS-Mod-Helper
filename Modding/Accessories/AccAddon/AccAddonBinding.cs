@@ -46,7 +46,7 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 		ExtModelPath = AccAddonHistory.Default.ExtModelPath;
 		ExtModelPathUK = AccAddonHistory.Default.ExtModelPathUK;
 		CollPath = AccAddonHistory.Default.CollisionPath;
-		AccType = AccAddonHistory.Default.ModelType;
+		AccessoryType = AccAddonHistory.Default.ModelType;
 		Look = AccAddonHistory.Default.Look;
 		Variant = AccAddonHistory.Default.Variant;
 		ElectricType = AccAddonHistory.Default.ElectricType;
@@ -116,7 +116,7 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 		AccAddonHistory.Default.ExtModelPath = ExtModelPath;
 		AccAddonHistory.Default.ExtModelPathUK = ExtModelPathUK;
 		AccAddonHistory.Default.CollisionPath = CollPath;
-		AccAddonHistory.Default.ModelType = AccType;
+		AccAddonHistory.Default.ModelType = AccessoryType;
 		AccAddonHistory.Default.Look = Look;
 		AccAddonHistory.Default.Variant = Variant;
 		AccAddonHistory.Default.ElectricType = ElectricType;
@@ -343,9 +343,7 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 	public AccType? mCurrentAccType = null;
 	public AccType CurrentAccType {
 		get {
-			if (mCurrentAccType == null) {
-				mCurrentAccType = emptyAcc;
-			}
+			mCurrentAccType ??= emptyAcc;
 			return mCurrentAccType;
 		}
 		set {
@@ -356,7 +354,7 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 		}
 	}
 
-	public string AccType {
+	public string AccessoryType {
 		get => AddonItem.AccType;
 		set {
 			AddonItem.AccType = value;
@@ -365,32 +363,38 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 					foreach (var type in AccessoryTypes.AllAccs) {
 						if (value == type.Accessory) {
 							CurrentAccType = type;
-							type.IsSelected = true;
 						}
 					}
 				}
 			}
 			InvokeChange();
 
-			bool? flag = null;
 			if (value == $"{"flag_l"}/{"flag_f_l"}") {
-				flag = true;
+				SetFlagPath(true);
 			} else if (value == $"{"flag_r"}/{"flag_f_r"}") {
-				flag = false;
+				SetFlagPath(false);
 			}
-			if (flag != null) {
-				var result = MessageBox.Show(GetString("MessageModelTypeFlag"), GetString("MessageTitleNotice"), MessageBoxButton.YesNo);
-				if (result == MessageBoxResult.Yes) {
-					if (flag == true) {
-						ModelPath = "/vehicle/truck/upgrade/flag/flag_left.pmd";
-						ModelPathUK = "";
-						CollPath = "/vehicle/truck/upgrade/flag/flag_left.pmc";
-					} else if (flag == false) {
-						ModelPath = "/vehicle/truck/upgrade/flag/flag_right.pmd";
-						ModelPathUK = "";
-						CollPath = "/vehicle/truck/upgrade/flag/flag_right.pmc";
-					}
-				}
+		}
+	}
+
+	private void SetFlagPath(bool flag) {
+		if (flag == true) {
+			if (ModelPath == AccType.FlagModelLeft && CollPath == AccType.FlagCollLeft) {
+				return;
+			}
+		} else if (ModelPath == AccType.FlagModelRight && CollPath == AccType.FlagCollRight) {
+			return;
+		}
+		var result = MessageBox.Show(GetString("MessageModelTypeFlag"), GetString("MessageTitleNotice"), MessageBoxButton.YesNo);
+		if (result == MessageBoxResult.Yes) {
+			if (flag == true) {
+				ModelPath = AccType.FlagModelLeft;
+				ModelPathUK = "";
+				CollPath = AccType.FlagCollLeft;
+			} else if (flag == false) {
+				ModelPath = AccType.FlagModelRight;
+				ModelPathUK = "";
+				CollPath = AccType.FlagCollRight;
 			}
 		}
 	}
@@ -665,7 +669,7 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 		ExtModelPath = "";
 		ExtModelPathUK = "";
 		CollPath = "";
-		AccType = "";
+		AccessoryType = "";
 		Look = "";
 		Variant = "";
 		HideIn = 0;
@@ -797,7 +801,7 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 	public void OverwriteEmpty(AccessoryVehicle vehicle, bool check) {
 		if (check) {
 			if (vehicle.ModelType.Length == 0)
-				vehicle.ModelType = AccType;
+				vehicle.ModelType = AccessoryType;
 			if (vehicle.Look.Length == 0)
 				vehicle.Look = Look;
 			if (vehicle.Variant.Length == 0)
@@ -825,7 +829,7 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 				StringResUtil.GetStringResResults(DisplayName, out var localizedName);
 				LocalizedDisplayName = localizedName;
 			}
-			saveFileDialog.FileName = $"{LocalizedDisplayName} {AccType} {ModelName}";
+			saveFileDialog.FileName = $"{LocalizedDisplayName} {AccessoryType} {ModelName}";
 		} else
 			saveFileDialog.FileName = LoadedFilename;
 		if (saveFileDialog.ShowDialog() == true) {
@@ -991,7 +995,7 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 			bool showAF = false;
 			if (ModelName == modelName)
 				modelName = null;
-			if (AccType == modelType)
+			if (AccessoryType == modelType)
 				modelType = null;
 			inProjectPath = inProjectPath.Replace('\\', '/');
 			inProjectPath = inProjectPath[..^4];
@@ -1082,7 +1086,7 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 						ModelName = modelName;
 					if (modelType != null && afWindow.CheckModelType) {
 						mCurrentAccType = null;
-						AccType = modelType;
+						AccessoryType = modelType;
 					}
 					if (modelPath != null && afWindow.CheckModelPath) {
 						if (chooseType == ChooseModelType.ExtModel || chooseType == ChooseModelType.ExtModelUK)

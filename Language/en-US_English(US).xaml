@@ -230,10 +230,11 @@
 	<s:String x:Key="TitleAddonStorageStorage">Hookup Storage Name</s:String>
 	<s:String x:Key="HeaderAccessoryName">Acc. Name</s:String>
 	<!--Suitable For-->
+	<s:String x:Key="SuitableForSetCuphold">Cup Holder Sets（set__cuphold）</s:String>
 	<s:String x:Key="SuitableForSetDashbrd">Dashboard Sets（set__dashbrd）</s:String>
 	<s:String x:Key="SuitableForSetGlass">Windshield Sets（set__glass）</s:String>
+	<s:String x:Key="SuitableForSetLGlass">Windshield Sets（set__lglass）</s:String>
 	<s:String x:Key="SuitableForSetCabinet">Cabinet Sets（set__cabinet）</s:String>
-	<s:String x:Key="SuitableForSetCuphold">Cup Holder Sets（set__cuphold）</s:String>
 	<s:String x:Key="SuitableForSteeringW">Steering Wheel（steering__w）</s:String>
 	<!--SaveAddonHookup-->
 	<s:String x:Key="MessageSaveBeforeStart">Please make sure the required data like storage name, hookup file name, hookup model name, physics name was filled, or it will cause skipping or stop saving.</s:String>

@@ -202,7 +202,7 @@ public class AccExteriorList: AccessoryList {
 			ExteriorGroupType.Mirrors => [
 				NewType("mirror"), NewType("rv_mirror"), NewType("s_mirror"), NewType("f_mirror"), NewType("fl_mirror"), NewType("fr_mirror")],
 			ExteriorGroupType.Front => [
-				NewType("grill"), NewType("c_grill"), NewType("b_grill"), NewType("f_inlay_cab"), NewType("f_inlay_chs"), NewType("f_intake_bar"),
+				NewType("grill"), NewType("c_grill"), NewType("b_grill"), NewType("f_inlay_cab"), NewType("f_inlay_chs"), NewType("f_intake_bar"), NewType("f_intake"),
 				NewType("f_intake_cab"), NewType("f_intake_chs"), NewType("f_intk_b_cab"), NewType("f_intk_b_chs"), NewType("s_guard"), NewType("hl_guard"),
 				NewType("bullbar"), NewType("f_grill"), NewType("f_equip"), NewType("bumper"), NewType("f_bumper"), NewType("r_bumper")],
 			ExteriorGroupType.Lights => [
@@ -237,20 +237,29 @@ public class AccInteriorList: AccessoryList {
 	public const string TypeInlightBck = "inlight_bck";
 	public const string TypeBckPanel = "bckpanel";
 	public const string TypeLPillow = "l_pillow";
-	public const string TypeSetCabinet = "set_cabinet";
-	public const string TypeSetGlass = "set_glass";
-	public const string TypeSetLGlass = "set_lglass";
-	public const string TypeSterringW = "sterring_w";
+	public const string TypeSteeringW = "steering_w";
 	public const string TypeToyHang = "toyhang";
 	public const string TypeToyAc = "toyac";
 	public const string TypeToyStand = "toystand";
 	public const string TypeToyDash = "toydash";
 	public const string TypeToySeat = "toyseat";
+	public const string TypeToyBackSeat = "toybackseat";
 	public const string TypeToyBed = "toybed";
 	public const string TypeToyBig = "toybig";
 	public const string TypeToyBack = "toyback";
 	public const string TypeToySofa = "toysofa";
 	public const string TypeToyTable = "toytable";
+	public const string TypeCarpet = "carpet";
+	public const string TypeCodrvSeat = "codrv_seat";
+	public const string TypeCurtains = "curtains";
+	public const string TypeIntlightBgr = "intlight_bgr";
+	public const string TypePSeat = "p_seats";
+	public const string TypeRVMirror = "rv_mirror";
+	public const string TypeSetCabinet = "set_cabinet";
+	public const string TypeSetDashbrd = "set_dashbrd";
+	public const string TypeSetGlass = "set_glass";
+	public const string TypeSetLGlass = "set_lglass";
+	public const string TypeSetCuphold = "set_cuphold";
 
 	protected override void InvokeExpanded(bool expanded) => ExpandCheckAction(Index, expanded);
 
@@ -271,20 +280,28 @@ public class AccInteriorList: AccessoryList {
 			NewType(TypeCurtainF, true),
 			NewType(TypeInlightBck, TypeBckPanel),
 			NewType(TypeLPillow),
-			NewType(TypeSetCabinet, false),
-			NewType(TypeSetGlass),
-			NewType(TypeSetLGlass),
-			NewType(TypeSterringW),
+			NewType(TypeSteeringW),
 			NewType(TypeToyHang),
 			NewType(TypeToyAc),
 			NewType(TypeToyStand),
 			NewType(TypeToyDash, false),
 			NewType(TypeToySeat),
+			NewType(TypeToyBackSeat),
 			NewType(TypeToyBed),
 			NewType(TypeToyBig),
 			NewType(TypeToyBack, false),
 			NewType(TypeToySofa, false),
 			NewType(TypeToyTable, false),
+			NewType(TypeCarpet),
+			NewType(TypeCodrvSeat),
+			NewType(TypeCurtains),
+			NewType(TypeIntlightBgr),
+			NewType(TypePSeat),
+			NewType(TypeRVMirror),
+			NewType(TypeSetCabinet, false),
+			NewType(TypeSetGlass),
+			NewType(TypeSetLGlass),
+			NewType(TypeSetCuphold),
 		];
 		AddToParent(mAccList);
 	}
@@ -302,16 +319,13 @@ public class AccInteriorList: AccessoryList {
 }
 
 public class AccType: BaseBinding {
+	public const string FlagModelLeft = "/vehicle/truck/upgrade/flag/flag_left.pmd";
+	public const string FlagCollLeft = "/vehicle/truck/upgrade/flag/flag_left.pmc";
+	public const string FlagModelRight = "/vehicle/truck/upgrade/flag/flag_right.pmd";
+	public const string FlagCollRight = "/vehicle/truck/upgrade/flag/flag_right.pmc";
+
 	public bool Expanded { get; } = false;
 	public bool Focusable { get; } = true;
-
-	public bool IsSelected {
-		get;
-		set {
-			field = value;
-			InvokeChange();
-		}
-	} = false;
 
 	public string Parent;
 

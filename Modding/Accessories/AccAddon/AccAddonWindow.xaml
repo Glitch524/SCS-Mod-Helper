@@ -401,7 +401,7 @@
 						<TextBox
 							x:Name="TextModelType"
 							Grid.Row="1"
-							Text="{Binding AccType}"
+							Text="{Binding AccessoryType}"
 							BorderThickness="0"
 							Cursor="">
 						</TextBox>
@@ -505,13 +505,6 @@
 													<Setter
 														Property="IsExpanded"
 														Value="{Binding Expanded, Mode=TwoWay}" />
-												</Trigger>
-												<Trigger
-													Property="Focusable"
-													Value="True">
-													<Setter
-														Property="IsSelected"
-														Value="{Binding IsSelected, Mode=TwoWay}" />
 												</Trigger>
 											</Style.Triggers>
 										</Style>

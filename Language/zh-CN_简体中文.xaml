@@ -230,9 +230,10 @@
 	<s:String x:Key="TitleAddonStorageStorage">套件档案名（addon_hookup_storage）</s:String>
 	<s:String x:Key="HeaderAccessoryName">摆件名称</s:String>
 	<!--适用-->
+	<s:String x:Key="SuitableForSetCabinet">配件-柜子组件（set__cabinet）</s:String>
 	<s:String x:Key="SuitableForSetDashbrd">配件-仪表盘套件（set__dashbrd）</s:String>
 	<s:String x:Key="SuitableForSetGlass">配件-挡风玻璃套件（set__glass）</s:String>
-	<s:String x:Key="SuitableForSetCabinet">配件-柜子组件（set__cabinet）</s:String>
+	<s:String x:Key="SuitableForSetLGlass">配件-挡风玻璃套件（set__lglass）</s:String>
 	<s:String x:Key="SuitableForSetCuphold">配件-杯架套件（set__cuphold）</s:String>
 	<s:String x:Key="SuitableForSteeringW">配件-方向盘（steering__w）</s:String>
 	<!--保存套件定义-->

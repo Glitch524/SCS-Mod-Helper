@@ -23,6 +23,10 @@
 		<ContextMenu
 			x:Key="MenuSuitableFor">
 			<MenuItem
+				Header="{DynamicResource SuitableForSetCabinet}"
+				Click="OnMenuClicked"
+				Tag="set_cabinet" />
+			<MenuItem
 				Header="{DynamicResource SuitableForSetDashbrd}"
 				Click="OnMenuClicked"
 				Tag="set_dashbrd" />
@@ -31,9 +35,9 @@
 				Click="OnMenuClicked"
 				Tag="set_glass" />
 			<MenuItem
-				Header="{DynamicResource SuitableForSetCabinet}"
+				Header="{DynamicResource SuitableForSetLGlass}"
 				Click="OnMenuClicked"
-				Tag="set_cabinet" />
+				Tag="set_lglass" />
 			<MenuItem
 				Header="{DynamicResource SuitableForSetCuphold}"
 				Click="OnMenuClicked"
