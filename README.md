@@ -12,7 +12,7 @@
 		- Physics model
 		- Search and clean created sii files
 	- Model Hookup files for model animation or compass
-	- Definition of spray painting: 
+	- Definition of paintjob: 
 		- Definition of paintjob for various vehicle models
 		- Browsing paintjob textures
 		- Showing the vehicle model's UV map when selecting a vhiecle (currently only supports UV maps for 'Ford: Road Trip' and 'Coaches' models)
