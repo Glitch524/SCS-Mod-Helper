@@ -236,6 +236,7 @@
 	<s:String x:Key="SuitableForSetLGlass">Windshield Sets（set__lglass）</s:String>
 	<s:String x:Key="SuitableForSetCabinet">Cabinet Sets（set__cabinet）</s:String>
 	<s:String x:Key="SuitableForSteeringW">Steering Wheel（steering__w）</s:String>
+	<s:String x:Key="SuitableForCodrvSeat">Coach Co-driver Seat（codrv__seat）</s:String>
 	<!--SaveAddonHookup-->
 	<s:String x:Key="MessageSaveBeforeStart">Please make sure the required data like storage name, hookup file name, hookup model name, physics name was filled, or it will cause skipping or stop saving.</s:String>
 	<s:String x:Key="MessageSaveNoName">Please fill in the storage name first</s:String>
@@ -255,7 +256,7 @@
 	<s:String x:Key="ButtonSaveToPhysicList">Save to physics list</s:String>
 	<s:String x:Key="TitlePhysicsType">Physics Type</s:String>
 	
-	<s:String x:Key="PhysicsTypeToy">Toy Physics</s:String>
+	<s:String x:Key="PhysicsTypeToy">Toy Physics (physics__toy__data)</s:String>
 	<s:String x:Key="TitlePhysicsName">Physics Name</s:String>
 	<s:String x:Key="TitleToyType">Toy Type</s:String>
 	<s:String x:Key="TitleToyMass">Mass</s:String>
@@ -293,7 +294,7 @@
 	<s:String x:Key="TitleNodeDamping">Node Damping</s:String>
 	<s:String x:Key="TipNodeDamping">Rope node velocity damping</s:String>
 	
-	<s:String x:Key="PhysicsTypePatch">Patch Physics</s:String>
+	<s:String x:Key="PhysicsTypePatch">Patch Physics (physics__patch__data)</s:String>
 	<s:String x:Key="TitlePatchMaterial">Patch Material</s:String>
 	<s:String x:Key="TitleAreaDensity">Area Density</s:String>
 	<s:String x:Key="TitleAeroModelType">Aero Model Type</s:String>

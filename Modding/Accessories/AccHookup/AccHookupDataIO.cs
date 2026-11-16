@@ -10,7 +10,8 @@ namespace SCS_Mod_Helper.Modding.Accessories.AccHookup {
 		//addon hookup storage
 		private const string NameAHSPreffix = "addon_hookup_storage";
 
-		private const string NameAHHeader = "accessory_hookup_int_data";
+		private const string NameAHHeader = "accessory_hookup_data";
+		private const string NameAHIntHeader = "accessory_hookup_int_data";
 		private const string NameAHSuffix = ".addon_hookup";
 		private const string NameAHModel = "model";
 
@@ -18,9 +19,14 @@ namespace SCS_Mod_Helper.Modding.Accessories.AccHookup {
 			ListHasQuote.Add(NameAHModel);
 		}
 
-		protected void WriteData(StreamWriter sw, string modelName, Action data) {
+		protected void WriteData(StreamWriter sw, AccessoryHookupData hookupData, Action data) {
+			string header;
+			if (hookupData.Data.Count == 0)
+				header = NameAHHeader;
+			else
+				header = NameAHIntHeader;
 			sw.Write(new string('\t', TabCount));
-			sw.WriteLine($"{NameAHHeader} : {modelName}{NameAHSuffix}");
+			sw.WriteLine($"{header} : {hookupData.ModelName}{NameAHSuffix}");
 			BraceIn(sw);
 			data();
 			BraceOut(sw);
@@ -83,7 +89,7 @@ namespace SCS_Mod_Helper.Modding.Accessories.AccHookup {
 			physicsDatas.AddRange(sui.PhysicsItems);
 			using StreamWriter sw = new(suiPath);
 			foreach (var hookup in sui.HookupItems) {
-				WriteData(sw, hookup.ModelName, () => {
+				WriteData(sw, hookup, () => {
 					WriteLine(sw, NameDisplayName, hookup.DisplayName);
 					WriteLine(sw, NamePrice, hookup.Price ?? 1);
 					WriteLine(sw, NameUnlock, hookup.UnlockLevel ?? 0);

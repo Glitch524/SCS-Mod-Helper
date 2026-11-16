@@ -21,7 +21,7 @@
 	<s:String x:Key="VehicleTypeTruck">Truck</s:String>
 	<s:String x:Key="VehicleTypeTrailer">Trailer</s:String>
 	<s:String x:Key="VehicleTypeCar">Car</s:String>
-	<s:String x:Key="VehicleTypeCoach">Coach</s:String>
+	<s:String x:Key="VehicleTypeBus">Coach</s:String>
 	
 	<s:String x:Key="VehicleID">Vehicle ID</s:String>
 	<s:String x:Key="VehicleProdYear">Production Year</s:String>
@@ -105,12 +105,12 @@
 	<s:String x:Key="CheckResResultTips">The Result may be different in game.</s:String>
 	<s:String x:Key="ModelPrice">Price(ETS2 → EUR, ATS → USD)</s:String>
 	<s:String x:Key="ModelPriceErrNot0">Price cannot be 0, or the accessory will not be visible to the player.</s:String>
-	<s:String x:Key="ModelPriceErrNoNumber">Characters other than number is not allowed</s:String>
 	<s:String x:Key="ModelUnlockLevel">Unlock Level</s:String>
 	<s:String x:Key="ModelIcon">Icon Name(TGA/DDS 256x64)</s:String>
 	<s:String x:Key="PartType">PartType</s:String>
 	<s:String x:Key="PartTypeTip">The part type will show up in the top-right corner of the icon in game(Unknown by default)</s:String>
-	<s:String x:Key="ModelFilePath">Model Path(.pim will be transformed to .pmd)</s:String>
+	<s:String x:Key="ModelFilePath">Model Path</s:String>
+	<s:String x:Key="ModelFilePathTips">(.pim will be transformed to .pmd)</s:String>
 	<s:String x:Key="ModelFilePathUK">Model Path for UK</s:String>
 	<s:String x:Key="ModelFilePathUKTip">File with _uk suffix will be auto filled</s:String>
 	<s:String x:Key="ExtModelFilePath">Exterior Model Path</s:String>
@@ -123,7 +123,8 @@
 	<s:String x:Key="ModelType">Model Type </s:String>
 	<s:String x:Key="ModelTypeTip">(Auto filled by modelPath)</s:String>
 	<s:String x:Key="ModelLook">Look</s:String>
-	<s:String x:Key="ModelVariant">Variant</s:String>
+	<s:String x:Key="ModelVariant">Variant</s:String>	
+	<s:String x:Key="TipApplyTLV">Apply to all selected vehicles</s:String>
 	<s:String x:Key="HideIn">Hide in</s:String>
 	<s:String x:Key="ElectricType">Electric Type</s:String>
 	<s:String x:Key="Others">Others</s:String>
@@ -229,11 +230,13 @@
 	<s:String x:Key="TitleAddonStorageStorage">Hookup Storage Name</s:String>
 	<s:String x:Key="HeaderAccessoryName">Acc. Name</s:String>
 	<!--Suitable For-->
+	<s:String x:Key="SuitableForSetCuphold">Cup Holder Sets（set__cuphold）</s:String>
 	<s:String x:Key="SuitableForSetDashbrd">Dashboard Sets（set__dashbrd）</s:String>
 	<s:String x:Key="SuitableForSetGlass">Windshield Sets（set__glass）</s:String>
+	<s:String x:Key="SuitableForSetLGlass">Windshield Sets（set__lglass）</s:String>
 	<s:String x:Key="SuitableForSetCabinet">Cabinet Sets（set__cabinet）</s:String>
-	<s:String x:Key="SuitableForSetCuphold">Cup Holder Sets（set__cuphold）</s:String>
 	<s:String x:Key="SuitableForSteeringW">Steering Wheel（steering__w）</s:String>
+	<s:String x:Key="SuitableForCodrvSeat">Coach Co-driver Seat（codrv__seat）</s:String>
 	<!--SaveAddonHookup-->
 	<s:String x:Key="MessageSaveBeforeStart">Please make sure the required data like storage name, hookup file name, hookup model name, physics name was filled, or it will cause skipping or stop saving.</s:String>
 	<s:String x:Key="MessageSaveNoName">Please fill in the storage name first</s:String>
@@ -253,7 +256,7 @@
 	<s:String x:Key="ButtonSaveToPhysicList">Save to physics list</s:String>
 	<s:String x:Key="TitlePhysicsType">Physics Type</s:String>
 	
-	<s:String x:Key="PhysicsTypeToy">Toy Physics</s:String>
+	<s:String x:Key="PhysicsTypeToy">Toy Physics (physics__toy__data)</s:String>
 	<s:String x:Key="TitlePhysicsName">Physics Name</s:String>
 	<s:String x:Key="TitleToyType">Toy Type</s:String>
 	<s:String x:Key="TitleToyMass">Mass</s:String>
@@ -291,7 +294,7 @@
 	<s:String x:Key="TitleNodeDamping">Node Damping</s:String>
 	<s:String x:Key="TipNodeDamping">Rope node velocity damping</s:String>
 	
-	<s:String x:Key="PhysicsTypePatch">Patch Physics</s:String>
+	<s:String x:Key="PhysicsTypePatch">Patch Physics (physics__patch__data)</s:String>
 	<s:String x:Key="TitlePatchMaterial">Patch Material</s:String>
 	<s:String x:Key="TitleAreaDensity">Area Density</s:String>
 	<s:String x:Key="TitleAeroModelType">Aero Model Type</s:String>
@@ -311,7 +314,6 @@
 	<s:String x:Key="MessageResultPhysSaved">Physics definition saved.</s:String>
 	<s:String x:Key="DialogTitleChooseRope">Choose Rope Material File(mat file or its image file)</s:String>
 	<s:String x:Key="DialogTitleChoosePatch">Choose Patch Material File(mat file or its image file)</s:String>
-	<s:String x:Key="DialogFilterChooseMaterial">Rope Material or Rope Image File|*.tga;*.dds;*.mat;*.tobj</s:String>
 	<s:String x:Key="MessageErrorChooseMaterial">Chosen file must be mat file or its image file</s:String>
 	
 	
@@ -386,6 +388,7 @@
 	<s:String x:Key="TitlePaintJobPreview">Paint Job Preview</s:String>
 	<s:String x:Key="ButtonPreviewPaintJob">Preview Paint Job Texture</s:String>
 	<s:String x:Key="CheckBoxShowCabinUV">Show Cabin UV</s:String>
+	<s:String x:Key="HeaderUVLayers">UV Layers</s:String>
 	
 
 	<!--Created Sii Files-->
@@ -422,13 +425,19 @@
 
 	<!--Converter PIX-->
 	<s:String x:Key="TitleConverterPIX">Converter PIX</s:String>
-	<s:String x:Key="TitleModPath">Mod Path:</s:String>
+	<s:String x:Key="TooltipGoBack">Go Back</s:String>
+	<s:String x:Key="TitleTextReader">Text Reader</s:String>
+	<s:String x:Key="TitlePackPath">Package Path:</s:String>
+	<s:String x:Key="TitlePackName">Package</s:String>
 	<s:String x:Key="TitleCustomExportPath">Custom Export Path:</s:String>
-	<s:String x:Key="DialogFilterMod">"SCS Mod File|*.scs;*.zip|All Files|*.*"</s:String>
+	<s:String x:Key="DialogFilterMod">SCS Archive File|*.scs;*.zip|All Files|*.*</s:String>
+	<s:String x:Key="MessageOpenDef">If you want to check or export vehicle models and sii files, it's recommended to open base_share.scs and base_vehicle.scs</s:String>
 	<s:String x:Key="TitleExtractFile">Extract File</s:String>
 	<s:String x:Key="TitleOpenExtractedLocation">Open Extracted Location</s:String>
-	<s:String x:Key="TitleFindAnim">Find Animation File</s:String>
+	<s:String x:Key="TitleFindAnim">Find and Export Animation File</s:String>
 	<s:String x:Key="TitleGlanceFile">Glance File</s:String>
+	<s:String x:Key="TitleMountPackages">Mount Opened Pakcages</s:String>
+	<s:String x:Key="ToolTipMountPackages">Mount opened packages. Sometimes vehicle models use shared textures in others packages, so mounting those packages lets you extract the needed assets along with the files</s:String>
 	<s:String x:Key="TitleEDF">Extract and decrypt all files</s:String>
 	<s:String x:Key="TooltipEDF">Except the auto-generated files</s:String>
 	<s:String x:Key="DialogMessageEDF">Careful, you can't use this tool to decrypt someone else's Mod project for other purposes without permission.</s:String>
@@ -447,14 +456,35 @@
 	<s:String x:Key="CurrentFileMAT">MAT File:</s:String>
 	<s:String x:Key="CurrentFileOther">Other File:</s:String>
 	<s:String x:Key="CurrentFileDir">Folder:</s:String>
+	<s:String x:Key="MessageResultExtractAllFinished">Task Finished</s:String>
+	<s:String x:Key="TitleExtractResult">Extract Result</s:String>
 	<s:String x:Key="MessageExtractedModel">Extracted and decrypted model successfully to:</s:String>
 	<s:String x:Key="MessageExtractedTobj">Extracted and decrypted tobj file and its image successfully to:</s:String>
 	<s:String x:Key="MessageExtractedFile">Extracted file successfully to:</s:String>
 	<s:String x:Key="MessageExtractFail">Failed to extract the file.&#10;Error:</s:String>
+	<x:Array
+		x:Key="MessageExtractWarning1"
+		Type="s:String">
+		<x:Null /><!--zero-->
+		<s:String>Unable to read the following file:</s:String><!--one-->
+		<x:Null /><!--two-->
+		<x:Null /><!--few-->
+		<x:Null /><!--many-->
+		<s:String>Unable to read the following files:</s:String><!--other-->
+	</x:Array>
+	<x:Array
+		x:Key="MessageExtractWarning2"
+		Type="s:String">
+		<x:Null /><!--zero-->
+		<s:String>probably because this file is from other packages</s:String><!--one-->
+		<x:Null /><!--two-->
+		<x:Null /><!--few-->
+		<x:Null /><!--many-->
+		<s:String>probably because these files are from other packages</s:String><!--other-->
+	</x:Array>
 	<s:String x:Key="MessageReadFileFailed">Unable to read this file</s:String>
 	<s:String x:Key="MessageLinkFileNotExist">This file seems not exist in this pack, you should find it in other packs</s:String>
 	
-
 
 
 	<!--Localization-->
@@ -470,10 +500,37 @@
 	<s:String x:Key="MessageLoadErrNotLocale">Looks like this file is not a localization file</s:String>
 	<s:String x:Key="MessageLoadErr">Error occurs when loading localization file</s:String>
 	<s:String x:Key="MessageSyncResultZero">There's nothing needs to sync</s:String>
-	<s:String x:Key="MessageSyncResultTo">{0} key(s) synced to Universal</s:String>
-	<s:String x:Key="MessageSyncResultFrom">{0} key(s) synced from Universal</s:String>
+	<x:Array
+		x:Key="MessageSyncResultTo"
+		Type="s:String">
+		<x:Null /><!--zero-->
+		<s:String>{0} key synced to Universal</s:String><!--one-->
+		<x:Null /><!--two-->
+		<x:Null /><!--few-->
+		<x:Null /><!--many-->
+		<s:String>{0} keys synced to Universal</s:String><!--other-->
+	</x:Array>
+	<x:Array
+		x:Key="MessageSyncResultFrom"
+		Type="s:String">
+		<x:Null /><!--zero-->
+		<s:String>{0} key synced from Universal</s:String><!--one-->
+		<x:Null /><!--two-->
+		<x:Null /><!--few-->
+		<x:Null /><!--many-->
+		<s:String>{0} keys synced from Universal</s:String><!--other-->
+	</x:Array>
 	<s:String x:Key="MessageTitleSyncResult">Syncing Complete</s:String>
-	<s:String x:Key="MessageSaveErrNoName">There is (are) some unnamed Translation file(s)</s:String>
+	<x:Array
+		x:Key="MessageSaveErrNoName"
+		Type="s:String">
+		<x:Null /><!--zero-->
+		<s:String>There is a unnamed Translation file</s:String><!--one-->
+		<x:Null /><!--two-->
+		<x:Null /><!--few-->
+		<x:Null /><!--many-->
+		<s:String>There are some unnamed Translation files</s:String><!--other-->
+	</x:Array>
 	<s:String x:Key="MessageSaveSuccess">File saved</s:String>
 	<s:String x:Key="MessageDeleteLocale">Are you sure to delete this translation file?</s:String>
 	<s:String x:Key="MessageUniEmpty">Universal translation is empty, the language without definition will not show translation properly, anre you sure to continue?</s:String>
@@ -492,6 +549,28 @@
 	<s:String x:Key="MessageDBFinish1">Are you sure to continue?</s:String>
 	<s:String x:Key="MessageDBFinishWithUnselected">Unselected data will be discarded</s:String>
 
+	
+	
+	<!--Shortcut-->
+	<s:String x:Key="TitleShortcut">Shortcut</s:String>
+	<s:String x:Key="TitleGameLocation">Game Location</s:String>
+	<s:String x:Key="TitleDocumentFolder">Document Folder</s:String>
+	<s:String x:Key="TitleWorkshopFolder">Workshop Folder</s:String>
+	<s:String x:Key="TitleOthers">Others</s:String>
+	<s:String x:Key="MessageSetPathFirst">Please set the Folder path in Settings first</s:String>
+	<s:String x:Key="MessageFolderNotExist">The chosen folder is not exist</s:String>
+	
+	
+	
+	<!--Exports-->
+	<s:String x:Key="TitleExports">Exports</s:String>
+	<s:String x:Key="TitleLockZip">Lock Zip Package</s:String>
+	<s:String x:Key="DialogFilterZip">Zip Package|*.zip</s:String>
+	<s:String x:Key="DialogResultZipLocked">Zip Package Locked</s:String>
+	<s:String x:Key="DialogResultZipLockFail">Zip package locking failed&#10;Error:</s:String>
+	<s:String x:Key="DialogResultZipLockIOE">Cannot write the zip package. If you're lockin the zip package in the mod folder, then probably because the game is running and using this package</s:String>
+	
+	
 
 	<!--Settings-->
 	<s:String x:Key="TitleSettings">Settings</s:String>
@@ -514,24 +593,24 @@
 	<s:String x:Key="MessageAutoDetectNoSteamRegistry">Can't find registry data for steam</s:String>
 	<s:String x:Key="MessageAutoDetectResultFail">Can't find the path of the game:</s:String>
 	<s:String x:Key="ExternalToolsPath"> Path</s:String>
-	<s:String x:Key="FilterCPix">App|converter_pix.exe</s:String>
-	<s:String x:Key="MessageErrNotCPix">Selected file is not ConverterPix.exe</s:String>
 	<s:String x:Key="MessageErrDifferentStructure">Selected file's directory seems different, continue?</s:String>
+	<s:String x:Key="TitleCommonModFolder">Common Mod Folder</s:String>
 
 
 
 
 	<s:String x:Key="MessageTitleNotice">Notice</s:String>
+	<s:String x:Key="MessageTitleTips">Tips</s:String>
 	<s:String x:Key="MessageTitleWarning">Warning</s:String>
 	<s:String x:Key="MessageTitleErr">Error</s:String>
 	<s:String x:Key="MessageTitleResult">Result</s:String>
 	<s:String x:Key="StatusEmpty">Empty</s:String>
 	
 	<s:String x:Key="ButtonFinish">Finish</s:String>
-	<s:String x:Key="ButtonOK">OK</s:String>
-	<s:String x:Key="ButtonCancel">Cancel</s:String>
 	<s:String x:Key="ButtonYes">Yes</s:String>
 	<s:String x:Key="ButtonNo">No</s:String>
+	<s:String x:Key="ButtonOK">OK</s:String>
+	<s:String x:Key="ButtonCancel">Cancel</s:String>
 	<s:String x:Key="ButtonSave">Save</s:String>
 	<s:String x:Key="ButtonClose">Close</s:String>
 	<s:String x:Key="ButtonStart">Start</s:String>
@@ -545,54 +624,6 @@
 
 	<s:String x:Key="FilterAllFiles">All Files|*.*</s:String>
 
-	
-
-
-	<!--accessory-->
-	<s:String x:Key="Acc.cup_holder">Cup Holder</s:String>
-	<s:String x:Key="Acc.curtain_f">Curtains(ETS2)</s:String>
-	<s:String x:Key="Acc.drv_plate">Driver's Plate</s:String>
-	<s:String x:Key="Acc.codrv_plate">Co-Driver's Plate</s:String>
-	<s:String x:Key="Acc.flag_l">Truck Flag (Left)</s:String>
-	<s:String x:Key="Acc.flag_r">Truck Flag (Right)</s:String>
-	<s:String x:Key="Acc.back_wall">Back Wall Items</s:String>
-	<s:String x:Key="Acc.l_pillow">Pillow Items</s:String>
-	<s:String x:Key="Acc.set_cabinet">Cabinet Sets(ATS)</s:String>
-	<s:String x:Key="Acc.set_glass">Windshield Sets</s:String>
-	<s:String x:Key="Acc.set_lglass">Windshield Corner</s:String>
-	<s:String x:Key="Acc.sterring_w">Steering Wheel</s:String>
-	<s:String x:Key="Acc.toyhang">Hanging Items</s:String>
-	<s:String x:Key="Acc.toyac">Air Conditioner Items</s:String>
-	<s:String x:Key="Acc.toystand">Console Items</s:String>
-	<s:String x:Key="Acc.toydash">Dashboard Storage Items</s:String>
-	<s:String x:Key="Acc.toyseat">Seat Items(Co-Driver's Seat)</s:String>
-	<s:String x:Key="Acc.toybed">Bed Items</s:String>
-	<s:String x:Key="Acc.toybig">Center Floor Items</s:String>
-	<s:String x:Key="Acc.toyback">Sleeper Floor Items(ATS)</s:String>
-	<s:String x:Key="Acc.toysofa">Sofa Items(ATS)</s:String>
-	<s:String x:Key="Acc.toytable">Table Items(ATS)</s:String>
-	
-	<s:String x:Key="MenuItem.cup_holder">cup_holder→Cup Holder</s:String>
-	<s:String x:Key="MenuItem.curtain_f">curtain_f→Curtains(ETS2)</s:String>
-	<s:String x:Key="MenuItem.drv_plate">drv_plate→Driver's Plate</s:String>
-	<s:String x:Key="MenuItem.codrv_plate">codrv_plate→Co-Driver's Plate</s:String>
-	<s:String x:Key="MenuItem.flag_l">flag_l/flag_f_l→Truck Flag (Left)</s:String>
-	<s:String x:Key="MenuItem.flag_r">flag_r/flag_f_r→Truck Flag (Right)</s:String>
-	<s:String x:Key="MenuItem.back_wall">inlight_bck/bckpanel→Back Wall Items</s:String>
-	<s:String x:Key="MenuItem.l_pillow">l_pillow→Pillow Items</s:String>
-	<s:String x:Key="MenuItem.set_cabinet">set_cabinet→Cabinet Sets(ATS)</s:String>
-	<s:String x:Key="MenuItem.set_glass">set_glass→Windshield Sets</s:String>
-	<s:String x:Key="MenuItem.set_lglass">set_lglass→Windshield Corner</s:String>
-	<s:String x:Key="MenuItem.sterring_w">sterring_w→Steering Wheel</s:String>
-	<s:String x:Key="MenuItem.toyhang">toyhang→Hanging Items</s:String>
-	<s:String x:Key="MenuItem.toyac">toyac→Air Conditioner Items</s:String>
-	<s:String x:Key="MenuItem.toystand">toystand→Console Items</s:String>
-	<s:String x:Key="MenuItem.toyseat">toyseat→Seat Items(Co-Driver's Seat)</s:String>
-	<s:String x:Key="MenuItem.toybed">toybed→Bed Items</s:String>
-	<s:String x:Key="MenuItem.toybig">toybig→Center Floor Items</s:String>
-	<s:String x:Key="MenuItem.toyback">toyback→Sleeper Floor Items(ATS)</s:String>
-	<s:String x:Key="MenuItem.toysofa">toysofa→Sofa Items(ATS)</s:String>
-	<s:String x:Key="MenuItem.toytable">toytable→Table Items(ATS)</s:String>
 
 	<!--locale Names-->
 	<s:String x:Key="locale.universal">Universal</s:String>

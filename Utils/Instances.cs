@@ -1,5 +1,4 @@
-﻿using SCS_Mod_Helper.Locale.StringRes;
-using SCS_Mod_Helper.Setting;
+﻿using SCS_Mod_Helper.Setting;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -150,7 +149,6 @@ public static partial class Instances {
 			mProjectLocation = value;
 			Settings.Default.ProjectLocation = value;
 			Settings.Default.Save();
-			StringResUtil.CleanStringResList();
 			localeModules = null;
 		}
 	}

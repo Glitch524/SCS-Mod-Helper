@@ -58,7 +58,7 @@ namespace SCS_Mod_Helper.Modding.Accessories.Physics {
 			}
 		}
 
-		private Float2 mTCMinFirst = new(0f, 0f);
+		private Float2 mTCMinFirst = new();
 		public Float2 TCMinFirst {
 			get => mTCMinFirst;
 			set {
@@ -67,7 +67,7 @@ namespace SCS_Mod_Helper.Modding.Accessories.Physics {
 			}
 		}
 
-		private Float2 mTCMaxFirst = new(1f, 1f);
+		private Float2 mTCMaxFirst = new();
 		public Float2 TCMaxFirst {
 			get => mTCMaxFirst;
 			set {
@@ -76,7 +76,7 @@ namespace SCS_Mod_Helper.Modding.Accessories.Physics {
 			}
 		}
 
-		private Float2 mTCMinSecond = new(0f, 0f);
+		private Float2 mTCMinSecond = new();
 		public Float2 TCMinSecond {
 			get => mTCMinSecond;
 			set {
@@ -85,7 +85,7 @@ namespace SCS_Mod_Helper.Modding.Accessories.Physics {
 			}
 		}
 
-		private Float2 mTCMaxSecond = new(1f, 1f);
+		private Float2 mTCMaxSecond = new();
 		public Float2 TCMaxSecond {
 			get => mTCMaxSecond;
 			set {

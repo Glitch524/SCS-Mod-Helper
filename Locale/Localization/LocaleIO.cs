@@ -125,24 +125,21 @@ namespace SCS_Mod_Helper.Locale.Localization {
 					unnamedCount++;
 				}
 			}
-			MessageBox.Show(window, Resource.GetQuantityString("MessageSaveErrNoName", unnamedCount));
+			if(unnamedCount > 0)
+				MessageBox.Show(window, Resource.GetQuantityString("MessageSaveErrNoName", unnamedCount));
+			Instances.UpdateLocaleModules(moduleList);
 			foreach (var module in moduleList) {
 				var moduleName = module.ModuleName;
 				var universal = module.UniversalDict;
 				foreach (var locale in module.LocaleList) {
-					if (locale.LocaleValue == Locale.LocaleValueUni) {
-						foreach (var pair in locale.Dictionary) {
-							Instances.LocaleDictAdd(pair.Key, pair.Value);
-						}
+					if (locale.IsUniversal)
 						continue;
-					}
 					CreateLocaleSii(moduleName, locale, universal);
 				}
 			}
 			foreach (var module in deletedModuleList) {
 				DeleteLocaleSii(module);
-			}
-			Instances.CleanLocaleModules();//mod localization更改并保存后，清理Instances内的locale字典，使用时重新加载
+			}//mod localization更改并保存后，清理Instances内的locale字典，使用时重新加载
 		}
 
 		private void CreateLocaleSii(string moduleName, ModLocale locale, ObservableCollection<LocalePair> universal) {
@@ -162,8 +159,7 @@ namespace SCS_Mod_Helper.Locale.Localization {
 				return;
 			}
 			var hasValue = false;
-			{
-				using StreamWriter sw = new(localeFile);
+			using (StreamWriter sw = new(localeFile)) {
 				WriteFileStructure(sw, () => {
 					WriteLocalHeader(sw, Genearated, () => {
 						foreach (var pair in dict) {
@@ -175,8 +171,6 @@ namespace SCS_Mod_Helper.Locale.Localization {
 							}
 							WriteLine(sw, NameKey, pair.Key);
 							WriteLine(sw, NameValue, pair.Value);
-							if (!Genearated)
-								Instances.LocaleDictAdd(pair.Key, pair.Value);
 						}
 					});
 				});

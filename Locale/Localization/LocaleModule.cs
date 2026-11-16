@@ -3,11 +3,28 @@ using System.Collections.ObjectModel;
 
 namespace SCS_Mod_Helper.Locale.Localization;
 public class LocaleModule: BaseBinding {
-	private string mModuleName;
-	public string ModuleName {
-		get => mModuleName;
+	public bool Focusable {
+		get;
+	} = false;
+	public bool Expanded {
+		get;
 		set {
-			mModuleName = value;
+			field = value;
+			InvokeChange();
+		}
+	} = false;
+	public bool Selected {
+		get;
+		set {
+			field = value;
+			InvokeChange();
+		}
+	} = false;
+
+	public string ModuleName {
+		get;
+		set {
+			field = value;
 			InvokeChange();
 		}
 	}
@@ -16,10 +33,16 @@ public class LocaleModule: BaseBinding {
 
 	public readonly Dictionary<string, ModLocale> LocaleDict;
 
-	public ObservableCollection<LocalePair> UniversalDict;
+	public ObservableCollection<LocalePair> UniversalDict { 
+		get; 
+		set {
+			field = value;
+			InvokeChange();
+		}
+	}
 
 	public LocaleModule(string moduleName) {
-		mModuleName = moduleName;
+		ModuleName = moduleName;
 
 		LocaleList = ModLocale.GetLocales(out ModLocale universal);
 		LocaleDict = LocaleList.ToDictionary(l => l.LocaleValue);
@@ -32,6 +55,8 @@ public class LocaleModule: BaseBinding {
 			return v;
 		throw new ArgumentException("wrong locale: " + locale);
 	}
+
+	public override string ToString() => $"LocaleModule={ModuleName}";
 }
 
 public class ModLocale(string localeValue, string localeDisplay): Locale(localeValue, localeDisplay) {
@@ -67,24 +92,43 @@ public class ModLocale(string localeValue, string localeDisplay): Locale(localeV
 	}
 
 	public void ClearDict() => Dictionary.Clear();
+
+	public override string ToString() => $"ModLocale={LocaleDisplay}";
 }
 
 
 public class LocalePair(string key, string value): BaseBinding {
-	private string mKey = key;
-	private string mValue = value;
+	public bool Focusable {
+		get;
+	} = true;
+	public bool Expanded {
+		get;
+		set {
+			field = value;
+			InvokeChange();
+		}
+	} = false;
+	public bool Selected {
+		get;
+		set {
+			field = value;
+			InvokeChange();
+		}
+	} = false;
+
 	public string Key {
-		get => mKey;
+		get;
 		set {
-			mKey = value;
+			field = value;
 			InvokeChange();
 		}
-	}
+	} = key;
+
 	public string Value {
-		get => mValue;
+		get;
 		set {
-			mValue = value;
+			field = value;
 			InvokeChange();
 		}
-	}
+	} = value;
 }

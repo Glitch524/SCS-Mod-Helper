@@ -8,23 +8,21 @@ using System.Windows.Input;
 namespace SCS_Mod_Helper.Locale.Localization;
 
 public class LocaleBinding(Func<IBaseVisual> visualFunc): WindowBinding(visualFunc) {
-	public readonly ObservableCollection<LocaleModule> mLocaleModules = [];
-	public ObservableCollection<LocaleModule> LocaleModules => mLocaleModules;
+	public ObservableCollection<LocaleModule> LocaleModules { get; } = [];
 	public readonly ObservableCollection<LocaleModule> DeletedModules = [];
 
-	private LocaleModule? mCurrentModule = null;
 	public LocaleModule? CurrentModule {
 		get {
-			mCurrentModule ??= LocaleModules.FirstOrDefault();
-			return mCurrentModule;
+			field ??= LocaleModules.FirstOrDefault();
+			return field;
 		}
 		set {
-			mCurrentModule = value ?? LocaleModules.FirstOrDefault();
+			field = value ?? LocaleModules.FirstOrDefault();
 			InvokeChange();
 
 			InvokeChange(nameof(CurrentLocaleList));
 		}
-	}
+	} = null;
 
 	public string CurrentModuleName {
 		get => CurrentModule?.ModuleName ?? "";
@@ -38,19 +36,18 @@ public class LocaleBinding(Func<IBaseVisual> visualFunc): WindowBinding(visualFu
 
 	public ObservableCollection<ModLocale>? CurrentLocaleList => CurrentModule?.LocaleList;
 
-	private ModLocale? mCurrentLocale = null;
 	public ModLocale? CurrentLocale {
 		get {
-			mCurrentLocale ??= CurrentLocaleList?.FirstOrDefault();
-			return mCurrentLocale;
+			field ??= CurrentLocaleList?.FirstOrDefault();
+			return field;
 		}
 		set {
-			mCurrentLocale = value ?? CurrentLocaleList?.FirstOrDefault();
+			field = value ?? CurrentLocaleList?.FirstOrDefault();
 			InvokeChange();
 
 			InvokeChange(nameof(CurrentDict));
 		}
-	}
+	} = null;
 
 	public ObservableCollection<LocalePair>? CurrentDict => CurrentLocale?.Dictionary;
 	public ObservableCollection<LocalePair> UniversalDict => CurrentModule!.UniversalDict;

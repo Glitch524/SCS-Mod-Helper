@@ -830,6 +830,9 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 				LocalizedDisplayName = localizedName;
 			}
 			saveFileDialog.FileName = $"{LocalizedDisplayName} {AccessoryType} {ModelName}";
+			foreach (char c in Path.GetInvalidFileNameChars()) {
+				saveFileDialog.FileName = saveFileDialog.FileName.Replace(c, '_');
+			}
 		} else
 			saveFileDialog.FileName = LoadedFilename;
 		if (saveFileDialog.ShowDialog() == true) {

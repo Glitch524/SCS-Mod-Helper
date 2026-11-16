@@ -338,7 +338,7 @@ public static class AccessoryDataUtil {
 			DefaultDirectory = projectLocation,
 			DefaultExt = "mat",
 			Title = title,
-			Filter = Resource.GetFilter("DialogFilterChooseMaterial"),
+			Filter = Resource.GetFilter("DialogFilterTextureFile"),
 		};
 		if (!fileDialog.InitialDirectory.StartsWith(projectLocation))
 			fileDialog.InitialDirectory = projectLocation;

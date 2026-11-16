@@ -46,6 +46,10 @@
 				Header="{DynamicResource SuitableForSteeringW}"
 				Click="OnMenuClicked"
 				Tag="steering_w" />
+			<MenuItem
+				Header="{DynamicResource SuitableForCodrvSeat}"
+				Click="OnMenuClicked"
+				Tag="codrv_seat" />
 		</ContextMenu>
 
 		<Style

@@ -6,7 +6,7 @@ using System.IO;
 namespace SCS_Mod_Helper.Modding.Accessories.AccAddon {
 	public class AccAddonSCSIO: AccSCSIO {
 		private const string NameAccIntHeader = "accessory_addon_int_data";
-		private const string NameAccHeader = "accessory_addon_int_data";
+		private const string NameAccHeader = "accessory_addon_data";
 		private const string NamePatchHeader = "accessory_addon_patch_data";
 		private const string NameAAExtModel = "exterior_model";
 		private const string NameAAIntModel = "interior_model";
@@ -37,7 +37,7 @@ namespace SCS_Mod_Helper.Modding.Accessories.AccAddon {
 			string header;
 			if (isPatch)
 				header = NamePatchHeader;
-			else if (binding.Data.Count == 0)//todo 通过accType判断是否车内饰品，大概在后续树状结构才能实现
+			else if (binding.Data.Count == 0)
 				header = NameAccHeader;
 			else
 				header = NameAccIntHeader;
@@ -74,6 +74,9 @@ namespace SCS_Mod_Helper.Modding.Accessories.AccAddon {
 					"flag_l" or "flag_r" or "flag_f_l" or "flag_f_r" => true,
 					_ => false,
 				};
+				var dir = Directory.GetParent(siiFile)!;
+				if (!dir.Exists)
+					dir.Create();
 				using StreamWriter sw = new(siiFile);
 				WriteFileStructure(sw, () => {
 					WriteData(sw, IsPatch, binding, vehicle.VehicleID, vehicle.ModelType, () => {

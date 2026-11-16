@@ -5,6 +5,7 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 	xmlns:local="clr-namespace:SCS_Mod_Helper.Locale.StringRes"
+	xmlns:l="clr-namespace:SCS_Mod_Helper.Locale.Localization"
 	xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
 	xmlns:base="clr-namespace:SCS_Mod_Helper.Class.Base"
 	d:DataContext="{d:DesignInstance Type=local:StringResBinding}"
@@ -22,40 +23,68 @@
 			<Separator
 				Height="1"
 				Background="{StaticResource TextFillColorSecondaryBrush}" />
-			<ListBox
-				x:Name="ListStringRes"
-				SelectionMode="Single"
+			<TreeView
+				x:Name="TreeViewStringRes"
 				d:ItemsSource="{d:SampleData ItemCount=2}"
-				ItemsSource="{Binding StringResList}"
-				SelectionChanged="StringResSelectionChanged"
-				Margin="0,5">
-				<ListBox.Style>
+				ItemsSource="{Binding LocaleModules}"
+				SelectedItemChanged="StringResSelectedChanged"
+				Margin="0">
+				<TreeView.Resources>
+					<HierarchicalDataTemplate
+						DataType="{x:Type l:LocaleModule}"
+						ItemsSource="{Binding UniversalDict}">
+						<StackPanel
+							Orientation="Horizontal">
+							<TextBlock
+								Text="{Binding ModuleName}" />
+						</StackPanel>
+					</HierarchicalDataTemplate>
+					<HierarchicalDataTemplate
+						DataType="{x:Type l:LocalePair}">
+						<StackPanel
+							Orientation="Horizontal">
+							<TextBlock
+								Text="{Binding Key}" />
+						</StackPanel>
+					</HierarchicalDataTemplate>
+				</TreeView.Resources>
+				<TreeView.ItemContainerStyle>
 					<Style
-						TargetType="ListBox"
-						BasedOn="{StaticResource {x:Type ListBox}}">
+						TargetType="TreeViewItem"
+						BasedOn="{StaticResource {x:Type TreeViewItem}}">
+						<Setter
+							Property="Focusable"
+							Value="{Binding Focusable}" />
+						<Setter
+							Property="IsSelected"
+							Value="{Binding Selected}" />
+						<Style.Triggers>
+							<Trigger
+								Property="Focusable"
+								Value="False">
+								<Setter
+									Property="IsExpanded"
+									Value="{Binding Expanded, Mode=TwoWay}" />
+							</Trigger>
+						</Style.Triggers>
+					</Style>
+				</TreeView.ItemContainerStyle>
+				<TreeView.Style>
+					<Style
+						TargetType="TreeView"
+						BasedOn="{StaticResource {x:Type TreeView}}">
 						<Style.Triggers>
 							<DataTrigger
-								Binding="{Binding StringResList.Count}"
-								Value="0">
+								Binding="{Binding HasValue}"
+								Value="False">
 								<Setter
 									Property="Visibility"
 									Value="Collapsed" />
 							</DataTrigger>
 						</Style.Triggers>
 					</Style>
-				</ListBox.Style>
-				<ListBox.ItemTemplate>
-					<DataTemplate>
-						<TextBlock
-							Background="{x:Null}"
-							Text="{Binding Header}"
-							ToolTip="{Binding Values}"
-							Padding="0,5"
-							HorizontalAlignment="Stretch">
-						</TextBlock>
-					</DataTemplate>
-				</ListBox.ItemTemplate>
-			</ListBox>
+				</TreeView.Style>
+			</TreeView>
 			<TextBlock
 				Text="{DynamicResource StatusEmpty}"
 				Margin="5,5">
@@ -68,15 +97,16 @@
 							Value="Collapsed" />
 						<Style.Triggers>
 							<DataTrigger
-								Binding="{Binding StringResList.Count}"
-								Value="0">
+								Binding="{Binding HasValue}"
+								Value="False">
 								<Setter
 									Property="Visibility"
 									Value="Visible" />
 							</DataTrigger>
 						</Style.Triggers>
 					</Style>
-				</TextBlock.Style></TextBlock>
+				</TextBlock.Style>
+			</TextBlock>
 			<Separator
 				Height="1"
 				Background="{StaticResource TextFillColorSecondaryBrush}" />

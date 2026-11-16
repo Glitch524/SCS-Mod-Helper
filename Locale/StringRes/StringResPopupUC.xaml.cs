@@ -27,6 +27,11 @@ public partial class StringResPopupUC: BaseUserControl {
 	private StringResBinding Binding => (StringResBinding)PanelMain.DataContext;
 	public StringResPopupUC() {
 		InitializeComponent();
+		Loaded += OnLoaded;
+	}
+
+	private void OnLoaded(object sender, RoutedEventArgs e) {
+		Binding.LocaleModules.FirstOrDefault()?.Expanded = true;
 	}
 
 	private void ButtonClick(object sender, RoutedEventArgs e) {
@@ -35,7 +40,7 @@ public partial class StringResPopupUC: BaseUserControl {
 		};
 		modLocalization.ShowDialog();
 		if (modLocalization.HasChanges) {
-			StringResUtil.SetupStringResList();
+			Binding.UpdateLayout();
 		}
 	}
 
@@ -51,8 +56,42 @@ public partial class StringResPopupUC: BaseUserControl {
 			}
 		}
 	}
+
+	private void StringResSelectedChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
+		if (e.NewValue is LocalePair localePair) {
+			localePair.Selected = false;
+			Binding.PopupStringResOpen = false;
+			ApplyStringResId?.Invoke(localePair.Key);
+		}
+	}
 }
 
 public partial class StringResBinding: WindowBinding {
-	public static ObservableCollection<StringResItem> StringResList => StringResUtil.StringResList;
+	public ObservableCollection<LocaleModule> LocaleModules => Instances.LocaleModules;
+
+	public bool? HasValue {
+		get {
+			if (field == null) {
+				if (LocaleModules.Count == 0)
+					field = false;
+				foreach (var module in LocaleModules) {
+					if (module.UniversalDict.Count > 0) {
+						field = true;
+						return field;
+					}
+				}
+				field = false;
+			}
+			return field;
+		}
+		set {
+			field = value;
+			InvokeChange();
+		}
+	} = null;
+	public void UpdateLayout() {
+		HasValue = null;
+		InvokeChange(nameof(LocaleModules));
+	}
+
 }

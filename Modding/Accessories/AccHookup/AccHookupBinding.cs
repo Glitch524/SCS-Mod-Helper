@@ -315,18 +315,18 @@ public class AccHookupBinding(Func<IBaseVisual> visualFunc): WindowBinding(visua
 			modelColl = null;
 		switch (chooseType) {
 			case ChooseModelType.Model:
-				modelColl = inProjectPath.Replace('\\', '/');
-				modelColl = modelColl[..^4];
-				if (File.Exists(path[..^4] + ".pic") || File.Exists(path[..^4] + ".pmc"))
-					modelPath = modelColl + ".pmd";
-				modelColl += ".pmc";
-				break;
-			case ChooseModelType.Coll:
 				modelPath = inProjectPath.Replace('\\', '/');
 				modelPath = modelPath[..^4];
 				if (File.Exists(path[..^4] + ".pic") || File.Exists(path[..^4] + ".pmc"))
 					modelColl = modelPath + ".pmc";
 				modelPath += ".pmd";
+				break;
+			case ChooseModelType.Coll:
+				modelColl = inProjectPath.Replace('\\', '/');
+				modelColl = modelColl[..^4];
+				if (File.Exists(path[..^4] + ".pim") || File.Exists(path[..^4] + ".pmd"))
+					modelPath = modelColl + ".pmd";
+				modelColl += ".pmc";
 				break;
 			default:
 				return;

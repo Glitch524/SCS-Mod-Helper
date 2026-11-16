@@ -6,37 +6,6 @@ using System.Text;
 
 namespace SCS_Mod_Helper.Locale.StringRes; 
 internal class StringResUtil {
-	private static ObservableCollection<StringResItem>? mStringResList = null;
-	public static ObservableCollection<StringResItem> StringResList {
-		get {
-			if (mStringResList == null) {
-				SetupStringResList();
-			}
-			return mStringResList!;
-		}
-	}
-	public static void CleanStringResList() => mStringResList = null;
-
-	/// <summary>
-	/// 初始化或重置字符串资源列表，并根据本地化字典内容填充资源项。
-	/// </summary>
-	public static void SetupStringResList() {
-		if (mStringResList == null)
-			mStringResList = [];
-		else
-			mStringResList.Clear();
-		var dict = Instances.LocaleDict;
-		foreach (var pair in dict) {
-			StringBuilder tips = new();
-			tips.Append(Resource.GetString("ResourceValueHeader"));
-			foreach (var value in pair.Value) {
-				tips.Append('\n');
-				tips.Append($"    {value}");
-			}
-			mStringResList.Add(new(pair.Key, tips.ToString()));
-		}
-	}
-
 	/// <summary>
 	/// 根据指定格式的 displayName，返回多语言资源字符串，并输出首选本地化名称。
 	/// </summary>
@@ -91,11 +60,12 @@ internal class StringResUtil {
 				finalValue.Append(final);
 
 				if (localized == null) {
-					if (pair.Key == Util.SystemLocaleForSCS()) {//优先选择与系统语言相同的语言
-						localized = final;
-					} else if (pair.Key == "universal" || pair.Key.StartsWith("en")) {//然后优先选择universal或en开头的语言
+					if (pair.Key == "universal" || pair.Key.StartsWith("en")) {//然后优先选择universal或en开头的语言
 						localized = final;
 					}
+				}
+				if (pair.Key == Util.SystemLocaleForSCS()) {//优先选择与系统语言相同的语言
+					localized = final;
 				}
 			}
 			localized ??= displayName.Replace("@@", "");//如果最终还是没有赋值，就使用原始文本

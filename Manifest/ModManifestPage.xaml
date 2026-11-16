@@ -570,6 +570,7 @@
 						x:Name="TextDescriptionName"
 						TextWrapping="Wrap"
 						VerticalAlignment="Top"
+						ClearButtonEnabled="False"
 						Grid.Column="1"
 						Text="{Binding DescriptionName, UpdateSourceTrigger=PropertyChanged}"
 						TextChanged="TextFilenameChanged" />
@@ -794,6 +795,7 @@
 						Grid.Column="2"
 						TextWrapping="Wrap"
 						AcceptsReturn="True"
+						ClearButtonEnabled="False"
 						Text="{Binding CurrentLocale.DescContent, UpdateSourceTrigger=PropertyChanged}"
 						VerticalScrollBarVisibility="Auto"
 						FontSize="12"

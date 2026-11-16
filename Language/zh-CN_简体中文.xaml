@@ -236,6 +236,7 @@
 	<s:String x:Key="SuitableForSetLGlass">配件-挡风玻璃套件（set__lglass）</s:String>
 	<s:String x:Key="SuitableForSetCuphold">配件-杯架套件（set__cuphold）</s:String>
 	<s:String x:Key="SuitableForSteeringW">配件-方向盘（steering__w）</s:String>
+	<s:String x:Key="SuitableForCodrvSeat">配件-客车座椅（codrv__seat）</s:String>
 	<!--保存套件定义-->
 	<s:String x:Key="MessageSaveBeforeStart">请确保档案名、定义文件名、套件模型名称、物理模型名称的等必填内容填写好，否则会跳过或停止保存。</s:String>
 	<s:String x:Key="MessageSaveNoName">请先输入档案名</s:String>
@@ -255,7 +256,7 @@
 	<s:String x:Key="ButtonSaveToPhysicList">保存到软件的物理列表</s:String>
 	<s:String x:Key="TitlePhysicsType">物理类型</s:String>
 	
-	<s:String x:Key="PhysicsTypeToy">玩具物理定义 (physics_toy_data)</s:String>
+	<s:String x:Key="PhysicsTypeToy">玩具物理定义 (physics__toy__data)</s:String>
 	<s:String x:Key="TitlePhysicsName">物理定义名称</s:String>
 	<s:String x:Key="TitleToyType">玩具类型</s:String>
 	<s:String x:Key="TitleToyMass">重量</s:String>
@@ -293,7 +294,7 @@
 	<s:String x:Key="TitleNodeDamping">节点阻尼</s:String>
 	<s:String x:Key="TipNodeDamping">绳子节点的速度阻尼</s:String>
 	
-	<s:String x:Key="PhysicsTypePatch">布片物理定义 (physics_patch_data)</s:String>
+	<s:String x:Key="PhysicsTypePatch">布片物理定义 (physics__patch__data)</s:String>
 	<s:String x:Key="TitlePatchMaterial">布片材质</s:String>
 	<s:String x:Key="TitleAreaDensity">面积密度</s:String>
 	<s:String x:Key="TitleAeroModelType">空气动力模型类型</s:String>

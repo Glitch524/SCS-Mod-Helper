@@ -36,7 +36,11 @@ namespace SCS_Mod_Helper.Modding.Accessories {
 			ListHasQuote.AddRange([
 				NameDisplayName,
 				NameIconName,
-				NameCollPath]);
+				NameCollPath,
+				NamePTModel,
+				NamePTColl,
+				NamePTRopeMaterial,
+				NamePPMaterial,]);
 		}
 
 
@@ -89,6 +93,8 @@ namespace SCS_Mod_Helper.Modding.Accessories {
 		public const string NamePPLiftCoefficient = "lift_coefficient";
 
 		private void WritePhysicsToyData(StreamWriter sw, string physicsName, Action data) {
+			if (!physicsName.StartsWith('.'))
+				physicsName = '.' + physicsName;
 			sw.Write(new string('\t', TabCount));
 			sw.WriteLine($"{NamePTHeader} : {physicsName}{NamePSuffix}");
 			BraceIn(sw);
@@ -96,6 +102,8 @@ namespace SCS_Mod_Helper.Modding.Accessories {
 			BraceOut(sw);
 		}
 		private void WritePhysicsPatchData(StreamWriter sw, string physicsName, Action data) {
+			if (!physicsName.StartsWith('.'))
+				physicsName = '.' + physicsName;
 			sw.Write(new string('\t', TabCount));
 			sw.WriteLine($"{NamePPHeader} : {physicsName}{NamePSuffix}");
 			BraceIn(sw);
@@ -170,8 +178,13 @@ namespace SCS_Mod_Helper.Modding.Accessories {
 				string? item = list[i];
 				if (item.Length == 0)
 					continue;
-				if (listName == NameData && !item.EndsWith(NamePSuffix))
-					item += NamePSuffix;
+				if (listName == NameData) {
+					if (!item.StartsWith('.'))
+						item = '.' + item;
+					if (!item.EndsWith(NamePSuffix))
+						item += NamePSuffix;
+				}
+
 				WriteLine(sw, listName, item);
 			}
 		}

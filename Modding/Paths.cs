@@ -28,7 +28,6 @@ partial class Paths {
 
 	public static string AccAddonFile(VehicleType vehicleType, string vehicleID, string modelType, string modelName) {
 		string dir = Path.Combine(DefVehicleDir(vehicleType, vehicleID), "accessory", modelType);
-		Directory.CreateDirectory(dir);
 		return Path.Combine(dir, $"{modelName}.sii");
 	}
 
