@@ -27,8 +27,9 @@
 	- Themes: Light, Dark, Follow System
 
 ### Probably updates：
-- Paint job creation
-- List or export files by ConverterPIX
+- Vehicle UV Images (Vehicles that more people request might be made first)
+- Paintjob preview in vehicle model
+- Tree structure for accessory data list
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/W7W71NJ5JK)
 
@@ -61,8 +62,9 @@
  	- 颜色模式：浅色、深色、跟随系统
 
 ### 大概会更新的功能：
-- 车辆涂装的定义与生成
-- 使用ConverterPIX浏览、导出文件
+- 车辆UV图 (更多人要求的车辆可能会优先制作)
+- 喷漆模型预览
+- 模型列表的树状表述
 
 ### 关于车内模型摆件的制作可以看这个
 （主要是使用恋活角色制作的mod）  
