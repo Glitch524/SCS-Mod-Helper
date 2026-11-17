@@ -2813,7 +2813,7 @@
 	<s:String
 		x:Key="ford.victoria_06.mirror.std_pnt">主后视镜-标准，喷漆</s:String>
 	<s:String
-		x:Key="ford.victoria_06.doorhndl.std_pnt">车门把手-标准，完全喷漆</s:String>
+		x:Key="ford.victoria_06.doorhndl.std_pnf">车门把手-标准，完全喷漆</s:String>
 	<s:String
 		x:Key="ford.victoria_06.s_strip.std_pnf">侧条带-标准，完全喷漆</s:String>
 	<s:String

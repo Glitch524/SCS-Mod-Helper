@@ -120,7 +120,7 @@ public partial class AccAddonBinding {
 			InvokeChange(nameof(NewVehicleID));
 		}
 	}
-	private string mNewVehicleCodename = null;
+	private string mNewVehicleCodename = string.Empty;
 	public string NewVehicleCodename {
 		get => mNewVehicleCodename;
 		set {
@@ -129,7 +129,7 @@ public partial class AccAddonBinding {
 			InvokeChange(nameof(NewVehicleID));
 		}
 	}
-	private string mNewProdYear = null;
+	private string mNewProdYear = string.Empty;
 	public string NewProdYear {
 		get => mNewProdYear;
 		set {
@@ -146,7 +146,7 @@ public partial class AccAddonBinding {
 			InvokeChange();
 		}
 	}
-	private string mNewVehicleName = null;
+	private string mNewVehicleName = string.Empty;
 	public string NewVehicleName {
 		get => mNewVehicleName;
 		set {
@@ -154,7 +154,7 @@ public partial class AccAddonBinding {
 			InvokeChange();
 		}
 	}
-	private string mNewDescription = null;
+	private string mNewDescription = string.Empty;
 	public string NewDescription {
 		get => mNewDescription;
 		set {

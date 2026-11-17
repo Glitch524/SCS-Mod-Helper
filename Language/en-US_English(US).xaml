@@ -226,7 +226,7 @@
 	
 	<!--Create Addon Hookup-->
 	<s:String x:Key="TitleAccessoryHookup">Create Accessory Hookup</s:String>
-	<s:String x:Key="DescAccessoryHookup">Hookup is used to set models(such as dashboard or windshield). "suitable_for" is reqiure to work</s:String>
+	<s:String x:Key="DescAccessoryHookup">Hookup is used to setup hookup models(such as dashboard or windshield). "suitable_for" is reqiure to work</s:String>
 	<s:String x:Key="TitleAddonStorageStorage">Hookup Storage Name</s:String>
 	<s:String x:Key="HeaderAccessoryName">Acc. Name</s:String>
 	<!--Suitable For-->

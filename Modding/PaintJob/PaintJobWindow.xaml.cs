@@ -163,8 +163,12 @@ namespace SCS_Mod_Helper.Modding.PaintJob {
         }
 
 		private void ButtonOpenVehicleTree(object sender, RoutedEventArgs e) {
-			Binding.IsVehiclePopupOpen = true;
-			TreeViewVehicle.Focus();
+			if (Binding.IsVehiclePopupOpen)
+				Binding.IsVehiclePopupOpen = false;
+			else {
+				Binding.IsVehiclePopupOpen = true;
+				TreeViewVehicle.Focus();
+			}
 		}
 	}
 }

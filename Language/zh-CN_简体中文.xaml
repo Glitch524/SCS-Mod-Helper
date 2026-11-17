@@ -94,9 +94,9 @@
 	<s:String x:Key="MessageManifestNotFilled">请填好必填内容</s:String>
 
 	
-	<s:String x:Key="TitleAccessory">配件设计</s:String>
+	<s:String x:Key="TitleAccessory">饰品设计</s:String>
 	<!--摆件模型定义页-->
-	<s:String x:Key="TitleAccessoryAddon">摆件模型定义文件&#10;(Accessory Addon)</s:String>
+	<s:String x:Key="TitleAccessoryAddon">饰品定义文件&#10;(Accessory Addon)</s:String>
 	<s:String x:Key="SCSProjectLocation">项目目录</s:String>
 	<s:String x:Key="SCSProjectLocationTipNotExist">项目目录文件夹不存在</s:String>
 	<s:String x:Key="ModelName">模型名称</s:String>
@@ -225,8 +225,8 @@
 	
 
 	<!--套件模型定义页-->
-	<s:String x:Key="TitleAccessoryHookup">外接模型定义文件&#10;(Accessory Hookup)</s:String>
-	<s:String x:Key="DescAccessoryHookup">Hookup用于定义外接模型（比如仪表盘套件、挡风玻璃套件）使用时需要填写suitable_for</s:String>
+	<s:String x:Key="TitleAccessoryHookup">套件定义文件&#10;(Accessory Hookup)</s:String>
+	<s:String x:Key="DescAccessoryHookup">Hookup用于定义套件（比如仪表盘套件、挡风玻璃套件）使用时需要填写suitable_for</s:String>
 	<s:String x:Key="TitleAddonStorageStorage">套件档案名（addon_hookup_storage）</s:String>
 	<s:String x:Key="HeaderAccessoryName">摆件名称</s:String>
 	<!--适用-->

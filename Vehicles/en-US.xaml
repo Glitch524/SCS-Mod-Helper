@@ -2813,7 +2813,7 @@
 	<s:String
 		x:Key="ford.victoria_06.mirror.std_pnt">Main Mirrors-Standard, Painted</s:String>
 	<s:String
-		x:Key="ford.victoria_06.doorhndl.std_pnt">Door Handles-Standard, Fully Painted</s:String>
+		x:Key="ford.victoria_06.doorhndl.std_pnf">Door Handles-Standard, Fully Painted</s:String>
 	<s:String
 		x:Key="ford.victoria_06.s_strip.std_pnf">Side Stripe-Standard, Fully Painted</s:String>
 	<s:String
