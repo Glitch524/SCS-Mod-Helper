@@ -94,9 +94,9 @@
 	<s:String x:Key="MessageManifestNotFilled">请填好必填内容</s:String>
 
 	
-	<s:String x:Key="TitleAccessory">饰品设计</s:String>
+	<s:String x:Key="TitleAccessory">配件设计</s:String>
 	<!--摆件模型定义页-->
-	<s:String x:Key="TitleAccessoryAddon">饰品定义文件&#10;(Accessory Addon)</s:String>
+	<s:String x:Key="TitleAccessoryAddon">配件定义文件&#10;(Accessory Addon)</s:String>
 	<s:String x:Key="SCSProjectLocation">项目目录</s:String>
 	<s:String x:Key="SCSProjectLocationTipNotExist">项目目录文件夹不存在</s:String>
 	<s:String x:Key="ModelName">模型名称</s:String>
@@ -120,7 +120,7 @@
 	<s:String x:Key="ModelSetExterior">设定车外视角模型</s:String>
 	<s:String x:Key="ModelNameTip">超过12个字符可能会不显示</s:String>
 	<s:String x:Key="ModelIconTip">建议放在material\ui\accessory\内</s:String>
-	<s:String x:Key="ModelType">模型类型</s:String>
+	<s:String x:Key="ModelType">配件类型</s:String>
 	<s:String x:Key="ModelTypeTip">（根据mod路径匹配）</s:String>
 	<s:String x:Key="ModelLook">外观(Look)</s:String>
 	<s:String x:Key="ModelVariant">变体(Variant)</s:String>
@@ -215,7 +215,7 @@
 	<s:String x:Key="TitleAutoRecognize">自动识别</s:String>
 	<s:String x:Key="MessageAR">通过模型文件识别到部分可能需要的内容，请选择需要的内容</s:String>
 	<s:String x:Key="CheckHeadModelName">模型名称：</s:String>
-	<s:String x:Key="CheckHeadModelType">模型类型：</s:String>
+	<s:String x:Key="CheckHeadModelType">配件类型：</s:String>
 	<s:String x:Key="CheckHeadModelPath">模型路径：</s:String>
 	<s:String x:Key="CheckHeadModelPathUK">模型路径（UK）：</s:String>
 	<s:String x:Key="CheckHeadCollPath">模型碰撞路径：</s:String>
@@ -366,7 +366,7 @@
 	<s:String x:Key="TitleMaskB">颜色遮罩（蓝）</s:String>
 	<s:String x:Key="TooltipMaskB">定义喷漆的颜色遮罩（蓝）的颜色</s:String>
 	
-	<s:String x:Key="TitlePaintJobOverride">配件喷漆设置</s:String>
+	<s:String x:Key="TitlePaintJobOverride">配件额外喷漆设置</s:String>
 	<s:String x:Key="TitleOverrides">设置</s:String>
 	<s:String x:Key="TitleAccessoryParts">配件</s:String>
 	
@@ -392,7 +392,7 @@
 
 
 	<!--浏览已创建模型定义文件-->
-	<s:String x:Key="TitleCreatedSii">浏览已创建模型定义文件</s:String>
+	<s:String x:Key="TitleCreatedSii">浏览已创建配件定义文件</s:String>
 	<s:String x:Key="TextProjectLocation">项目路径：</s:String>
 	<s:String x:Key="HeadPath">路径</s:String>
 	<s:String x:Key="MessageLoadSiiErrNoSii">项目没有任何sii文件</s:String>
