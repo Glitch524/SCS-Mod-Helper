@@ -169,27 +169,21 @@ public class AddonAppIO(string savePath): AppIO {
 					break;
 				case TITLE_DATA_LIST:
 					ReadList(child, TITLE_DATA, data.Data);
-					data.InvokeChange(nameof(data.DataListContent));
 					break;
 				case TITLE_SUITABLE_FOR_LIST:
 					ReadList(child, TITLE_SUITABLE_FOR, data.SuitableFor);
-					data.InvokeChange(nameof(data.SuitableForListContent));
 					break;
 				case TITLE_CONFLICT_WITH_LIST:
 					ReadList(child, TITLE_CONFLICT_WITH, data.ConflictWith);
-					data.InvokeChange(nameof(data.ConflictWithListContent));
 					break;
 				case TITLE_DEFAULTS_LIST:
 					ReadList(child, TITLE_DEFAULTS, data.Defaults);
-					data.InvokeChange(nameof(data.DefaultsListContent));
 					break;
 				case TITLE_OVERRIDES_LIST:
 					ReadList(child, TITLE_OVERRIDES, data.Overrides);
-					data.InvokeChange(nameof(data.OverridesListContent));
 					break;
 				case TITLE_REQUIRE_LIST:
 					ReadList(child, TITLE_REQUIRE, data.Require);
-					data.InvokeChange(nameof(data.RequireListContent));
 					break;
 				case TITLE_VEHICLES_ETS2:
 					data.SelectedCountETS2 = ReadVehicles(child, data.VehiclesETS2);
@@ -199,6 +193,12 @@ public class AddonAppIO(string savePath): AppIO {
 					break;
 			}
 		}
+		data.InvokeChange(nameof(data.DataListContent));
+		data.InvokeChange(nameof(data.SuitableForListContent));
+		data.InvokeChange(nameof(data.ConflictWithListContent));
+		data.InvokeChange(nameof(data.DefaultsListContent));
+		data.InvokeChange(nameof(data.OverridesListContent));
+		data.InvokeChange(nameof(data.RequireListContent));
 	}
 
 	protected static void ReadList(XmlNode node, string title, Collection<string> list) {
