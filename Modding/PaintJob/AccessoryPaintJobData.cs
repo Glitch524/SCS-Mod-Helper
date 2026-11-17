@@ -99,12 +99,12 @@ public class AccPaintJobData(Func<bool> isUVOpen): AccessoryData() {
 		get => BaseTexOverride.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
 	}
 
-	private Color mBaseColor = Colors.White;
 	public Color BaseColor {//6位hex 基本颜色
 		get;
 		set {
 			field = value;
 			InvokeChange();
+			InvokeChange(nameof(BaseColorVisual));
 		}
 	} = Colors.White;
 
