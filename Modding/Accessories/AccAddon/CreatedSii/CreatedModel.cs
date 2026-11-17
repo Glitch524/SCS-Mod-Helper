@@ -53,104 +53,96 @@ public class CreatedModel(string modelName): BaseBinding {
 
 public class CreatedModelItem: BaseBinding {
 
-	public CreatedModelItem(string path, string pathShort) {
-		this.path = path;
-		this.pathShort = pathShort;
-		vehicleID = GetString("UnknownFile");
-		modelType = "";
-		modelName = GetString("Unknown");
+	public CreatedModelItem(string path) {
+		Path = path;
+		VehicleType = GetString("Unknown");
+		VehicleID = GetString("UnknownFile");
+		AccType = "";
+		ModelName = GetString("Unknown");
 	}
 
-	public CreatedModelItem(string path, string pathShort, string vehicleID, string modelType, string modelName) {
-		this.path = path;
-		this.pathShort = pathShort;
-		this.vehicleID = vehicleID;
-		this.modelType = modelType;
-		this.modelName = modelName;
+	public CreatedModelItem(string path, string vehicleType, string vehicleID, string accType, string modelName) {
+		Path = path;
+		VehicleType = vehicleType;
+		VehicleID = vehicleID;
+		AccType = accType;
+		ModelName = modelName;
 	}
 
-	public bool MCheck = false;
 	public bool Check {
-		get => MCheck;
+		get;
 		set {
-			MCheck = value;
+			field = value;
 			InvokeChange();
 		}
-	}
+	} = false;
 
-	public string path;
 	public string Path {
-		get => path;
+		get;
 		set {
-			path = value;
-			InvokeChange();
-		}
-	}
-	public string pathShort;
-	public string PathShort {
-		get => pathShort;
-		set {
-			pathShort = value;
+			field = value;
 			InvokeChange();
 		}
 	}
 
-	public string vehicleID;
+	public string VehicleType {
+		get;
+		set {
+			field = value;
+			InvokeChange();
+		}
+	}
+
 	public string VehicleID {
-		get => vehicleID;
+		get;
 		set {
-			vehicleID = value;
+			field = value;
 			InvokeChange();
 		}
 	}
 
-	public string modelType;
-	public string ModelType {
-		get => modelType;
+	public string AccType {
+		get;
 		set {
-			modelType = value;
+			field = value;
 			InvokeChange();
 		}
 	}
-	public string modelName;
+
 	public string ModelName {
-		get => modelName;
+		get;
 		set {
-			modelName = value;
+			field = value;
 			InvokeChange();
 		}
 	}
 
-	public string ingameName = "";
-	public string IngameName {
-		get => ingameName;
+	public string DisplayName {
+		get;
 		set {
-			ingameName = value;
+			field = value;
 			InvokeChange();
 		}
-	}
+	} = string.Empty;
 
-	public string look = "";
 	public string Look {
-		get => look;
+		get;
 		set {
-			look = value;
+			field = value;
 			InvokeChange();
 		}
-	}
-
-	public string variant = "";
+	} = string.Empty;
 
 	public string Variant {
-		get => variant;
+		get;
 		set {
-			variant = value;
+			field = value;
 			InvokeChange();
 		}
-	}
+	} = string.Empty;
 
 	public void ReadModelDetail() {
-		if (IngameName != string.Empty)
+		if (DisplayName != string.Empty)
 			return;
 		Task.Run(() => {
 			AccAddonSCSIO.ReadAccAddon(this);

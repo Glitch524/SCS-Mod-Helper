@@ -78,19 +78,9 @@ public partial class NaviMainWindow: BaseWindow {
 	}
 
 	private void Test(string? value) {
-		var ofd = new OpenFileDialog {
-			Multiselect = false
-		};
-		var result = ofd.ShowDialog();
-		if (result == true) {
-			var path = ofd.FileName;
-			if (!path.EndsWith(".zip"))
-				return;
-			Task.Run(() => {
-				_ = Util.ZipLock(path);
-				Debug.WriteLine("zip lock end");
-			});
-		}
+		var config = System.Configuration.ConfigurationManager.OpenExeConfiguration(
+			System.Configuration.ConfigurationUserLevel.PerUserRoamingAndLocal);
+		Debug.WriteLine(config.FilePath);
 	}
 
 	private void NaviMainWindowLoaded(object sender, RoutedEventArgs e) => Navigation.Navigate("ModManifest");

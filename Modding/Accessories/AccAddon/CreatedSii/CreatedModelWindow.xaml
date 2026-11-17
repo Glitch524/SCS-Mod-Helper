@@ -65,7 +65,8 @@
 				Content="{DynamicResource CheckBoxSelectAll}"
 				IsChecked="{Binding CurrentModel.SelectAll}" />
 			<Grid
-				Grid.Row="2"
+				Grid.Row="1"
+				Grid.RowSpan="2"
 				Grid.Column="0"
 				Margin="0,5,5,0">
 				<Grid.RowDefinitions>
@@ -145,6 +146,16 @@
 				BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
 				ColumnHeaderStyle="{StaticResource DataGridHeader}"
 				CellStyle="{StaticResource CompatCellStyle}">
+				<DataGrid.Resources>
+					<Style
+						x:Key="CellStyle"
+						TargetType="DataGridCell"
+						BasedOn="{StaticResource {x:Type DataGridCell}}">
+						<Setter
+							Property="ToolTip"
+							Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content.Text}" />
+					</Style>
+				</DataGrid.Resources>
 				<DataGrid.HorizontalGridLinesBrush>
 					<LinearGradientBrush
 						EndPoint="0.5,1"
@@ -167,65 +178,47 @@
 						</DataGridTemplateColumn.CellTemplate>
 					</DataGridTemplateColumn>
 					<DataGridTextColumn
-						Header="{DynamicResource HeadPath}"
+						Header="{DynamicResource VehicleType}"
 						IsReadOnly="True"
-						Width="10*"
-						Binding="{Binding PathShort}">
-						<DataGridTextColumn.CellStyle>
-							<Style
-								TargetType="DataGridCell">
-								<Setter
-									Property="ToolTip"
-									Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content.Text}" />
-							</Style>
-						</DataGridTextColumn.CellStyle>
-					</DataGridTextColumn>
+						Width="2*"
+						Binding="{Binding VehicleType}"
+						CellStyle="{StaticResource CellStyle}" />
 					<DataGridTextColumn
 						Header="{DynamicResource VehicleID}"
 						IsReadOnly="True"
 						Width="6*"
-						Binding="{Binding VehicleID}">
-						<DataGridTextColumn.CellStyle>
-							<Style
-								TargetType="DataGridCell">
-								<Setter
-									Property="ToolTip"
-									Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content.Text}" />
-							</Style>
-						</DataGridTextColumn.CellStyle>
-					</DataGridTextColumn>
+						Binding="{Binding VehicleID}"
+						CellStyle="{StaticResource CellStyle}" />
 					<DataGridTextColumn
 						Header="{DynamicResource ModelType}"
 						IsReadOnly="True"
 						Width="3*"
-						Binding="{Binding ModelType}">
-					</DataGridTextColumn>
+						Binding="{Binding AccType}"
+						CellStyle="{StaticResource CellStyle}" />
+					<DataGridTextColumn
+						Header="{DynamicResource ModelName}"
+						IsReadOnly="True"
+						Width="3*"
+						Binding="{Binding ModelName}"
+						CellStyle="{StaticResource CellStyle}" />
 					<DataGridTextColumn
 						Header="{DynamicResource ModelDisplayName}"
 						IsReadOnly="True"
-						Width="5*"
-						Binding="{Binding IngameName}">
-						<DataGridTextColumn.CellStyle>
-							<Style
-								TargetType="DataGridCell">
-								<Setter
-									Property="ToolTip"
-									Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content.Text}" />
-							</Style>
-						</DataGridTextColumn.CellStyle>
-					</DataGridTextColumn>
+						Width="6*"
+						Binding="{Binding DisplayName}"
+						CellStyle="{StaticResource CellStyle}" />
 					<DataGridTextColumn
 						Header="{DynamicResource ModelLook}"
 						IsReadOnly="True"
-						Width="5*"
-						Binding="{Binding Look}">
-					</DataGridTextColumn>
+						Width="3*"
+						Binding="{Binding Look}"
+						CellStyle="{StaticResource CellStyle}" />
 					<DataGridTextColumn
 						Header="{DynamicResource ModelVariant}"
 						IsReadOnly="True"
-						Width="5*"
-						Binding="{Binding Variant}">
-					</DataGridTextColumn>
+						Width="3*"
+						Binding="{Binding Variant}"
+						CellStyle="{StaticResource CellStyle}" />
 				</DataGrid.Columns>
 			</DataGrid>
 			<Grid

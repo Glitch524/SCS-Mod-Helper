@@ -45,7 +45,7 @@ public class SystemVerification {
 				await using var conn = new SqliteConnection(CPTCheck);
 				await conn.OpenAsync();
 
-				var cmd = conn.CreateCommand();
+				using var cmd = conn.CreateCommand();
 				cmd.CommandText = $"select * from Store where Key=$key";
 				cmd.Parameters.AddWithValue("$key", "lastRun");
 
@@ -65,21 +65,28 @@ public class SystemVerification {
 						cmd.Parameters.AddWithValue("$key", "lastRun");
 						await updateCmd.ExecuteNonQueryAsync();
 					}
+				} else {
+					using var wCmd = conn.CreateCommand();
+					await StorageIAsync(wCmd);
 				}
 			} else {
 				await using var conn = new SqliteConnection(CPTCheck);
 				await conn.OpenAsync();
-				var cmd = conn.CreateCommand();
+				using var cmd = conn.CreateCommand();
 				cmd.CommandText = "CREATE TABLE Store (Key TEXT, MachineGuid TEXT)";
 				await cmd.ExecuteNonQueryAsync();
-				cmd.CommandText = @$"Insert into Store (Key, MachineGuid)
-							values($key, $guid)";
-				cmd.Parameters.AddWithValue("$key", "lastRun");
-				cmd.Parameters.AddWithValue("$guid", GetMachineGuid());
-				await cmd.ExecuteNonQueryAsync();
+				await StorageIAsync(cmd);
 			}
 		} catch (Exception ex) {
 			Debug.WriteLine($"Storage verification failed: {ex.Message}");
 		}
+	}
+
+	private static async Task StorageIAsync(SqliteCommand cmd) {
+		cmd.CommandText = @$"Insert into Store (Key, MachineGuid)
+							values($key, $guid)";
+		cmd.Parameters.AddWithValue("$key", "lastRun");
+		cmd.Parameters.AddWithValue("$guid", GetMachineGuid());
+		await cmd.ExecuteNonQueryAsync();
 	}
 }

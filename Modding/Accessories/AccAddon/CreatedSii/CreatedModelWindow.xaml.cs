@@ -39,7 +39,7 @@ public partial class CreatedModelWindow: BaseWindow {
 
 	private void OnClosed(object? sender, EventArgs e) => source.Cancel();
 
-	private readonly DirectoryInfo defDir = new(Paths.DefTruckDir());
+	private readonly DirectoryInfo defDir = new(Paths.DefVehicleDir());
 	readonly Dictionary<string, CreatedModel> ModelPair = [];
 
 	private void LoadCreatedSii() {
@@ -77,19 +77,19 @@ public partial class CreatedModelWindow: BaseWindow {
 			if (file.Extension.Equals(".sii")) {
 				var filePath = file.FullName;
 
-				var pathShort = filePath.Replace(Paths.DefTruckDir(), "");
-
 				var modelName = "";
+				var vehicleType = "";
 				var vehicleID = "";
-				var modelType = "";
+				var accType = "";
 				var deVehicle = filePath.Replace(defDir.FullName + '\\', "");
 				var split = deVehicle.Split('\\');
-				if (split.Length >= 4) {
-					vehicleID = split[0];
-					modelType = split[2];
-					modelName = split[3][..^4];
+				if (split.Length >= 5) {
+					vehicleType = split[0];
+					vehicleID = split[1];
+					accType = split[3];
+					modelName = split[4][..^4];
 				}
-				CreatedModelItem c = new(filePath, pathShort, vehicleID, modelType, modelName);
+				CreatedModelItem c = new(filePath, vehicleType, vehicleID, accType, modelName);
 
 				if (ModelPair.TryGetValue(modelName, out CreatedModel? createdModel)) {
 					Dispatcher.Invoke(new(() => {

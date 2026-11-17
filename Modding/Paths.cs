@@ -21,7 +21,7 @@ partial class Paths {
 	}
 
 
-	public static string DefTruckDir() => Path.Combine(Instances.ProjectLocation, @"def\vehicle\truck");
+	public static string DefVehicleDir() => Path.Combine(Instances.ProjectLocation, @"def\vehicle");
 
 	private static string DefVehicleDir(VehicleType vehicleType, string vehicleID) =>//trailer的文件夹是否不一样，好像有owned
 		Path.Combine(Instances.ProjectLocation, @"def\vehicle", vehicleType.GetTypeValue(), vehicleID);

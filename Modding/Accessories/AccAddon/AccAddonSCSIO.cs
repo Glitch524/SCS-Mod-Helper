@@ -157,7 +157,7 @@ namespace SCS_Mod_Helper.Modding.Accessories.AccAddon {
 					var value = ClipValue(line[(colonIndex + 1)..]);
 					switch (name) {
 						case NameDisplayName:
-							item.IngameName = value;
+							item.DisplayName = value;
 							break;
 						case NameLook:
 							item.Look = value;
