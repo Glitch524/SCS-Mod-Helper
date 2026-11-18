@@ -863,6 +863,7 @@ public partial class AccAddonBinding(Func<IBaseVisual> visualFunc): WindowBindin
 				ClearAllText();
 
 				new AddonAppIO(openFileDialog.FileName).LoadAddon(this);
+				ModelIcon = LoadModelIconByIconName(IconName);
 				UpdateOthersChecked();
 			}
 			LoadLooksAndVariants();
