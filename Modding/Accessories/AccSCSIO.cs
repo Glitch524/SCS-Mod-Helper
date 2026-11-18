@@ -37,8 +37,14 @@ namespace SCS_Mod_Helper.Modding.Accessories {
 				NameDisplayName,
 				NameIconName,
 				NameCollPath,
+				NameSuitableFor,
+				NameConflictWith,
+				NameDefaults,
+				NameOverrides,
+				NameRequire,
 				NamePTModel,
 				NamePTColl,
+				NamePTToyType,
 				NamePTRopeMaterial,
 				NamePPMaterial,]);
 		}
