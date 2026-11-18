@@ -1604,7 +1604,7 @@
 			<TextBlock
 				Grid.Row="2"
 				Grid.ColumnSpan="3"
-				Text="{DynamicResource TitlePaintJobOverride}"
+				Text="{DynamicResource TitleBlendingMode}"
 				FontSize="16"
 				HorizontalAlignment="Center"
 				Margin="0,5,0,0" />
@@ -2589,8 +2589,7 @@
 			<Border
 				Width="1"
 				VerticalAlignment="Stretch"
-				Grid.Row="2"
-				Grid.RowSpan="2"
+				Grid.RowSpan="4"
 				Grid.Column="3"
 				Background="LightGray"
 				HorizontalAlignment="Center" />

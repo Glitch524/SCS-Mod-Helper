@@ -335,6 +335,7 @@
 	<s:String x:Key="TitleColorVariant">Color Variant List</s:String>
 	<s:String x:Key="TitleColorVariantNoCustomizable">Please set any color customizable first</s:String>
 	
+	<s:String x:Key="TitleBlendingMode">Blending Mode</s:String>
 	<s:String x:Key="HeaderAirbrush">Airbrush</s:String>
 	<s:String x:Key="ExplainAirbrush">In the airbrush mode, the RGB of paint_job_mask is blended with the base color, using the alpha channel as the blend factor.</s:String>
 	<s:String x:Key="TitleFlipFlake">Flip and Flake</s:String>

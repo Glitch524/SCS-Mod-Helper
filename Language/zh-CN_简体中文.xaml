@@ -335,6 +335,7 @@
 	<s:String x:Key="TitleColorVariant">预设颜色列表</s:String>
 	<s:String x:Key="TitleColorVariantNoCustomizable">请先让任意一个颜色设为自定义</s:String>
 	
+	<s:String x:Key="TitleBlendingMode">混合模式</s:String>
 	<s:String x:Key="HeaderAirbrush">喷枪模式</s:String>
 	<s:String x:Key="ExplainAirbrush">在喷枪模式内，将根据喷漆贴图的透明通道将贴图与基础颜色混合。</s:String>
 	<s:String x:Key="TitleFlipFlake">变色龙漆、鳞片涂料</s:String>

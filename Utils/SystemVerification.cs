@@ -66,8 +66,7 @@ public class SystemVerification {
 						await updateCmd.ExecuteNonQueryAsync();
 					}
 				} else {
-					using var wCmd = conn.CreateCommand();
-					await StorageIAsync(wCmd);
+					await StorageIAsync(conn.CreateCommand());
 				}
 			} else {
 				await using var conn = new SqliteConnection(CPTCheck);
